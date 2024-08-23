@@ -1,0 +1,83 @@
+name: Vanilife
+version: '1.0.0'
+main: net.azisaba.vanilife.Vanilife
+api-version: '1.21'
+commands:
+  block:
+    description: Block any player.
+    usage: /block <player>
+  filter:
+    description: Edit the chat filter.
+    usage: /filter <skill> [args…]
+  friend:
+    description: Send a friend request.
+    usage: /friend <player>
+    aliases:
+      - f
+  friendlist:
+    description: View a list of your friends.
+    usage: /friendlist [page]
+    aliases:
+      - fl
+  mail:
+    description: You can send and check emails.
+    usage: /mail [player] [subject] [message]
+  mola:
+    description: Managing and Viewing Mola.
+    usage: /mola [skill] [args…]
+  mute:
+    description: Mute any player.
+    usage: /mute <player>
+  nick:
+    description: Sets the user's nickname.
+    usage: /nick [name]
+  plot:
+    description: Manage the plot.
+    usage: /plot <skill> [args…]
+  profile:
+    description: View any player's profile.
+    usage: /profile <player>
+  report:
+    description: Report the player.
+    usage: /report <player> <details>
+  rtp:
+    description: Teleport to a random location.
+    usage: /rtp
+  sara:
+    description: Set any player's sara.
+    usage: /sara <player> <sara>
+  service:
+    description: Manage service configured on the Vanilife server.
+    usage: /service <skill> [args…]
+  settings:
+    description: Edit settings in ばにらいふ.
+    usage: /settings
+  tpa:
+    description: Accept teleport request.
+    usage: /tpa <player>
+  tpr:
+    description: Send teleport request to any player.
+    usage: /tpr <player>
+  trade:
+    description: Send a trade request.
+    usage: /trade <player>
+    aliases:
+      - t
+  trash:
+    description: Open the Trash.
+    usage: /trash
+  unblock:
+    description: Unblock any player.
+    usage: /unblock <player>
+  unmute:
+    description: Unmute any player.
+    usage: /unmute <player>
+  vwm:
+    description: Command set for Vanilife World Manager administrators.
+    usage: /vwm <skill> [args…]
+  world:
+    description: Teleport to any world.
+    usage: /world <world>
+  worlds:
+    description: Select the world you want to teleport.
+    usage: /worlds

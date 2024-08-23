@@ -1,0 +1,121 @@
+package net.azisaba.vanilife.listener;
+
+import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.user.mail.Mail;
+import net.azisaba.vanilife.report.Report;
+import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.UserStatus;
+import net.azisaba.vanilife.util.ReportUtility;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
+import java.util.UUID;
+
+public class DiscordListener extends ListenerAdapter
+{
+    @Override
+    public void onReady(@NotNull ReadyEvent event)
+    {
+        Vanilife.server = event.getJDA().getGuildById(Vanilife.getPluginConfig().getString("discord.server"));
+        Vanilife.channel = Vanilife.server.getTextChannelById(Vanilife.getPluginConfig().getString("discord.channel"));
+        Vanilife.ROLE_SUPPORT = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.support"));
+        Vanilife.ROLE_MCONSOLE = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.mconsole"));
+
+        ReportUtility.mount();
+    }
+
+    @Override
+    public void onButtonInteraction(@NotNull ButtonInteractionEvent event)
+    {
+        if (event.getButton().getId() == null)
+        {
+            return;
+        }
+
+        if (! event.getMember().getRoles().contains(Vanilife.ROLE_SUPPORT))
+        {
+            EmbedBuilder builder = new EmbedBuilder()
+                    .setTitle("実行に必要な権限が不足しています")
+                    .setDescription("権限設定が誤りであると思われる場合は、管理者にお問い合わせください")
+                    .setColor(new Color(255, 85, 85));
+
+            event.replyEmbeds(builder.build()).queue();
+            return;
+        }
+
+        if (event.getButton().getId().equals("vanilife:mute"))
+        {
+            Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
+                String name = event.getMessage().getEmbeds().getFirst().getAuthor().getName();
+
+                User user = User.getInstance(UUID.fromString(event.getMessage().getEmbeds().getFirst().getFooter().getText()));
+                user.setStatus(UserStatus.MUTED);
+
+                EmbedBuilder builder = new EmbedBuilder()
+                        .setTitle(String.format("%s のミュートに成功しました", name))
+                        .addField("実行者", event.getMember().getEffectiveName(), true)
+                        .setColor(new Color(85, 255, 85));
+
+                event.replyEmbeds(builder.build()).queue();
+            });
+        }
+
+        if (event.getButton().getId().equals("vanilife:unmute"))
+        {
+            Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
+                String name = event.getMessage().getEmbeds().getFirst().getAuthor().getName();
+
+                User user = User.getInstance(UUID.fromString(event.getMessage().getEmbeds().getFirst().getFooter().getText()));
+                user.setStatus(UserStatus.DEFAULT);
+
+                EmbedBuilder builder = new EmbedBuilder()
+                        .setTitle(String.format("%s のミュートを解除しました", name))
+                        .addField("実行者", event.getMember().getEffectiveName(), true)
+                        .setColor(new Color(85, 255, 85));
+
+                event.replyEmbeds(builder.build()).queue();
+            });
+        }
+    }
+
+    @Override
+    public void onMessageReceived(@NotNull MessageReceivedEvent event)
+    {
+        Message reply = event.getMessage();
+
+        if (reply.getReferencedMessage() == null)
+        {
+            return;
+        }
+
+        Report report = Report.getInstance(reply.getReferencedMessage());
+
+        if (report == null)
+        {
+            return;
+        }
+
+        if (! event.getMember().getRoles().contains(Vanilife.ROLE_SUPPORT))
+        {
+            EmbedBuilder builder = new EmbedBuilder()
+                    .setTitle("実行に必要な権限が不足しています")
+                    .setDescription("権限設定が誤りであると思われる場合は、管理者にお問い合わせください")
+                    .setColor(new Color(255, 85, 85));
+
+            Vanilife.channel.sendMessageEmbeds(builder.build()).queue();
+            return;
+        }
+
+        new Mail(User.getInstance("azisaba"), report.getSender(), "サポートが発行されました",
+                String.format("お待たせいたしました。お寄せいただいたレポートにサポートが発行されたのでご確認をお願いします。\n\n%s\n\nレポート:\n%s\n\n担当者: %s", reply.getContentRaw(), report.getDetails(), event.getMember().getNickname()));
+        reply.addReaction(Emoji.fromUnicode("U+2705")).queue();
+    }
+}

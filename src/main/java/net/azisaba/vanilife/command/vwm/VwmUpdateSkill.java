@@ -1,0 +1,61 @@
+package net.azisaba.vanilife.command.vwm;
+
+import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.vwm.VanilifeWorld;
+import net.azisaba.vanilife.vwm.VanilifeWorldManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class VwmUpdateSkill implements ICommandSkill
+{
+    @Override
+    public String getName()
+    {
+        return "update";
+    }
+
+    @Override
+    public boolean isOpCommand()
+    {
+        return true;
+    }
+
+    @Override
+    public void onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (args.length != 0)
+        {
+            sender.sendMessage(Component.text("Correct syntax: /vwm update").color(NamedTextColor.RED));
+            return;
+        }
+
+        sender.sendMessage(Component.text("vw のアップデートを実行しています…").color(NamedTextColor.GREEN));
+
+        Bukkit.setWhitelist(true);
+        Bukkit.getOnlinePlayers().forEach(p -> p.kick(Component.text("アップデートを実行しています…\n完了までしばらくお待ちください").color(NamedTextColor.RED)));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("vwm create %s", Vanilife.sdf4.format(new Date())));
+
+        VanilifeWorld oldWorld = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion() - 1);
+
+        if (oldWorld != null)
+        {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("vwm delete %s", oldWorld.getName()));
+        }
+
+        sender.sendMessage(Component.text("vw のアップデートが完了しました").color(NamedTextColor.GREEN));
+        Bukkit.setWhitelist(false);
+    }
+
+    @Override
+    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    {
+        return null;
+    }
+}

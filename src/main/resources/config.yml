@@ -1,0 +1,14 @@
+database:
+  url: jdbc:mariadb://localhost/vanilife # Please set the appropriate URL.
+  user: # Please set the appropriate user.
+  pass: # Please set the appropriate pass.
+discord:
+  token: # Please set the appropriate Discord Bot token.
+  server: # Please set the appropriate server id.
+  channel: # Please set the appropriate channel id.
+  role:
+    support: # This role can handle support requests.
+    mconsole: # This role can use Mconsole to run Minecraft commands with administrative privileges.
+metubot:
+  server: 'http://localhost'
+  provider: # Please set the provider player's UUID here.
