@@ -53,7 +53,7 @@ public class UnblockCommand implements CommandExecutor, TabCompleter
             return List.of();
         }
 
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {

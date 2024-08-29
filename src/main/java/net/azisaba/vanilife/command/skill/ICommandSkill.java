@@ -1,5 +1,6 @@
-package net.azisaba.vanilife.command;
+package net.azisaba.vanilife.command.skill;
 
+import net.azisaba.vanilife.user.Sara;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -9,7 +10,7 @@ public interface ICommandSkill
 {
     String getName();
 
-    boolean isOpCommand();
+    Sara getRequirement();
 
     void onCommand(CommandSender sender, Command command, String label, String[] args);
 

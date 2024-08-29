@@ -12,7 +12,7 @@ public class LocationTranslator
             return to.getSpawnLocation();
         }
 
-        int ratio = (from.getWorld().getEnvironment() == World.Environment.NORMAL) ? 8 : 1;
+        int ratio = (from.getWorld().getEnvironment() == World.Environment.NORMAL) ? 8 : 1 / 8;
 
         double x = from.getX() * ratio;
         double y = from.getY() * ratio;

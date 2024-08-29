@@ -2,6 +2,7 @@ package net.azisaba.vanilife.plot;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -233,7 +234,7 @@ public class Plot
 
     public boolean isMember(User user)
     {
-        return 10 <= user.getSara().level
+        return UserUtility.isModerator(user)
                 || (this.scope == PlotScope.PUBLIC)
                 || (this.scope == PlotScope.FRIEND && (user.isFriend(this.owner) || this.members.contains(user)))
                 || (this.scope == PlotScope.PRIVATE && this.members.contains(user));
@@ -293,7 +294,7 @@ public class Plot
     {
         Player player = event.getPlayer();
 
-        if (! this.isMember(player) && ! player.isOp())
+        if (! this.isMember(player) && ! UserUtility.isModerator(player))
         {
             event.setCancelled(true);
             player.sendMessage(Component.text("この Plot でブロックを破壊する権限がありません").color(NamedTextColor.RED));
@@ -304,7 +305,7 @@ public class Plot
     {
         Player player = event.getPlayer();
 
-        if (! this.isMember(player) && ! player.isOp())
+        if (! this.isMember(player) && ! UserUtility.isModerator(player))
         {
             event.setCancelled(true);
             player.sendMessage(Component.text("この Plot でブロックを設置する権限がありません").color(NamedTextColor.RED));

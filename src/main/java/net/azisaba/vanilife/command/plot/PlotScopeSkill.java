@@ -1,8 +1,9 @@
 package net.azisaba.vanilife.command.plot;
 
-import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.plot.PlotScope;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -22,9 +23,9 @@ public class PlotScopeSkill implements ICommandSkill
     }
 
     @Override
-    public boolean isOpCommand()
+    public Sara getRequirement()
     {
-        return false;
+        return Sara.DEFAULT;
     }
 
     @Override

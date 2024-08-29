@@ -23,7 +23,7 @@ public class MetubouSetting extends AbstractToggleSetting
 
         faviconMeta.displayName(Component.text("(*'▽')").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         faviconMeta.lore(this.getLore(Component.text("チャットの先頭に「(*'▽')」を挿入するよ！").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
-                Component.text("(*'▽') metubouさんはばにらいふ！のアイドルなのですっ！").color(NamedTextColor.LIGHT_PURPLE).decoration(TextDecoration.ITALIC, false)));
+                Component.text("metubouさん推しです…").color(NamedTextColor.LIGHT_PURPLE).decoration(TextDecoration.ITALIC, false)));
 
         faviconStack.setItemMeta(faviconMeta);
         return faviconStack;

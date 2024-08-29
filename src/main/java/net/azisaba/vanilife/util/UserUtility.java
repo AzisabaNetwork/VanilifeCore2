@@ -18,6 +18,50 @@ public class UserUtility
 {
     public static Sara getSara(Player player)
     {
+        return User.getInstance(player).getSara();
+    }
+
+    public static Sara getSara(CommandSender sender)
+    {
+        if (sender instanceof Player player)
+        {
+            return User.getInstance(player).getSara();
+        }
+
+        return (sender.isOp()) ? Sara.ADMIN : Sara.DEFAULT;
+    }
+
+    public static ArrayList<Mail> getMails(User user)
+    {
+        ArrayList<Mail> mails = new ArrayList<>();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("SELECT id FROM mail WHERE user_from = ? OR user_to = ?");
+            stmt.setString(1, user.getId().toString());
+            stmt.setString(2, user.getId().toString());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                mails.addFirst(Mail.getInstance(UUID.fromString(rs.getString("id"))));
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get mails: %s", e.getMessage())).color(NamedTextColor.RED));
+        }
+
+        return mails;
+    }
+
+    public static Sara calculateSara(Player player)
+    {
         if (player.isOp())
         {
             return Sara.ADMIN;
@@ -64,43 +108,34 @@ public class UserUtility
         }
     }
 
-    public static Sara getSara(CommandSender sender)
+    public static boolean isModerator(User user)
+    {
+        return 10 <= user.getSara().level;
+    }
+
+    public static boolean isModerator(CommandSender sender)
     {
         if (sender instanceof Player player)
         {
-            return User.getInstance(player).getSara();
+            return UserUtility.isModerator(User.getInstance(player));
         }
 
-        return (sender.isOp()) ? Sara.ADMIN : Sara.DEFAULT;
+        return sender.isOp();
     }
 
-    public static ArrayList<Mail> getMails(User user)
+    public static boolean isAdmin(User user)
     {
-        ArrayList<Mail> mails = new ArrayList<>();
+        return 11 <= user.getSara().level;
+    }
 
-        try
+    public static boolean isAdmin(CommandSender sender)
+    {
+        if (sender instanceof Player player)
         {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("SELECT id FROM mail WHERE user_from = ? OR user_to = ?");
-            stmt.setString(1, user.getId().toString());
-            stmt.setString(2, user.getId().toString());
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next())
-            {
-                mails.addFirst(Mail.getInstance(UUID.fromString(rs.getString("id"))));
-            }
-
-            rs.close();
-            stmt.close();
-            con.close();
-        }
-        catch (SQLException e)
-        {
-            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get mails: %s", e.getMessage())).color(NamedTextColor.RED));
+            return UserUtility.isAdmin(User.getInstance(player));
         }
 
-        return mails;
+        return sender.isOp();
     }
 
     public static boolean exists(UUID id)

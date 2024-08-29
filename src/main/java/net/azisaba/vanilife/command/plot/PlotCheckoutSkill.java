@@ -1,7 +1,8 @@
 package net.azisaba.vanilife.command.plot;
 
-import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.kyori.adventure.text.Component;
@@ -20,9 +21,9 @@ public class PlotCheckoutSkill implements ICommandSkill
     }
 
     @Override
-    public boolean isOpCommand()
+    public Sara getRequirement()
     {
-        return true;
+        return Sara.MOD;
     }
 
     @Override

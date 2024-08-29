@@ -7,8 +7,8 @@ plot-checkout:
       year: -1
       month: -1
       day: 1
-      hour: 0
-      minutes: 10
+      hour: 1
+      minutes: 0
       second: 0
 vwm-reset:
   script:

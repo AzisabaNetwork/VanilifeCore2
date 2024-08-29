@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command.vwm;
 
-import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,9 +19,9 @@ public class VwmCreateSkill implements ICommandSkill
     }
 
     @Override
-    public boolean isOpCommand()
+    public Sara getRequirement()
     {
-        return true;
+        return Sara.ADMIN;
     }
 
     @Override

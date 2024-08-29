@@ -2,6 +2,7 @@ package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.user.request.TradeRequest;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -61,7 +62,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (! player.isOp() && toUser.getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
         {
             sender.sendMessage(Component.text(String.format("あなたは既に %s に Trade 申請を送信しています", args[0])).color(NamedTextColor.RED));
             return true;
@@ -74,7 +75,7 @@ public class TradeCommand implements CommandExecutor, TabCompleter
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {

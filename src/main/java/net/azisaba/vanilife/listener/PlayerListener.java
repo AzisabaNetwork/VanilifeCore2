@@ -40,9 +40,9 @@ public class PlayerListener implements Listener
     {
         Player player = event.getPlayer();
         User user = User.getInstance(player);
-        Sara sara = UserUtility.getSara(player);
+        Sara sara = UserUtility.calculateSara(player);
 
-        if (sara.level < user.getSara().level)
+        if (user.getSara().level < sara.level)
         {
             user.setSara(sara);
         }
@@ -98,7 +98,8 @@ public class PlayerListener implements Listener
             int streak = user.getLoginStreak() + 1;
             int bonus = 10 * Math.min(streak, 10);
 
-            player.sendMessage(Component.text(String.format("ログインボーナス！+ %s Mola (10 × %s Streak)", bonus, streak)).color(NamedTextColor.LIGHT_PURPLE));
+            user.setMola(user.getMola() + bonus);
+            player.sendMessage(Component.text(String.format("ログインボーナス + %s Mola (10 × %s Streak)", bonus, streak)).color(NamedTextColor.GREEN));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         }
 
@@ -158,7 +159,7 @@ public class PlayerListener implements Listener
         }
 
         User user = User.getInstance(event.getPlayer());
-        user.setMola(user.getMola() + 2, "Fishing");
+        user.setMola(user.getMola() + 6, "Fishing");
     }
 
     @EventHandler
@@ -205,7 +206,7 @@ public class PlayerListener implements Listener
         User user = User.getInstance(player);
         int bonus = Vanilife.random.nextInt(difficulty) + 1;
 
-        user.setMola(user.getMola() + bonus, "Login Bonus");
+        user.setMola(user.getMola() + bonus, "Story");
 
         player.sendMessage(Component.text(String.format("進捗を達成しました！+ %d Mola", bonus)).color(NamedTextColor.GREEN));
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);

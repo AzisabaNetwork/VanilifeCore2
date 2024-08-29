@@ -1,8 +1,9 @@
 package net.azisaba.vanilife.command.plot;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.Typing;
 import net.kyori.adventure.text.Component;
@@ -12,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class PlotDeleteSkill implements ICommandSkill
 {
@@ -23,9 +23,9 @@ public class PlotDeleteSkill implements ICommandSkill
     }
 
     @Override
-    public boolean isOpCommand()
+    public Sara getRequirement()
     {
-        return false;
+        return Sara.DEFAULT;
     }
 
     @Override

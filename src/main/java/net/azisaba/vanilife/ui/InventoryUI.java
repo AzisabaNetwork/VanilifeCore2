@@ -9,20 +9,21 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class InventoryUI
 {
-    protected static final HashMap<InventoryUI, Inventory> instances = new HashMap<>();
+    protected static final Map<InventoryUI, Inventory> instances = new HashMap<>();
 
-    public static HashMap<InventoryUI, Inventory> getInstances()
+    public static Map<InventoryUI, Inventory> getInstances()
     {
         return InventoryUI.instances;
     }
 
     protected final Player player;
     protected final Inventory inventory;
-    protected final HashMap<Integer, String> clientListeners = new HashMap<>();
-    protected final HashMap<Integer, String> serverListeners = new HashMap<>();
+    protected final Map<Integer, String> clientListeners = new HashMap<>();
+    protected final Map<Integer, String> serverListeners = new HashMap<>();
 
     public InventoryUI(Player player, Inventory inventory)
     {

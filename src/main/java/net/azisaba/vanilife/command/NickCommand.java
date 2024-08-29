@@ -28,7 +28,7 @@ public class NickCommand implements CommandExecutor, TabCompleter
 
         Sara sara = UserUtility.getSara(player);
 
-        if (sara != Sara.GAMING && ! player.isOp())
+        if (sara != Sara.GAMING && ! UserUtility.isModerator(sender))
         {
             sender.sendMessage(Component.text("You do not have sufficient permissions to execute the command.").color(NamedTextColor.RED));
             return true;

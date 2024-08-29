@@ -1,11 +1,13 @@
 package net.azisaba.vanilife.command.plot;
 
-import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.PlotInvitation;
 import net.azisaba.vanilife.user.request.PlotRequest;
 import net.azisaba.vanilife.user.request.TradeRequest;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -24,9 +26,9 @@ public class PlotInviteSkill implements ICommandSkill
     }
 
     @Override
-    public boolean isOpCommand()
+    public Sara getRequirement()
     {
-        return false;
+        return Sara.DEFAULT;
     }
 
     @Override
@@ -86,7 +88,7 @@ public class PlotInviteSkill implements ICommandSkill
             return;
         }
 
-        if (! player.isOp() && plot.getOwner().getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
+        if (! UserUtility.isAdmin(sender) && plot.getOwner().getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
         {
             sender.sendMessage(Component.text(String.format("あなたは既に %s にこの Plot への招待を送信しています", args[0])).color(NamedTextColor.RED));
             return;

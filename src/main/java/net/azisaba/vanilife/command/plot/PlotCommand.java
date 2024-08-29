@@ -1,8 +1,8 @@
 package net.azisaba.vanilife.command.plot;
 
-import net.azisaba.vanilife.command.AbstractSkillCommand;
+import net.azisaba.vanilife.command.skill.SkillCommand;
 
-public class PlotCommand extends AbstractSkillCommand
+public class PlotCommand extends SkillCommand
 {
     @Override
     public String getName()

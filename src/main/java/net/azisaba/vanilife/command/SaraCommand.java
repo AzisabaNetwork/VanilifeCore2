@@ -2,6 +2,7 @@ package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public class SaraCommand implements CommandExecutor, TabCompleter
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        if (! sender.isOp())
+        if (! UserUtility.isAdmin(sender))
         {
             sender.sendMessage(Component.text("You do not have sufficient permission to execute the command.").color(NamedTextColor.RED));
             return true;
@@ -35,20 +36,33 @@ public class SaraCommand implements CommandExecutor, TabCompleter
 
         if (Arrays.stream(Sara.values()).noneMatch(s -> s.toString().equals(args[1])))
         {
-            sender.sendMessage(Component.text(String.format("Sara %s は定義されていません", args[1])).color(NamedTextColor.RED));
+            sender.sendMessage(Component.text(String.format("%s は未定義の皿です", args[1])).color(NamedTextColor.RED));
             return true;
         }
 
         User user = User.getInstance(args[0]);
-        user.setSara(Sara.valueOf(args[1]));
-        sender.sendMessage(Component.text(String.format("%s をSara %s に設定しました", args[0], args[1])).color(NamedTextColor.GREEN));
+        Sara sara = Sara.valueOf(args[1]);
+
+        user.setSara(sara);
+
+        if (user.isOnline())
+        {
+            Bukkit.getPlayer(user.getId()).playerListName(user.getName());
+        }
+
+        sender.sendMessage(Component.text(String.format("%s の皿を %s に変更しました", args[0], args[1])).color(NamedTextColor.GREEN));
         return true;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
+
+        if (! UserUtility.isAdmin(sender))
+        {
+            return suggest;
+        }
 
         if (args.length == 1)
         {

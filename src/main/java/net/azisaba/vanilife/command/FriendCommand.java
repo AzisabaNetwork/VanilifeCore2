@@ -3,6 +3,7 @@ package net.azisaba.vanilife.command;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.FriendRequest;
 import net.azisaba.vanilife.user.request.TradeRequest;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -69,7 +70,7 @@ public class FriendCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (! from.isOp() && toUser.getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, from)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, from)))
         {
             from.sendMessage(Component.text(String.format("あなたは既に %s に Friend 申請を送信しています", args[0])).color(NamedTextColor.RED));
             return true;
@@ -82,7 +83,7 @@ public class FriendCommand implements CommandExecutor, TabCompleter
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {

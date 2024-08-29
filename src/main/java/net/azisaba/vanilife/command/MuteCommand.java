@@ -2,6 +2,7 @@ package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -27,7 +28,7 @@ public class MuteCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (! sender.isOp())
+        if (! UserUtility.isModerator(sender))
         {
             sender.sendMessage(Component.text("You do not have sufficient permission to execute the command.").color(NamedTextColor.RED));
             return true;
@@ -61,7 +62,7 @@ public class MuteCommand implements CommandExecutor, TabCompleter
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {

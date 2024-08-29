@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command.mola;
 
-import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.MathUtility;
 import net.kyori.adventure.text.Component;
@@ -20,9 +21,9 @@ public class MolaSetSkill implements ICommandSkill
     }
 
     @Override
-    public boolean isOpCommand()
+    public Sara getRequirement()
     {
-        return true;
+        return Sara.MOD;
     }
 
     @Override

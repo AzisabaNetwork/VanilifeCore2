@@ -1,7 +1,8 @@
 package net.azisaba.vanilife.command.service;
 
-import net.azisaba.vanilife.command.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.service.Service;
+import net.azisaba.vanilife.user.Sara;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -18,9 +19,9 @@ public class ServiceRunSkill implements ICommandSkill
     }
 
     @Override
-    public boolean isOpCommand()
+    public Sara getRequirement()
     {
-        return true;
+        return Sara.ADMIN;
     }
 
     @Override

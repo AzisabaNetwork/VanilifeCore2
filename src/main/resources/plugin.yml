@@ -1,5 +1,5 @@
 name: Vanilife
-version: '1.0.0'
+version: '1.0.2'
 main: net.azisaba.vanilife.Vanilife
 api-version: '1.21'
 commands:
@@ -66,6 +66,8 @@ commands:
   trash:
     description: Open the Trash.
     usage: /trash
+    aliases:
+      - gomi
   unblock:
     description: Unblock any player.
     usage: /unblock <player>

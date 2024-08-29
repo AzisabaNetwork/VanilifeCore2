@@ -1,5 +1,6 @@
-package net.azisaba.vanilife.command;
+package net.azisaba.vanilife.command.skill;
 
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -12,12 +13,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public abstract class AbstractSkillCommand implements CommandExecutor, TabCompleter
+public abstract class SkillCommand implements CommandExecutor, TabCompleter
 {
-    protected final HashMap<String, ICommandSkill> skills = new HashMap<>();
+    protected final Map<String, ICommandSkill> skills = new HashMap<>();
 
-    public AbstractSkillCommand()
+    public SkillCommand()
     {
         this.registerSkills();
     }
@@ -32,10 +34,7 @@ public abstract class AbstractSkillCommand implements CommandExecutor, TabComple
         this.skills.put(skill.getName(), skill);
     }
 
-    protected void registerSkills()
-    {
-
-    }
+    protected void registerSkills() {}
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
@@ -54,7 +53,7 @@ public abstract class AbstractSkillCommand implements CommandExecutor, TabComple
 
         ICommandSkill skill = this.skills.get(args[0]);
 
-        if (! sender.isOp() && skill.isOpCommand())
+        if (! UserUtility.isAdmin(sender) && UserUtility.getSara(sender).level < skill.getRequirement().level)
         {
             sender.sendMessage(Component.text("You do not have sufficient permissions to execute the command.").color(NamedTextColor.RED));
             return true;
@@ -75,7 +74,7 @@ public abstract class AbstractSkillCommand implements CommandExecutor, TabComple
         {
             for (ICommandSkill skill : this.skills.values())
             {
-                if ((skill.isOpCommand() && ! sender.isOp()) || ! skill.getName().startsWith(args[0]))
+                if ((! sender.isOp() && UserUtility.getSara(sender).level < skill.getRequirement().level) || ! skill.getName().startsWith(args[0]))
                 {
                     continue;
                 }
