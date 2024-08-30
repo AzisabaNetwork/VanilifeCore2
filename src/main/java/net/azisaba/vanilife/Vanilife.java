@@ -96,7 +96,7 @@ public final class Vanilife extends JavaPlugin
 
         this.getComponentLogger().info(Component.text("   "));
         this.getComponentLogger().info(Component.text("   (*'▽')/  ばにらいふ！ ").append(Component.text("v" + this.getDescription().getVersion()).color(NamedTextColor.BLUE)));
-        this.getComponentLogger().info(Component.text("   Developed by tksimeji.").color(NamedTextColor.DARK_GRAY));
+        this.getComponentLogger().info(Component.text("   azisaba.net").color(NamedTextColor.DARK_GRAY));
         this.getComponentLogger().info(Component.text("   "));
 
         this.getServer().getPluginManager().registerEvents(new EntityListener(), this);

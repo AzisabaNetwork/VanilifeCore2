@@ -3,6 +3,8 @@ package net.azisaba.vanilife.util;
 import com.google.gson.JsonArray;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ime.GoogleIME;
+import net.azisaba.vanilife.ime.AzisabaIME;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.kyori.adventure.text.Component;
@@ -79,16 +81,18 @@ public class ChatFilter
     public void onAsyncChat(AsyncChatEvent event)
     {
         Player player = event.getPlayer();
-        String msg = ((TextComponent) event.message()).content();
+        String src = ((TextComponent) event.message()).content();
+        String content = GoogleIME.convert(AzisabaIME.convert(src));
 
-        if (Vanilife.filter.filter(msg))
+        if (Vanilife.filter.filter(src) || Vanilife.filter.filter(content))
         {
             EmbedBuilder builder = new EmbedBuilder()
                     .setAuthor(player.getName(), null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
                     .setTitle("チャットフィルタリング")
                     .setDescription(String.format("%s このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします", Vanilife.ROLE_SUPPORT))
                     .setFooter(player.getUniqueId().toString())
-                    .addField("メッセージ", msg, true)
+                    .addField("メッセージ", content, true)
+                    .addField("プレイヤー入力", src, true)
                     .setColor(new Color(255, 85, 85));
 
             Vanilife.channel.sendMessageEmbeds(builder.build())
@@ -99,7 +103,8 @@ public class ChatFilter
 
         EmbedBuilder builder = new EmbedBuilder()
                 .setAuthor(player.getName(), null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
-                .setDescription(msg)
+                .setDescription(content)
+                .addField("プレイヤー入力", src, false)
                 .setFooter(player.getUniqueId().toString())
                 .setColor(new Color(85, 255, 85));
 
