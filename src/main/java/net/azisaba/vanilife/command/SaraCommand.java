@@ -71,7 +71,7 @@ public class SaraCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 2)
         {
-            Arrays.stream(Sara.values()).forEach(s -> suggest.add(s.toString()));
+            Arrays.stream(Sara.values()).filter(s -> s.toString().toLowerCase().startsWith(args[1].toLowerCase())).forEach(s -> suggest.add(s.toString()));
         }
 
         return suggest;

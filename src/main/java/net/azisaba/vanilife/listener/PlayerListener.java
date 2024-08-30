@@ -8,7 +8,6 @@ import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.Typing;
 import net.azisaba.vanilife.util.UserUtility;
-import net.azisaba.vanilife.vwm.LocationTranslator;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.kyori.adventure.text.Component;
@@ -16,10 +15,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -162,7 +158,7 @@ public class PlayerListener implements Listener
         user.setMola(user.getMola() + 6, "Fishing");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerPortal(PlayerPortalEvent event)
     {
         VanilifeWorld world = VanilifeWorld.getInstance(event.getFrom().getWorld());
@@ -171,15 +167,17 @@ public class PlayerListener implements Listener
         {
             return;
         }
-
-        World to = switch (event.getTo().getWorld().getEnvironment())
+        
+        World level = switch (event.getTo().getWorld().getEnvironment())
         {
             case NETHER -> world.getNether();
             case THE_END -> world.getEnd();
             default -> world.getOverworld();
         };
 
-        event.setTo(LocationTranslator.translate(event.getFrom(), to));
+        Location to = event.getTo();
+        to.setWorld(level);
+        event.setTo(to);
     }
 
     @EventHandler
@@ -207,12 +205,10 @@ public class PlayerListener implements Listener
         int bonus = Vanilife.random.nextInt(difficulty) + 1;
 
         user.setMola(user.getMola() + bonus, "Story");
-
-        player.sendMessage(Component.text(String.format("進捗を達成しました！+ %d Mola", bonus)).color(NamedTextColor.GREEN));
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event)
     {
         Player player = event.getPlayer();
@@ -233,24 +229,6 @@ public class PlayerListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerChangedWorld(PlayerChangedWorldEvent event)
-    {
-        if (! (event.getFrom().getEnvironment() == World.Environment.THE_END && event.getPlayer().getWorld().getEnvironment() == World.Environment.NORMAL))
-        {
-            return;
-        }
-
-        VanilifeWorld world = VanilifeWorld.getInstance(event.getFrom());
-
-        if (world == null)
-        {
-            return;
-        }
-
-        event.getPlayer().teleport(world.getLocation(event.getPlayer()));
-    }
-
-    @EventHandler
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
     {
         Player player = event.getPlayer();
@@ -263,7 +241,7 @@ public class PlayerListener implements Listener
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncChat(AsyncChatEvent event)
     {
         event.setCancelled(true);

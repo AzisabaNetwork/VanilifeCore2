@@ -3,6 +3,7 @@ package net.azisaba.vanilife.vwm;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+@Deprecated
 public class LocationTranslator
 {
     public static Location translate(Location from, World to)

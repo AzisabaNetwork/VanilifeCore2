@@ -126,7 +126,7 @@ public class Plot
 
         this.world = chunk.getWorld();
         this.vw = VanilifeWorld.getInstance(this.world);
-        this.spawn = new Location(this.world, chunk.getX() * 16 + 8, this.world.getHighestBlockYAt(chunk.getX() * 16 + 8, chunk.getZ() * 16 + 8), chunk.getZ() * 16 + 8);
+        this.spawn = new Location(this.world, chunk.getX() * 16 + 8, this.world.getHighestBlockYAt(chunk.getX() * 16 + 8, chunk.getZ() * 16 + 8) + 1, chunk.getZ() * 16 + 8);
         this.chunks.addAll(List.of(chunks));
 
         this.vw.getPlots().add(this);

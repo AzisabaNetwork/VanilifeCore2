@@ -1,5 +1,5 @@
 name: Vanilife
-version: '1.0.2'
+version: '1.0.3'
 main: net.azisaba.vanilife.Vanilife
 api-version: '1.21'
 commands:

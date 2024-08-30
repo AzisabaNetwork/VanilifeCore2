@@ -3,6 +3,7 @@ package net.azisaba.vanilife.command.mola;
 import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.MathUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -40,9 +41,14 @@ public class MolaGiveSkill implements ICommandSkill
             return;
         }
 
+        if (!MathUtility.isInt(args[1]))
+        {
+            sender.sendMessage(Component.text("第二引数には整数を指定する必要があります: " + args[1]).color(NamedTextColor.RED));
+        }
+
         User user = User.getInstance(args[0]);
-        user.setMola(user.getMola() + Integer.parseInt(args[0]));
-        sender.sendMessage(Component.text(String.format("%s に %s Mola を与えました", args[0], user.getMola())).color(NamedTextColor.GREEN));
+        user.setMola(user.getMola() + Integer.parseInt(args[1]));
+        sender.sendMessage(Component.text(String.format("%s に %s Mola を与えました", args[0], args[1])).color(NamedTextColor.GREEN));
     }
 
     @Override
