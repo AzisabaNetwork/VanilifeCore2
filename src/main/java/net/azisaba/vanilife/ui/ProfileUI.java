@@ -107,8 +107,7 @@ public class ProfileUI extends InventoryUI
         }
         else if (this.view.getYoutube() != null)
         {
-            youtubeMeta.lore(List.of(Component.text("@" + this.view.getYoutube()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
-                    Component.text("クリックして開きます！").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+            youtubeMeta.lore(List.of(Component.text("@" + this.view.getYoutube()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         }
         else
         {
@@ -129,8 +128,7 @@ public class ProfileUI extends InventoryUI
         }
         else if (this.view.getTwitter() != null)
         {
-            twitterMeta.lore(List.of(Component.text("@" + this.view.getTwitter()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
-                    Component.text("クリックして開きます！").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+            twitterMeta.lore(List.of(Component.text("@" + this.view.getTwitter()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         }
         else
         {

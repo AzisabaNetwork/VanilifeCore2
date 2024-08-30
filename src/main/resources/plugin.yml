@@ -6,6 +6,11 @@ commands:
   block:
     description: Block any player.
     usage: /block <player>
+  enderchest:
+    description: Open the ender chest.
+    usage: /enderchest
+    aliases:
+      - ec
   filter:
     description: Edit the chat filter.
     usage: /filter <skill> [args…]

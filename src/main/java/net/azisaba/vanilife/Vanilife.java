@@ -105,6 +105,7 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         this.getCommand("block").setExecutor(new BlockCommand());
+        this.getCommand("enderchest").setExecutor(new EnderChestCommand());
         this.getCommand("filter").setExecutor(new FilterCommand());
         this.getCommand("friend").setExecutor(new FriendCommand());
         this.getCommand("friendlist").setExecutor(new FriendListCommand());
