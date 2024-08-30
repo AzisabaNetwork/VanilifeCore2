@@ -103,7 +103,7 @@ public class PollUI extends InventoryUI
                 default -> 30;
             };
 
-            ItemStack limitStack = this.inventory.getItem(10);
+            ItemStack limitStack = this.inventory.getItem(11);
             ItemMeta limitMeta = limitStack.getItemMeta();
 
             List<Component> lore = new ArrayList<>();
