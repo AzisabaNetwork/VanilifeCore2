@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+@Deprecated
 public class GoogleIME
 {
     private static final String API_URL = "https://www.google.com/transliterate?langpair=ja-Hira|ja&text=";

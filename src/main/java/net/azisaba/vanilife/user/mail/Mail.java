@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -110,7 +111,7 @@ public class Mail
         {
             Player player = Bukkit.getPlayer(this.to.getId());
 
-            player.sendMessage(Component.text(String.format("%s さんから新着のメールが一件あります", this.from.getPlaneName())).color(NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/mail")).hoverEvent(HoverEvent.showText(Component.text("クリックして /mail を実行"))));
+            player.sendMessage(Component.text("✉ ").color(NamedTextColor.GRAY).append(this.from.getName().decorate(TextDecoration.BOLD)).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(Component.text(this.message).color(NamedTextColor.WHITE))));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         }
     }

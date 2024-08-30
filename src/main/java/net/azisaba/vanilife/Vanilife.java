@@ -113,6 +113,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("mute").setExecutor(new MuteCommand());
         this.getCommand("nick").setExecutor(new NickCommand());
         this.getCommand("plot").setExecutor(new PlotCommand());
+        this.getCommand("poll").setExecutor(new PollCommand());
         this.getCommand("profile").setExecutor(new ProfileCommand());
         this.getCommand("report").setExecutor(new ReportCommand());
         this.getCommand("rtp").setExecutor(new RtpCommand());
@@ -125,6 +126,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("trash").setExecutor(new TrashCommand());
         this.getCommand("unblock").setExecutor(new UnblockCommand());
         this.getCommand("unmute").setExecutor(new UnmuteCommand());
+        this.getCommand("vote").setExecutor(new VoteCommand());
         this.getCommand("vwm").setExecutor(new VwmCommand());
         this.getCommand("world").setExecutor(new WorldCommand());
         this.getCommand("worlds").setExecutor(new WorldsCommand());
@@ -136,10 +138,13 @@ public final class Vanilife extends JavaPlugin
         SqlUtility.jdbc("org.mariadb.jdbc.Driver");
         ServiceManager.mount();
 
-        Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).build();
-        Vanilife.jda.addEventListener(new DiscordListener());
-        Vanilife.jda.addEventListener(new MconsoleCommand());
-        Vanilife.jda.addEventListener(new MetubotCommand());
+        if (Vanilife.jda == null)
+        {
+            Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).build();
+            Vanilife.jda.addEventListener(new DiscordListener());
+            Vanilife.jda.addEventListener(new MconsoleCommand());
+            Vanilife.jda.addEventListener(new MetubotCommand());
+        }
 
         Vanilife.DB_URL = this.getConfig().getString("database.url");
         Vanilife.DB_USER = this.getConfig().getString("database.user");

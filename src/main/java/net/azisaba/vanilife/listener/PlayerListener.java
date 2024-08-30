@@ -2,8 +2,6 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.ime.GoogleIME;
-import net.azisaba.vanilife.ime.AzisabaIME;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
@@ -25,7 +23,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -239,7 +236,7 @@ public class PlayerListener implements Listener
 
         if (message.equals("/tell") || message.equals("/msg") || message.equals("/w"))
         {
-            player.sendMessage(Component.text("このサーバーでは代わりに /mail <player> を使用します").color(NamedTextColor.RED));
+            player.sendMessage(Component.text("このサーバーでは代わりに /mail <player> [subject] <message> を使用します").color(NamedTextColor.RED));
             event.setCancelled(true);
         }
     }
@@ -258,29 +255,20 @@ public class PlayerListener implements Listener
             return;
         }
 
-        String src = ((TextComponent) event.message()).content();
-        String content = GoogleIME.convert(AzisabaIME.convert(src));
+        String content = ((TextComponent) event.message()).content();
 
         Typing typing = Typing.getInstance(player);
 
         if (typing != null)
         {
-            player.sendMessage(Component.text(" " + src).color(NamedTextColor.GRAY));
-            typing.onTyped(src);
+            player.sendMessage(Component.text(" " + content).color(NamedTextColor.GRAY));
+            typing.onTyped(content);
             return;
         }
 
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                Component msg = Component.text("").append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(user.getSettings().metubouSetting.isValid() ? "(*'▽') " : "").color(NamedTextColor.WHITE).append(Component.text(content).color(NamedTextColor.WHITE).append(Component.text(String.format(" (%s)", src)).color(NamedTextColor.GRAY))));
+        Vanilife.filter.onAsyncChat(event);
 
-                Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).toList().forEach(p -> p.sendMessage(msg));
-
-                Vanilife.filter.onAsyncChat(event);
-            }
-        }.runTaskAsynchronously(Vanilife.getPlugin());
+        Component msg = Component.text("").append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(user.getSettings().metubouSetting.isValid() ? "(*'▽') " : "").color(NamedTextColor.WHITE).append(Component.text(content)).color(NamedTextColor.WHITE));
+        Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).toList().forEach(p -> p.sendMessage(msg));
     }
 }

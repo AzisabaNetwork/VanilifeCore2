@@ -1,5 +1,5 @@
 name: Vanilife
-version: '1.1.0'
+version: '${version}'
 main: net.azisaba.vanilife.Vanilife
 api-version: '1.21'
 commands:
@@ -34,6 +34,9 @@ commands:
   plot:
     description: Manage the plot.
     usage: /plot <skill> [args…]
+  poll:
+    description: Create a poll.
+    usage: /poll <option1> <option2> [options…]
   profile:
     description: View any player's profile.
     usage: /profile <player>
@@ -74,6 +77,9 @@ commands:
   unmute:
     description: Unmute any player.
     usage: /unmute <player>
+  vote:
+    description: Vote for any option.
+    usage: /vote <poll> <option>
   vwm:
     description: Command set for Vanilife World Manager administrators.
     usage: /vwm <skill> [args…]

@@ -3,6 +3,7 @@ package net.azisaba.vanilife.ime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class AzisabaIME
 {
     private static final Map<String, String> registry = new HashMap<>();

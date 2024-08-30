@@ -67,7 +67,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (1 < args.length && args.length != 3)
+        if (3 < args.length)
         {
             sender.sendMessage(Component.text("Correct syntax: /mail [player] [subject] [message]").color(NamedTextColor.RED));
             return true;
@@ -124,8 +124,8 @@ public class MailCommand implements CommandExecutor, TabCompleter
         }
 
         User to = User.getInstance(args[0]);
-        String subject = args[1];
-        String message = args[2];
+        String subject = (args.length == 3) ? args[1] : "件名なし";
+        String message = (args.length == 3) ? args[2] : args[1];
 
         if (! to.getSettings().mailSetting.isWithinScope(from) || to.isBlock(from))
         {
