@@ -2,6 +2,9 @@ package net.azisaba.vanilife.user.mail;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ChatFilter;
+import net.azisaba.vanilife.util.UserUtility;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -11,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.awt.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -113,7 +117,21 @@ public class Mail
 
             player.sendMessage(Component.text("✉ ").color(NamedTextColor.GRAY).append(this.from.getName().decorate(TextDecoration.BOLD)).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(Component.text(this.message).color(NamedTextColor.WHITE))));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+            this.read();
         }
+
+        boolean filtered = (Vanilife.filter.filter(this.message) || Vanilife.filter.filter(this.subject)) && ! UserUtility.isModerator(this.from);
+
+        Vanilife.channel.sendMessageEmbeds(new EmbedBuilder()
+                .setTitle("メール")
+                .setDescription(filtered ? Vanilife.ROLE_SUPPORT + " このメールはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします" : null)
+                .setAuthor(this.from.getPlaneName(), null, String.format("https://api.mineatar.io/face/%s", this.from.getId().toString().replace("-", "")))
+                .setColor(filtered ? new Color(255, 85, 85) : new Color(85, 255, 85))
+                .addField("From:", String.format("%s (%s)", this.from.getPlaneName(), this.from.getId().toString()), false)
+                .addField("To:", String.format("%s (%s)", this.to.getPlaneName(), this.to.getId().toString()), false)
+                .addField("Subject", this.subject, false)
+                .addField("Message", this.message, false)
+                .build()).queue();
     }
 
     public UUID getId()

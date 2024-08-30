@@ -81,7 +81,7 @@ public class ChatFilter
         Player player = event.getPlayer();
         String content = ((TextComponent) event.message()).content();
 
-        if (Vanilife.filter.filter(content))
+        if (Vanilife.filter.filter(content) && ! UserUtility.isModerator(player))
         {
             EmbedBuilder builder = new EmbedBuilder()
                     .setAuthor(player.getName(), null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))

@@ -138,13 +138,10 @@ public final class Vanilife extends JavaPlugin
         SqlUtility.jdbc("org.mariadb.jdbc.Driver");
         ServiceManager.mount();
 
-        if (Vanilife.jda == null)
-        {
-            Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).build();
-            Vanilife.jda.addEventListener(new DiscordListener());
-            Vanilife.jda.addEventListener(new MconsoleCommand());
-            Vanilife.jda.addEventListener(new MetubotCommand());
-        }
+        Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).build();
+        Vanilife.jda.addEventListener(new DiscordListener());
+        Vanilife.jda.addEventListener(new MconsoleCommand());
+        Vanilife.jda.addEventListener(new MetubotCommand());
 
         Vanilife.DB_URL = this.getConfig().getString("database.url");
         Vanilife.DB_USER = this.getConfig().getString("database.user");
@@ -163,5 +160,7 @@ public final class Vanilife extends JavaPlugin
     public void onDisable()
     {
         VanilifeWorld.getInstances().forEach(w -> w.getWorlds().forEach(World::save));
+        Vanilife.jda.shutdown();
+        Vanilife.jda = null;
     }
 }
