@@ -7,12 +7,14 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class MconsoleCommand extends DiscordCommandImpl
+public class MconsoleCommand extends DiscordCommand
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "mconsole";

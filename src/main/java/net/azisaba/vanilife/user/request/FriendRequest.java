@@ -6,10 +6,11 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class FriendRequest extends RequestImpl
+public class FriendRequest extends Request
 {
-    public FriendRequest(Player from, Player to)
+    public FriendRequest(@NotNull Player from, @NotNull Player to)
     {
         super(from, to);
 
@@ -34,6 +35,7 @@ public class FriendRequest extends RequestImpl
     }
 
     @Override
+    @NotNull
     public Class<? extends IRequest> getClazz()
     {
         return FriendRequest.class;

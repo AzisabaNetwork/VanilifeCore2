@@ -88,8 +88,7 @@ public abstract class SkillCommand implements CommandExecutor, TabCompleter
         {
             String[] args2 = new String[args.length - 1];
             System.arraycopy(args, 1, args2, 0, args.length - 1);
-            suggest = this.skills.get(args[0]).onTabComplete(sender, command, args[0], args2);
-            return suggest == null ? new ArrayList<>() : suggest;
+            return this.skills.get(args[0]).onTabComplete(sender, command, args[0], args2);
         }
         else
         {

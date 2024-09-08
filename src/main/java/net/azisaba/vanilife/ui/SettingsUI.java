@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,7 @@ public class SettingsUI extends InventoryUI
 {
     private final HashMap<Integer, ISetting> settingMap = new HashMap<>();
 
-    public SettingsUI(Player player, Settings settings)
+    public SettingsUI(@NotNull Player player, @NotNull Settings settings)
     {
         super(player, Bukkit.createInventory(null, 36, Component.text("設定")));
 
@@ -53,7 +54,7 @@ public class SettingsUI extends InventoryUI
     }
 
     @Override
-    public void onUiClick(InventoryClickEvent event)
+    public void onUiClick(@NotNull InventoryClickEvent event)
     {
         super.onUiClick(event);
 

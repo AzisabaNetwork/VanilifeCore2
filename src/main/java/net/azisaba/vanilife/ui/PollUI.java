@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class PollUI extends InventoryUI
     private boolean anonymity = false;
     private int limit = 30;
 
-    public PollUI(Player player, String... options)
+    public PollUI(@NotNull Player player, String... options)
     {
         super(player, Bukkit.createInventory(null, 27, Component.text("投票の作成")));
         this.options = List.of(options);
@@ -60,7 +61,7 @@ public class PollUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClick(InventoryClickEvent event)
+    public void onInventoryClick(@NotNull InventoryClickEvent event)
     {
         super.onInventoryClick(event);
 
@@ -69,7 +70,7 @@ public class PollUI extends InventoryUI
             return;
         }
 
-        if (event.getSlot() != 17)
+        if (event.getSlot() != 17 && event.getClickedInventory() == this.inventory)
         {
             player.playSound(player, Sound.UI_BUTTON_CLICK, 1.0F, 1.2F);
         }

@@ -20,9 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class MetubotCommand extends DiscordCommandImpl
+public class MetubotCommand extends DiscordCommand
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "metubot";

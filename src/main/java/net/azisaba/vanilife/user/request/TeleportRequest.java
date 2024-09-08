@@ -7,10 +7,11 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class TeleportRequest extends RequestImpl
+public class TeleportRequest extends Request
 {
-    public TeleportRequest(Player from, Player to)
+    public TeleportRequest(@NotNull Player from, @NotNull Player to)
     {
         super(from, to);
 
@@ -35,6 +36,7 @@ public class TeleportRequest extends RequestImpl
     }
 
     @Override
+    @NotNull
     public Class<? extends IRequest> getClazz()
     {
         return TeleportRequest.class;

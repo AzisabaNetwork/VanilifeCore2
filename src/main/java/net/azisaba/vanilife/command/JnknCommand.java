@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.user.request.FriendRequest;
+import net.azisaba.vanilife.user.request.JnknRequest;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendCommand implements CommandExecutor, TabCompleter
+public class JnknCommand implements CommandExecutor, TabCompleter
 {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
@@ -30,7 +30,7 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /friend <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /jnkn <player>").color(NamedTextColor.RED));
             return true;
         }
 
@@ -46,36 +46,29 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (from == to)
         {
-            sender.sendMessage(Component.text("自分自身に Friend 申請を送信することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("自分自身にジャンケン申請を送信することはできません").color(NamedTextColor.RED));
             return true;
         }
 
         if (toUser.isBlock(fromUser))
         {
-            sender.sendMessage(Component.text("このプレイヤーに Friend 申請を送ることはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("このプレイヤーにジャンケン申請を送ることはできません").color(NamedTextColor.RED));
             return true;
         }
 
-        if (toUser.isFriend(fromUser))
+        if (fromUser.getRequests().stream().anyMatch(r -> r.auth(JnknRequest.class, to)))
         {
-            fromUser.unfriend(toUser);
-            sender.sendMessage(Component.text(String.format("%s をフレンドから削除しました", args[0])).color(NamedTextColor.GREEN));
+            fromUser.getRequests().stream().filter(r -> r.auth(JnknRequest.class, to)).toList().getFirst().onAllow();
             return true;
         }
 
-        if (fromUser.getRequests().stream().anyMatch(r -> r.auth(FriendRequest.class, to)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(JnknRequest.class, from)))
         {
-            fromUser.getRequests().stream().filter(r -> r.auth(FriendRequest.class, to)).toList().getFirst().onAllow();
+            from.sendMessage(Component.text(String.format("あなたは既に %s にジャンケン申請を送信しています", args[0])).color(NamedTextColor.RED));
             return true;
         }
 
-        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(FriendRequest.class, from)))
-        {
-            from.sendMessage(Component.text(String.format("あなたは既に %s に Friend 申請を送信しています", args[0])).color(NamedTextColor.RED));
-            return true;
-        }
-
-        new FriendRequest(from, to);
+        new JnknRequest(from, to);
         return true;
     }
 

@@ -7,10 +7,11 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class TradeRequest extends RequestImpl
+public class TradeRequest extends Request
 {
-    public TradeRequest(Player from, Player to)
+    public TradeRequest(@NotNull Player from, @NotNull Player to)
     {
         super(from, to);
 
@@ -35,6 +36,7 @@ public class TradeRequest extends RequestImpl
     }
 
     @Override
+    @NotNull
     public Class<? extends IRequest> getClazz()
     {
         return TradeRequest.class;
@@ -44,7 +46,6 @@ public class TradeRequest extends RequestImpl
     public void onAllow()
     {
         super.onAllow();
-
         new Trade(this.from, this.to);
     }
 

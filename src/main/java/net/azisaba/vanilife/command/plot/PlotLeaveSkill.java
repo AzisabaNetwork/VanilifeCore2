@@ -9,18 +9,22 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlotLeaveSkill implements ICommandSkill
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "leave";
     }
 
     @Override
+    @NotNull
     public Sara getRequirement()
     {
         return Sara.DEFAULT;
@@ -69,14 +73,15 @@ public class PlotLeaveSkill implements ICommandSkill
     }
 
     @Override
-    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    @NotNull
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
         if (! (sender instanceof Player player))
         {
-            return new ArrayList<>();
+            return List.of();
         }
 
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
         User user = User.getInstance(player);
 
         if (args.length == 1)

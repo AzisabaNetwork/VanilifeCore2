@@ -109,6 +109,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("filter").setExecutor(new FilterCommand());
         this.getCommand("friend").setExecutor(new FriendCommand());
         this.getCommand("friendlist").setExecutor(new FriendListCommand());
+        this.getCommand("jnkn").setExecutor(new JnknCommand());
         this.getCommand("mail").setExecutor(new MailCommand());
         this.getCommand("mola").setExecutor(new MolaCommand());
         this.getCommand("mute").setExecutor(new MuteCommand());

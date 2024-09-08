@@ -11,22 +11,23 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TrashUI extends InventoryUI
 {
-    public TrashUI(Player player)
+    public TrashUI(@NotNull Player player)
     {
         super(player, Bukkit.createInventory(null, 54, Component.text("ゴミ箱")));
     }
 
     @Override
-    public void onInventoryClick(InventoryClickEvent event) {}
+    public void onInventoryClick(@NotNull InventoryClickEvent event) {}
 
     @Override
-    public void onInventoryClose(InventoryCloseEvent event)
+    public void onInventoryClose(@NotNull InventoryCloseEvent event)
     {
         super.onInventoryClose(event);
 

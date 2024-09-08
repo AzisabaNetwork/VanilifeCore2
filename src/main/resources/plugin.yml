@@ -24,8 +24,13 @@ commands:
     usage: /friendlist [page]
     aliases:
       - fl
+  jnkn:
+    description: Send a janken request.
+    usage: /jnkn <player>
+    aliases:
+      - janken
   mail:
-    description: You can send and check emails.
+    description: Send and check emails.
     usage: /mail [player] [subject] [message]
   mola:
     description: Managing and Viewing Mola.

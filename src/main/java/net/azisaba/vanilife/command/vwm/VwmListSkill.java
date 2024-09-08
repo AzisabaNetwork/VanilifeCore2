@@ -9,18 +9,21 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class VwmListSkill implements ICommandSkill
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "list";
     }
 
     @Override
+    @NotNull
     public Sara getRequirement()
     {
         return Sara.ADMIN;
@@ -31,7 +34,7 @@ public class VwmListSkill implements ICommandSkill
     {
         if (args.length != 0)
         {
-            sender.sendMessage(Component.text("Correct syntax: /vwm list>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /vwm list").color(NamedTextColor.RED));
             return;
         }
 
@@ -46,8 +49,9 @@ public class VwmListSkill implements ICommandSkill
     }
 
     @Override
-    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    @NotNull
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
-        return null;
+        return List.of();
     }
 }

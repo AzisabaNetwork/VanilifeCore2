@@ -7,12 +7,13 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class PlotRequest extends RequestImpl
+public class PlotRequest extends Request
 {
     private final Plot plot;
 
-    public PlotRequest(Player from, Plot to)
+    public PlotRequest(@NotNull Player from, @NotNull Plot to)
     {
         super(from, to.getOwner().getAsOfflinePlayer().getPlayer());
 
@@ -38,6 +39,7 @@ public class PlotRequest extends RequestImpl
     }
 
     @Override
+    @NotNull
     public Class<? extends IRequest> getClazz()
     {
         return PlotRequest.class;

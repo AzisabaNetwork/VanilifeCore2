@@ -9,18 +9,22 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlotRenameSkill implements ICommandSkill
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "rename";
     }
 
     @Override
+    @NotNull
     public Sara getRequirement()
     {
         return Sara.DEFAULT;
@@ -73,7 +77,8 @@ public class PlotRenameSkill implements ICommandSkill
     }
 
     @Override
-    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    @NotNull
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
         return null;
     }

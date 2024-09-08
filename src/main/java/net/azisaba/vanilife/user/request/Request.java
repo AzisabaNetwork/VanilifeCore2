@@ -6,8 +6,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class RequestImpl implements IRequest
+public abstract class Request implements IRequest
 {
     protected final Player from;
     protected final User fromUser;
@@ -17,7 +18,7 @@ public abstract class RequestImpl implements IRequest
 
     protected BukkitRunnable runnable;
 
-    public RequestImpl(Player from, Player to)
+    public Request(@NotNull Player from, @NotNull Player to)
     {
         if (from == to)
         {
@@ -52,17 +53,20 @@ public abstract class RequestImpl implements IRequest
     }
 
     @Override
+    @NotNull
     public Player getFrom()
     {
         return this.from;
     }
 
+    @NotNull
     public User getFromUser()
     {
         return this.fromUser;
     }
 
     @Override
+    @NotNull
     public Player getTo()
     {
         return this.to;

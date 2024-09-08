@@ -8,12 +8,13 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class PlotInvitation extends RequestImpl
+public class PlotInvitation extends Request
 {
     private final Plot plot;
 
-    public PlotInvitation(Plot from, Player to)
+    public PlotInvitation(@NotNull Plot from, @NotNull Player to)
     {
         super(from.getOwner().getAsOfflinePlayer().getPlayer(), to);
 
@@ -40,6 +41,7 @@ public class PlotInvitation extends RequestImpl
     }
 
     @Override
+    @NotNull
     public Class<? extends IRequest> getClazz()
     {
         return PlotInvitation.class;

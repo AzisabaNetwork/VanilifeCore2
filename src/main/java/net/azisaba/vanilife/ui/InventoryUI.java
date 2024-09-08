@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public abstract class InventoryUI
     protected final Map<Integer, String> clientListeners = new HashMap<>();
     protected final Map<Integer, String> serverListeners = new HashMap<>();
 
-    public InventoryUI(Player player, Inventory inventory)
+    public InventoryUI(@NotNull Player player, @NotNull Inventory inventory)
     {
         this.player = player;
         this.inventory = inventory;
@@ -41,12 +42,13 @@ public abstract class InventoryUI
         InventoryUI.instances.put(this, this.inventory);
     }
 
+    @NotNull
     public Inventory getInventory()
     {
         return this.inventory;
     }
 
-    protected void registerListener(int index, ItemStack stack, String command, ExecutionType type)
+    protected void registerListener(int index, @NotNull ItemStack stack, @NotNull String command, @NotNull ExecutionType type)
     {
         switch (type)
         {
@@ -57,7 +59,7 @@ public abstract class InventoryUI
         this.inventory.setItem(index, stack);
     }
 
-    public void onUiClick(InventoryClickEvent event)
+    public void onUiClick(@NotNull InventoryClickEvent event)
     {
         if (event.getCurrentItem() == null)
         {
@@ -77,17 +79,17 @@ public abstract class InventoryUI
         }
     }
 
-    public void onInventoryClick(InventoryClickEvent event)
+    public void onInventoryClick(@NotNull InventoryClickEvent event)
     {
         event.setCancelled(true);
     }
 
-    public void onInventoryDrag(InventoryDragEvent event)
+    public void onInventoryDrag(@NotNull InventoryDragEvent event)
     {
         event.setCancelled(true);
     }
 
-    public void onInventoryClose(InventoryCloseEvent event)
+    public void onInventoryClose(@NotNull InventoryCloseEvent event)
     {
         InventoryUI.instances.remove(this);
     }

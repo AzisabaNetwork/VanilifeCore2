@@ -9,18 +9,22 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MolaGiveSkill implements ICommandSkill
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "give";
     }
 
     @Override
+    @NotNull
     public Sara getRequirement()
     {
         return Sara.MOD;
@@ -52,9 +56,10 @@ public class MolaGiveSkill implements ICommandSkill
     }
 
     @Override
-    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    @NotNull
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {

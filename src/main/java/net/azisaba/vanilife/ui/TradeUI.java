@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
 public class TradeUI extends InventoryUI
 {
@@ -18,7 +19,7 @@ public class TradeUI extends InventoryUI
     private final Player player;
     private final Player partner;
 
-    public TradeUI(Player player, Trade trade)
+    public TradeUI(@NotNull Player player, @NotNull Trade trade)
     {
         super(player, Bukkit.createInventory(null, 54, Component.text("Trade")));
 
@@ -69,18 +70,20 @@ public class TradeUI extends InventoryUI
         this.inventory.setItem(4 + 9 * 5, separatorStack);
     }
 
+    @NotNull
     public Player getPlayer()
     {
         return this.player;
     }
 
+    @NotNull
     public Player getPartner()
     {
         return this.partner;
     }
 
     @Override
-    public void onUiClick(InventoryClickEvent event)
+    public void onUiClick(@NotNull InventoryClickEvent event)
     {
         super.onUiClick(event);
 
@@ -114,7 +117,7 @@ public class TradeUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClick(InventoryClickEvent event)
+    public void onInventoryClick(@NotNull InventoryClickEvent event)
     {
         event.setCancelled(this.trade.getAgree((Player) event.getWhoClicked()) != Trade.Agree.NONE
                 || (! Trade.CONTROL.contains(event.getRawSlot()) && event.getClickedInventory() == this.inventory)
@@ -122,7 +125,7 @@ public class TradeUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClose(InventoryCloseEvent event)
+    public void onInventoryClose(@NotNull InventoryCloseEvent event)
     {
         super.onInventoryClose(event);
 

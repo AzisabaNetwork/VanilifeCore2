@@ -7,18 +7,21 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FilterRemoveSkill implements ICommandSkill
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "remove";
     }
 
     @Override
+    @NotNull
     public Sara getRequirement()
     {
         return Sara.MOD;
@@ -44,7 +47,8 @@ public class FilterRemoveSkill implements ICommandSkill
     }
 
     @Override
-    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    @NotNull
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
         return Vanilife.filter.getFilters();
     }

@@ -1,16 +1,17 @@
 package net.azisaba.vanilife.user.request;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public interface IRequest
 {
-    Player getFrom();
+    @NotNull Player getFrom();
 
-    Player getTo();
+    @NotNull Player getTo();
 
     long getTicks();
 
-    Class<? extends IRequest> getClazz();
+    @NotNull Class<? extends IRequest> getClazz();
 
     void onAllow();
 

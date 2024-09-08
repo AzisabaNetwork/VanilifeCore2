@@ -9,18 +9,22 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceStartSkill implements ICommandSkill
 {
     @Override
+    @NotNull
     public String getName()
     {
         return "start";
     }
 
     @Override
+    @NotNull
     public Sara getRequirement()
     {
         return Sara.ADMIN;
@@ -54,7 +58,8 @@ public class ServiceStartSkill implements ICommandSkill
     }
 
     @Override
-    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    @NotNull
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
         return new ArrayList<>(ResourceUtility.getYamlResource("service.yml").getKeys(false));
     }
