@@ -129,10 +129,10 @@ public class Jnkn
             return;
         }
 
+        this.cancelled = true;
+
         this.player1.closeInventory();
         this.player2.closeInventory();
-
-        this.cancelled = true;
 
         this.broadcast(Component.text("ジャンケンは中止されました！").color(NamedTextColor.RED));
     }
