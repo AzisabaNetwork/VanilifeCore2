@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlotRenameSkill implements ICommandSkill
@@ -80,6 +79,6 @@ public class PlotRenameSkill implements ICommandSkill
     @NotNull
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
-        return null;
+        return List.of();
     }
 }
