@@ -1,16 +1,17 @@
 package net.azisaba.vanilife.service;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.service.schedule.IServiceSchedule;
 import net.azisaba.vanilife.service.schedule.MatchSchedule;
 import net.azisaba.vanilife.util.ResourceUtility;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class ServiceManager
 {
-    public static final ConfigurationSection config = ResourceUtility.getYamlResource("service.yml");
     public static final HashMap<String, IServiceSchedule> schedules = new HashMap<>();
 
     static
@@ -38,6 +39,28 @@ public class ServiceManager
 
     public static void mount()
     {
-        ServiceManager.config.getKeys(false).forEach(Service::new);
+        File directory = new File(Vanilife.getPlugin().getDataFolder(), "/service");
+
+        if (! directory.exists())
+        {
+            directory.mkdirs();
+        }
+
+        File[] services = directory.listFiles();
+
+        if (services == null)
+        {
+            return;
+        }
+
+        for (File service : services)
+        {
+            if (! service.isFile())
+            {
+                continue;
+            }
+
+            new Service(service.getName());
+        }
     }
 }

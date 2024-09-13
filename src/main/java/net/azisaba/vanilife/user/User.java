@@ -4,22 +4,28 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.user.request.IRequest;
 import net.azisaba.vanilife.user.settings.Settings;
+import net.azisaba.vanilife.user.subscription.ISubscription;
+import net.azisaba.vanilife.user.subscription.SingletonSubscription;
+import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class User
@@ -64,10 +70,11 @@ public class User
     private Date lastLogin;
     private int loginStreak;
 
-    private final ArrayList<User> friends = new ArrayList<>();
-    private final ArrayList<User> blocks = new ArrayList<>();
-    private final ArrayList<Mail> mails;
-    private final ArrayList<IRequest> requests = new ArrayList<>();
+    private final List<User> friends = new ArrayList<>();
+    private final List<User> blocks = new ArrayList<>();
+    private final List<Mail> mails;
+    private final List<ISubscription> subscriptions = new ArrayList<>();
+    private final List<IRequest> requests = new ArrayList<>();
 
     private BossBar bossBar;
 
@@ -140,6 +147,20 @@ public class User
 
             rs4.close();
             stmt4.close();
+
+            PreparedStatement stmt5 = con.prepareStatement("SELECT subscription FROM subscription WHERE user = ?");
+            stmt5.setString(1, this.id.toString());
+            ResultSet rs5 = stmt5.executeQuery();
+
+            while (rs5.next())
+            {
+                ISubscription subscription = Subscriptions.valueOf(rs5.getString("subscription"));
+
+                if (subscription != null)
+                {
+                    this.subscribe(subscription);
+                }
+            }
 
             con.close();
         }
@@ -308,7 +329,7 @@ public class User
         this.upload();
     }
 
-    public void setMola(int mola, String category)
+    public void setMola(int mola, @NotNull String category, @NotNull TextColor color)
     {
         Player player = this.getAsOfflinePlayer().getPlayer();
 
@@ -329,7 +350,7 @@ public class User
                     .append(Component.text(" Mola").color(NamedTextColor.GRAY)), progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
 
             player.playSound(player, (progress == 1.0f) ? Sound.ENTITY_PLAYER_LEVELUP : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
-            player.sendMessage(Component.text(category + "! ").color(NamedTextColor.GREEN).append(Component.text(String.format("+ %s Mola", mola - this.mola)).color(NamedTextColor.GOLD)));
+            player.sendMessage(Component.text(String.format("+ %s Mola! (%s)", (mola - this.mola), category)).color(color));
             this.bossBar.addViewer(player);
 
             new BukkitRunnable()
@@ -350,10 +371,28 @@ public class User
         return this.lastLogin;
     }
 
-    public void setLastLogin(Date lastLogin)
+    public void setLastLogin(@NotNull Date lastLogin)
     {
         this.lastLogin = lastLogin;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+
+            PreparedStatement stmt = con.prepareStatement("UPDATE login SET login = ?, streak = ? WHERE user = ?");
+            stmt.setString(1, (this.lastLogin == null) ? null : Vanilife.sdf1.format(this.lastLogin));
+            stmt.setInt(2, this.loginStreak);
+            stmt.setString(3, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update login record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
     public int getLoginStreak()
@@ -383,22 +422,27 @@ public class User
         return this.settings;
     }
 
-    public ArrayList<User> getFriends()
+    public List<User> getFriends()
     {
         return this.friends;
     }
 
-    public ArrayList<User> getBlocks()
+    public List<User> getBlocks()
     {
         return this.blocks;
     }
 
-    public ArrayList<Mail> getMails()
+    public List<Mail> getMails()
     {
         return this.mails;
     }
 
-    public ArrayList<IRequest> getRequests()
+    public List<ISubscription> getSubscriptions()
+    {
+        return this.subscriptions;
+    }
+
+    public List<IRequest> getRequests()
     {
         return this.requests;
     }
@@ -423,7 +467,7 @@ public class User
         return this.blocks.contains(user);
     }
 
-    public void friend(User user)
+    public void friend(@NotNull User user)
     {
         if (user == this)
         {
@@ -434,37 +478,176 @@ public class User
         {
             this.friends.add(user);
             user.friends.add(this);
-            this.upload();
+
+            try
+            {
+                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO friend VALUES(?, ?)");
+                stmt.setString(1, this.id.toString());
+                stmt.setString(2, user.getId().toString());
+
+                stmt.executeUpdate();
+
+                stmt.close();
+                con.close();
+            }
+            catch (SQLException e)
+            {
+                Vanilife.getPluginLogger().warn(Component.text("Failed to insert friend record: " + e.getMessage()).color(NamedTextColor.RED));
+            }
         }
     }
 
-    public void unfriend(User user)
+    public void unfriend(@NotNull User user)
     {
         if (this.isFriend(user))
         {
             this.friends.remove(user);
             user.friends.remove(this);
-            this.upload();
+
+            try
+            {
+                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+                PreparedStatement stmt = con.prepareStatement("DELETE FROM friend WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)");
+                stmt.setString(1, this.id.toString());
+                stmt.setString(2, user.getId().toString());
+                stmt.setString(3, user.getId().toString());
+                stmt.setString(4, this.id.toString());
+
+                stmt.executeUpdate();
+
+                stmt.close();
+                con.close();
+            }
+            catch (SQLException e)
+            {
+                Vanilife.getPluginLogger().warn(Component.text("Failed to delete friend record: " + e.getMessage()).color(NamedTextColor.RED));
+            }
         }
     }
 
-    public void block(User user)
+    public void block(@NotNull User user)
     {
         if (! this.blocks.contains(user))
         {
             this.blocks.add(user);
             this.unfriend(user);
-            this.upload();
+
+            try
+            {
+                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO block VALUES(?, ?)");
+                stmt.setString(1, this.id.toString());
+                stmt.setString(2, user.getId().toString());
+
+                stmt.executeUpdate();
+
+                stmt.close();
+                con.close();
+            }
+            catch (SQLException e)
+            {
+                Vanilife.getPluginLogger().warn(Component.text("Failed to insert block record: " + e.getMessage()).color(NamedTextColor.RED));
+            }
         }
     }
 
-    public void unblock(User user)
+    public void unblock(@NotNull User user)
     {
-        if (this.blocks.contains(user))
+        if (! this.blocks.contains(user))
         {
-            this.blocks.remove(user);
-            this.upload();;
+            return;
         }
+
+        this.blocks.remove(user);
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM block WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)");
+            stmt.setString(1, this.id.toString());
+            stmt.setString(2, user.getId().toString());
+            stmt.setString(3, user.getId().toString());
+            stmt.setString(4, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to delete block record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void subscribe(@NotNull ISubscription subscription)
+    {
+        this.subscriptions.add(subscription);
+
+        if (! subscription.getClass().isAnnotationPresent(SingletonSubscription.class))
+        {
+            return;
+        }
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO subscription VALUES(?, ?)");
+            stmt.setString(1, this.id.toString());
+            stmt.setString(2, subscription.getName());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().error(Component.text("Failed to insert subscription record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void unsubscribe(@NotNull ISubscription subscription)
+    {
+        this.subscriptions.removeIf(s -> s == subscription);
+
+        if (! subscription.getClass().isAnnotationPresent(SingletonSubscription.class))
+        {
+            return;
+        }
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM subscription WHERE user = ? AND subscription = ?");
+            stmt.setString(1, this.id.toString());
+            stmt.setString(2, subscription.getName());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().error(Component.text("Failed to delete subscription record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public boolean hasSubscription(ISubscription subscription)
+    {
+        return this.subscriptions.stream().anyMatch(s -> s == subscription);
+    }
+
+    public void sendMail(User user, String subject, String message)
+    {
+        new Mail(user, this, subject, message);
+    }
+
+    public void sendNotice(String subject, String message)
+    {
+        this.sendMail(User.getInstance("azisaba"), subject, message);
     }
 
     private void upload()
@@ -487,49 +670,6 @@ public class User
             stmt.executeUpdate();
 
             stmt.close();
-
-            PreparedStatement stmt2 = con.prepareStatement("DELETE FROM friend WHERE user1 = ? OR user2 = ?");
-            stmt2.setString(1, this.id.toString());
-            stmt2.setString(2, this.id.toString());
-            stmt2.executeUpdate();
-            stmt2.close();
-
-            PreparedStatement stmt3 = con.prepareStatement("INSERT INTO friend VALUES(?, ?)");
-
-            for (User friend : this.friends)
-            {
-                stmt3.setString(1, this.id.toString());
-                stmt3.setString(2, friend.id.toString());
-                stmt3.executeUpdate();
-            }
-
-            stmt3.close();
-
-            PreparedStatement stmt4 = con.prepareStatement("DELETE FROM block WHERE user1 = ?");
-            stmt4.setString(1, this.id.toString());
-            stmt4.executeUpdate();
-            stmt4.close();
-
-            PreparedStatement stmt5 = con.prepareStatement("INSERT INTO block VALUES(?, ?)");
-
-            for (User block : this.blocks)
-            {
-                stmt5.setString(1, this.id.toString());
-                stmt5.setString(2, block.id.toString());
-                stmt5.executeUpdate();
-            }
-
-            stmt5.close();
-
-            PreparedStatement stmt6 = con.prepareStatement("UPDATE login SET login = ?, streak = ? WHERE user = ?");
-            stmt6.setString(1, (this.lastLogin == null) ? null : Vanilife.sdf1.format(this.lastLogin));
-            stmt6.setInt(2, this.loginStreak);
-            stmt6.setString(3, this.id.toString());
-
-            stmt6.executeUpdate();
-
-            stmt6.close();
-
             con.close();
         }
         catch (SQLException e)

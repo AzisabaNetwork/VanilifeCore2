@@ -20,6 +20,7 @@ import net.azisaba.vanilife.service.ServiceManager;
 import net.azisaba.vanilife.util.ChatFilter;
 import net.azisaba.vanilife.util.PlotUtility;
 import net.azisaba.vanilife.util.SqlUtility;
+import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.JDA;
@@ -48,7 +49,7 @@ public final class Vanilife extends JavaPlugin
 
     public static final Pattern pattern1 = Pattern.compile("^\\d{4}/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])$");
 
-    public static final OkHttpClient httpClient = new OkHttpClient();
+    public static final OkHttpClient httpclient = new OkHttpClient();
 
     public static JDA jda;
     public static Guild server;
@@ -67,6 +68,7 @@ public final class Vanilife extends JavaPlugin
 
     public static Role ROLE_SUPPORT;
     public static Role ROLE_MCONSOLE;
+    public static Role ROLE_DEVELOPER;
 
     public static final int MOLA_PLOT_NEW = 50;
     public static final int MOLA_PLOT_CLAIM = 40;
@@ -105,7 +107,9 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         this.getCommand("block").setExecutor(new BlockCommand());
+        this.getCommand("checkout").setExecutor(new CheckoutCommand());
         this.getCommand("enderchest").setExecutor(new EnderChestCommand());
+        this.getCommand("feedback").setExecutor(new FeedbackCommand());
         this.getCommand("filter").setExecutor(new FilterCommand());
         this.getCommand("friend").setExecutor(new FriendCommand());
         this.getCommand("friendlist").setExecutor(new FriendListCommand());
@@ -122,19 +126,24 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("sara").setExecutor(new SaraCommand());
         this.getCommand("service").setExecutor(new ServiceCommand());
         this.getCommand("settings").setExecutor(new SettingsCommand());
+        this.getCommand("store").setExecutor(new StoreCommand());
+        this.getCommand("subscribe").setExecutor(new SubscribeCommand());
         this.getCommand("tpa").setExecutor(new TpaCommand());
         this.getCommand("tpr").setExecutor(new TprCommand());
         this.getCommand("trade").setExecutor(new TradeCommand());
         this.getCommand("trash").setExecutor(new TrashCommand());
         this.getCommand("unblock").setExecutor(new UnblockCommand());
         this.getCommand("unmute").setExecutor(new UnmuteCommand());
+        this.getCommand("unsubscribe").setExecutor(new UnsubscribeCommand());
         this.getCommand("vote").setExecutor(new VoteCommand());
         this.getCommand("vwm").setExecutor(new VwmCommand());
         this.getCommand("world").setExecutor(new WorldCommand());
         this.getCommand("worlds").setExecutor(new WorldsCommand());
 
         this.saveDefaultConfig();
-        this.saveResource("service.yml", false);
+        this.saveResource("service/checkout.yml", false);
+        this.saveResource("service/vwm-backup.yml", false);
+        this.saveResource("service/vwm-reset.yml", false);
         this.saveResource("vwm/vwm.json", false);
 
         SqlUtility.jdbc("org.mariadb.jdbc.Driver");
@@ -154,6 +163,7 @@ public final class Vanilife extends JavaPlugin
 
         Vanilife.filter = new ChatFilter();
         VanilifeWorldManager.mount();
+        UserUtility.mount();
         PlotUtility.mount();
         new PlayingRewardRunnable().runTaskLater(Vanilife.getPlugin());
     }
@@ -162,7 +172,15 @@ public final class Vanilife extends JavaPlugin
     public void onDisable()
     {
         VanilifeWorld.getInstances().forEach(w -> w.getWorlds().forEach(World::save));
-        Vanilife.jda.shutdown();
-        Vanilife.jda = null;
+
+        if (Vanilife.jda != null)
+        {
+            try
+            {
+                Vanilife.jda.shutdownNow();
+                Vanilife.jda = null;
+            }
+            catch (Exception ignored) {}
+        }
     }
 }

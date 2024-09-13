@@ -10,6 +10,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.awt.Color;
 import java.io.File;
@@ -19,8 +21,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
 
 public class VanilifeWorld
 {
@@ -60,8 +60,6 @@ public class VanilifeWorld
     private final ArrayList<World> worlds = new ArrayList<>();
     private final ArrayList<Plot> plots = new ArrayList<>();
 
-    private final HashMap<UUID, Location> locations = new HashMap<>();
-
     private final RandomTeleporter teleporter;
 
     protected VanilifeWorld(String name)
@@ -77,15 +75,6 @@ public class VanilifeWorld
         this.overworld = this.mount(levels.get("overworld").getAsString(), World.Environment.NORMAL);
         this.nether = this.mount(levels.get("nether").getAsString(), World.Environment.NETHER);
         this.end = this.mount(levels.get("end").getAsString(), World.Environment.THE_END);
-
-        JsonObject locations = this.properties.get("locations").getAsJsonObject();
-
-        for (String key : locations.keySet())
-        {
-            JsonObject jsonObject = locations.get(key).getAsJsonObject();
-            Location location = new Location(Bukkit.getWorld(jsonObject.get("world").getAsString()), jsonObject.get("x").getAsInt(), jsonObject.get("y").getAsInt(), jsonObject.get("z").getAsInt(), jsonObject.get("yaw").getAsFloat(), jsonObject.get("pitch").getAsFloat());
-            this.locations.put(UUID.fromString(key), location);
-        }
 
         this.teleporter = new RandomTeleporter(this.overworld, 320, Material.LAVA, Material.WATER, Material.FIRE);
         VanilifeWorld.instances.add(this);
@@ -144,55 +133,33 @@ public class VanilifeWorld
 
     public Location getLocation(Player player)
     {
-        if (! this.locations.containsKey(player.getUniqueId()))
+        PersistentDataContainer container = this.overworld.getPersistentDataContainer();
+
+        if (! container.has(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.world", player.getUniqueId())), PersistentDataType.STRING))
         {
-            Location location = this.teleporter.randomLocation(this.overworld);
-            this.locations.put(player.getUniqueId(), location);
-
-            JsonObject locations = this.properties.get("locations").getAsJsonObject();
-
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("world", location.getWorld().getName());
-            jsonObject.addProperty("x", location.getX());
-            jsonObject.addProperty("y", location.getY());
-            jsonObject.addProperty("z", location.getZ());
-            jsonObject.addProperty("yaw", location.getYaw());
-            jsonObject.addProperty("pitch", location.getPitch());
-
-            locations.add(player.getUniqueId().toString(), jsonObject);
-            this.properties.add("locations", locations);
-
-            this.setProperties(this.properties);
+            this.setLocation(player, this.teleporter.randomLocation(this.overworld));
         }
 
-        return this.locations.get(player.getUniqueId());
+        World world = Bukkit.getWorld(container.get(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.world", player.getUniqueId())), PersistentDataType.STRING));
+        double x = container.get(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.x", player.getUniqueId())), PersistentDataType.DOUBLE);
+        double y = container.get(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.y", player.getUniqueId())), PersistentDataType.DOUBLE);
+        double z = container.get(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.z", player.getUniqueId())), PersistentDataType.DOUBLE);
+        float yaw = container.get(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.yaw", player.getUniqueId())), PersistentDataType.FLOAT);
+        float pitch = container.get(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.pitch", player.getUniqueId())), PersistentDataType.FLOAT);
+
+        return new Location(world, x, y, z, yaw, pitch);
     }
 
     public void setLocation(Player player, Location location)
     {
-        if (! this.contains(location.getWorld()))
-        {
-            return;
-        }
+        PersistentDataContainer container = this.overworld.getPersistentDataContainer();
 
-        this.locations.put(player.getUniqueId(), location);
-
-        JsonObject locations = this.properties.get("locations").getAsJsonObject();
-
-        locations.remove(player.getUniqueId().toString());
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("world", location.getWorld().getName());
-        jsonObject.addProperty("x", location.getX());
-        jsonObject.addProperty("y", location.getY());
-        jsonObject.addProperty("z", location.getZ());
-        jsonObject.addProperty("yaw", location.getYaw());
-        jsonObject.addProperty("pitch", location.getPitch());
-
-        locations.add(player.getUniqueId().toString(), jsonObject);
-
-        this.properties.add("locations", locations);
-        this.setProperties(this.properties);
+        container.set(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.world", player.getUniqueId())), PersistentDataType.STRING, location.getWorld().getName());
+        container.set(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.x", player.getUniqueId())), PersistentDataType.DOUBLE, location.getX());
+        container.set(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.y", player.getUniqueId())), PersistentDataType.DOUBLE, location.getY());
+        container.set(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.z", player.getUniqueId())), PersistentDataType.DOUBLE, location.getZ());
+        container.set(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.yaw", player.getUniqueId())), PersistentDataType.FLOAT, location.getYaw());
+        container.set(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.pitch", player.getUniqueId())), PersistentDataType.FLOAT, location.getPitch());
     }
 
     public RandomTeleporter getTeleporter()
@@ -302,8 +269,6 @@ public class VanilifeWorld
             properties.addProperty("name", name);
             properties.addProperty("version", VanilifeWorldManager.getLatestVersion() + 1);
             properties.addProperty("season", SeasonUtility.getSeason().toString());
-
-            properties.add("locations", new JsonObject());
 
             VanilifeWorldManager.setLatestVersion(properties.get("version").getAsInt());
 

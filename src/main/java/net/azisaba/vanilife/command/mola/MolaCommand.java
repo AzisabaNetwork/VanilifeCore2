@@ -4,6 +4,7 @@ import net.azisaba.vanilife.command.skill.SkillCommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.subscription.ISubscription;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -55,10 +56,22 @@ public class MolaCommand extends SkillCommand
             sender.sendMessage(Component.text(CLI.getSpaces(1) + user.getMola()).color(NamedTextColor.LIGHT_PURPLE).append(Component.text(" Mola").color(NamedTextColor.GRAY)));
             sender.sendMessage(Component.text());
             sender.sendMessage(Component.text(CLI.getSpaces(1) + "SUBSCRIPTIONS").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
-            sender.sendMessage(Component.text("すべての Subscription は、毎月1日に自動的に引き落とされます"));
-            sender.sendMessage(Component.text(CLI.getSpaces(2) + "Plot").color(NamedTextColor.YELLOW));
-            sender.sendMessage(Component.text(CLI.getSpaces(3) + String.format("あなたは現在、 %s Chunk を所有しています:", chunks.size())));
-            sender.sendMessage(Component.text(CLI.getSpaces(3) + (20 * chunks.size()) + " Mola ").color(NamedTextColor.GREEN).append(Component.text("(").color(NamedTextColor.GRAY).append(Component.text("➡").color(NamedTextColor.DARK_GRAY).append(Component.text(String.format("20 Mola × %s)", chunks.size())).color(NamedTextColor.GRAY)))));
+            sender.sendMessage(Component.text(CLI.getSpaces(1) + "すべてのサブスクリプションは、毎月1日に自動的に引き落とされます:"));
+
+            if (user.getSubscriptions().isEmpty())
+            {
+                sender.sendMessage(Component.text(CLI.getSpaces(1) + "ここには何もありません！").color(NamedTextColor.GRAY));
+            }
+
+            for (ISubscription subscription : user.getSubscriptions())
+            {
+                sender.sendMessage(Component.text(CLI.getSpaces(2) + subscription.getDisplayName()).color(NamedTextColor.YELLOW));
+
+                for (Component row : subscription.getDetails())
+                {
+                    sender.sendMessage(Component.text(CLI.getSpaces(3)).append(row));
+                }
+            }
 
             sender.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.DARK_AQUA));
             return true;

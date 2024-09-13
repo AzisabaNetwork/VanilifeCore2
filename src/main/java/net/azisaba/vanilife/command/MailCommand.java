@@ -88,7 +88,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            ArrayList<Mail> mails = from.getMails();
+            List<Mail> mails = from.getMails();
 
             int page = Integer.valueOf(args[0]);
             int pages = mails.size() / 8 + ((mails.size() % 8 != 0) ? 1 : 0);
@@ -129,7 +129,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
         if (! to.getSettings().mailSetting.isWithinScope(from) || to.isBlock(from))
         {
-            sender.sendMessage(Component.text(String.format("%s にメールを送信することはできません")).color(NamedTextColor.RED));
+            sender.sendMessage(Component.text(String.format("%s にメールを送信することはできません", to.getPlaneName())).color(NamedTextColor.RED));
             return true;
         }
 

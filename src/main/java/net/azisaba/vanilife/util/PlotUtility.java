@@ -2,6 +2,7 @@ package net.azisaba.vanilife.util;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.user.subscription.PlotSubscription;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -25,7 +26,8 @@ public class PlotUtility
             {
                 if (Bukkit.getWorld(rs.getString("world")) != null)
                 {
-                    new Plot(UUID.fromString(rs.getString("id")));
+                    Plot instance = new Plot(UUID.fromString(rs.getString("id")));
+                    instance.getOwner().subscribe(new PlotSubscription(instance));
                 }
             }
 

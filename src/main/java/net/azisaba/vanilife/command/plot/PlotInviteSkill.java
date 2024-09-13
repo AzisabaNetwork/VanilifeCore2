@@ -11,6 +11,7 @@ import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -69,12 +70,14 @@ public class PlotInviteSkill implements ICommandSkill
         if (user != plot.getOwner())
         {
             sender.sendMessage(Component.text("あなたはこの Plot のオーナーではありません").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (Bukkit.getPlayerExact(args[0]) == null)
         {
             sender.sendMessage(Component.text(String.format("%s は現在オフラインです", args[0])).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
@@ -89,12 +92,14 @@ public class PlotInviteSkill implements ICommandSkill
         if (plot.isMember(member))
         {
             sender.sendMessage(Component.text(String.format("%s は既にこの Plot のメンバーです", args[0])).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (! UserUtility.isAdmin(sender) && plot.getOwner().getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
         {
             sender.sendMessage(Component.text(String.format("あなたは既に %s にこの Plot への招待を送信しています", args[0])).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 

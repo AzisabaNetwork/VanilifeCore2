@@ -50,6 +50,11 @@ public abstract class InventoryUI
 
     protected void registerListener(int index, @NotNull ItemStack stack, @NotNull String command, @NotNull ExecutionType type)
     {
+        if (! command.contains(":"))
+        {
+            command = "vanilife:" + command;
+        }
+
         switch (type)
         {
             case CLIENT -> this.clientListeners.put(index, command);

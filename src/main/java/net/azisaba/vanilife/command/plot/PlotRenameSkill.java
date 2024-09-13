@@ -6,6 +6,7 @@ import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -56,18 +57,21 @@ public class PlotRenameSkill implements ICommandSkill
         if (user != plot.getOwner())
         {
             sender.sendMessage(Component.text("あなたはこの Plot のオーナーではありません").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (Plot.getInstance(args[0]) != null)
         {
             sender.sendMessage(Component.text(String.format("Plot名 %s は既に使用されています", args[0])).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (16 < args[0].length())
         {
             sender.sendMessage(Component.text("Plot名は16文字以内で設定してください").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 

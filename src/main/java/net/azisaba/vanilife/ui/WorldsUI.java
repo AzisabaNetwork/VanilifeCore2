@@ -22,7 +22,7 @@ public class WorldsUI extends InventoryUI
 
     public WorldsUI(@NotNull Player player)
     {
-        super(player, Bukkit.createInventory(null, 36, Component.text("ワールド選択")));
+        super(player, Bukkit.createInventory(null, 36, Component.text("ワールドの選択")));
 
         this.render();
 
@@ -47,13 +47,13 @@ public class WorldsUI extends InventoryUI
         {
             ItemStack worldStack = new ItemStack(SeasonUtility.getSeasonMaterial(world.getSeason()));
             ItemMeta worldMeta = worldStack.getItemMeta();
-            worldMeta.displayName(Component.text(world.getName()).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+            worldMeta.displayName(Component.text(world.getName().replace("-", "年") + "月 ワールド").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
             worldMeta.lore(List.of(Component.text("バージョン: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(world.getVersion()).color(NamedTextColor.GREEN)).decoration(TextDecoration.ITALIC, false),
                     Component.text().build(),
                     Component.text(world.contains(this.player) ? "PLAYING" : String.format("%s 人がプレイ中！", world.getOnline())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
 
             worldStack.setItemMeta(worldMeta);
-            this.registerListener((i < 5) ? 11 + i : 20 + (i - 5), worldStack, String.format("world %s", world.getName()), ExecutionType.CLIENT);
+            this.registerListener((i < 5) ? 11 + i : 20 + (i - 5), worldStack, String.format("vanilife:world %s", world.getName()), ExecutionType.CLIENT);
 
             i ++;
         }

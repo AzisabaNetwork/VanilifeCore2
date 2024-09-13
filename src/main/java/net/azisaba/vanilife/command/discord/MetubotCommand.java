@@ -97,7 +97,7 @@ public class MetubotCommand extends DiscordCommand
             player.teleport(new Location(world, x, y, z));
             Request request = new Request.Builder().url(Vanilife.METUBOT_SERVER).build();
 
-            Vanilife.httpClient.newCall(request).enqueue(new Callback()
+            Vanilife.httpclient.newCall(request).enqueue(new Callback()
             {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e)

@@ -40,7 +40,7 @@ public class ProfileUI extends InventoryUI
         friendMeta.displayName(Component.text(user.isFriend(profile) ? "フレンドを削除" : "フレンドに追加").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         friendMeta.lore(Collections.singletonList(Component.text(user.isFriend(profile) ? "フレンドから削除します" : "フレンド申請を送信します").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         friendStack.setItemMeta(friendMeta);
-        this.registerListener(12, friendStack, String.format("friend %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
+        this.registerListener(12, friendStack, String.format("vanilife:friend %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
 
         new BukkitRunnable()
         {
@@ -166,7 +166,7 @@ public class ProfileUI extends InventoryUI
         tradeMeta.displayName(Component.text("Trade").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         tradeMeta.lore(Collections.singletonList(Component.text("Trade 申請を送信します").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         tradeStack.setItemMeta(tradeMeta);
-        this.registerListener(30, tradeStack, String.format("trade %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
+        this.registerListener(30, tradeStack, String.format("vanilife:trade %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
 
         ItemStack closeStack = new ItemStack(Material.OAK_DOOR);
         ItemMeta closeMeta = closeStack.getItemMeta();
@@ -182,7 +182,7 @@ public class ProfileUI extends InventoryUI
                 Component.text("あなたにメールや各種申請を送信できなくなります").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text("通知されることはありません！").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         blockStack.setItemMeta(blockMeta);
-        this.registerListener(32, blockStack, (user.isBlock(profile) ? "unblock " : "block ") + this.profile.getPlaneName(), ExecutionType.CLIENT);
+        this.registerListener(32, blockStack, (user.isBlock(profile) ? "vanilife:unblock " : "vanilife:block ") + this.profile.getPlaneName(), ExecutionType.CLIENT);
     }
 
     @Override

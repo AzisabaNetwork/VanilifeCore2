@@ -1,8 +1,10 @@
 package net.azisaba.vanilife.service;
 
 import net.azisaba.vanilife.service.schedule.IServiceSchedule;
+import net.azisaba.vanilife.util.ResourceUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,7 @@ public class Service
 
     private final String name;
 
-    private final ConfigurationSection parameters;
+    private final YamlConfiguration parameters;
     private final ArrayList<String> script = new ArrayList<>();
     public final ArrayList<IServiceSchedule> schedules = new ArrayList<>();
     private boolean stopped = false;
@@ -31,7 +33,7 @@ public class Service
     public Service(String name)
     {
         this.name = name;
-        this.parameters = ServiceManager.config.getConfigurationSection(this.name);
+        this.parameters = ResourceUtility.getYamlResource("/service/" + name);
         this.script.addAll(new ArrayList<>(this.parameters.getStringList("script")));
 
         for (String scheduleName : this.parameters.getConfigurationSection("schedule").getKeys(false))

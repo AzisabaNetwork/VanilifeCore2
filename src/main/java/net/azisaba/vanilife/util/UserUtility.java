@@ -1,11 +1,14 @@
 package net.azisaba.vanilife.util;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.subscription.PlotSubscription;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -158,6 +161,30 @@ public class UserUtility
         catch (SQLException ignored)
         {
             return false;
+        }
+    }
+
+    public static void mount()
+    {
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("SELECT id FROM user");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                User.getInstance(UUID.fromString(rs.getString("id")));
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to mount user: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }
 }

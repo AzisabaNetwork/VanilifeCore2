@@ -9,6 +9,7 @@ discord:
   role:
     support: # This role can handle support requests.
     mconsole: # This role can use Mconsole to run Minecraft commands with administrative privileges.
+    developer: # This role will be mentioned when feedback is received.
 metubot:
   server: 'http://localhost'
   provider: # Please set the provider player's UUID here.

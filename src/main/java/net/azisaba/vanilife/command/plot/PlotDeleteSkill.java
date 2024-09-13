@@ -8,6 +8,7 @@ import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.Typing;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -59,6 +60,7 @@ public class PlotDeleteSkill implements ICommandSkill
         if (user != plot.getOwner())
         {
             sender.sendMessage(Component.text("あなたはこの Plot のオーナーではありません").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
@@ -85,26 +87,8 @@ public class PlotDeleteSkill implements ICommandSkill
                 }
                 else
                 {
-                    sender.sendMessage(Component.text("Plot の削除をキャンセルしました").color(NamedTextColor.GREEN));
+                    sender.sendMessage(Component.text("Plot の削除をキャンセルしました").color(NamedTextColor.RED));
                 }
-            }
-
-            public String getConfirmCode(int length)
-            {
-                if (length < 1)
-                {
-                    length = 1;
-                }
-
-                String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                StringBuilder sb = new StringBuilder();
-
-                for (int i = 0; i < length; i ++)
-                {
-                    sb.append(characters.charAt(Vanilife.random.nextInt(characters.length())));
-                }
-
-                return sb.toString();
             }
         };
     }

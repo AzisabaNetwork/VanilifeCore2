@@ -6,6 +6,7 @@ import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
+import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.util.Typing;
 import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
@@ -155,7 +156,7 @@ public class PlayerListener implements Listener
         }
 
         User user = User.getInstance(event.getPlayer());
-        user.setMola(user.getMola() + 6, "Fishing");
+        user.setMola(user.getMola() + 6, "釣り", NamedTextColor.AQUA);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -204,7 +205,7 @@ public class PlayerListener implements Listener
         User user = User.getInstance(player);
         int bonus = Vanilife.random.nextInt(difficulty) + 1;
 
-        user.setMola(user.getMola() + bonus, "Story");
+        user.setMola(user.getMola() + bonus, "進捗", NamedTextColor.GOLD);
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
     }
 
@@ -234,7 +235,7 @@ public class PlayerListener implements Listener
         Player player = event.getPlayer();
         String message = event.getMessage().toLowerCase();
 
-        if (message.equals("/tell") || message.equals("/msg") || message.equals("/w"))
+        if (message.startsWith("/tell") || message.startsWith("/msg") || message.startsWith("/w"))
         {
             player.sendMessage(Component.text("このサーバーでは代わりに /mail <player> [subject] <message> を使用します").color(NamedTextColor.RED));
             event.setCancelled(true);
@@ -251,11 +252,16 @@ public class PlayerListener implements Listener
 
         if (user.getStatus() != UserStatus.DEFAULT)
         {
-            player.sendMessage(Component.text("あなたは現在ミュートされています").color(NamedTextColor.RED));
+            player.sendMessage(Component.text("あなたは現在ミュートされています！").color(NamedTextColor.RED));
             return;
         }
 
         String content = ((TextComponent) event.message()).content();
+
+        if (user.hasSubscription(Subscriptions.NEON))
+        {
+            content = ChatColor.translateAlternateColorCodes('&', content);
+        }
 
         Typing typing = Typing.getInstance(player);
 

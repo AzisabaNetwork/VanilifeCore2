@@ -2,6 +2,7 @@ package net.azisaba.vanilife.runnable;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -23,7 +24,7 @@ public class PlayingRewardRunnable extends BukkitRunnable
         for (Player player : Bukkit.getOnlinePlayers())
         {
             User user = User.getInstance(player);
-            user.setMola(user.getMola() + 5, "Playing");
+            user.setMola(user.getMola() + 5, "プレイ時間", NamedTextColor.GREEN);
         }
 
         new PlayingRewardRunnable().runTaskLater(Vanilife.getPlugin(), PlayingRewardRunnable.getLaterTicks());

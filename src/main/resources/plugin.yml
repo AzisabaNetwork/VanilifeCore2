@@ -6,11 +6,17 @@ commands:
   block:
     description: Block any player.
     usage: /block <player>
+  checkout:
+    description: Process all subscriptions.
+    usage: /checkout
   enderchest:
     description: Open the ender chest.
     usage: /enderchest
     aliases:
       - ec
+  feedback:
+    description: Submit your feedback.
+    usage: /feedback <details>
   filter:
     description: Edit the chat filter.
     usage: /filter <skill> [args…]
@@ -65,6 +71,12 @@ commands:
   settings:
     description: Edit settings in ばにらいふ.
     usage: /settings
+  store:
+    description: Open the Vanilife store.
+    usage: /store
+  subscribe:
+    description: Sign up for any subscription.
+    usage: /subscribe <subscription>
   tpa:
     description: Accept teleport request.
     usage: /tpa <player>
@@ -87,6 +99,9 @@ commands:
   unmute:
     description: Unmute any player.
     usage: /unmute <player>
+  unsubscribe:
+    description: Cancel any subscription.
+    usage: /unsubscribe <subscription>
   vote:
     description: Vote for any option.
     usage: /vote <poll> <option>

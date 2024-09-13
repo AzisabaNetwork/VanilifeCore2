@@ -2,6 +2,7 @@ package net.azisaba.vanilife.plot;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.subscription.PlotSubscription;
 import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
@@ -324,6 +325,7 @@ public class Plot
     {
         Plot.getInstances().remove(this);
         this.vw.getPlots().remove(this);
+        this.owner.getSubscriptions().removeIf(subscription -> (subscription instanceof PlotSubscription s) && s.getPlot() == this);
 
         try
         {

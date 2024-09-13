@@ -10,6 +10,7 @@ import net.azisaba.vanilife.user.request.TradeRequest;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -67,6 +68,7 @@ public class PlotJoinSkill implements ICommandSkill
         if (! plot.getOwner().isOnline())
         {
             sender.sendMessage(Component.text("Plot オーナーがオフラインのため、現在 Plot 申請を送信することはできません").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
         }
 
         if (user.getRequests().stream().anyMatch(r -> r.auth(PlotInvitation.class, plot.getOwner().getAsOfflinePlayer().getPlayer())))
@@ -78,6 +80,7 @@ public class PlotJoinSkill implements ICommandSkill
         if (! UserUtility.isAdmin(sender) && plot.getOwner().getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
         {
             sender.sendMessage(Component.text(String.format("あなたは既に %s に Plot 申請を送信しています", args[0])).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 

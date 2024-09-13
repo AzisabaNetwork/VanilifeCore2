@@ -15,7 +15,7 @@ public class MojangAPI
     {
         Request request = new Request.Builder().url(String.format("https://api.mojang.com/users/profiles/minecraft/%s", name)).build();
 
-        try (Response response = Vanilife.httpClient.newCall(request).execute())
+        try (Response response = Vanilife.httpclient.newCall(request).execute())
         {
             JsonObject json = JsonParser.parseString(response.body().string()).getAsJsonObject();
             return json.get("id").getAsString();
@@ -30,7 +30,7 @@ public class MojangAPI
     {
         Request request = new Request.Builder().url(String.format("https://sessionserver.mojang.com/session/minecraft/profile/%s", id)).build();
 
-        try (Response response = Vanilife.httpClient.newCall(request).execute())
+        try (Response response = Vanilife.httpclient.newCall(request).execute())
         {
             return JsonParser.parseString(response.body().string()).getAsJsonObject();
         }

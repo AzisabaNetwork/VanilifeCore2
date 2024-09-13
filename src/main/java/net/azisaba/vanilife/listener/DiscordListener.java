@@ -28,6 +28,7 @@ public class DiscordListener extends ListenerAdapter
         Vanilife.channel = Vanilife.server.getTextChannelById(Vanilife.getPluginConfig().getString("discord.channel"));
         Vanilife.ROLE_SUPPORT = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.support"));
         Vanilife.ROLE_MCONSOLE = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.mconsole"));
+        Vanilife.ROLE_DEVELOPER = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.developer"));
 
         ReportUtility.mount();
     }

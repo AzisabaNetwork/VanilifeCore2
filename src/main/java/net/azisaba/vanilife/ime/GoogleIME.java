@@ -19,7 +19,7 @@ public class GoogleIME
     {
         Request request = new Request.Builder().url(GoogleIME.API_URL + URLEncoder.encode(src, StandardCharsets.UTF_8)).build();
 
-        try (Response response = Vanilife.httpClient.newCall(request).execute())
+        try (Response response = Vanilife.httpclient.newCall(request).execute())
         {
             return response.isSuccessful() ? JsonParser.parseString(response.body().string()).getAsJsonArray().get(0).getAsJsonArray().get(1).getAsJsonArray().get(0).getAsString() : src;
         }

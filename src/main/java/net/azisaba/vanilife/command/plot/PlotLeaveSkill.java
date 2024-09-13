@@ -6,6 +6,7 @@ import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -57,14 +58,16 @@ public class PlotLeaveSkill implements ICommandSkill
 
         if (plot.getOwner() == user)
         {
-            sender.sendMessage(Component.text("Plot のマスターはこれを実行できません").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Plot マスターはこれを実行できません").color(NamedTextColor.RED));
             sender.sendMessage(Component.text("削除したい場合は、代わりに /plot delete を使用してください…").color(NamedTextColor.YELLOW));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (! plot.isMember(user))
         {
             sender.sendMessage(Component.text("あなたはこの Plot のメンバーではありません").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 

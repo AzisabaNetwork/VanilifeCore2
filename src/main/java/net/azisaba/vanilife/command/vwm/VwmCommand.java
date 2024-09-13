@@ -23,6 +23,7 @@ public class VwmCommand extends SkillCommand
         this.registerSkill(new VwmCreateSkill());
         this.registerSkill(new VwmDeleteSkill());
         this.registerSkill(new VwmListSkill());
+        this.registerSkill(new VwmSaveSkill());
         this.registerSkill(new VwmTeleportSkill());
         this.registerSkill(new VwmUpdateSkill());
     }

@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.util;
 
+import net.azisaba.vanilife.Vanilife;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -37,6 +38,24 @@ public abstract class Typing
     public Player getPlayer()
     {
         return this.player;
+    }
+
+    public String getConfirmCode(int length)
+    {
+        if (length < 1)
+        {
+            length = 1;
+        }
+
+        String characters = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnoprstuvwxyz12345678";
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < length; i ++)
+        {
+            sb.append(characters.charAt(Vanilife.random.nextInt(characters.length())));
+        }
+
+        return sb.toString();
     }
 
     public void onTyped(String string)

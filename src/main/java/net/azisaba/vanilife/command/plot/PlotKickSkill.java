@@ -6,6 +6,7 @@ import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -57,6 +58,7 @@ public class PlotKickSkill implements ICommandSkill
         if (user != plot.getOwner())
         {
             sender.sendMessage(Component.text("あなたはこの Plot のオーナーではありません").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
@@ -65,12 +67,14 @@ public class PlotKickSkill implements ICommandSkill
         if (! plot.isMember(member))
         {
             sender.sendMessage(Component.text(String.format("%s はこの Plot のメンバーではありません", args[0])).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (plot.getOwner() == member)
         {
             sender.sendMessage(Component.text("Plot のオーナーを追放することはできません").color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
