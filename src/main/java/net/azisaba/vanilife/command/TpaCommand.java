@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.TeleportRequest;
 import net.kyori.adventure.text.Component;
@@ -34,7 +35,7 @@ public class TpaCommand implements CommandExecutor, TabCompleter
 
         if (Bukkit.getPlayerExact(args[0]) == null)
         {
-            sender.sendMessage(Component.text(String.format("%s は現在オフラインです", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.offline", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
@@ -43,13 +44,13 @@ public class TpaCommand implements CommandExecutor, TabCompleter
 
         if (player == toPlayer)
         {
-            sender.sendMessage(Component.text("自分自身に Teleport リクエストを送信することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.tpa.cant-yourself", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (fromUser.getRequests().stream().noneMatch(r -> r.auth(TeleportRequest.class, toPlayer)))
         {
-            sender.sendMessage(Component.text(String.format("%s からの Teleport リクエストが見つかりませんでした", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.tpa.not-found", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 

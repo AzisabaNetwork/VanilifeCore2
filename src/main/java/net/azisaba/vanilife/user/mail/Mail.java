@@ -2,12 +2,9 @@ package net.azisaba.vanilife.user.mail;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.util.ChatFilter;
 import net.azisaba.vanilife.util.UserUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -122,7 +119,7 @@ public class Mail
 
         boolean filtered = (Vanilife.filter.filter(this.message) || Vanilife.filter.filter(this.subject)) && ! UserUtility.isModerator(this.from);
 
-        Vanilife.channel.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("メール")
                 .setDescription(filtered ? Vanilife.ROLE_SUPPORT + " このメールはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします" : null)
                 .setAuthor(this.from.getPlaneName(), null, String.format("https://api.mineatar.io/face/%s", this.from.getId().toString().replace("-", "")))

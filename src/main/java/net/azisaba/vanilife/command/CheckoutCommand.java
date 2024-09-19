@@ -12,6 +12,7 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutCommand implements CommandExecutor, TabCompleter
@@ -29,7 +30,7 @@ public class CheckoutCommand implements CommandExecutor, TabCompleter
 
         for (User user : User.getInstances())
         {
-            for (ISubscription subscription : user.getSubscriptions())
+            for (ISubscription subscription : new ArrayList<>(user.getSubscriptions()))
             {
                 subscription.checkout(user);
                 i ++;

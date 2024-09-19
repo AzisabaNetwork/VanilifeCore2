@@ -91,7 +91,7 @@ public class ChatFilter
                     .addField("メッセージ", content, true)
                     .setColor(new Color(255, 85, 85));
 
-            Vanilife.channel.sendMessageEmbeds(builder.build())
+            Vanilife.consoleChannel.sendMessageEmbeds(builder.build())
                     .addActionRow(Button.danger("vanilife:mute", String.format("%s をミュートする", player.getName())),
                             Button.secondary("vanilife:unmute", "または…アンミュート")).queue();
             return;
@@ -103,7 +103,7 @@ public class ChatFilter
                 .setFooter(player.getUniqueId().toString())
                 .setColor(new Color(85, 255, 85));
 
-        Vanilife.channel.sendMessageEmbeds(builder.build()).queue();
+        Vanilife.consoleChannel.sendMessageEmbeds(builder.build()).queue();
     }
 
     private void upload()

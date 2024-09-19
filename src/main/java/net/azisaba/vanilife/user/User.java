@@ -1,6 +1,11 @@
 package net.azisaba.vanilife.user;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.CLI;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.user.request.IRequest;
 import net.azisaba.vanilife.user.settings.Settings;
@@ -34,8 +39,8 @@ public class User
 
     public static User getInstance(UUID id)
     {
-        ArrayList<User> filteredInstances = new ArrayList<>(User.instances.stream().filter(i -> i.getId().equals(id)).toList());
-        return filteredInstances.isEmpty() ? UserUtility.exists(id) ? new User(id) : new User(id, null, Sara.DEFAULT, null, null, null, null, 0, UserStatus.DEFAULT) : filteredInstances.getFirst();
+        List<User> filteredInstances = User.instances.stream().filter(i -> i.getId().equals(id)).toList();
+        return filteredInstances.isEmpty() ? UserUtility.exists(id) ? new User(id) : new User(id, true) : filteredInstances.getFirst();
     }
 
     public static User getInstance(Player player)
@@ -46,6 +51,17 @@ public class User
     public static User getInstance(String name)
     {
         return User.getInstance(Bukkit.getOfflinePlayer(name).getUniqueId());
+    }
+
+    public static User getInstance(net.dv8tion.jda.api.entities.User discord)
+    {
+        if (discord == null)
+        {
+            return null;
+        }
+
+        List<User> filteredInstances = User.instances.stream().filter(i -> i.getDiscord() != null && i.getDiscord().getId().equals(discord.getId())).toList();
+        return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
     public static ArrayList<User> getInstances()
@@ -61,9 +77,10 @@ public class User
     private Date birthday;
     private String youtube;
     private String twitter;
-    private String discord;
+    private net.dv8tion.jda.api.entities.User discord;
     private int mola;
     private UserStatus status;
+    private JsonObject storage;
 
     private final Settings settings;
 
@@ -78,10 +95,9 @@ public class User
 
     private BossBar bossBar;
 
-    private User(UUID id)
+    private User(@NotNull UUID id)
     {
         this.id = id;
-        this.settings = Settings.getInstance(this);
 
         try
         {
@@ -98,9 +114,10 @@ public class User
             this.birthday = (rs.getString("birthday") == null) ? null : Vanilife.sdf1.parse(rs.getString("birthday"));
             this.youtube = rs.getString("youtube");
             this.twitter = rs.getString("twitter");
-            this.discord = rs.getString("discord");
+            this.discord = rs.getString("discord") == null ? null : Vanilife.jda.retrieveUserById(rs.getString("discord")).complete();
             this.mola = rs.getInt("mola");
             this.status = UserStatus.valueOf(rs.getString("status"));
+            this.storage = JsonParser.parseString(rs.getString("storage")).getAsJsonObject();
 
             rs.close();
             stmt.close();
@@ -169,75 +186,78 @@ public class User
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get user record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
+        this.settings = Settings.getInstance(this);
         this.mails = UserUtility.getMails(this);
     }
 
-    private User(UUID id, String nick, Sara sara, String bio, String youtube, String twitter, String discord, int mola, UserStatus status)
+    public User(@NotNull UUID id, boolean b)
     {
         this.id = id;
 
-        this.nick = nick;
-        this.sara = sara;
-        this.bio = bio;
-        this.youtube = youtube;
-        this.twitter = twitter;
-        this.discord = discord;
-        this.mola = mola;
+        this.nick = null;
+        this.sara = Sara.DEFAULT;
+        this.bio = null;
+        this.youtube = null;
+        this.twitter = null;
+        this.discord = null;
+        this.mola = 0;
         this.lastLogin = null;
-        this.status = status;
-
-        this.settings = Settings.Builder.build(this);
+        this.status = UserStatus.DEFAULT;
+        this.storage = new JsonObject();
 
         User.instances.add(this);
 
+        if (b)
+        {
+            try
+            {
+                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, ?, NULL, NULL, NULL, NULL, NULL, 0, ?, '{}')");
+                stmt.setString(1, this.id.toString());
+                stmt.setString(2, this.sara.toString());
+                stmt.setString(3, this.status.toString());
+
+                stmt.executeUpdate();
+
+                stmt.close();
+
+                PreparedStatement stmt2 = con.prepareStatement("INSERT INTO login VALUES(?, NULL, 0)");
+                stmt2.setString(1, this.id.toString());
+
+                stmt2.executeUpdate();
+
+                stmt2.close();
+
+                con.close();
+            }
+            catch (SQLException e)
+            {
+                Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert user record: %s", e.getMessage())).color(NamedTextColor.RED));
+            }
+        }
+
+        this.settings = Settings.getInstance(this);
         this.mails = UserUtility.getMails(this);
-
-        try
-        {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, ?, ?, ?, NULL, ?, ?, ?, ?, ?)");
-            stmt.setString(1, this.id.toString());
-            stmt.setString(2, this.nick);
-            stmt.setString(3, this.sara.toString());
-            stmt.setString(4, this.bio);
-            stmt.setString(5, this.youtube);
-            stmt.setString(6, this.twitter);
-            stmt.setString(7, this.discord);
-            stmt.setInt(8, this.mola);
-            stmt.setString(9, this.status.toString());
-
-            stmt.executeUpdate();
-
-            stmt.close();
-
-            PreparedStatement stmt2 = con.prepareStatement("INSERT INTO login VALUES(?, NULL, 0)");
-            stmt2.setString(1, this.id.toString());
-
-            stmt2.executeUpdate();
-
-            stmt2.close();
-
-            con.close();
-        }
-        catch (SQLException e)
-        {
-            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert user record: %s", e.getMessage())).color(NamedTextColor.RED));
-        }
     }
 
-    public UUID getId()
+    public @NotNull UUID getId()
     {
         return this.id;
     }
 
-    public Component getName()
+    public @NotNull Component getName()
     {
         return this.getSara().role.append(Component.text(this.getNick(), this.getSara().color)).clickEvent(ClickEvent.runCommand(String.format("/profile %s", this.getPlaneName()))).hoverEvent(HoverEvent.showText(Component.text("クリックしてプロフィールを開きます")));
     }
 
-    public String getPlaneName()
+    public @NotNull String getPlaneName()
     {
+        if (this.id.equals(UserUtility.UUID_AZISABA))
+        {
+            return "azisaba";
+        }
+
         return Bukkit.getOfflinePlayer(this.id).getName();
     }
 
@@ -249,18 +269,50 @@ public class User
     public void setNick(String nick)
     {
         this.nick = nick;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET nick = ? WHERE id = ?");
+            stmt.setString(1, this.nick);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
-    public Sara getSara()
+    public @NotNull Sara getSara()
     {
         return (this.sara != null) ? this.sara : Sara.DEFAULT;
     }
 
-    public void setSara(Sara sara)
+    public void setSara(@NotNull Sara sara)
     {
         this.sara = sara;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET sara = ? WHERE id = ?");
+            stmt.setString(1, this.sara.toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
     public String getBio()
@@ -271,7 +323,23 @@ public class User
     public void setBio(String bio)
     {
         this.bio = bio;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET bio = ? WHERE id = ?");
+            stmt.setString(1, this.bio);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
     public Date getBirthday()
@@ -282,7 +350,23 @@ public class User
     public void setBirthday(Date birthday)
     {
         this.birthday = birthday;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET birthday = ? WHERE id = ?");
+            stmt.setString(1, Vanilife.sdf1.format(this.birthday));
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
     public String getYoutube()
@@ -293,7 +377,23 @@ public class User
     public void setYouTube(String youtube)
     {
         this.youtube = youtube;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET youtube = ? WHERE id = ?");
+            stmt.setString(1, this.youtube);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
     public String getTwitter()
@@ -304,18 +404,55 @@ public class User
     public void setTwitter(String twitter)
     {
         this.twitter = twitter;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET twitter = ? WHERE id = ?");
+            stmt.setString(1, this.twitter);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
-    public String getDiscord()
+    public net.dv8tion.jda.api.entities.User getDiscord()
     {
         return this.discord;
     }
 
-    public void setDiscord(String discord)
+    public void setDiscord(net.dv8tion.jda.api.entities.User discord)
     {
         this.discord = discord;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET discord = ? WHERE id = ?");
+            stmt.setString(1, this.discord == null ? null : this.discord.getId());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void setDiscord(String discord)
+    {
+        this.setDiscord(Vanilife.jda.getUserById(discord));
     }
 
     public int getMola()
@@ -326,12 +463,28 @@ public class User
     public void setMola(int mola)
     {
         this.mola = Math.max(0, mola);
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET mola = ? WHERE id = ?");
+            stmt.setInt(1, this.mola);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
     public void setMola(int mola, @NotNull String category, @NotNull TextColor color)
     {
-        Player player = this.getAsOfflinePlayer().getPlayer();
+        Player player = this.getAsPlayer();
 
         if (player != null)
         {
@@ -344,13 +497,13 @@ public class User
             progress = (progress == 0) ? 1.0f : progress;
 
             this.bossBar = BossBar.bossBar(Component.text("Mola: ").color(NamedTextColor.WHITE)
-                    .append(Component.text(category + "  ").color(NamedTextColor.YELLOW))
-                    .append(Component.text(String.format("+ %s ", mola - this.mola)).color(NamedTextColor.AQUA))
+                    .append(Language.translate(category, player).color(NamedTextColor.YELLOW).append(Component.text(CLI.getSpaces(2))))
+                    .append(Component.text(String.format("+%s ", mola - this.mola)).color(NamedTextColor.AQUA))
                     .append(Component.text(mola).color(NamedTextColor.DARK_AQUA))
                     .append(Component.text(" Mola").color(NamedTextColor.GRAY)), progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
 
             player.playSound(player, (progress == 1.0f) ? Sound.ENTITY_PLAYER_LEVELUP : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
-            player.sendMessage(Component.text(String.format("+ %s Mola! (%s)", (mola - this.mola), category)).color(color));
+            player.sendMessage(Component.text(String.format("+ %s Mola! (", (mola - this.mola))).color(color).append(Language.translate(category, player)).append(Component.text(")")));
             this.bossBar.addViewer(player);
 
             new BukkitRunnable()
@@ -366,6 +519,60 @@ public class User
         this.setMola(mola);
     }
 
+    @NotNull
+    public UserStatus getStatus()
+    {
+        return this.status;
+    }
+
+    public void setStatus(@NotNull UserStatus status)
+    {
+        this.status = status;
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET status = ? WHERE id = ?");
+            stmt.setString(1, this.status.toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    @NotNull
+    public JsonObject getStorage()
+    {
+        return this.storage;
+    }
+
+    public void saveStorage()
+    {
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET storage = ? WHERE id = ?");
+            stmt.setString(1, this.storage.toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
     public Date getLastLogin()
     {
         return this.lastLogin;
@@ -379,10 +586,9 @@ public class User
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
 
-            PreparedStatement stmt = con.prepareStatement("UPDATE login SET login = ?, streak = ? WHERE user = ?");
+            PreparedStatement stmt = con.prepareStatement("UPDATE login SET login = ? WHERE user = ?");
             stmt.setString(1, (this.lastLogin == null) ? null : Vanilife.sdf1.format(this.lastLogin));
-            stmt.setInt(2, this.loginStreak);
-            stmt.setString(3, this.id.toString());
+            stmt.setString(2, this.id.toString());
 
             stmt.executeUpdate();
 
@@ -403,50 +609,67 @@ public class User
     public void setLoginStreak(int loginStreak)
     {
         this.loginStreak = loginStreak;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE login SET streak = ? WHERE user = ?");
+            stmt.setInt(1, this.loginStreak);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update login record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
-    public UserStatus getStatus()
-    {
-        return this.status;
-    }
-
-    public void setStatus(UserStatus status)
-    {
-        this.status = status;
-        this.upload();
-    }
-
+    @NotNull
     public Settings getSettings()
     {
         return this.settings;
     }
 
+    @NotNull
     public List<User> getFriends()
     {
         return this.friends;
     }
 
+    @NotNull
     public List<User> getBlocks()
     {
         return this.blocks;
     }
 
+    @NotNull
     public List<Mail> getMails()
     {
         return this.mails;
     }
 
+    @NotNull
     public List<ISubscription> getSubscriptions()
     {
         return this.subscriptions;
     }
 
+    @NotNull
     public List<IRequest> getRequests()
     {
         return this.requests;
     }
 
+    public Player getAsPlayer()
+    {
+        return Bukkit.getPlayer(this.id);
+    }
+
+    @NotNull
     public OfflinePlayer getAsOfflinePlayer()
     {
         return Bukkit.getOfflinePlayer(this.id);
@@ -465,6 +688,21 @@ public class User
     public boolean isBlock(User user)
     {
         return this.blocks.contains(user);
+    }
+
+    public boolean hasSubscription(ISubscription subscription)
+    {
+        return this.subscriptions.stream().anyMatch(s -> s == subscription);
+    }
+
+    public void sendMail(User user, String subject, String message)
+    {
+        new Mail(user, this, subject, message);
+    }
+
+    public void sendNotice(String subject, String message)
+    {
+        this.sendMail(User.getInstance("azisaba"), subject, message);
     }
 
     public void friend(@NotNull User user)
@@ -635,46 +873,32 @@ public class User
         }
     }
 
-    public boolean hasSubscription(ISubscription subscription)
+    public void write(@NotNull String key, @NotNull String value)
     {
-        return this.subscriptions.stream().anyMatch(s -> s == subscription);
+        this.storage.addProperty(key, value);
+        this.saveStorage();
     }
 
-    public void sendMail(User user, String subject, String message)
+    public void write(@NotNull String key, @NotNull Number value)
     {
-        new Mail(user, this, subject, message);
+        this.storage.addProperty(key, value);
+        this.saveStorage();
     }
 
-    public void sendNotice(String subject, String message)
+    public void write(@NotNull String key, @NotNull Boolean value)
     {
-        this.sendMail(User.getInstance("azisaba"), subject, message);
+        this.storage.addProperty(key, value);
+        this.saveStorage();
     }
 
-    private void upload()
+    public void write(@NotNull String key, @NotNull Character value)
     {
-        try
-        {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("UPDATE user SET nick = ?, sara = ?, bio = ?, birthday = ?, youtube = ?, twitter = ?, discord = ?, mola = ?, status = ? WHERE id = ?");
-            stmt.setString(1, this.nick);
-            stmt.setString(2, this.getSara().toString());
-            stmt.setString(3, this.bio);
-            stmt.setString(4, (this.birthday == null) ? null : Vanilife.sdf1.format(this.birthday));
-            stmt.setString(5, this.youtube);
-            stmt.setString(6, this.twitter);
-            stmt.setString(7, this.discord);
-            stmt.setInt(8, this.mola);
-            stmt.setString(9, this.status.toString());
-            stmt.setString(10, this.id.toString());
+        this.storage.addProperty(key, value);
+        this.saveStorage();
+    }
 
-            stmt.executeUpdate();
-
-            stmt.close();
-            con.close();
-        }
-        catch (SQLException e)
-        {
-            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to update user record: %s", e.getMessage())).color(NamedTextColor.RED));
-        }
+    public JsonElement read(@NotNull String key)
+    {
+        return this.storage.get(key);
     }
 }

@@ -21,7 +21,7 @@ public class TradeUI extends InventoryUI
 
     public TradeUI(@NotNull Player player, @NotNull Trade trade)
     {
-        super(player, Bukkit.createInventory(null, 54, Component.text("Trade")));
+        super(player, Bukkit.createInventory(null, 54, Language.translate("ui.trade.title", player)));
 
         this.trade = trade;
         this.player = player;
@@ -36,7 +36,7 @@ public class TradeUI extends InventoryUI
 
         ItemStack agree1Stack = new ItemStack(this.trade.getAgree(this.player).favicon);
         ItemMeta agree1Meta = agree1Stack.getItemMeta();
-        agree1Meta.displayName(this.trade.getAgree(this.player).title);
+        agree1Meta.displayName(Language.translate(this.trade.getAgree(this.player).translate, this.player).decoration(TextDecoration.ITALIC, false));
         agree1Stack.setItemMeta(agree1Meta);
         this.inventory.setItem(1, agree1Stack);
 
@@ -49,7 +49,7 @@ public class TradeUI extends InventoryUI
 
         ItemStack agree2Stack = new ItemStack(this.trade.getAgree(this.partner).favicon);
         ItemMeta agree2Meta = agree2Stack.getItemMeta();
-        agree2Meta.displayName(this.trade.getAgree(this.partner).title);
+        agree2Meta.displayName(Language.translate(this.trade.getAgree(this.partner).translate, this.player).decoration(TextDecoration.ITALIC, false));
         agree2Stack.setItemMeta(agree2Meta);
         this.inventory.setItem(6, agree2Stack);
 
@@ -110,7 +110,7 @@ public class TradeUI extends InventoryUI
             Trade.Agree agree = this.trade.getAgree(this.player);
             ItemStack stack = new ItemStack(agree.favicon);
             ItemMeta meta = stack.getItemMeta();
-            meta.displayName(agree.title);
+            meta.displayName(Language.translate(agree.translate, this.player));
             stack.setItemMeta(meta);
             this.inventory.setItem(1, stack);
         }

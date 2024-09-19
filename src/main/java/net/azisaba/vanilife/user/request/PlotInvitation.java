@@ -2,7 +2,9 @@ package net.azisaba.vanilife.user.request;
 
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.CLI;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -16,21 +18,20 @@ public class PlotInvitation extends Request
 
     public PlotInvitation(@NotNull Plot from, @NotNull Player to)
     {
-        super(from.getOwner().getAsOfflinePlayer().getPlayer(), to);
+        super(from.getOwner().getAsPlayer(), to);
 
         this.plot = from;
 
+        final int limit = (int) this.getTicks() / 20;
+
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Component.text("").append(to.displayName())
-                .append(Component.text(String.format(" を %s に招待しました！承認の有効期限は ", this.plot.getName())).color(NamedTextColor.YELLOW)
-                        .append(Component.text(this.getTicks() / 20).color(NamedTextColor.RED))
-                        .append(Component.text(" 秒です。").color(NamedTextColor.YELLOW))));
+        this.from.sendMessage(Language.translate("msg.plot.invited", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "plot=" + plot.getName(), "limit=" + limit));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
 
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.to.sendMessage(Component.text("").append(this.from.displayName()).append(Component.text(String.format(" があなたを %s に招待しました！", this.plot.getName())).color(NamedTextColor.YELLOW)));
-        this.to.sendMessage(Component.text("承認の有効期限は ").color(NamedTextColor.YELLOW).append(Component.text(this.getTicks() / 20).color(NamedTextColor.RED)).append(Component.text(" 秒です。"))
-                .append(Component.text("こちらをクリックして参加！").color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/plot join %s", this.plot.getName()))).hoverEvent(HoverEvent.showText(Component.text(String.format("クリックして /plot join %s を実行", this.plot.getName()))))));
+        this.to.sendMessage(Language.translate("msg.plot.received", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName()), "plot=" + plot.getName()));
+        this.to.sendMessage(Language.translate("msg.plot.received.details", this.to, "limit=" + limit)
+                .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/plot join %s", this.plot.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=/plot join " + plot.getName())))));
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 
@@ -54,8 +55,8 @@ public class PlotInvitation extends Request
 
         this.plot.addMember(User.getInstance(this.to));
 
-        this.from.sendMessage(this.toUser.getName().append(Component.text(String.format(" が %s に参加しました！", this.plot.getName())).color(NamedTextColor.YELLOW)));
-        this.to.sendMessage(Component.text(String.format("%s に参加しました！", this.plot.getName())).color(NamedTextColor.YELLOW));
+        this.from.sendMessage(Language.translate("msg.plot.joined", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "plot=" + this.plot.getName()));
+        this.to.sendMessage(Language.translate("msg.plot.accept", this.to, "plot=" + this.plot.getName()));
     }
 
     @Override
@@ -63,8 +64,7 @@ public class PlotInvitation extends Request
     {
         super.onTimeOver();
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Component.text(this.getTicks() / 20).color(NamedTextColor.RED)
-                .append(Component.text(String.format(" 秒が経過したため、%s への Plot 招待は無効になりました", this.to.getName())).color(NamedTextColor.YELLOW)));
+        this.from.sendMessage(Language.translate("msg.plot.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.getAsString(this.toUser.getName())));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 }

@@ -1,39 +1,38 @@
 package net.azisaba.vanilife.trade;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.ui.TradeUI;
 import net.azisaba.vanilife.user.User;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Trade
 {
-    public static final ArrayList<Integer> CONTROL = new ArrayList<>(List.of(9, 10, 11, 12, 18, 19, 20, 21, 27, 28, 29, 30, 36, 37, 38, 39, 45, 46, 47, 48));
-    public static final ArrayList<Integer> PREVIEW = new ArrayList<>(List.of(14, 15, 16, 17, 23, 24, 25, 26, 32, 33, 34, 35, 41, 42, 43, 44, 50, 51, 52, 53));
+    public static final List<Integer> CONTROL = new ArrayList<>(List.of(9, 10, 11, 12, 18, 19, 20, 21, 27, 28, 29, 30, 36, 37, 38, 39, 45, 46, 47, 48));
+    public static final List<Integer> PREVIEW = new ArrayList<>(List.of(14, 15, 16, 17, 23, 24, 25, 26, 32, 33, 34, 35, 41, 42, 43, 44, 50, 51, 52, 53));
 
     private final User user1;
     private final Player player1;
     private final TradeUI ui1;
-    private final ArrayList<ItemStack> stacks1 = new ArrayList<>();
+    private final List<ItemStack> stacks1 = new ArrayList<>();
     private Agree agree1 = Agree.NONE;
 
     private final User user2;
     private final Player player2;
     private final TradeUI ui2;
-    private final ArrayList<ItemStack> stacks2 = new ArrayList<>();
+    private final List<ItemStack> stacks2 = new ArrayList<>();
     private Agree agree2 = Agree.NONE;
 
     private final TradeSyncRunnable tradeSyncRunnable;
@@ -108,33 +107,37 @@ public class Trade
     {
         ItemStack agreeStack = new ItemStack(agree.favicon);
         ItemMeta agreeMeta = agreeStack.getItemMeta();
-        agreeMeta.displayName(agree.title);
-        agreeStack.setItemMeta(agreeMeta);
 
         if (player == this.player1)
         {
+            agreeMeta.displayName(Language.translate(agree.translate, this.player2).decoration(TextDecoration.ITALIC, false));
+            agreeStack.setItemMeta(agreeMeta);
+
             this.agree1 = agree;
             this.ui2.getInventory().setItem(6, agreeStack);
         }
 
         if (player == this.player2)
         {
+            agreeMeta.displayName(Language.translate(agree.translate, this.player1).decoration(TextDecoration.ITALIC, false));
+            agreeStack.setItemMeta(agreeMeta);
+
             this.agree2 = agree;
             this.ui1.getInventory().setItem(6, agreeStack);
         }
     }
 
-    public ArrayList<ItemStack> getStacks1()
+    public @NotNull List<ItemStack> getStacks1()
     {
         return this.stacks1;
     }
 
-    public ArrayList<ItemStack> getStacks2()
+    public @NotNull List<ItemStack> getStacks2()
     {
         return this.stacks2;
     }
 
-    public void setStacks(Player player, ArrayList<ItemStack> stacks)
+    public void setStacks(@NotNull Player player, @NotNull List<ItemStack> stacks)
     {
         if (this.getAgree(player) != Agree.NONE)
         {
@@ -168,10 +171,10 @@ public class Trade
         }
     }
 
-    private void giveItems(Player player, ArrayList<ItemStack> stacks)
+    private void giveItems(@NotNull Player player, @NotNull List<ItemStack> stacks)
     {
         Inventory inventory = player.getInventory();
-        ArrayList<ItemStack> remainingStacks = new ArrayList<>();
+        List<ItemStack> remainingStacks = new ArrayList<>();
 
         stacks.forEach(stack -> {
             if (stack != null && 0 < stack.getAmount())
@@ -194,10 +197,10 @@ public class Trade
         return this.cancelled;
     }
 
-    public void broadcast(Component msg)
+    public void broadcast(@NotNull String key, String... args)
     {
-        this.player1.sendMessage(msg);
-        this.player2.sendMessage(msg);
+        this.player1.sendMessage(Language.translate(key, this.player1, args));
+        this.player2.sendMessage(Language.translate(key, this.player2, args));
     }
 
     public void trade()
@@ -213,7 +216,7 @@ public class Trade
         this.player1.closeInventory();
         this.player2.closeInventory();
 
-        this.broadcast(Component.text("Trade が成立しました").color(NamedTextColor.GREEN));
+        this.broadcast("trade.hold");
 
         StringBuilder sb1 = new StringBuilder();
         this.stacks1.forEach(s -> sb1.append(String.format("%s: × %s", s.getType().toString().toLowerCase(), s.getAmount())));
@@ -228,7 +231,7 @@ public class Trade
                 .setFooter("(*'▽')")
                 .setColor(new Color(85, 255, 85));
 
-        Vanilife.channel.sendMessageEmbeds(builder.build()).queue();
+        Vanilife.consoleChannel.sendMessageEmbeds(builder.build()).queue();
     }
 
     public void cancel()
@@ -248,24 +251,24 @@ public class Trade
 
         this.tradeSyncRunnable.cancel();
 
-        this.broadcast(Component.text("Trade はキャンセルされました").color(NamedTextColor.RED));
+        this.broadcast("trade.canceled");
     }
 
     public enum Agree
     {
-        NONE(0, Material.RED_DYE, Component.text("拒否").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)),
-        CHECK(1, Material.YELLOW_DYE, Component.text("チェック").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)),
-        SET(2, Material.LIME_DYE, Component.text("セット").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        NONE(0, Material.RED_DYE, "trade.reject"),
+        CHECK(1, Material.YELLOW_DYE, "trade.check"),
+        SET(2, Material.LIME_DYE, "trade.set");
 
         public final int level;
         public final Material favicon;
-        public final Component title;
+        public final String translate;
 
-        Agree(int level, Material favicon, Component title)
+        Agree(int level, Material favicon, String translate)
         {
             this.level = level;
             this.favicon = favicon;
-            this.title = title;
+            this.translate = translate;
         }
     }
 }

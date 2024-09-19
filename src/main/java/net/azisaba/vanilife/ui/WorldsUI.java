@@ -22,19 +22,21 @@ public class WorldsUI extends InventoryUI
 
     public WorldsUI(@NotNull Player player)
     {
-        super(player, Bukkit.createInventory(null, 36, Component.text("ワールドの選択")));
+        super(player, Bukkit.createInventory(null, 36, Language.translate("ui.worlds.title", player)));
 
         this.render();
 
         ItemStack backStack = new ItemStack(Material.ARROW);
         ItemMeta backMeta = backStack.getItemMeta();
-        backMeta.displayName(Component.text("戻る").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        backMeta.displayName(Language.translate("ui.back", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        backMeta.lore(List.of(Language.translate("ui.back.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         backStack.setItemMeta(backMeta);
         this.inventory.setItem(27, backStack);
 
         ItemStack nextStack = new ItemStack(Material.ARROW);
         ItemMeta nextMeta = nextStack.getItemMeta();
-        nextMeta.displayName(Component.text("次へ").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        nextMeta.displayName(Language.translate("ui.next", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        nextMeta.lore(List.of(Language.translate("ui.next.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         nextStack.setItemMeta(nextMeta);
         this.inventory.setItem(35, nextStack);
     }
@@ -48,9 +50,9 @@ public class WorldsUI extends InventoryUI
             ItemStack worldStack = new ItemStack(SeasonUtility.getSeasonMaterial(world.getSeason()));
             ItemMeta worldMeta = worldStack.getItemMeta();
             worldMeta.displayName(Component.text(world.getName().replace("-", "年") + "月 ワールド").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-            worldMeta.lore(List.of(Component.text("バージョン: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(world.getVersion()).color(NamedTextColor.GREEN)).decoration(TextDecoration.ITALIC, false),
+            worldMeta.lore(List.of(Language.translate("ui.worlds.version", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(world.getVersion()).color(NamedTextColor.GREEN)).decoration(TextDecoration.ITALIC, false),
                     Component.text().build(),
-                    Component.text(world.contains(this.player) ? "PLAYING" : String.format("%s 人がプレイ中！", world.getOnline())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+                    (world.contains(this.player) ? Language.translate("ui.worlds.playing", this.player) : Language.translate("ui.worlds.players", this.player, "players=" + world.getOnline())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
 
             worldStack.setItemMeta(worldMeta);
             this.registerListener((i < 5) ? 11 + i : 20 + (i - 5), worldStack, String.format("vanilife:world %s", world.getName()), ExecutionType.CLIENT);

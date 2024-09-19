@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.user.subscription;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -11,13 +12,14 @@ public interface ISubscription
 {
     @NotNull String getName();
 
-    @NotNull String getDisplayName();
+    @NotNull default Component getDisplayName(@NotNull Language lang)
+    {
+        return lang.translate("subscription." + this.getName() + ".name");
+    }
 
-    @NotNull Material getFavicon();
+    @NotNull Material getIcon();
 
-    @NotNull List<String> getDescription();
-
-    @NotNull List<Component> getDetails();
+    @NotNull List<Component> getDetails(@NotNull Language lang);
 
     int getCost();
 
@@ -28,18 +30,16 @@ public interface ISubscription
 
     default void onPayment(@NotNull User user) {}
 
-    default boolean checkout(@NotNull User user)
+    default void checkout(@NotNull User user)
     {
         if (this.getCost() <= user.getMola())
         {
             user.setMola(user.getMola() - this.getCost());
             this.onPayment(user);
-            return true;
         }
         else
         {
             this.onShortage(user);
-            return false;
         }
     }
 }

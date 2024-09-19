@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.user.subscription;
 
+import net.azisaba.vanilife.ui.Language;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -18,27 +19,15 @@ public class NeonSubscription implements ISubscription
     }
 
     @Override
-    public @NotNull String getDisplayName()
-    {
-        return "Neon";
-    }
-
-    @Override
-    public @NotNull Material getFavicon()
+    public @NotNull Material getIcon()
     {
         return Material.OAK_SIGN;
     }
 
     @Override
-    public @NotNull List<String> getDescription()
+    public @NotNull List<Component> getDetails(@NotNull Language language)
     {
-        return List.of("ばにらいふ！のチャット内で装飾コードを", "利用できるようになります");
-    }
-
-    @Override
-    public @NotNull List<Component> getDetails()
-    {
-        return List.of(Component.text("「&」記号を使用したチャットの装飾:"), Component.text(this.getCost() + " Mola").color(NamedTextColor.GREEN));
+        return List.of(language.translate("subscription.neon.details.1"), Component.text(this.getCost() + " Mola").color(NamedTextColor.GREEN));
     }
 
     @Override

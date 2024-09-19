@@ -3,6 +3,7 @@ package net.azisaba.vanilife.command.mola;
 import net.azisaba.vanilife.command.skill.SkillCommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.CLI;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.subscription.ISubscription;
 import net.kyori.adventure.text.Component;
@@ -56,7 +57,7 @@ public class MolaCommand extends SkillCommand
             sender.sendMessage(Component.text(CLI.getSpaces(1) + user.getMola()).color(NamedTextColor.LIGHT_PURPLE).append(Component.text(" Mola").color(NamedTextColor.GRAY)));
             sender.sendMessage(Component.text());
             sender.sendMessage(Component.text(CLI.getSpaces(1) + "SUBSCRIPTIONS").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
-            sender.sendMessage(Component.text(CLI.getSpaces(1) + "すべてのサブスクリプションは、毎月1日に自動的に引き落とされます:"));
+            sender.sendMessage(Component.text(CLI.getSpaces(1)).append(Language.translate("subscription.feature", player)));
 
             if (user.getSubscriptions().isEmpty())
             {
@@ -65,9 +66,9 @@ public class MolaCommand extends SkillCommand
 
             for (ISubscription subscription : user.getSubscriptions())
             {
-                sender.sendMessage(Component.text(CLI.getSpaces(2) + subscription.getDisplayName()).color(NamedTextColor.YELLOW));
+                sender.sendMessage(Component.text(CLI.getSpaces(2)).append(subscription.getDisplayName(user.getSettings().LANGUAGE.getLanguage()).color(NamedTextColor.YELLOW)));
 
-                for (Component row : subscription.getDetails())
+                for (Component row : subscription.getDetails(user.getSettings().LANGUAGE.getLanguage()))
                 {
                     sender.sendMessage(Component.text(CLI.getSpaces(3)).append(row));
                 }

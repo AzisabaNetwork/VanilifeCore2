@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.plot;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.subscription.PlotSubscription;
 import net.azisaba.vanilife.util.UserUtility;
@@ -298,7 +299,7 @@ public class Plot
         if (! this.isMember(player) && ! UserUtility.isModerator(player))
         {
             event.setCancelled(true);
-            player.sendMessage(Component.text("この Plot でブロックを破壊する権限がありません").color(NamedTextColor.RED));
+            player.sendMessage(Language.translate("plot.cant.break", player).color(NamedTextColor.RED));
         }
     }
 
@@ -309,14 +310,17 @@ public class Plot
         if (! this.isMember(player) && ! UserUtility.isModerator(player))
         {
             event.setCancelled(true);
-            player.sendMessage(Component.text("この Plot でブロックを設置する権限がありません").color(NamedTextColor.RED));
+            player.sendMessage(Language.translate("plot.cant.place", player).color(NamedTextColor.RED));
         }
     }
 
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        if (! this.isMember(event.getPlayer()))
+        Player player = event.getPlayer();
+
+        if (! this.isMember(player))
         {
+            player.sendMessage(Language.translate("plot.cant", player).color(NamedTextColor.RED));
             event.setCancelled(true);
         }
     }

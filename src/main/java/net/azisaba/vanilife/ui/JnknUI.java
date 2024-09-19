@@ -1,7 +1,6 @@
 package net.azisaba.vanilife.ui;
 
 import net.azisaba.vanilife.arcade.Jnkn;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -22,31 +21,31 @@ public class JnknUI extends InventoryUI
 
     public JnknUI(@NotNull Player player, @NotNull Jnkn jnkn)
     {
-        super(player, Bukkit.createInventory(null, 27, Component.text("ジャンケン")));
+        super(player, Bukkit.createInventory(null, 27, Language.translate("ui.jnkn.title", player)));
         this.jnkn = jnkn;
 
         ItemStack gStack = new ItemStack(Material.COBBLESTONE);
         ItemMeta gMeta = gStack.getItemMeta();
-        gMeta.displayName(Component.text("グー").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        gMeta.displayName(Language.translate("ui.jnkn.rock", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         gStack.setItemMeta(gMeta);
         this.inventory.setItem(9, gStack);
 
         ItemStack cStack = new ItemStack(Material.SHEARS);
         ItemMeta cMeta = cStack.getItemMeta();
-        cMeta.displayName(Component.text("チョキ").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        cMeta.displayName(Language.translate("ui.jnkn.scissors", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         cStack.setItemMeta(cMeta);
         this.inventory.setItem(10, cStack);
 
         ItemStack pStack = new ItemStack(Material.PAPER);
         ItemMeta pMeta = pStack.getItemMeta();
-        pMeta.displayName(Component.text("パー").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        pMeta.displayName(Language.translate("ui.jnkn.paper", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         pStack.setItemMeta(pMeta);
         this.inventory.setItem(11, pStack);
         
         ItemStack hoiStack = new ItemStack(Material.OAK_DOOR);
         ItemMeta hoiMeta = hoiStack.getItemMeta();
-        hoiMeta.displayName(Component.text("キャンセル").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false).decoration(TextDecoration.ITALIC, false));
-        hoiMeta.lore(List.of(Component.text("ジャンケンを中止します").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        hoiMeta.displayName(Language.translate("ui.jnkn.cancel", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false).decoration(TextDecoration.ITALIC, false));
+        hoiMeta.lore(List.of(Language.translate("ui.jnkn.cancel.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         hoiStack.setItemMeta(hoiMeta);
         this.inventory.setItem(17, hoiStack);
     }
@@ -67,8 +66,8 @@ public class JnknUI extends InventoryUI
 
             ItemStack lockStack = new ItemStack(Material.BARRIER);
             ItemMeta lockMeta = lockStack.getItemMeta();
-            lockMeta.displayName(Component.text("相手の手を待っています…").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-            lockMeta.lore(List.of(Component.text("このまましばらくお待ちください").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+            lockMeta.displayName(Language.translate("ui.jnkn.waiting", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+            lockMeta.lore(List.of(Language.translate("ui.jnkn.waiting.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
             lockStack.setItemMeta(lockMeta);
 
             for (int i = 9; i < 12; i ++)

@@ -35,6 +35,13 @@ commands:
     usage: /jnkn <player>
     aliases:
       - janken
+      - rock-paper-scissors
+      - rps
+  language:
+    description: Change language.
+    usage: /language <language>
+    aliases:
+      - lang
   mail:
     description: Send and check emails.
     usage: /mail [player] [subject] [message]
@@ -71,6 +78,9 @@ commands:
   settings:
     description: Edit settings in ばにらいふ.
     usage: /settings
+  stamp:
+    description: Use any stamp.
+    usage: /stamp <stamp>
   store:
     description: Open the Vanilife store.
     usage: /store

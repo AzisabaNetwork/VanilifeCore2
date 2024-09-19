@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.poll.Poll;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.util.UuidUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -34,7 +35,7 @@ public class VoteCommand implements CommandExecutor, TabCompleter
 
         if (! UuidUtility.isUuid(args[0]))
         {
-            sender.sendMessage(Component.text(args[0] + " は無効な投票識別子です").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.vote.invalid", player, "identifier=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
@@ -42,7 +43,7 @@ public class VoteCommand implements CommandExecutor, TabCompleter
 
         if (poll == null)
         {
-            sender.sendMessage(Component.text("この投票は既に終了している可能性があります").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.vote.not-found", player).color(NamedTextColor.RED));
             return true;
         }
 

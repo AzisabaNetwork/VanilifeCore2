@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.user.subscription;
 
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -26,27 +27,15 @@ public class PlotSubscription implements ISubscription
     }
 
     @Override
-    public @NotNull String getDisplayName()
-    {
-        return this.plot.getName() + " (Plot)";
-    }
-
-    @Override
-    public @NotNull Material getFavicon()
+    public @NotNull Material getIcon()
     {
         return Material.GRASS_BLOCK;
     }
 
     @Override
-    public @NotNull List<String > getDescription()
+    public @NotNull List<Component> getDetails(@NotNull Language lang)
     {
-        return List.of("Plot を維持するのに必要です");
-    }
-
-    @Override
-    public @NotNull List<Component> getDetails()
-    {
-        return List.of(Component.text("この Plot は、 " + this.plot.getChunks().size() + " Chunk を含みます:").color(NamedTextColor.WHITE),
+        return List.of(lang.translate("subscription.plot.details.1"),
                 Component.text(this.getCost() + " Mola").color(NamedTextColor.GREEN).append(Component.text(" (").color(NamedTextColor.GRAY).append(Component.text("➡").color(NamedTextColor.DARK_GRAY).decorate(TextDecoration.BOLD)).append(Component.text("40 Mola × " + this.plot.getChunks().size() + ")").color(NamedTextColor.GRAY))));
     }
 

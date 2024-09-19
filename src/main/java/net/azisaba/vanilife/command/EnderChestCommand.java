@@ -25,7 +25,7 @@ public class EnderChestCommand implements CommandExecutor, TabCompleter
 
         if (args.length != 0)
         {
-            sender.sendMessage(Component.text("Correct syntax: /enderchest").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + label).color(NamedTextColor.RED));
             return true;
         }
 

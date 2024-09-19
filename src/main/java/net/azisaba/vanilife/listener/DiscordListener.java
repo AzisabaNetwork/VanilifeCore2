@@ -5,9 +5,13 @@ import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
+import net.azisaba.vanilife.util.PlotUtility;
 import net.azisaba.vanilife.util.ReportUtility;
+import net.azisaba.vanilife.util.UserUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -24,12 +28,33 @@ public class DiscordListener extends ListenerAdapter
     @Override
     public void onReady(@NotNull ReadyEvent event)
     {
-        Vanilife.server = event.getJDA().getGuildById(Vanilife.getPluginConfig().getString("discord.server"));
-        Vanilife.channel = Vanilife.server.getTextChannelById(Vanilife.getPluginConfig().getString("discord.channel"));
-        Vanilife.ROLE_SUPPORT = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.support"));
-        Vanilife.ROLE_MCONSOLE = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.mconsole"));
-        Vanilife.ROLE_DEVELOPER = Vanilife.server.getRoleById(Vanilife.getPluginConfig().getString("discord.role.developer"));
+        Vanilife.publicServer = event.getJDA().getGuildById(Vanilife.getPluginConfig().getString("discord.server.public"));
+        Vanilife.privateServer = event.getJDA().getGuildById(Vanilife.getPluginConfig().getString("discord.server.private"));
+        Vanilife.voiceChatChannel = Vanilife.privateServer.getVoiceChannelById(Vanilife.getPluginConfig().getString("discord.channel.voice-chat"));
+        Vanilife.consoleChannel = Vanilife.privateServer.getTextChannelById(Vanilife.getPluginConfig().getString("discord.channel.console"));
+        Vanilife.category = Vanilife.publicServer.getCategoryById(Vanilife.getPluginConfig().getString("discord.category"));
 
+        Vanilife.ROLE_SUPPORT = Vanilife.privateServer.getRoleById(Vanilife.getPluginConfig().getString("discord.role.support"));
+        Vanilife.ROLE_MCONSOLE = Vanilife.privateServer.getRoleById(Vanilife.getPluginConfig().getString("discord.role.mconsole"));
+        Vanilife.ROLE_DEVELOPER = Vanilife.privateServer.getRoleById(Vanilife.getPluginConfig().getString("discord.role.developer"));
+
+        for (VoiceChannel channel : Vanilife.category.getVoiceChannels())
+        {
+            if (! channel.getName().startsWith("VC-"))
+            {
+                continue;
+            }
+
+            for (Member member : channel.getMembers())
+            {
+                Vanilife.publicServer.kickVoiceMember(member).queue();
+            }
+
+            channel.delete().queue();
+        }
+
+        UserUtility.mount();
+        PlotUtility.mount();
         ReportUtility.mount();
     }
 
@@ -111,7 +136,7 @@ public class DiscordListener extends ListenerAdapter
                     .setDescription("権限設定が誤りであると思われる場合は、管理者にお問い合わせください")
                     .setColor(new Color(255, 85, 85));
 
-            Vanilife.channel.sendMessageEmbeds(builder.build()).queue();
+            Vanilife.consoleChannel.sendMessageEmbeds(builder.build()).queue();
             return;
         }
 

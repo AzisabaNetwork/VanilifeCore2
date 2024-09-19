@@ -42,10 +42,7 @@ public abstract class Typing
 
     public String getConfirmCode(int length)
     {
-        if (length < 1)
-        {
-            length = 1;
-        }
+        length = Math.max(length, 0);
 
         String characters = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnoprstuvwxyz12345678";
         StringBuilder sb = new StringBuilder();

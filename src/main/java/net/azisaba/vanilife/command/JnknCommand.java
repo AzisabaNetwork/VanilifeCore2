@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.JnknRequest;
 import net.azisaba.vanilife.util.UserUtility;
@@ -30,13 +31,13 @@ public class JnknCommand implements CommandExecutor, TabCompleter
 
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /jnkn <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + label + " <player>").color(NamedTextColor.RED));
             return true;
         }
 
         if (Bukkit.getPlayerExact(args[0]) == null)
         {
-            sender.sendMessage(Component.text(String.format("%s は現在オフラインです", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.offline", from, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
@@ -46,13 +47,13 @@ public class JnknCommand implements CommandExecutor, TabCompleter
 
         if (from == to)
         {
-            sender.sendMessage(Component.text("自分自身にジャンケン申請を送信することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.jnkn.cant-yourself", from).color(NamedTextColor.RED));
             return true;
         }
 
         if (toUser.isBlock(fromUser))
         {
-            sender.sendMessage(Component.text("このプレイヤーにジャンケン申請を送ることはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.jnkn.cant", from).color(NamedTextColor.RED));
             return true;
         }
 
@@ -64,7 +65,7 @@ public class JnknCommand implements CommandExecutor, TabCompleter
 
         if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(JnknRequest.class, from)))
         {
-            from.sendMessage(Component.text(String.format("あなたは既に %s にジャンケン申請を送信しています", args[0])).color(NamedTextColor.RED));
+            from.sendMessage(Language.translate("cmd.jnkn.already", from, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 

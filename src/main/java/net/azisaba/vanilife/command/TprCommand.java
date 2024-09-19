@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.TeleportRequest;
 import net.azisaba.vanilife.util.UserUtility;
@@ -36,7 +37,7 @@ public class TprCommand implements CommandExecutor, TabCompleter
 
         if (Bukkit.getPlayerExact(args[0]) == null)
         {
-            sender.sendMessage(Component.text(String.format("%s は現在オフラインです", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.offline", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
@@ -45,19 +46,19 @@ public class TprCommand implements CommandExecutor, TabCompleter
 
         if (player == toPlayer)
         {
-            sender.sendMessage(Component.text("自分自身に Teleport リクエストを送信することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.tpr.cant-yourself", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (toUser.isBlock(User.getInstance(player)))
         {
-            sender.sendMessage(Component.text("このプレイヤーに Teleport リクエストを送ることはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.tpr.cant", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(TeleportRequest.class, player)))
         {
-            sender.sendMessage(Component.text(String.format("あなたは既に %s に Teleport リクエストを送信しています", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.tpr.already", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 

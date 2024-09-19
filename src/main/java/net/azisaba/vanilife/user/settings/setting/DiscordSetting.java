@@ -1,83 +1,77 @@
 package net.azisaba.vanilife.user.settings.setting;
 
+import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.user.DiscordLinkManager;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.HeadUtility;
-import net.azisaba.vanilife.util.Typing;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
-public class DiscordSetting extends AbstractScopeSetting
+public class DiscordSetting extends ScopeSetting
 {
+    public DiscordSetting(@NotNull User user)
+    {
+        super(user);
+    }
+
     @Override
-    public String getName()
+    public @NotNull String getName()
     {
         return "discord";
     }
 
     @Override
-    public ItemStack getFavicon()
+    public @NotNull ItemStack getIcon()
     {
-        ItemStack faviconStack = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta faviconMeta = (SkullMeta) faviconStack.getItemMeta();
+        ItemStack iconStack = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta iconMeta = (SkullMeta) iconStack.getItemMeta();
 
-        faviconMeta.displayName(Component.text("Discord").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        faviconMeta.lore(this.getLore(Component.text("左クリック: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text("プロフィールでの公開範囲を変更").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)),
-                Component.text("右クリック: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text("Discord ハンドルを変更").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false))));
-        faviconMeta.setPlayerProfile(HeadUtility.getPlayerProfile(HeadUtility.DISCORD));
-        faviconStack.setItemMeta(faviconMeta);
+        iconMeta.setPlayerProfile(HeadUtility.getPlayerProfile(HeadUtility.DISCORD));
+        iconStack.setItemMeta(iconMeta);
 
-        return faviconStack;
+        return iconStack;
     }
 
     @Override
     public void onRightClick(InventoryClickEvent event)
     {
-        new Typing((Player) event.getWhoClicked())
+        Player player = (Player) event.getWhoClicked();
+
+        player.closeInventory();
+
+        if (event.isShiftClick())
         {
-            @Override
-            public void init()
-            {
-                this.player.sendMessage(Component.text("Discord ハンドルを送信してください:").color(NamedTextColor.GREEN));
-                this.player.sendMessage(Component.text("「:」を送信してキャンセル、「!」を入力して削除します").color(NamedTextColor.YELLOW));
-            }
+            User user = User.getInstance(player);
+            user.setDiscord((net.dv8tion.jda.api.entities.User) null);
+            player.sendMessage(Language.translate("settings.discord.unlinked", player).color(NamedTextColor.GREEN));
+            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+            return;
+        }
 
-            @Override
-            public void onTyped(String string)
-            {
-                super.onTyped(string);
+        final String token = DiscordLinkManager.newToken(this.user);
 
-                if (string.equals(":"))
-                {
-                    this.player.sendMessage(Component.text("操作をキャンセルしました").color(NamedTextColor.RED));
-                    return;
-                }
+        player.sendMessage(Component.text().build());
 
-                if (string.equals("!"))
-                {
-                    user.setDiscord(null);
-                    this.player.sendMessage(Component.text("Discord を Profile から削除しました").color(NamedTextColor.RED));
-                    return;
-                }
+        player.sendMessage(Component.text().decorate(TextDecoration.BOLD).append(Language.translate("settings.discord.pls-run-command", player)));
+        player.sendMessage(Component.text("/vanilife-link ").color(NamedTextColor.DARK_GRAY).hoverEvent(HoverEvent.showText(Component.text("クリックしてクリップボードにコピー!"))).clickEvent(ClickEvent.copyToClipboard("/vanilife-link token:" + token)).append(Component.text(token).decorate(TextDecoration.OBFUSCATED)));
 
+        player.sendMessage(Component.text().build());
 
-                string = string.startsWith("@") ? string.substring(1) : string;
+        player.sendMessage(Language.translate("settings.discord.join", player).color(TextColor.color(88, 101, 242)).decorate(TextDecoration.BOLD).hoverEvent(HoverEvent.showText(Component.text("https://discord.gg/azisaba"))).clickEvent(ClickEvent.openUrl("https://discord.gg/azisaba")));
 
-                if (string.length() <= 30)
-                {
-                    User.getInstance(this.player).setDiscord(string);
-                    this.player.sendMessage(Component.text("Discord ハンドルを設定しました").color(NamedTextColor.GREEN));
-                }
-                else
-                {
-                    this.player.sendMessage(Component.text(String.format("%s は無効な Discord ハンドルです", string)).color(NamedTextColor.RED));
-                }
-            }
-        };
+        player.sendMessage(Component.text().build());
+
+        player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
     }
 }

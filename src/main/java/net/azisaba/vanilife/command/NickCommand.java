@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
@@ -39,12 +40,12 @@ public class NickCommand implements CommandExecutor, TabCompleter
         if (args.length == 0)
         {
             user.setNick(null);
-            sender.sendMessage(Component.text("nick をリセットしました").color(NamedTextColor.GREEN));
+            sender.sendMessage(Language.translate("cmd.nick.reset", player).color(NamedTextColor.GREEN));
         }
         else if (args.length == 1)
         {
-            user.setNick(args[0]);
-            sender.sendMessage(Component.text(String.format("%s を nick に設定しました", args[0])).color(NamedTextColor.GREEN));
+            user.setNick("~" + args[0]);
+            sender.sendMessage(Language.translate("cmd.nick.changed", player, "nick=" + args[0]).color(NamedTextColor.GREEN));
         }
         else
         {

@@ -1,14 +1,11 @@
 package net.azisaba.vanilife.util;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.user.subscription.PlotSubscription;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,6 +16,8 @@ import java.util.UUID;
 @Utility
 public class UserUtility
 {
+    public static final UUID UUID_AZISABA = UUID.fromString("8052db20-6fa8-4d26-ac59-30fd04c34f5e");
+
     public static Sara getSara(Player player)
     {
         return User.getInstance(player).getSara();

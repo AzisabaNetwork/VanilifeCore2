@@ -1,55 +1,64 @@
 package net.azisaba.vanilife.user.settings.setting;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.Typing;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class BioSetting implements ISetting
+public class BioSetting extends Setting<String>
 {
-    private User user;
-
-    @Override
-    public void init(User user)
+    public BioSetting(@NotNull User user)
     {
-        this.user = user;
+        super(user);
+
+        if (! this.user.getStorage().has(this.getKey()))
+        {
+            this.write(this.getDefault());
+        }
     }
 
     @Override
-    public String getName()
+    public @NotNull String getName()
     {
         return "bio";
     }
 
     @Override
-    public ItemStack getFavicon()
+    public @NotNull ItemStack getIcon()
     {
-        ItemStack faviconStack = new ItemStack(Material.BOOK);
-        ItemMeta faviconMeta = faviconStack.getItemMeta();
-        faviconMeta.displayName(Component.text("bio").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        faviconMeta.lore(List.of(Component.text("プロフィールに表示する bio を設定する").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
-        faviconStack.setItemMeta(faviconMeta);
-        return faviconStack;
+        return new ItemStack(Material.BOOK);
     }
 
     @Override
-    public void onClick(InventoryClickEvent event)
+    public @NotNull List<Component> getDetails()
+    {
+        return List.of();
+    }
+
+    @Override
+    public String getDefault()
+    {
+        return null;
+    }
+
+    @Override
+    public void onClick(@NotNull InventoryClickEvent event)
     {
         new Typing((Player) event.getWhoClicked())
         {
             @Override
             public void init()
             {
-                this.player.sendMessage(Component.text("bio を送信してください:").color(NamedTextColor.GREEN));
-                this.player.sendMessage(Component.text("「:」を送信してキャンセル、「!」を入力して削除します").color(NamedTextColor.YELLOW));
+                this.player.sendMessage(Language.translate("settings.bio.pls-send-bio", this.player).color(NamedTextColor.GREEN));
+                this.player.sendMessage(Language.translate("settings.bio.pls-send-bio.details", this.player).color(NamedTextColor.YELLOW));
             }
 
             @Override
@@ -59,32 +68,26 @@ public class BioSetting implements ISetting
 
                 if (string.equals(":"))
                 {
-                    this.player.sendMessage(Component.text("操作をキャンセルしました").color(NamedTextColor.RED));
+                    this.player.sendMessage(Language.translate("settings.bio.canceled", this.player).color(NamedTextColor.RED));
                     return;
                 }
 
                 if (string.equals("!"))
                 {
                     user.setBio(null);
-                    this.player.sendMessage(Component.text("bio を Profile から削除しました").color(NamedTextColor.RED));
+                    this.player.sendMessage(Language.translate("settings.bio.deleted", this.player).color(NamedTextColor.RED));
                     return;
                 }
 
                 if (120 < string.length())
                 {
-                    this.player.sendMessage(Component.text("bio は120文字以内で設定してください").color(NamedTextColor.RED));
+                    this.player.sendMessage(Language.translate("settings.bio.limit-over", this.player).color(NamedTextColor.RED));
                     return;
                 }
 
                 user.setBio(string);
-                this.player.sendMessage(Component.text("bio を更新しました").color(NamedTextColor.GREEN));
+                this.player.sendMessage(Language.translate("settings.bio.changed", this.player).color(NamedTextColor.GREEN));
             }
         };
-    }
-
-    @Override
-    public void save()
-    {
-
     }
 }

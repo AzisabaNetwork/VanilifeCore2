@@ -3,6 +3,7 @@ package net.azisaba.vanilife.trade;
 import net.azisaba.vanilife.ui.TradeUI;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -18,11 +19,11 @@ public class TradeSyncRunnable extends BukkitRunnable
     @Override
     public void run()
     {
-        this.sync(this.trade.getUi1(), this.trade.getUi2());
-        this.sync(this.trade.getUi2(), this.trade.getUi1());
+        this.sync(this.trade.getUi1());
+        this.sync(this.trade.getUi2());
     }
 
-    private void sync(TradeUI from, TradeUI to)
+    private void sync(@NotNull TradeUI from)
     {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 

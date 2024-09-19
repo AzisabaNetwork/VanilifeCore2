@@ -3,6 +3,7 @@ package net.azisaba.vanilife.arcade;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.JnknUI;
+import net.azisaba.vanilife.ui.Language;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -98,7 +99,7 @@ public class Jnkn
         player1.closeInventory();
         player2.closeInventory();
 
-        this.broadcast(Component.text("最初はグー…").color(NamedTextColor.DARK_GRAY));
+        this.broadcast("msg.jnkn.ready");
         this.broadcast(Sound.ENTITY_CREEPER_PRIMED, 1.0f, 1.0f);
 
         Player winner = (hand1.weaker == hand2) ? player1 : player2;
@@ -109,11 +110,11 @@ public class Jnkn
             @Override
             public void run()
             {
-                broadcast(Component.text("ジャンケンホイ！").color(NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.BOLD));
+                broadcast("msg.jnkn.go");
 
                 if (hand1 == hand2)
                 {
-                    broadcast(null, null);
+                    broadcast((Player) null, (Player) null);
                     return;
                 }
 
@@ -134,7 +135,7 @@ public class Jnkn
         this.player1.closeInventory();
         this.player2.closeInventory();
 
-        this.broadcast(Component.text("ジャンケンは中止されました！").color(NamedTextColor.RED));
+        this.broadcast("msg.jnkn.cancelled");
     }
 
     private void broadcast(Player winner, Player loser)
@@ -142,33 +143,35 @@ public class Jnkn
         this.broadcast(Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1.0f, 1.0f);
 
         broadcast(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        broadcast(Component.text("JANKEN").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD));
+        this.player1.sendMessage(Language.translate("jnkn.title", this.player1).color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD));
+        this.player2.sendMessage(Language.translate("jnkn.title", this.player2).color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD));
         broadcast(Component.text().build());
 
         if (winner == null || loser == null)
         {
-            broadcast(Component.text("結果: ").color(NamedTextColor.GRAY).append(Component.text("あいこ (仲良し！！)").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD)));
+            this.player1.sendMessage(Language.translate("msg.jnkn.result", this.player1).color(NamedTextColor.GRAY).append(Language.translate("jnkn.result.favour", this.player1).decorate(TextDecoration.BOLD)));
+            this.player2.sendMessage(Language.translate("msg.jnkn.result", this.player2).color(NamedTextColor.GRAY).append(Language.translate("jnkn.result.favour", this.player2).decorate(TextDecoration.BOLD)));
 
-            this.player1.sendMessage(Component.text("あなた: ").color(NamedTextColor.GRAY).append(Component.text(this.hand1.name).color(NamedTextColor.GREEN)));
-            this.player1.sendMessage(Component.text("相手: ").color(NamedTextColor.GRAY).append(Component.text(this.hand2.name).color(NamedTextColor.GREEN)));
-            this.player1.showTitle(Title.title(Component.text("あいこ").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD), Component.text().build()));
+            this.player1.sendMessage(Language.translate("msg.jnkn.me", this.player1).color(NamedTextColor.GRAY).append(Language.translate(this.hand1.name, this.player1).color(NamedTextColor.GREEN)));
+            this.player1.sendMessage(Language.translate("msg.jnkn.partner", this.player1).color(NamedTextColor.GRAY).append(Language.translate(this.hand2.name, this.player2).color(NamedTextColor.GREEN)));
+            this.player1.showTitle(Title.title(Language.translate("jnkn.result.favour", this.player1).color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD), Component.text().build()));
 
-            this.player2.sendMessage(Component.text("あなた: ").color(NamedTextColor.GRAY).append(Component.text(this.hand2.name).color(NamedTextColor.GREEN)));
-            this.player2.sendMessage(Component.text("相手: ").color(NamedTextColor.GRAY).append(Component.text(this.hand1.name).color(NamedTextColor.GREEN)));
-            this.player2.showTitle(Title.title(Component.text("あいこ").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD), Component.text().build()));
+            this.player2.sendMessage(Language.translate("msg.jnkn.me", this.player2).color(NamedTextColor.GRAY).append(Language.translate(this.hand2.name, this.player2).color(NamedTextColor.GREEN)));
+            this.player2.sendMessage(Language.translate("msg.jnkn.partner", this.player2).color(NamedTextColor.GRAY).append(Language.translate(this.hand1.name, this.player2).color(NamedTextColor.GREEN)));
+            this.player2.showTitle(Title.title(Language.translate("jnkn.result.favour", this.player1).color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD), Component.text().build()));
 
             broadcast(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
             return;
         }
 
-        winner.sendMessage(Component.text("結果: ").color(NamedTextColor.GRAY).append(Component.text("勝ち！").color(NamedTextColor.RED).decorate(TextDecoration.BOLD)));
-        winner.sendMessage(Component.text("あなた: ").color(NamedTextColor.GRAY).append(Component.text(this.getHand(winner).name).color(NamedTextColor.GREEN)));
-        winner.sendMessage(Component.text("相手: ").color(NamedTextColor.GRAY).append(Component.text(this.getHand(loser).name).color(NamedTextColor.GREEN)));
+        winner.sendMessage(Language.translate("msg.jnkn.result", winner).color(NamedTextColor.GRAY).append(Language.translate("jnkn.result.victory", winner).color(NamedTextColor.RED).decorate(TextDecoration.BOLD)));
+        winner.sendMessage(Language.translate("msg.jnkn.me", winner).color(NamedTextColor.GRAY).append(Language.translate(this.getHand(winner).name, winner).color(NamedTextColor.GREEN)));
+        winner.sendMessage(Language.translate("msg.jnkn.partner", winner).color(NamedTextColor.GRAY).append(Language.translate(this.getHand(loser).name, winner).color(NamedTextColor.GREEN)));
         winner.showTitle(Title.title(Component.text("VICTORY!").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD), Component.text().build()));
 
-        loser.sendMessage(Component.text("結果: ").color(NamedTextColor.GRAY).append(Component.text("負け").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD)));
-        loser.sendMessage(Component.text("あなた: ").color(NamedTextColor.GRAY).append(Component.text(this.getHand(loser).name).color(NamedTextColor.GREEN)));
-        loser.sendMessage(Component.text("相手: ").color(NamedTextColor.GRAY).append(Component.text(this.getHand(winner).name).color(NamedTextColor.GREEN)));
+        loser.sendMessage(Language.translate("msg.jnkn.result", loser).color(NamedTextColor.GRAY).append(Language.translate("jnkn.result.defeat", loser).color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD)));
+        loser.sendMessage(Language.translate("msg.jnkn.me", loser).color(NamedTextColor.GRAY).append(Language.translate(this.getHand(loser).name, loser).color(NamedTextColor.GREEN)));
+        loser.sendMessage(Language.translate("msg.jnkn.partner", loser).color(NamedTextColor.GRAY).append(Language.translate(this.getHand(winner).name, loser).color(NamedTextColor.GREEN)));
         loser.showTitle(Title.title(Component.text("DEFEAT!").color(NamedTextColor.RED).decorate(TextDecoration.BOLD), Component.text().build()));
 
         broadcast(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
@@ -189,6 +192,12 @@ public class Jnkn
         this.player2.sendMessage(message);
     }
 
+    private void broadcast(@NotNull String key, String... args)
+    {
+        this.player1.sendMessage(Language.translate(key, this.player1, args));
+        this.player2.sendMessage(Language.translate(key, this.player2, args));
+    }
+
     private void broadcast(@NotNull Sound sound, float volume, float pitch)
     {
         this.player1.playSound(this.player1, sound, volume, pitch);
@@ -197,9 +206,9 @@ public class Jnkn
 
     public enum Hand
     {
-        G("グー"),
-        C("チョキ"),
-        P("パー"),
+        G("jnkn.hand.rock"),
+        C("jnkn.hand.scissors"),
+        P("jnkn.hand.paper"),
         UNKNOWN("?");
 
         public final String name;

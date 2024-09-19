@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -38,17 +39,17 @@ public class FeedbackCommand implements CommandExecutor, TabCompleter
 
         if (255 < args[0].length())
         {
-            sender.sendMessage(Component.text("第一引数は255文字以内に収める必要があります").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.feedback.limit-over", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (User.getInstance(player).getStatus() == UserStatus.MUTED)
         {
-            sender.sendMessage(Component.text("あなたは現在ミュートされています").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.muted", player).color(NamedTextColor.RED));
             return true;
         }
 
-        Vanilife.channel.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("フィードバック")
                 .setDescription(Vanilife.ROLE_DEVELOPER.getAsMention() + args[0])
                 .addField("送信者", String.format("%s (%s)", player.getName(), player.getUniqueId()), false)
@@ -57,9 +58,9 @@ public class FeedbackCommand implements CommandExecutor, TabCompleter
 
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
 
-        sender.sendMessage(Component.text("フィードバックをありがとうございました！").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
-        sender.sendMessage(Component.text("お寄せいただいたフィードバックは開発者が直接確認させていただき、ユーザー体験向上に努めて参ります。").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
-        sender.sendMessage(Component.text("今後ともばにらいふ！をよろしくお願いいたします。").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+        sender.sendMessage(Language.translate("cmd.feedback.thank-you.1", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+        sender.sendMessage(Language.translate("cmd.feedback.thank-you.2", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+        sender.sendMessage(Language.translate("cmd.feedback.thank-you.3", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
         return true;
     }
 

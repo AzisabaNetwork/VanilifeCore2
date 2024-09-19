@@ -2,6 +2,8 @@
 
  © 2024 Azisaba All Rights Reserved.
 
+ Developed by @tksimeji.
+
 **/
 
 package net.azisaba.vanilife;
@@ -9,6 +11,8 @@ package net.azisaba.vanilife;
 import net.azisaba.vanilife.command.*;
 import net.azisaba.vanilife.command.discord.MconsoleCommand;
 import net.azisaba.vanilife.command.discord.MetubotCommand;
+import net.azisaba.vanilife.command.discord.VanilifeLinkCommand;
+import net.azisaba.vanilife.command.discord.VanilifeUnlinkCommand;
 import net.azisaba.vanilife.command.filter.FilterCommand;
 import net.azisaba.vanilife.command.mola.MolaCommand;
 import net.azisaba.vanilife.command.plot.PlotCommand;
@@ -17,23 +21,32 @@ import net.azisaba.vanilife.command.vwm.VwmCommand;
 import net.azisaba.vanilife.listener.*;
 import net.azisaba.vanilife.runnable.PlayingRewardRunnable;
 import net.azisaba.vanilife.service.ServiceManager;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.util.ChatFilter;
-import net.azisaba.vanilife.util.PlotUtility;
 import net.azisaba.vanilife.util.SqlUtility;
-import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.vc.VoiceChatListener;
+import net.azisaba.vanilife.vc.VoiceChatRunnable;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import okhttp3.OkHttpClient;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.SimpleDateFormat;
@@ -52,8 +65,11 @@ public final class Vanilife extends JavaPlugin
     public static final OkHttpClient httpclient = new OkHttpClient();
 
     public static JDA jda;
-    public static Guild server;
-    public static TextChannel channel;
+    public static Guild publicServer;
+    public static Guild privateServer;
+    public static VoiceChannel voiceChatChannel;
+    public static TextChannel consoleChannel;
+    public static Category category;
 
     public static ChatFilter filter;
 
@@ -114,6 +130,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("friend").setExecutor(new FriendCommand());
         this.getCommand("friendlist").setExecutor(new FriendListCommand());
         this.getCommand("jnkn").setExecutor(new JnknCommand());
+        this.getCommand("language").setExecutor(new LanguageCommand());
         this.getCommand("mail").setExecutor(new MailCommand());
         this.getCommand("mola").setExecutor(new MolaCommand());
         this.getCommand("mute").setExecutor(new MuteCommand());
@@ -126,6 +143,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("sara").setExecutor(new SaraCommand());
         this.getCommand("service").setExecutor(new ServiceCommand());
         this.getCommand("settings").setExecutor(new SettingsCommand());
+        this.getCommand("stamp").setExecutor(new StampCommand());
         this.getCommand("store").setExecutor(new StoreCommand());
         this.getCommand("subscribe").setExecutor(new SubscribeCommand());
         this.getCommand("tpa").setExecutor(new TpaCommand());
@@ -141,18 +159,24 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("worlds").setExecutor(new WorldsCommand());
 
         this.saveDefaultConfig();
+        this.saveResource("lang/en-us.json", true);
+        this.saveResource("lang/ja-jp.json", true);
         this.saveResource("service/checkout.yml", false);
         this.saveResource("service/vwm-backup.yml", false);
         this.saveResource("service/vwm-reset.yml", false);
         this.saveResource("vwm/vwm.json", false);
 
         SqlUtility.jdbc("org.mariadb.jdbc.Driver");
+        Language.mount();
         ServiceManager.mount();
 
-        Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).build();
+        Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).setActivity(Activity.playing("azisaba.net")).build();
         Vanilife.jda.addEventListener(new DiscordListener());
+        Vanilife.jda.addEventListener(new VoiceChatListener());
         Vanilife.jda.addEventListener(new MconsoleCommand());
         Vanilife.jda.addEventListener(new MetubotCommand());
+        Vanilife.jda.addEventListener(new VanilifeLinkCommand());
+        Vanilife.jda.addEventListener(new VanilifeUnlinkCommand());
 
         Vanilife.DB_URL = this.getConfig().getString("database.url");
         Vanilife.DB_USER = this.getConfig().getString("database.user");
@@ -163,9 +187,14 @@ public final class Vanilife extends JavaPlugin
 
         Vanilife.filter = new ChatFilter();
         VanilifeWorldManager.mount();
-        UserUtility.mount();
-        PlotUtility.mount();
         new PlayingRewardRunnable().runTaskLater(Vanilife.getPlugin());
+        new VoiceChatRunnable().runTaskTimerAsynchronously(Vanilife.getPlugin(), 0L, 20L * 2);
+
+        ShapedRecipe elytraRecipe = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA));
+        elytraRecipe.shape("PNP", "P P", "P P");
+        elytraRecipe.setIngredient('P', Material.PHANTOM_MEMBRANE);
+        elytraRecipe.setIngredient('N', Material.NETHERITE_INGOT);
+        Bukkit.addRecipe(elytraRecipe);
     }
 
     @Override

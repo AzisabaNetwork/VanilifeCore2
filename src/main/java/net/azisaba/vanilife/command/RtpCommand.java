@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -34,11 +35,11 @@ public class RtpCommand implements CommandExecutor, TabCompleter
 
         if (world == null)
         {
-            sender.sendMessage(Component.text("ワールドが見つかりませんでした").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.rtp.not-found", player).color(NamedTextColor.RED));
             return true;
         }
 
-        sender.sendMessage(Component.text("テレポート可能な場所を検索中…").color(NamedTextColor.GREEN));
+        sender.sendMessage(Language.translate("cmd.rtp.searching", player).color(NamedTextColor.GREEN));
         world.getTeleporter().teleport(player);
         return true;
     }

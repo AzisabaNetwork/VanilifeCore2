@@ -24,7 +24,7 @@ public class PlayingRewardRunnable extends BukkitRunnable
         for (Player player : Bukkit.getOnlinePlayers())
         {
             User user = User.getInstance(player);
-            user.setMola(user.getMola() + 5, "プレイ時間", NamedTextColor.GREEN);
+            user.setMola(user.getMola() + 5, "reward.category.played-time", NamedTextColor.GREEN);
         }
 
         new PlayingRewardRunnable().runTaskLater(Vanilife.getPlugin(), PlayingRewardRunnable.getLaterTicks());

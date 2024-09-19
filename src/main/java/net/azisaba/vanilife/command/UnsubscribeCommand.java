@@ -1,8 +1,10 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.subscription.ISubscription;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.Typing;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -37,7 +39,7 @@ public class UnsubscribeCommand implements CommandExecutor, TabCompleter
 
         if (subscription == null)
         {
-            sender.sendMessage(Component.text(args[0] + " は未定義の Subscription です").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.unsubscribe.undefined", player, "subscription=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
@@ -45,7 +47,7 @@ public class UnsubscribeCommand implements CommandExecutor, TabCompleter
 
         if (! user.hasSubscription(subscription))
         {
-            sender.sendMessage(Component.text("この Subscription を購入していません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.unsubscribe.already", player).color(NamedTextColor.RED));
             return true;
         }
 
@@ -57,8 +59,8 @@ public class UnsubscribeCommand implements CommandExecutor, TabCompleter
             public void init()
             {
                 this.confirmCode = this.getConfirmCode(6);
-                this.player.sendMessage(Component.text(subscription.getDisplayName() + " を解約しますか？既に支払った料金は返金されません！").color(NamedTextColor.GREEN));
-                this.player.sendMessage(Component.text("確認: " + this.confirmCode + " をチャットに送信してください").color(NamedTextColor.YELLOW));
+                this.player.sendMessage(Language.translate("cmd.unsubscribe.check", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.GREEN));
+                this.player.sendMessage(Language.translate("cmd.unsubscribe.check.details", this.player, "code=" + this.confirmCode).color(NamedTextColor.YELLOW));
             }
 
             @Override
@@ -69,11 +71,11 @@ public class UnsubscribeCommand implements CommandExecutor, TabCompleter
                 if (string.equals(this.confirmCode))
                 {
                     user.unsubscribe(subscription);
-                    sender.sendMessage(Component.text(subscription.getDisplayName() + " を解約しました").color(NamedTextColor.GREEN));
+                    sender.sendMessage(Language.translate("cmd.unsubscribe.unsubscribed", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.GREEN));
                 }
                 else
                 {
-                    sender.sendMessage(Component.text(subscription.getDisplayName() + " の解約をキャンセルしました").color(NamedTextColor.RED));
+                    sender.sendMessage(Language.translate("cmd.unsubscribe.canceled", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.RED));
                 }
             }
         };

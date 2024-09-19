@@ -76,7 +76,7 @@ public class VanilifeWorld
         this.nether = this.mount(levels.get("nether").getAsString(), World.Environment.NETHER);
         this.end = this.mount(levels.get("end").getAsString(), World.Environment.THE_END);
 
-        this.teleporter = new RandomTeleporter(this.overworld, 320, Material.LAVA, Material.WATER, Material.FIRE);
+        this.teleporter = new RandomTeleporter(this.overworld, 1200, Material.LAVA, Material.WATER, Material.FIRE);
         VanilifeWorld.instances.add(this);
     }
 
@@ -229,7 +229,7 @@ public class VanilifeWorld
 
         FileUtility.cpdir(Paths.get(String.format("./%s", this.name)), backupPath);
 
-        Vanilife.channel.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle(String.format("ワールド %s のバックアップに成功しました", this.name))
                 .setFooter("以前のバックアップは削除されます")
                 .setColor(new Color(85, 255, 85))

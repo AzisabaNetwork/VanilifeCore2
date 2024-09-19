@@ -1,22 +1,26 @@
 package net.azisaba.vanilife.user.settings.setting;
 
-import net.azisaba.vanilife.user.User;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public interface ISetting
+import java.io.Serializable;
+import java.util.List;
+
+public interface ISetting<T extends Serializable>
 {
-    void init(User user);
+    @NotNull String getName();
 
-    void save();
+    @NotNull ItemStack getIcon();
 
-    String getName();
+    @NotNull List<Component> getDetails();
 
-    ItemStack getFavicon();
+    T getDefault();
 
-    void onClick(InventoryClickEvent event);
+    default void onClick(@NotNull InventoryClickEvent event) {}
 
-    default void onLeftClick(InventoryClickEvent event) {}
+    default void onLeftClick(@NotNull InventoryClickEvent event) {}
 
-    default void onRightClick(InventoryClickEvent event) {}
+    default void onRightClick(@NotNull InventoryClickEvent event) {}
 }

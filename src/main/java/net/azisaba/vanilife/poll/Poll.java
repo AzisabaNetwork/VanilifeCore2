@@ -2,6 +2,7 @@ package net.azisaba.vanilife.poll;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.CLI;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -63,13 +64,13 @@ public class Poll
             player.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.LIGHT_PURPLE));
             player.sendMessage(Component.text(CLI.getSpaces(1) + "VOTE").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD));
             player.sendMessage(Component.text(CLI.getSpaces(2)).append(this.owner.displayName()).append(Component.text(" さんが投票を開始しました！")).decorate(TextDecoration.BOLD));
-            player.sendMessage(Component.text(CLI.getSpaces(2) + (this.multiple ? "複数回答可" : "複数回答不可")).color(this.multiple ? NamedTextColor.GREEN : NamedTextColor.RED).append(Component.text(CLI.getSpaces(2) + (this.anonymity ? "匿名" : "実名")).color(this.anonymity ? NamedTextColor.GREEN : NamedTextColor.RED)).append(Component.text(String.format("  %s 秒後に終了", this.limit)).color(NamedTextColor.YELLOW)));
+            player.sendMessage(Component.text(CLI.getSpaces(2)).append((this.multiple ? Language.translate("poll.multiple.true", player) : Language.translate("poll.multiple.false", player)).color(this.multiple ? NamedTextColor.GREEN : NamedTextColor.RED)).append(Component.text(CLI.getSpaces(2)).append((this.anonymity ? Language.translate("poll.anonymity.true", player) : Language.translate("poll.anonymity.false", player)).color(this.anonymity ? NamedTextColor.GREEN : NamedTextColor.RED))).append(Component.text(CLI.getSpaces(2)).append(Language.translate("poll.limit", player, "limit=" + limit).color(NamedTextColor.YELLOW))));
             player.sendMessage(Component.text());
             player.sendMessage(Component.text(CLI.getSpaces(1) + "OPTIONS:").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
 
             for (VoteOption option : this.options)
             {
-                player.sendMessage(Component.text(CLI.getSpaces(2) + option.getName()).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.runCommand(String.format("/vote %s %s", this.id.toString(), option.getName()))).hoverEvent(HoverEvent.showText(Component.text(String.format("クリックして %s に投票", option.getName())))));
+                player.sendMessage(Component.text(CLI.getSpaces(2) + option.getName()).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.runCommand(String.format("/vote %s %s", this.id.toString(), option.getName()))).hoverEvent(HoverEvent.showText(Language.translate("poll.click-to-vote", player, "option=" + option.getName()))));
             }
 
             player.sendMessage(Component.text());
@@ -125,14 +126,14 @@ public class Poll
             }
 
             player.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.LIGHT_PURPLE));
-            player.sendMessage(Component.text(CLI.getSpaces(1) + "投票の終了").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+            player.sendMessage(Component.text(CLI.getSpaces(1)).append(Language.translate("poll.end", player)).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
             player.sendMessage(Component.text());
 
             for (int i = 0; i < ranking.size(); i ++)
             {
                 VoteOption option = ranking.get(i);
 
-                player.sendMessage(Component.text(CLI.getSpaces(2) + (i + 1) + "位 ").color((i == 0) ? NamedTextColor.GOLD : NamedTextColor.GRAY).append(Component.text(option.getName()).color(NamedTextColor.WHITE).append(Component.text(String.format(" (%S 票)", option.getVoters().size())).color(NamedTextColor.DARK_GRAY))));
+                player.sendMessage(Component.text(CLI.getSpaces(2)).append(Language.translate("poll.rank", player, "rank=" + (i + 1))).color((i == 0) ? NamedTextColor.GOLD : NamedTextColor.GRAY).append(Component.text(option.getName()).color(NamedTextColor.WHITE).append(Component.text(CLI.getSpaces(1))).append(Language.translate("poll.vote-tally", player, "vote-tally=" + option.getVoters().size())).color(NamedTextColor.DARK_GRAY)));
 
                 if (! this.anonymity)
                 {
@@ -156,14 +157,14 @@ public class Poll
 
         if (voteOption == null)
         {
-            player.sendMessage(Component.text(option + " は未定義の投票オプションです").color(NamedTextColor.RED));
+            player.sendMessage(Language.translate("poll.option.undefined", player, "option=" + option).color(NamedTextColor.RED));
             return;
         }
 
         if (voteOption.isVoter(player))
         {
             voteOption.unVote(player);
-            player.sendMessage(Component.text(option + " のへ投票をキャンセルしました").color(NamedTextColor.GREEN));
+            player.sendMessage(Language.translate("poll.option.canceled", player, "option=" + option).color(NamedTextColor.GREEN));
             return;
         }
 
@@ -173,7 +174,7 @@ public class Poll
         }
 
         voteOption.vote(player);
-        player.sendMessage(Component.text("投票先: ").color(NamedTextColor.GRAY).append(Component.text(option).color(NamedTextColor.GREEN)));
+        player.sendMessage(Language.translate("poll.to", player).color(NamedTextColor.GRAY).append(Component.text(option).color(NamedTextColor.GREEN)));
         player.playSound(player, Sound.UI_BUTTON_CLICK, 1.0f, 1.4f);
     }
 }

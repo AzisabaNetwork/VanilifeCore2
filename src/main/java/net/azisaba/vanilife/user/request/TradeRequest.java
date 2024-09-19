@@ -2,6 +2,8 @@ package net.azisaba.vanilife.user.request;
 
 import net.azisaba.vanilife.trade.Trade;
 import net.azisaba.vanilife.ui.CLI;
+import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -15,18 +17,17 @@ public class TradeRequest extends Request
     {
         super(from, to);
 
-        from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        from.sendMessage(Component.text("").append(to.displayName())
-                .append(Component.text(" を Trade に招待しました！承認の有効期限は ").color(NamedTextColor.YELLOW)
-                .append(Component.text(this.getTicks() / 20).color(NamedTextColor.RED))
-                .append(Component.text(" 秒です。").color(NamedTextColor.YELLOW))));
-        from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        final int limit = (int) this.getTicks() / 20;
 
-        to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        to.sendMessage(Component.text("").append(from.displayName()).append(Component.text(" があなたを Trade に招待しました！").color(NamedTextColor.YELLOW)));
-        to.sendMessage(Component.text("承認の有効期限は ").color(NamedTextColor.YELLOW).append(Component.text(this.getTicks() / 20).color(NamedTextColor.RED)).append(Component.text(" 秒です。"))
-                .append(Component.text("こちらをクリックして参加！").color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/trade %s", from.getName()))).hoverEvent(HoverEvent.showText(Component.text(String.format("クリックして /trade %s を実行", from.getName()))))));
-        to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        this.from.sendMessage(Language.translate("msg.trade.requested", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "limit=" + limit));
+        this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+
+        this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        this.to.sendMessage(Language.translate("msg.trade.received", this.to, "name=" + ComponentUtility.getAsString(this.getFromUser().getName())));
+        this.to.sendMessage(Language.translate("msg.trade.received.details", this.to, "limit=" + limit)
+                .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/trade %s", from.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=/trade " + this.from.getName())))));
+        this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 
     @Override
@@ -54,8 +55,7 @@ public class TradeRequest extends Request
     {
         super.onTimeOver();
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Component.text(this.getTicks() / 20).color(NamedTextColor.RED)
-                .append(Component.text(String.format(" 秒が経過したため、%s への Trade 申請は無効になりました", this.to.getName())).color(NamedTextColor.YELLOW)));
+        this.from.sendMessage(Language.translate("msg.trade.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.getAsString(this.toUser.getName())));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 }

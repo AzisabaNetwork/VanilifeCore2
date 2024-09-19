@@ -1,8 +1,10 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,7 +38,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter
 
         if (world == null)
         {
-            sender.sendMessage(Component.text(String.format("%s は未定義のワールドです", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.world.undefined", player, "world=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
@@ -49,7 +51,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter
 
         player.teleport(world.getLocation(player));
 
-        player.sendMessage(Component.text(String.format("%s にテレポートしました！", args[0])).color(NamedTextColor.GREEN));
+        player.sendMessage(Language.translate("cmd.world.teleported", player, "world=" + args[0]).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         return true;
     }

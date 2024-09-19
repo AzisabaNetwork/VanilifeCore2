@@ -1,10 +1,12 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.MathUtility;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -15,11 +17,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MailCommand implements CommandExecutor, TabCompleter
 {
@@ -59,7 +63,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull final String[] args)
     {
         if (! (sender instanceof Player player))
         {
@@ -75,22 +79,17 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
         User from = User.getInstance(player);
 
-        if (args.length == 0)
-        {
-            args = new String[] {"1"};
-        }
-
         if (args.length == 1 && ! MathUtility.isInt(args[0]))
         {
             sender.sendMessage(Component.text("The argument page must be an integer.").color(NamedTextColor.RED));
             return true;
         }
 
-        if (args.length == 1)
+        if (args.length <= 1)
         {
             List<Mail> mails = from.getMails();
 
-            int page = Integer.valueOf(args[0]);
+            int page = args.length == 1 ? Integer.parseInt(args[0]) : 0;
             int pages = mails.size() / 8 + ((mails.size() % 8 != 0) ? 1 : 0);
 
             sender.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
@@ -101,16 +100,16 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
             if (page <= 0 || pages < page)
             {
-                sender.sendMessage(Component.text("しーん…ここには何もないようです").color(NamedTextColor.GRAY));
+                sender.sendMessage(Language.translate("cmd.mail.empty", player).color(NamedTextColor.GRAY));
             }
             else
             {
                 for (Mail mail: mails.subList((page - 1) * 8, Math.min(page * 8, mails.size())))
                 {
                     sender.sendMessage(Component.text(Vanilife.sdf1.format(mail.getDate()) + " ").color(NamedTextColor.GRAY)
-                            .append(Component.text(mail.isRead() ? "既読 " : "未読 ").color(mail.isRead() ? NamedTextColor.GREEN : NamedTextColor.RED))
+                            .append((mail.isRead() ? Language.translate("cmd.mail.read", player) : Language.translate("cmd.mail.unread", player)).color(mail.isRead() ? NamedTextColor.GREEN : NamedTextColor.RED))
                             .append(Component.text((mail.getFrom() == from) ? "To: " + mail.getTo().getPlaneName() + " " : "From: " + mail.getFrom().getPlaneName() + " ").color(NamedTextColor.WHITE)
-                            .append(Component.text("件名: " + mail.getSubject()).color(NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(MailCommand.getComponent(mail))))));
+                            .append(Language.translate("cmd.mail.subject", player).append(Component.text(mail.getSubject()).color(NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(MailCommand.getComponent(mail)))))));
 
                     if (mail.getTo() == from)
                     {
@@ -123,30 +122,52 @@ public class MailCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        User to = User.getInstance(args[0]);
-        String subject = (args.length == 3) ? args[1] : "件名なし";
-        String message = (args.length == 3) ? args[2] : args[1];
-
-        if (! to.getSettings().mailSetting.isWithinScope(from) || to.isBlock(from))
+        new BukkitRunnable()
         {
-            sender.sendMessage(Component.text(String.format("%s にメールを送信することはできません", to.getPlaneName())).color(NamedTextColor.RED));
-            return true;
-        }
+            @Override
+            public void run()
+            {
+                UUID uuid = Bukkit.getPlayerUniqueId(args[0]);
 
-        if (16 < subject.length())
-        {
-            sender.sendMessage(Component.text("件名を16文字以上に設定することはできません").color(NamedTextColor.RED));
-            return true;
-        }
+                if (uuid == null)
+                {
+                    sender.sendMessage(Language.translate("msg.not-found.player", player, "name=" + args[0]).color(NamedTextColor.RED));
+                    return;
+                }
 
-        if (250 < message.length())
-        {
-            sender.sendMessage(Component.text("本文を250文字以上に設定することはできません").color(NamedTextColor.RED));
-            return true;
-        }
+                if (! UserUtility.exists(uuid))
+                {
+                    sender.sendMessage(Language.translate("msg.not-found.user", player, "name=" + args[0]).color(NamedTextColor.RED));
+                    return;
+                }
 
-        new Mail(from, to, subject, message.replace("\n", "\\n"));
-        sender.sendMessage(Component.text(String.format("%s にメールを送信しました", args[0])).color(NamedTextColor.GREEN));
+                User to = User.getInstance(args[0]);
+                String subject = (args.length == 3) ? args[1] : "件名なし";
+                String message = (args.length == 3) ? args[2] : args[1];
+
+                if (! to.getSettings().MAIL.isWithinScope(from) || to.isBlock(from))
+                {
+                    sender.sendMessage(Language.translate("cmd.mail.cant", player, "name=" + to.getPlaneName()).color(NamedTextColor.RED));
+                    return;
+                }
+
+                if (16 < subject.length())
+                {
+                    sender.sendMessage(Language.translate("cmd.mail.limit-over.subject", player).color(NamedTextColor.RED));
+                    return;
+                }
+
+                if (250 < message.length())
+                {
+                    sender.sendMessage(Language.translate("cmd.mail.limit-over.message", player).color(NamedTextColor.RED));
+                    return;
+                }
+
+                new Mail(from, to, subject, message.replace("\n", "\\n"));
+                sender.sendMessage(Language.translate("cmd.mail.sent", player, "name=" + to.getPlaneName()).color(NamedTextColor.GREEN));
+            }
+        }.runTaskAsynchronously(Vanilife.getPlugin());
+
         return true;
     }
 
@@ -162,12 +183,12 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 2)
         {
-            suggest.add("件名…");
+            suggest.add("[subject] / <message>");
         }
 
         if (args.length == 3)
         {
-            suggest.add("本文…");
+            suggest.add("<message>");
         }
 
         return suggest;

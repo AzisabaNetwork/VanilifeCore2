@@ -47,7 +47,7 @@ public class Report
         this.sender = sender;
         this.details = details;
         this.date = new Date();
-        this.location = sender.getAsOfflinePlayer().getPlayer().getLocation();
+        this.location = sender.getAsPlayer().getLocation();
 
         EmbedBuilder builder = new EmbedBuilder()
                 .setAuthor(sender.getPlaneName(), null, String.format("https://api.mineatar.io/face/%s", sender.getId().toString().replace("-", "")))
@@ -58,7 +58,7 @@ public class Report
                 .setFooter("サポートを発行するにはこのメッセージに返信してください")
                 .setColor(Color.YELLOW);
 
-        Vanilife.channel.sendMessageEmbeds(builder.build()).queue(message -> {
+        Vanilife.consoleChannel.sendMessageEmbeds(builder.build()).queue(message -> {
             this.controller = message;
 
             try
@@ -112,7 +112,7 @@ public class Report
             this.location = new Location(Bukkit.getWorld(rs.getString("world")), rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
             this.date = Vanilife.sdf1.parse(rs.getString("date"));
 
-            Vanilife.channel.retrieveMessageById(rs.getString("controller")).queue(message -> {
+            Vanilife.consoleChannel.retrieveMessageById(rs.getString("controller")).queue(message -> {
                 this.controller = message;
             });
 

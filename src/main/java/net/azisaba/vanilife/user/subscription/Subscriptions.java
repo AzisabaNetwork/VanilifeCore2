@@ -11,6 +11,8 @@ public class Subscriptions
 
     private static final List<ISubscription> products = new ArrayList<>();
 
+    public static HeartStampSubscription HEART_STAMP = (HeartStampSubscription) Subscriptions.register(new HeartStampSubscription());
+
     public static NeonSubscription NEON = (NeonSubscription) Subscriptions.register(new NeonSubscription());
 
     private static ISubscription register(@NotNull ISubscription subscription)

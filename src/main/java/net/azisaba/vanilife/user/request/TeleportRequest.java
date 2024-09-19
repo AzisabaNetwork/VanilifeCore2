@@ -1,6 +1,8 @@
 package net.azisaba.vanilife.user.request;
 
 import net.azisaba.vanilife.ui.CLI;
+import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -15,18 +17,17 @@ public class TeleportRequest extends Request
     {
         super(from, to);
 
-        from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        from.sendMessage(Component.text("").append(to.displayName())
-                .append(Component.text(" に Teleport リクエストを送信しました！承認の有効期限は ").color(NamedTextColor.YELLOW)
-                        .append(Component.text(this.getTicks() / 20).color(NamedTextColor.RED))
-                        .append(Component.text(" 秒です。").color(NamedTextColor.YELLOW))));
-        from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        final int limit = (int) this.getTicks() / 20;
 
-        to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        to.sendMessage(Component.text("").append(from.displayName()).append(Component.text(" から Teleport リクエストが届きました！").color(NamedTextColor.YELLOW)));
-        to.sendMessage(Component.text("承認の有効期限は ").color(NamedTextColor.YELLOW).append(Component.text(this.getTicks() / 20).color(NamedTextColor.RED)).append(Component.text(" 秒です。"))
-                .append(Component.text("こちらをクリックして参加！").color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/tpa %s", from.getName()))).hoverEvent(HoverEvent.showText(Component.text(String.format("クリックして /tpa %s を実行", from.getName()))))));
-        to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        this.from.sendMessage(Language.translate("msg.teleport.requested", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "limit=" + limit));
+        this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+
+        this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
+        this.to.sendMessage(Language.translate("msg.teleport.received", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.to.sendMessage(Language.translate("msg.teleport.received.details", this.to, "limit=" + limit)
+                .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/tpa %s", from.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.from, "command=/tpa " + this.from.getName())))));
+        this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 
     @Override
@@ -49,8 +50,8 @@ public class TeleportRequest extends Request
 
         this.from.teleport(this.to.getLocation());
 
-        this.from.sendMessage(Component.text(String.format("%s にテレポートしました！", this.to.getName())).color(NamedTextColor.GREEN));
-        this.to.sendMessage(Component.text(String.format("%s のテレポートを承認しました！", this.from.getName())).color(NamedTextColor.GREEN));
+        this.from.sendMessage(Language.translate("msg.teleport.teleported", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName())));
+        this.to.sendMessage(Language.translate("msg.teleport.accept", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
 
         this.from.playSound(this.from, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.2f);
         this.to.playSound(this.to, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.2f);
@@ -61,8 +62,7 @@ public class TeleportRequest extends Request
     {
         super.onTimeOver();
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Component.text(this.getTicks() / 20).color(NamedTextColor.RED)
-                .append(Component.text(String.format(" 秒が経過したため、%s への Teleport リクエストは無効になりました", this.to.getName())).color(NamedTextColor.YELLOW)));
+        this.from.sendMessage(Language.translate("msg.teleport.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.getAsString(this.toUser.getName())));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 }

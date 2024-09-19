@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.ui.CLI;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.MathUtility;
 import net.kyori.adventure.text.Component;
@@ -30,7 +31,7 @@ public class FriendListCommand implements CommandExecutor, TabCompleter
 
         if (1 < args.length)
         {
-            sender.sendMessage(Component.text("Correct syntax: /friendlist [page]").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + label + " [page]").color(NamedTextColor.RED));
             return true;
         }
 
@@ -51,7 +52,7 @@ public class FriendListCommand implements CommandExecutor, TabCompleter
 
         if (page <= 0 || pages < page)
         {
-            sender.sendMessage(Component.text("表示できるものはありません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.friendlist.empty", player).color(NamedTextColor.RED));
             return true;
         }
 

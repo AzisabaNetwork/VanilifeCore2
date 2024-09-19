@@ -97,7 +97,7 @@ public class EntityListener implements Listener
         if (player != null && Vanilife.random.nextDouble() < 0.05)
         {
             User user = User.getInstance(player);
-            user.setMola(user.getMola() + 3, "キル", NamedTextColor.LIGHT_PURPLE);
+            user.setMola(user.getMola() + 3, "reward.category.kill", NamedTextColor.LIGHT_PURPLE);
         }
     }
 }

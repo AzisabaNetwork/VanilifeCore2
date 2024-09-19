@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.poll.Poll;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.ui.PollUI;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
@@ -37,31 +38,31 @@ public class PollCommand implements CommandExecutor, TabCompleter
 
         if (! UserUtility.isModerator(player) && Poll.getInstance(player) != null)
         {
-            sender.sendMessage(Component.text("あなたは既に投票を作成しています、一度に作成できるのは一つまでです").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.poll.already", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (User.getInstance(player).getStatus() != UserStatus.DEFAULT)
         {
-            sender.sendMessage(Component.text("あなたは現在このコマンドを使用することができません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.poll.cant", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (Arrays.stream(args).anyMatch(a -> a.contains(" ") || a.contains("　")))
         {
-            sender.sendMessage(Component.text("投票オプションに空白文字を含めることはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.poll.cant-include.space", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (Arrays.stream(args).distinct().count() != args.length)
         {
-            sender.sendMessage(Component.text("重複したオプションを作成することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.poll.cant-duplicate", player).color(NamedTextColor.RED));
             return true;
         }
 
         if (8 < args.length)
         {
-            sender.sendMessage(Component.text("投票オプションを8個以上作成することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.poll.limit-over", player).color(NamedTextColor.RED));
             return true;
         }
 

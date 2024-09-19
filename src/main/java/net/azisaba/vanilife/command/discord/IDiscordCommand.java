@@ -8,7 +8,7 @@ public interface IDiscordCommand
 {
     @NotNull String getName();
 
-    void install(Guild server);
+    void install(@NotNull Guild server);
 
-    void onCommand(SlashCommandInteractionEvent event);
+    void onCommand(@NotNull SlashCommandInteractionEvent event);
 }

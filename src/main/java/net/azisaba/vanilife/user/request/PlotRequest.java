@@ -15,7 +15,7 @@ public class PlotRequest extends Request
 
     public PlotRequest(@NotNull Player from, @NotNull Plot to)
     {
-        super(from, to.getOwner().getAsOfflinePlayer().getPlayer());
+        super(from, to.getOwner().getAsPlayer());
 
         this.plot = to;
 

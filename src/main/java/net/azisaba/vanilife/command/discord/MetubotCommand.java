@@ -30,9 +30,14 @@ public class MetubotCommand extends DiscordCommand
     }
 
     @Override
-    public void install(Guild server)
+    public void install(@NotNull Guild server)
     {
-        server.upsertCommand(this.getName(), "ベータ版: (*'▽') metubotを使用してキャプチャを取得します。")
+        if (server != Vanilife.privateServer)
+        {
+            return;
+        }
+
+        server.upsertCommand(this.getName(), "ベータ版: (*'▽') metubotを使用してキャプチャを取得します")
                 .addOption(OptionType.STRING, "world", "ワールド名", true)
                 .addOption(OptionType.INTEGER, "x", "x座標", true)
                 .addOption(OptionType.INTEGER, "y", "y座標", true)
@@ -42,7 +47,7 @@ public class MetubotCommand extends DiscordCommand
     }
 
     @Override
-    public void onCommand(SlashCommandInteractionEvent event)
+    public void onCommand(@NotNull SlashCommandInteractionEvent event)
     {
         if (! event.getMember().getRoles().contains(Vanilife.ROLE_SUPPORT))
         {
@@ -118,7 +123,7 @@ public class MetubotCommand extends DiscordCommand
                     File tempFile = File.createTempFile(String.format("%s-%s-%s-%s", world.getName(), x, y, z), ".png");
                     Files.write(tempFile.toPath(), response.body().bytes());
 
-                    Vanilife.channel.sendMessageEmbeds(new EmbedBuilder()
+                    Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
                             .setTitle("キャプチャを取得しました")
                             .setFooter("この機能はベータ版です、適切なキャプチャではない可能性があります")
                             .addField("座標", location.toString(), true)

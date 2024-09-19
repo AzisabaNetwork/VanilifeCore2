@@ -34,22 +34,22 @@ public class BlockListener implements Listener
 
             if (Materials.MINING.contains(block.getType()) && Vanilife.random.nextDouble() < (Materials.ORES.contains(block.getType()) ? 0.24 : 0.1))
             {
-                user.setMola(user.getMola() + (Materials.ORES.contains(block.getType()) ? 2 : 1), "採掘", NamedTextColor.YELLOW);
+                user.setMola(user.getMola() + (Materials.ORES.contains(block.getType()) ? 2 : 1), "reward.category.mining", NamedTextColor.YELLOW);
             }
 
             if (Materials.LOGGING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.2)
             {
-                user.setMola(user.getMola() + 3, "伐採", NamedTextColor.YELLOW);
+                user.setMola(user.getMola() + 3, "reward.category.logging", NamedTextColor.YELLOW);
             }
 
             if (Materials.SEICHI.contains(block.getType()) && Vanilife.random.nextDouble() < 0.05)
             {
-                user.setMola(user.getMola() + 4, "聖地の整地", NamedTextColor.YELLOW);
+                user.setMola(user.getMola() + 4, "reward.category.seichi", NamedTextColor.YELLOW);
             }
 
             if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.1)
             {
-                user.setMola(user.getMola() + 2, "農業", NamedTextColor.YELLOW);
+                user.setMola(user.getMola() + 2, "reward.category.farming", NamedTextColor.YELLOW);
             }
         }
     }

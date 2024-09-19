@@ -21,14 +21,19 @@ public class MconsoleCommand extends DiscordCommand
     }
 
     @Override
-    public void install(Guild server)
+    public void install(@NotNull Guild server)
     {
-        server.upsertCommand(this.getName(), "任意のMinecraft コマンドを実行します。")
+        if (server != Vanilife.privateServer)
+        {
+            return;
+        }
+
+        server.upsertCommand(this.getName(), "任意のMinecraft コマンドを実行します")
                 .addOption(OptionType.STRING, "command", "Minecraft コマンド", true).queue();
     }
 
     @Override
-    public void onCommand(SlashCommandInteractionEvent event)
+    public void onCommand(@NotNull SlashCommandInteractionEvent event)
     {
         if (! event.getMember().getRoles().contains(Vanilife.ROLE_MCONSOLE))
         {

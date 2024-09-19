@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.FriendRequest;
 import net.azisaba.vanilife.util.UserUtility;
@@ -36,7 +37,7 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (Bukkit.getPlayerExact(args[0]) == null)
         {
-            sender.sendMessage(Component.text(String.format("%s は現在オフラインです", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.offline", from, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
@@ -46,20 +47,20 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (from == to)
         {
-            sender.sendMessage(Component.text("自分自身に Friend 申請を送信することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.friend.cant-yourself", from).color(NamedTextColor.RED));
             return true;
         }
 
         if (toUser.isBlock(fromUser))
         {
-            sender.sendMessage(Component.text("このプレイヤーに Friend 申請を送ることはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.friend.cant", from).color(NamedTextColor.RED));
             return true;
         }
 
         if (toUser.isFriend(fromUser))
         {
             fromUser.unfriend(toUser);
-            sender.sendMessage(Component.text(String.format("%s をフレンドから削除しました", args[0])).color(NamedTextColor.GREEN));
+            sender.sendMessage(Language.translate("cmd.friend.removed", from, "name=" + args[0]).color(NamedTextColor.GREEN));
             return true;
         }
 
@@ -71,7 +72,7 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(FriendRequest.class, from)))
         {
-            from.sendMessage(Component.text(String.format("あなたは既に %s に Friend 申請を送信しています", args[0])).color(NamedTextColor.RED));
+            from.sendMessage(Language.translate("cmd.friend.already", from, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 

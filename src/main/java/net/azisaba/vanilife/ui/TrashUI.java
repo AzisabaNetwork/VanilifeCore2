@@ -20,7 +20,7 @@ public class TrashUI extends InventoryUI
 {
     public TrashUI(@NotNull Player player)
     {
-        super(player, Bukkit.createInventory(null, 54, Component.text("ゴミ箱")));
+        super(player, Bukkit.createInventory(null, 54, Language.translate("ui.trash.title", player)));
     }
 
     @Override
@@ -50,8 +50,8 @@ public class TrashUI extends InventoryUI
             @Override
             public void init()
             {
-                this.player.sendMessage(Component.text(String.format("確認: %s 個 のアイテムを削除しますか？", stacks.size())).color(NamedTextColor.GREEN));
-                this.player.sendMessage(Component.text("(y)es または (n)o でを送信して確定します:").color(NamedTextColor.YELLOW));
+                this.player.sendMessage(Language.translate("ui.trash.check", this.player).color(NamedTextColor.GREEN));
+                this.player.sendMessage(Language.translate("ui.trash.check.details", this.player).color(NamedTextColor.YELLOW));
             }
 
             @Override
@@ -61,7 +61,7 @@ public class TrashUI extends InventoryUI
 
                 if (string.equalsIgnoreCase("y"))
                 {
-                    this.player.sendMessage(Component.text(String.format("%s 個のアイテムが削除されました", stacks.size())).color(NamedTextColor.GREEN));
+                    this.player.sendMessage(Language.translate("ui.trash.deleted", this.player).color(NamedTextColor.GREEN));
                     return;
                 }
 
@@ -88,7 +88,7 @@ public class TrashUI extends InventoryUI
                             }
                         });
 
-                        player.sendMessage(Component.text("アイテムの削除はキャンセルされました").color(NamedTextColor.GREEN));
+                        player.sendMessage(Language.translate("ui.trash.canceled", player).color(NamedTextColor.GREEN));
                     }
                 }.runTask(Vanilife.getPlugin());
             }

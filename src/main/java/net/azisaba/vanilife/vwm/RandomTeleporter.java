@@ -2,10 +2,10 @@ package net.azisaba.vanilife.vwm;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,6 +37,8 @@ public class RandomTeleporter
 
                 Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
                     player.teleport(location);
+                    player.sendMessage(Component.text("ランダムな位置にテレポートしました！").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+                    player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.0f);
                 });
             }
         }.runTaskAsynchronously(Vanilife.getPlugin());
@@ -58,6 +60,8 @@ public class RandomTeleporter
             }
         }
 
+        System.out.println(i);
+
         return location;
     }
 
@@ -78,6 +82,6 @@ public class RandomTeleporter
         Block below = location.getWorld().getBlockAt(x, y - 1, z);
         Block above = location.getWorld().getBlockAt(x, y + 1, z);
 
-        return ! below.getType().toString().toLowerCase().endsWith("_leaves") && ! this.dangerous.contains(block.getType()) && ! this.dangerous.contains(below.getType()) && below.getType().isSolid() && above.getType() == Material.AIR && Plot.getInstance(location.getChunk()) == null;
+        return ! this.dangerous.contains(block.getType()) && ! this.dangerous.contains(below.getType()) && below.getType().isSolid() && above.getType() == Material.AIR && Plot.getInstance(location.getChunk()) == null;
     }
 }

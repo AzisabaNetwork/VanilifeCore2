@@ -37,8 +37,8 @@ public class ProfileUI extends InventoryUI
 
         ItemStack friendStack = new ItemStack(user.isFriend(profile) ? Material.REDSTONE : Material.DIAMOND);
         ItemMeta friendMeta = friendStack.getItemMeta();
-        friendMeta.displayName(Component.text(user.isFriend(profile) ? "フレンドを削除" : "フレンドに追加").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        friendMeta.lore(Collections.singletonList(Component.text(user.isFriend(profile) ? "フレンドから削除します" : "フレンド申請を送信します").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        friendMeta.displayName((user.isFriend(this.profile) ? Language.translate("ui.profile.unfriend", player) : Language.translate("ui.profile.friend", player)).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        friendMeta.lore(Collections.singletonList((user.isFriend(profile) ? Language.translate("ui.profile.unfriend.details", player) : Language.translate("ui.profile.friend.details", player)).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         friendStack.setItemMeta(friendMeta);
         this.registerListener(12, friendStack, String.format("vanilife:friend %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
 
@@ -75,12 +75,12 @@ public class ProfileUI extends InventoryUI
                     headLore.add(Component.text(""));
                 }
 
-                headLore.add(Component.text("状態: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                                .append(Component.text(profile.isOnline() ? "オンライン" : "オフライン").color(profile.isOnline() ? NamedTextColor.GREEN : NamedTextColor.RED)));
+                headLore.add(Language.translate("ui.state", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                                .append((profile.isOnline() ? Language.translate("ui.profile.online", player) : Language.translate("ui.profile.offline", player)).color(profile.isOnline() ? NamedTextColor.GREEN : NamedTextColor.RED)));
 
-                if (profile.getSettings().birthdaySetting.isWithinScope(user) && profile.getBirthday() != null)
+                if (profile.getSettings().BIRTHDAY.isWithinScope(user) && profile.getBirthday() != null)
                 {
-                    headLore.add(Component.text("お誕生日: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                    headLore.add(Language.translate("ui.profile.birthday", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                             .append(Component.text(Vanilife.sdf3.format(profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
                 }
 
@@ -93,8 +93,8 @@ public class ProfileUI extends InventoryUI
 
         ItemStack reportStack = new ItemStack(Material.PAPER);
         ItemMeta reportMeta = reportStack.getItemMeta();
-        reportMeta.displayName(Component.text("報告").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        reportMeta.lore(Collections.singletonList(Component.text("ルール違反ですか？レポートを作成しましょう…").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        reportMeta.displayName(Language.translate("ui.profile.report", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        reportMeta.lore(Collections.singletonList(Language.translate("ui.profile.report.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         reportStack.setItemMeta(reportMeta);
         this.inventory.setItem(14, reportStack);
 
@@ -102,9 +102,9 @@ public class ProfileUI extends InventoryUI
         SkullMeta youtubeMeta = (SkullMeta) youtubeStack.getItemMeta();
         youtubeMeta.displayName(Component.text("YouTube").color(TextColor.color(255, 0, 0)).decoration(TextDecoration.ITALIC, false));
 
-        if (! this.profile.getSettings().youtubeSetting.isWithinScope(user))
+        if (! this.profile.getSettings().YOUTUBE.isWithinScope(user))
         {
-            youtubeMeta.lore(Collections.singletonList(Component.text("この項目を表示できません").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
+            youtubeMeta.lore(Collections.singletonList(Language.translate("ui.not-viewable", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         }
         else if (this.profile.getYoutube() != null)
         {
@@ -112,7 +112,7 @@ public class ProfileUI extends InventoryUI
         }
         else
         {
-            youtubeMeta.lore(Collections.singletonList(Component.text("この項目が設定されていません").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
+            youtubeMeta.lore(Collections.singletonList(Language.translate("ui.unset", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         }
 
         youtubeMeta.setPlayerProfile(HeadUtility.getPlayerProfile(HeadUtility.YOUTUBE));
@@ -123,9 +123,9 @@ public class ProfileUI extends InventoryUI
         SkullMeta twitterMeta = (SkullMeta) twitterStack.getItemMeta();
         twitterMeta.displayName(Component.text("Twitter").color(TextColor.color(29, 161, 242)).decoration(TextDecoration.ITALIC, false));
 
-        if (! this.profile.getSettings().twitterSetting.isWithinScope(user))
+        if (! this.profile.getSettings().TWITTER.isWithinScope(user))
         {
-            twitterMeta.lore(Collections.singletonList(Component.text("この項目を表示できません").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
+            twitterMeta.lore(Collections.singletonList(Language.translate("ui.not-viewable", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         }
         else if (this.profile.getTwitter() != null)
         {
@@ -133,7 +133,7 @@ public class ProfileUI extends InventoryUI
         }
         else
         {
-            twitterMeta.lore(Collections.singletonList(Component.text("この項目が設定されていません").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
+            twitterMeta.lore(Collections.singletonList(Language.translate("ui.unset", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         }
 
         twitterMeta.setPlayerProfile(HeadUtility.getPlayerProfile(HeadUtility.TWITTER));
@@ -144,17 +144,17 @@ public class ProfileUI extends InventoryUI
         SkullMeta discordMeta = (SkullMeta) discordStack.getItemMeta();
         discordMeta.displayName(Component.text("Discord").color(TextColor.color(88, 101, 242)).decoration(TextDecoration.ITALIC, false));
 
-        if (! this.profile.getSettings().discordSetting.isWithinScope(user))
+        if (! this.profile.getSettings().DISCORD.isWithinScope(user))
         {
-            discordMeta.lore(Collections.singletonList(Component.text("この項目を表示できません").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
+            discordMeta.lore(Collections.singletonList(Language.translate("ui.not-viewable", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         }
         else if (this.profile.getDiscord() != null)
         {
-            discordMeta.lore(List.of(Component.text(this.profile.getDiscord()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+            discordMeta.lore(List.of(Component.text(this.profile.getDiscord().getName()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         }
         else
         {
-            discordMeta.lore(Collections.singletonList(Component.text("この項目が設定されていません").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
+            discordMeta.lore(Collections.singletonList(Language.translate("ui.unset", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         }
 
         discordMeta.setPlayerProfile(HeadUtility.getPlayerProfile(HeadUtility.DISCORD));
@@ -170,17 +170,17 @@ public class ProfileUI extends InventoryUI
 
         ItemStack closeStack = new ItemStack(Material.OAK_DOOR);
         ItemMeta closeMeta = closeStack.getItemMeta();
-        closeMeta.displayName(Component.text("閉じる").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
-        closeMeta.lore(Collections.singletonList(Component.text("この画面を閉じます").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+        closeMeta.lore(Collections.singletonList(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         closeStack.setItemMeta(closeMeta);
         this.inventory.setItem(31, closeStack);
 
         ItemStack blockStack = new ItemStack(Material.HOPPER);
         ItemMeta blockMeta = blockStack.getItemMeta();
-        blockMeta.displayName(Component.text(user.isBlock(profile) ? "ブロック解除" : "ブロック").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        blockMeta.lore(List.of(Component.text("このプレイヤーのチャットは非表示になり、").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
-                Component.text("あなたにメールや各種申請を送信できなくなります").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
-                Component.text("通知されることはありません！").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
+        blockMeta.displayName((user.isBlock(profile) ? Language.translate("ui.profile.unblock", player) : Language.translate("ui.profile.block", player)).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        blockMeta.lore(List.of(Language.translate("ui.profile.block.details.1", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.profile.block.details.2", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.profile.block.details.3", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         blockStack.setItemMeta(blockMeta);
         this.registerListener(32, blockStack, (user.isBlock(profile) ? "vanilife:unblock " : "vanilife:block ") + this.profile.getPlaneName(), ExecutionType.CLIENT);
     }
@@ -202,8 +202,8 @@ public class ProfileUI extends InventoryUI
                 @Override
                 public void init()
                 {
-                    this.player.sendMessage(Component.text("詳細を送信してください:").color(NamedTextColor.GREEN));
-                    this.player.sendMessage(Component.text("「:」を送信してキャンセルします").color(NamedTextColor.YELLOW));
+                    this.player.sendMessage(Language.translate("ui.profile.report.pls-send-details", this.player).color(NamedTextColor.GREEN));
+                    this.player.sendMessage(Language.translate("ui.profile.report.how-to-cancel", this.player).color(NamedTextColor.YELLOW));
                 }
 
                 @Override
@@ -213,18 +213,18 @@ public class ProfileUI extends InventoryUI
 
                     if (string.equals(":"))
                     {
-                        this.player.sendMessage(Component.text("報告をキャンセルしました").color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("ui.profile.report.canceled", this.player).color(NamedTextColor.RED));
                         return;
                     }
 
                     if (250 < string.length())
                     {
-                        this.player.sendMessage(Component.text("250文字以内で入力してください").color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("ui.profile.report.limit-over", this.player).color(NamedTextColor.RED));
                         return;
                     }
 
                     new Report(User.getInstance(this.player), string, profile);
-                    this.player.sendMessage(Component.text("レポートを作成しました").color(NamedTextColor.GREEN));
+                    this.player.sendMessage(Language.translate("ui.profile.report.created", this.player).color(NamedTextColor.GREEN));
                 }
             };
         }
@@ -232,7 +232,6 @@ public class ProfileUI extends InventoryUI
         if (event.getSlot() == 31)
         {
             this.player.closeInventory();
-            return;
         }
     }
 }
