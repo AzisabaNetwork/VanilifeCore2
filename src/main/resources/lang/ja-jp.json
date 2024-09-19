@@ -83,7 +83,7 @@
     "msg.quit": "&c- &r${name}&7 さんが切断しました…",
     "msg.login-bonus": "&aログインボーナス + ${mola} Mola (10 × ${streak})",
     "msg.new-mail": "${unread} 件の新着メールがあります！",
-    "cmd.not-found.player": "${name} は不明なプレイヤーです",
+    "msg.not-found.player": "${name} は不明なプレイヤーです",
     "msg.not-found.user": "${name} は不明なユーザーです",
 
     "msg.jnkn.requested": "${name}&e にジャンケンリクエストを送信しました！承認の有効期限は &c${limit}&e 秒です。",
