@@ -41,6 +41,7 @@ public class PlayerListener implements Listener
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+        event.joinMessage(null);
 
         new BukkitRunnable()
         {
@@ -57,7 +58,6 @@ public class PlayerListener implements Listener
 
                 player.displayName(user.getName());
                 player.playerListName(user.getName());
-                event.joinMessage(null);
 
                 VanilifeWorld latestWorld = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
 
