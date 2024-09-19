@@ -69,7 +69,7 @@ public class VoiceChat
             }
         }
 
-        if (10 < distance || voiceChat == null)
+        if (40 < distance || voiceChat == null)
         {
             return currentVoiceChant != null && currentVoiceChant.getMembers().size() == 1 ? currentVoiceChant : new VoiceChat();
         }

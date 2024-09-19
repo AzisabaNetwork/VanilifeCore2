@@ -66,7 +66,14 @@ public class ProfileCommand implements CommandExecutor, TabCompleter
                     return;
                 }
 
-                new ProfileUI(player, view);
+                new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        new ProfileUI(player, view);
+                    }
+                }.runTask(Vanilife.getPlugin());
             }
         }.runTaskAsynchronously(Vanilife.getPlugin());
 
