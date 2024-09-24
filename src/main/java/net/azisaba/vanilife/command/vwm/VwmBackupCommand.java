@@ -43,7 +43,7 @@ public class VwmBackupCommand implements ICommandSkill
             return;
         }
 
-        ArrayList<VanilifeWorld> worlds = new ArrayList<>();
+        List<VanilifeWorld> worlds = new ArrayList<>();
 
         if (args.length == 1)
         {

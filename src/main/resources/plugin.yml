@@ -9,6 +9,11 @@ commands:
   checkout:
     description: Process all subscriptions.
     usage: /checkout
+  emote:
+    description: Use any emote.
+    usage: /emote <emote>
+    aliases:
+      - e
   enderchest:
     description: Open the ender chest.
     usage: /enderchest
@@ -30,6 +35,9 @@ commands:
     usage: /friendlist [page]
     aliases:
       - fl
+  housing:
+    description: Teleport to Housing.
+    usage: /housing
   jnkn:
     description: Send a janken request.
     usage: /jnkn <player>
@@ -45,9 +53,6 @@ commands:
   mail:
     description: Send and check emails.
     usage: /mail [player] [subject] [message]
-  mola:
-    description: Managing and Viewing Mola.
-    usage: /mola [skill] [args…]
   mute:
     description: Mute any player.
     usage: /mute <player>
@@ -55,7 +60,10 @@ commands:
     description: Sets the user's nickname.
     usage: /nick [name]
   plot:
-    description: Manage the plot.
+    description: Open any plot menu.
+    usage: /plot [plot]
+  /plot:
+    description: Command set for plot.
     usage: /plot <skill> [args…]
   poll:
     description: Create a poll.
@@ -63,6 +71,9 @@ commands:
   profile:
     description: View any player's profile.
     usage: /profile <player>
+  ptp:
+    description: Teleport to any plot.
+    usage: /ptp <plot>
   report:
     description: Report the player.
     usage: /report <player> <details>
@@ -78,9 +89,6 @@ commands:
   settings:
     description: Edit settings in ばにらいふ.
     usage: /settings
-  stamp:
-    description: Use any stamp.
-    usage: /stamp <stamp>
   store:
     description: Open the Vanilife store.
     usage: /store
@@ -112,12 +120,18 @@ commands:
   unsubscribe:
     description: Cancel any subscription.
     usage: /unsubscribe <subscription>
+  update:
+    description: Check the update details.
+    usage: /update
   vote:
     description: Vote for any option.
     usage: /vote <poll> <option>
   vwm:
     description: Command set for Vanilife World Manager administrators.
     usage: /vwm <skill> [args…]
+  wallet:
+    description: Mola Management and Display.
+    usage: /wallet [skill] [args…]
   world:
     description: Teleport to any world.
     usage: /world <world>

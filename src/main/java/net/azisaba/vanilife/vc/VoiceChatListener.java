@@ -42,7 +42,7 @@ public class VoiceChatListener extends ListenerAdapter
 
         if (! user.isOnline())
         {
-            Vanilife.publicServer.kickVoiceMember(member).queue();;
+            Vanilife.publicServer.kickVoiceMember(member).queue();
             return;
         }
 

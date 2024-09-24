@@ -8,18 +8,18 @@ import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,17 +29,17 @@ public class Plot
 
     public static Plot getInstance(String name)
     {
-        ArrayList<Plot> filteredInstances = new ArrayList<>(Plot.instances.stream().filter(i -> i.getName().equals(name)).toList());
+        List<Plot> filteredInstances = new ArrayList<>(Plot.instances.stream().filter(i -> i.getName().equals(name)).toList());
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
     public static Plot getInstance(Chunk chunk)
     {
-        ArrayList<Plot> filteredInstances = new ArrayList<>(Plot.instances.stream().filter(i -> i.contains(chunk)).toList());
+        List<Plot> filteredInstances = new ArrayList<>(Plot.instances.stream().filter(i -> i.contains(chunk)).toList());
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    public static ArrayList<Plot> getInstances()
+    public static List<Plot> getInstances()
     {
         return Plot.instances;
     }
@@ -48,15 +48,22 @@ public class Plot
 
     private String name;
     private User owner;
+    private String readme;
+
     private PlotScope scope = PlotScope.PRIVATE;
+    private boolean edit;
+    private boolean chest;
+    private boolean pvp;
+
     private World world;
     private Location spawn;
-    private final ArrayList<User> members = new ArrayList<>();
-    private final ArrayList<Chunk> chunks = new ArrayList<>();
 
-    private VanilifeWorld vw;
+    private final List<User> members = new ArrayList<>();
+    private final List<Chunk> chunks = new ArrayList<>();
 
-    public Plot(UUID id)
+    private VanilifeWorld vanilifeWorld;
+
+    public Plot(@NotNull UUID id)
     {
         this.id = id;
 
@@ -71,12 +78,16 @@ public class Plot
 
             this.name = rs.getString("name");
             this.owner = User.getInstance(UUID.fromString(rs.getString("owner")));
+            this.readme = rs.getString("readme");
             this.scope = PlotScope.valueOf(rs.getString("scope"));
+            this.edit = rs.getBoolean("edit");
+            this.chest = rs.getBoolean("chest");
+            this.pvp = rs.getBoolean("pvp");
             this.world = Bukkit.getWorld(rs.getString("world"));
-            this.vw = VanilifeWorld.getInstance(this.world);
+            this.vanilifeWorld = VanilifeWorld.getInstance(this.world);
             this.spawn = new Location(this.world, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
 
-            this.vw.getPlots().add(this);
+            this.vanilifeWorld.getPlots().add(this);
 
             rs.close();
             stmt.close();
@@ -119,32 +130,33 @@ public class Plot
         Plot.instances.add(this);
     }
 
-    public Plot(String name, Chunk... chunks)
+    public Plot(@NotNull String name, @NotNull Chunk chunk, Chunk... chunks)
     {
         this.id = UUID.randomUUID();
         this.name = name;
-
-        Chunk chunk = chunks[0];
-
         this.world = chunk.getWorld();
-        this.vw = VanilifeWorld.getInstance(this.world);
-        this.spawn = new Location(this.world, chunk.getX() * 16 + 8, this.world.getHighestBlockYAt(chunk.getX() * 16 + 8, chunk.getZ() * 16 + 8) + 1, chunk.getZ() * 16 + 8);
-        this.chunks.addAll(List.of(chunks));
+        this.vanilifeWorld = VanilifeWorld.getInstance(this.world);
 
-        this.vw.getPlots().add(this);
+        final int x = chunk.getX() * 16 + 8;
+        final int z = chunk.getZ() * 16 + 8;
+
+        this.spawn = new Location(this.world, x, this.world.getHighestBlockYAt(x, z) + 1, z);
+
+        this.claim(chunk);
+        this.chunks.addAll(List.of(chunks));
+        this.vanilifeWorld.getPlots().add(this);
 
         try
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO plot VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO plot VALUES(?, ?, NULL, NULL, ?, 0, 0, 0, ?, ?, ?, ?)");
             stmt.setString(1, this.id.toString());
             stmt.setString(2, this.name);
-            stmt.setString(3, null);
-            stmt.setString(4, this.scope.toString());
-            stmt.setString(5, this.world.getName());
-            stmt.setInt(6, this.spawn.getBlockX());
-            stmt.setInt(7, this.spawn.getBlockY());
-            stmt.setInt(8, this.spawn.getBlockZ());
+            stmt.setString(3, this.scope.toString());
+            stmt.setString(4, this.world.getName());
+            stmt.setInt(5, this.spawn.getBlockX());
+            stmt.setInt(6, this.spawn.getBlockY());
+            stmt.setInt(7, this.spawn.getBlockZ());
 
             stmt.executeUpdate();
 
@@ -156,22 +168,37 @@ public class Plot
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert plot record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
-        this.upload();
         Plot.instances.add(this);
     }
 
-    public String getName()
+    public @NotNull String getName()
     {
         return this.name;
     }
 
-    public void setName(String name)
+    public void setName(@NotNull String name)
     {
         this.name = name;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET name = ? WHERE id = ?");
+            stmt.setString(1, this.name);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
-    public User getOwner()
+    public @NotNull User getOwner()
     {
         return this.owner;
     }
@@ -180,50 +207,223 @@ public class Plot
     {
         this.owner = owner;
         this.addMember(owner);
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET owner = ? WHERE id = ?");
+            stmt.setString(1, this.owner.getId().toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
-    public PlotScope getScope()
+    public String getReadme()
+    {
+        return this.readme;
+    }
+
+    public void setReadme(String readme)
+    {
+        this.readme = readme;
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET readme = ? WHERE id = ?");
+            stmt.setString(1, this.readme);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public @NotNull PlotScope getScope()
     {
         return this.scope;
     }
 
-    public void setScope(PlotScope scope)
+    public void setScope(@NotNull PlotScope scope)
     {
         this.scope = scope;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET scope = ? WHERE id = ?");
+            stmt.setString(1, this.scope.toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
-    public World getWorld()
+    public @NotNull World getWorld()
     {
         return this.world;
     }
 
-    public Location getSpawn()
+    public @NotNull Location getSpawn()
     {
         return this.spawn;
     }
 
-    public void setSpawn(Location spawn)
+    public void setSpawn(@NotNull Location spawn)
     {
+        if (Plot.getInstance(spawn.getChunk()) != this)
+        {
+            return;
+        }
+
         this.spawn = spawn;
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET world = ?, x = ?, y = ?, z = ? WHERE id = ?");
+            stmt.setString(1, this.world.getName());
+            stmt.setInt(2, this.spawn.getBlockX());
+            stmt.setInt(3, this.spawn.getBlockY());
+            stmt.setInt(4, this.spawn.getBlockZ());
+            stmt.setString(5, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
     }
 
-    public ArrayList<User> getMembers()
+    public @NotNull List<User> getMembers()
     {
         return this.members;
     }
 
-    public void addMember(User user)
+    public @NotNull List<Chunk> getChunks()
     {
-        if (! this.members.contains(user))
+        return this.chunks;
+    }
+
+    public void setEdit(boolean edit)
+    {
+        this.edit = edit;
+
+        try
         {
-            this.members.add(user);
-            this.upload();
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET edit = ? WHERE id = ?");
+            stmt.setBoolean(1, this.edit);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
 
-    public void removeMember(User user)
+    public void setChest(boolean chest)
+    {
+        this.chest = chest;
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET chest = ? WHERE id = ?");
+            stmt.setBoolean(1, this.chest);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void setPvP(boolean pvp)
+    {
+        this.pvp = pvp;
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET pvp = ? WHERE id = ?");
+            stmt.setBoolean(1, this.pvp);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void addMember(@NotNull User user)
+    {
+        if (this.members.contains(user))
+        {
+            return;
+        }
+
+        this.members.add(user);
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO member VALUES(?, ?)");
+            stmt.setString(1, user.getId().toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to insert member record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void removeMember(@NotNull User user)
     {
         if (user == this.owner)
         {
@@ -231,7 +431,37 @@ public class Plot
         }
 
         this.members.remove(user);
-        this.upload();
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM member WHERE plot = ?");
+            stmt.setString(1, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed delete member record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public boolean canEdit()
+    {
+        return this.edit;
+    }
+
+    public boolean canChest()
+    {
+        return this.chest;
+    }
+
+    public boolean canPvP()
+    {
+        return this.pvp;
     }
 
     public boolean isMember(User user)
@@ -247,38 +477,162 @@ public class Plot
         return this.isMember(User.getInstance(player));
     }
 
-    public ArrayList<Chunk> getChunks()
+    public void onBlockBreak(@NotNull BlockBreakEvent event)
     {
-        return this.chunks;
-    }
+        Player player = event.getPlayer();
 
-    public boolean isAdjacent(Chunk chunk)
-    {
-        int x = chunk.getX();
-        int z = chunk.getZ();
-        return this.chunks.stream().anyMatch(c -> (Math.abs(c.getX() - x) == 1 && chunk.getZ() == z) || (Math.abs(c.getZ() - z) == 1 && chunk.getX() == x));
-    }
-
-    public void claim(Chunk chunk)
-    {
-        if (! this.isAdjacent(chunk))
+        if (UserUtility.isModerator(player))
         {
             return;
         }
 
-        if (! this.contains(chunk))
+        if (User.getInstance(player) == this.owner)
         {
-            this.chunks.add(chunk);
-            this.upload();
+            return;
+        }
+
+        if (this.isMember(player) && this.edit)
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+        player.sendMessage(Language.translate("plot.cant.break", player).color(NamedTextColor.RED));
+    }
+
+    public void onBlockPlace(@NotNull BlockPlaceEvent event)
+    {
+        Player player = event.getPlayer();
+
+        if (UserUtility.isModerator(player))
+        {
+            return;
+        }
+
+        if (User.getInstance(player) == this.owner)
+        {
+            return;
+        }
+
+        if (this.isMember(player) && this.edit)
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+        player.sendMessage(Language.translate("plot.cant.place", player).color(NamedTextColor.RED));
+    }
+
+    private static final EnumSet<Material> chests = EnumSet.of(Material.CHEST, Material.DISPENSER, Material.DROPPER, Material.FURNACE, Material.BREWING_STAND, Material.SMITHING_TABLE, Material.BEACON, Material.HOPPER, Material.SHULKER_BOX, Material.BARREL, Material.SMOKER, Material.LOOM, Material.CHISELED_BOOKSHELF, Material.DECORATED_POT, Material.CRAFTER);
+
+    public void onPlayerInteract(@NotNull PlayerInteractEvent event)
+    {
+        Block click = event.getClickedBlock();
+
+        if (click == null)
+        {
+            return;
+        }
+
+        if (! Plot.chests.contains(click.getType()))
+        {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (UserUtility.isModerator(player))
+        {
+            return;
+        }
+
+        if (User.getInstance(player) == this.owner)
+        {
+            return;
+        }
+
+        if (this.isMember(player) && this.edit)
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+        player.sendMessage(Language.translate("plot.cant.chest", player).color(NamedTextColor.RED));
+    }
+
+    public void onEntityDamageByEntity(@NotNull EntityDamageByEntityEvent event)
+    {
+        Player damager = (Player) event.getDamager();
+        Player player = (Player) event.getEntity();
+
+        if (UserUtility.isModerator(damager))
+        {
+            return;
+        }
+
+        if (this.isMember(damager) && this.isMember(player) && this.pvp)
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+        damager.sendMessage(Language.translate("plot.cant.pvp", damager).color(NamedTextColor.RED));
+    }
+
+    public boolean contains(Chunk chunk)
+    {
+        return this.chunks.stream().anyMatch(c -> c.equals(chunk));
+    }
+
+    public void claim(@NotNull Chunk chunk)
+    {
+        if (this.contains(chunk))
+        {
+            return;
+        }
+
+        this.chunks.add(chunk);
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO chunk VALUES(?, ?, ?)");
+            stmt.setString(1, this.id.toString());
+            stmt.setInt(2, chunk.getX());
+            stmt.setInt(3, chunk.getZ());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to insert chunk record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
 
-    public void unclaim(Chunk chunk)
+    public void unclaim(@NotNull Chunk chunk)
     {
         if (this.contains(chunk))
         {
             this.chunks.remove(chunk);
-            this.upload();
+
+            try
+            {
+                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_USER);
+                PreparedStatement stmt = con.prepareStatement("DELETE FROM chunk WHERE plot = ?");
+                stmt.setString(1, this.id.toString());
+
+                stmt.executeUpdate();
+
+                stmt.close();
+                con.close();
+            }
+            catch (SQLException e)
+            {
+                Vanilife.getPluginLogger().warn(Component.text("Failed to delete chunk record: " + e.getMessage()).color(NamedTextColor.RED));
+            }
 
             if (this.chunks.isEmpty())
             {
@@ -287,48 +641,10 @@ public class Plot
         }
     }
 
-    public boolean contains(Chunk chunk)
-    {
-        return this.chunks.stream().anyMatch(c -> c.equals(chunk));
-    }
-
-    public void onBlockBreak(BlockBreakEvent event)
-    {
-        Player player = event.getPlayer();
-
-        if (! this.isMember(player) && ! UserUtility.isModerator(player))
-        {
-            event.setCancelled(true);
-            player.sendMessage(Language.translate("plot.cant.break", player).color(NamedTextColor.RED));
-        }
-    }
-
-    public void onBlockPlace(BlockPlaceEvent event)
-    {
-        Player player = event.getPlayer();
-
-        if (! this.isMember(player) && ! UserUtility.isModerator(player))
-        {
-            event.setCancelled(true);
-            player.sendMessage(Language.translate("plot.cant.place", player).color(NamedTextColor.RED));
-        }
-    }
-
-    public void onPlayerInteract(PlayerInteractEvent event)
-    {
-        Player player = event.getPlayer();
-
-        if (! this.isMember(player))
-        {
-            player.sendMessage(Language.translate("plot.cant", player).color(NamedTextColor.RED));
-            event.setCancelled(true);
-        }
-    }
-
     public void delete()
     {
         Plot.getInstances().remove(this);
-        this.vw.getPlots().remove(this);
+        this.vanilifeWorld.getPlots().remove(this);
         this.owner.getSubscriptions().removeIf(subscription -> (subscription instanceof PlotSubscription s) && s.getPlot() == this);
 
         try
@@ -355,67 +671,6 @@ public class Plot
         catch (SQLException e)
         {
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to delete plot record: %s", e.getMessage())).color(NamedTextColor.RED));
-        }
-    }
-
-    public void upload()
-    {
-        try
-        {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-
-            PreparedStatement stmt = con.prepareStatement("UPDATE plot SET name = ?, owner = ?, scope = ?, world = ?, x = ?, y = ?, z = ?");
-            stmt.setString(1, this.name);
-            stmt.setString(2, (this.owner == null) ? null : this.owner.getId().toString());
-            stmt.setString(3, this.scope.toString());
-            stmt.setString(4, this.world.getName());
-            stmt.setInt(5, this.spawn.getBlockX());
-            stmt.setInt(6, this.spawn.getBlockY());
-            stmt.setInt(7, this.spawn.getBlockZ());
-
-            stmt.executeUpdate();
-            stmt.close();
-
-            PreparedStatement stmt2 = con.prepareStatement("DELETE FROM chunk WHERE plot = ?");
-            stmt2.setString(1, this.id.toString());
-            stmt2.executeUpdate();
-            stmt2.close();
-
-            PreparedStatement stmt3 = con.prepareStatement("INSERT INTO chunk VALUES(?, ?, ?)");
-
-            for (Chunk chunk : this.chunks)
-            {
-                stmt3.setString(1, this.id.toString());
-                stmt3.setInt(2, chunk.getX());
-                stmt3.setInt(3, chunk.getZ());
-
-                stmt3.executeUpdate();
-            }
-
-            stmt3.close();
-
-            PreparedStatement stmt4 = con.prepareStatement("DELETE FROM member WHERE plot = ?");
-            stmt4.setString(1, this.id.toString());
-            stmt4.executeUpdate();
-            stmt4.close();
-
-            PreparedStatement stmt5 = con.prepareStatement("INSERT INTO member VALUES(?, ?)");
-
-            for (User member : this.members)
-            {
-                stmt5.setString(1, member.getId().toString());
-                stmt5.setString(2, this.id.toString());
-
-                stmt5.executeUpdate();
-            }
-
-            stmt5.close();
-
-            con.close();
-        }
-        catch (SQLException e)
-        {
-            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to update plot record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }
 }

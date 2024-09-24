@@ -119,9 +119,42 @@ public class TradeUI extends InventoryUI
     @Override
     public void onInventoryClick(@NotNull InventoryClickEvent event)
     {
-        event.setCancelled(this.trade.getAgree((Player) event.getWhoClicked()) != Trade.Agree.NONE
-                || (! Trade.CONTROL.contains(event.getRawSlot()) && event.getClickedInventory() == this.inventory)
-                || event.isShiftClick());
+        event.setCancelled(event.isCancelled()
+                || this.trade.getAgree((Player) event.getWhoClicked()) != Trade.Agree.NONE
+                || (! Trade.CONTROL.contains(event.getRawSlot()) && event.getClickedInventory() == this.inventory));
+
+        if (! event.isShiftClick() || event.getClickedInventory() == this.inventory)
+        {
+            return;
+        }
+
+        ItemStack stack = event.getCurrentItem();
+
+        if (stack == null || stack.getType() == Material.AIR)
+        {
+            return;
+        }
+
+        boolean b = false;
+
+        for (int i : Trade.CONTROL)
+        {
+            ItemStack j = this.inventory.getItem(i);
+
+            if (j == null || j.getType() == Material.AIR)
+            {
+                this.inventory.setItem(i, stack);
+                b = true;
+                break;
+            }
+        }
+
+        if (b)
+        {
+            event.getWhoClicked().getInventory().remove(stack);
+        }
+
+        event.setCancelled(true);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package net.azisaba.vanilife.user.settings.setting;
 
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.ui.SettingsUI;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
@@ -40,14 +42,30 @@ public abstract class ScopeSetting extends SwitchSetting<String>
     }
 
     @Override
-    public void save()
+    public void onLeftClick(@NotNull InventoryClickEvent event)
     {
-        this.write(this.scope.toString());
+        this.scope = switch (this.scope)
+        {
+            case PUBLIC -> Scope.FRIEND;
+            case FRIEND -> Scope.PRIVATE;
+            default -> Scope.PUBLIC;
+        };
+
+        this.value = this.scope.toString();
+
+        this.save();
+        new SettingsUI(this.user.getAsPlayer(), this.user.getSettings());
     }
 
     public boolean isWithinScope(User user)
     {
         return (this.scope == Scope.PUBLIC) || (this.scope == Scope.FRIEND && this.user.isFriend(user)) || this.user == user;
+    }
+
+    @Override
+    public void save()
+    {
+        this.write(this.scope.toString());
     }
 
     public enum Scope

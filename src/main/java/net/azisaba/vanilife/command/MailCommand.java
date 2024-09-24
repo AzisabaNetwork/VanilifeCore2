@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -89,7 +90,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
         {
             List<Mail> mails = from.getMails();
 
-            int page = args.length == 1 ? Integer.parseInt(args[0]) : 0;
+            int page = args.length == 1 ? Integer.parseInt(args[0]) : 1;
             int pages = mails.size() / 8 + ((mails.size() % 8 != 0) ? 1 : 0);
 
             sender.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
@@ -100,7 +101,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
             if (page <= 0 || pages < page)
             {
-                sender.sendMessage(Language.translate("cmd.mail.empty", player).color(NamedTextColor.GRAY));
+                sender.sendMessage(Language.translate("msg.empty", player).color(NamedTextColor.GRAY));
             }
             else
             {
@@ -141,6 +142,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
                     return;
                 }
 
+                User from = User.getInstance(player);
                 User to = User.getInstance(args[0]);
                 String subject = (args.length == 3) ? args[1] : "件名なし";
                 String message = (args.length == 3) ? args[2] : args[1];
@@ -164,7 +166,15 @@ public class MailCommand implements CommandExecutor, TabCompleter
                 }
 
                 new Mail(from, to, subject, message.replace("\n", "\\n"));
-                sender.sendMessage(Language.translate("cmd.mail.sent", player, "name=" + to.getPlaneName()).color(NamedTextColor.GREEN));
+
+                if (to.isOnline())
+                {
+                    player.sendMessage(Component.text("✉").color(NamedTextColor.GRAY).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(to.getName().decorate(TextDecoration.BOLD)).append(Component.text(" : ").color(NamedTextColor.GRAY)).append(Component.text(message).color(NamedTextColor.WHITE))));
+                }
+                else
+                {
+                    sender.sendMessage(Language.translate("cmd.mail.sent", player, "name=" + to.getPlaneName()).color(NamedTextColor.GREEN));
+                }
             }
         }.runTaskAsynchronously(Vanilife.getPlugin());
 

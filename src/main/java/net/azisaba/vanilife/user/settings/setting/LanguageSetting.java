@@ -59,6 +59,7 @@ public class LanguageSetting extends SwitchSetting<String>
     public void setLanguage(@NotNull Language language)
     {
         this.language = language;
+        this.value = this.language.getId();
         super.save();
     }
 

@@ -60,8 +60,6 @@ public class RandomTeleporter
             }
         }
 
-        System.out.println(i);
-
         return location;
     }
 

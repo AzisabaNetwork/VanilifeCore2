@@ -39,15 +39,15 @@ public class VwmDeleteSkill implements ICommandSkill
             return;
         }
 
-        if (! VanilifeWorld.getInstances().stream().anyMatch(w -> w.getName().equals(args[0])))
+        VanilifeWorld world = VanilifeWorld.getInstance(args[0]);
+
+        if (world == null)
         {
             sender.sendMessage(Component.text(String.format("ワールド %s は定義されていません", args[0])).color(NamedTextColor.RED));
             return;
         }
 
         sender.sendMessage(Component.text(String.format("%s を削除しています…", args[0])).color(NamedTextColor.GREEN));
-
-        VanilifeWorld world = VanilifeWorld.getInstance(args[0]);
 
         for (Plot plot : new ArrayList<>(world.getPlots()))
         {

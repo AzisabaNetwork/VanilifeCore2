@@ -12,6 +12,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
 import java.io.File;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class VanilifeWorld
 {
@@ -57,8 +59,8 @@ public class VanilifeWorld
     private final World overworld;
     private final World nether;
     private final World end;
-    private final ArrayList<World> worlds = new ArrayList<>();
-    private final ArrayList<Plot> plots = new ArrayList<>();
+    private final List<World> worlds = new ArrayList<>();
+    private final List<Plot> plots = new ArrayList<>();
 
     private final RandomTeleporter teleporter;
 
@@ -80,7 +82,7 @@ public class VanilifeWorld
         VanilifeWorld.instances.add(this);
     }
 
-    public String getName()
+    public @NotNull String getName()
     {
         return this.name;
     }
@@ -90,48 +92,48 @@ public class VanilifeWorld
         return this.version;
     }
 
-    public SeasonUtility.Season getSeason()
+    public @NotNull SeasonUtility.Season getSeason()
     {
         return this.season;
     }
 
-    public JsonObject getProperties()
+    public @NotNull JsonObject getProperties()
     {
         return this.properties;
     }
 
-    public void setProperties(JsonObject properties)
+    public void setProperties(@NotNull JsonObject properties)
     {
         this.properties = properties;
         VanilifeWorldManager.setWorldProperties(this, this.properties);
     }
 
-    public World getOverworld()
+    public @NotNull World getOverworld()
     {
         return this.overworld;
     }
 
-    public World getNether()
+    public @NotNull World getNether()
     {
         return this.nether;
     }
 
-    public World getEnd()
+    public @NotNull World getEnd()
     {
         return this.end;
     }
 
-    public ArrayList<World> getWorlds()
+    public @NotNull List<World> getWorlds()
     {
         return this.worlds;
     }
 
-    public ArrayList<Plot> getPlots()
+    public @NotNull List<Plot> getPlots()
     {
         return this.plots;
     }
 
-    public Location getLocation(Player player)
+    public @NotNull Location getLocation(Player player)
     {
         PersistentDataContainer container = this.overworld.getPersistentDataContainer();
 
@@ -150,7 +152,7 @@ public class VanilifeWorld
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    public void setLocation(Player player, Location location)
+    public void setLocation(@NotNull Player player, @NotNull Location location)
     {
         PersistentDataContainer container = this.overworld.getPersistentDataContainer();
 
@@ -162,12 +164,12 @@ public class VanilifeWorld
         container.set(new NamespacedKey(Vanilife.getPlugin(), String.format("location.%s.pitch", player.getUniqueId())), PersistentDataType.FLOAT, location.getPitch());
     }
 
-    public RandomTeleporter getTeleporter()
+    public @NotNull RandomTeleporter getTeleporter()
     {
         return this.teleporter;
     }
 
-    public ArrayList<Player> getOnlinePlayers()
+    public @NotNull List<Player> getOnlinePlayers()
     {
         ArrayList<Player> onlinePlayers = new ArrayList<>();
         this.worlds.forEach(w -> onlinePlayers.addAll(w.getPlayers()));
@@ -236,7 +238,8 @@ public class VanilifeWorld
                 .addField("バックアップ先", String.format("./plugins/Vanilife/vwm/backup/%s", backupName), false)
                 .build()).queue();
 
-        new VanilifeWorld(this.name);
+        VanilifeWorld world = new VanilifeWorld(this.name);
+        this.plots.forEach(plot -> world.getPlots().add(plot));
         return backupName;
     }
 
@@ -250,7 +253,7 @@ public class VanilifeWorld
         return this.getOnlinePlayers().contains(player);
     }
 
-    private World mount(String name, World.Environment environment)
+    private World mount(@NotNull String name, @NotNull World.Environment environment)
     {
         World world = new WorldCreator(String.format("%s/%s", this.name, name)).environment(environment).createWorld();
         this.worlds.add(world);
@@ -259,7 +262,7 @@ public class VanilifeWorld
 
     public static class Builder
     {
-        public static VanilifeWorld build(String name)
+        public static VanilifeWorld build(@NotNull String name)
         {
             Builder.generate(name, "overworld", World.Environment.NORMAL);
             Builder.generate(name, "nether", World.Environment.NETHER);
@@ -283,7 +286,7 @@ public class VanilifeWorld
             return new VanilifeWorld(name);
         }
 
-        private static void generate(String namespace, String name, World.Environment environment)
+        private static void generate(@NotNull String namespace, @NotNull String name, @NotNull World.Environment environment)
         {
             WorldCreator creator = new WorldCreator(String.format("%s/%s", namespace, name));
             creator.type(WorldType.NORMAL);

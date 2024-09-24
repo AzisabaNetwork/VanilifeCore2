@@ -4,21 +4,17 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.Language;
-import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.Typing;
-import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vc.VoiceChat;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
@@ -27,95 +23,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class PlayerListener implements Listener
 {
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
-        Player player = event.getPlayer();
-        event.joinMessage(null);
-
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                User user = User.getInstance(player);
-                Sara sara = UserUtility.calculateSara(player);
-
-                if (user.getSara().level < sara.level)
-                {
-                    user.setSara(sara);
-                }
-
-                player.displayName(user.getName());
-                player.playerListName(user.getName());
-
-                VanilifeWorld latestWorld = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
-
-                if (latestWorld != null && (! player.hasPlayedBefore() || VanilifeWorld.getInstance(player.getWorld()) == null))
-                {
-                    latestWorld.getTeleporter().teleport(player);
-                    ItemStack bread = new ItemStack(Material.BREAD);
-                    bread.setAmount(16);
-                    player.getInventory().addItem(bread);
-                }
-
-                if (! player.hasPlayedBefore())
-                {
-                    Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Language.translate("msg.first-join", p, "name=" + ComponentUtility.getAsString(user.getName()))));
-                }
-                else
-                {
-                    Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Language.translate("msg.join", p, "name=" + ComponentUtility.getAsString(user.getName()))));
-                }
-
-                int unread = user.getMails().stream().filter(m -> ! m.isRead() && m.getTo() == user).toList().size();
-
-                if (0 < unread)
-                {
-                    player.sendMessage(Language.translate("msg.new-mail", player, "unread=" + unread).color(NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/mail")).hoverEvent(HoverEvent.showText(Component.text("クリックして /mail を実行"))));
-                }
-
-                Calendar now = Calendar.getInstance();
-                Calendar lastLogin = Calendar.getInstance();
-
-                if (user.getLastLogin() == null)
-                {
-                    lastLogin = now;
-                }
-                else
-                {
-                    lastLogin.setTime(user.getLastLogin());
-                }
-
-                if (now == lastLogin || ! (now.get(Calendar.YEAR) == lastLogin.get(Calendar.YEAR) && now.get(Calendar.MONTH) == lastLogin.get(Calendar.MONTH) && now.get(Calendar.DAY_OF_MONTH) == lastLogin.get(Calendar.DAY_OF_MONTH)))
-                {
-                    user.setLoginStreak((now.get(Calendar.DAY_OF_MONTH) == lastLogin.get(Calendar.DAY_OF_MONTH) + 1) ? user.getLoginStreak() + 1 : 0);
-
-                    int streak = user.getLoginStreak() + 1;
-                    int bonus = 10 * Math.min(streak, 10);
-
-                    user.setMola(user.getMola() + bonus);
-                    player.sendMessage(Language.translate("msg.login-bonus", player, "mola=" + bonus, "streak=" + streak));
-                    player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
-                }
-
-                user.setLastLogin(new Date());
-
-                Vanilife.jda.getPresence().setActivity(Activity.customStatus(Bukkit.getOnlinePlayers().size() + " 人がばにらいふ！ をプレイ中！"));
-            }
-        }.runTaskAsynchronously(Vanilife.getPlugin());
-    }
-
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event)
     {
@@ -136,6 +46,7 @@ public class PlayerListener implements Listener
         int online = Bukkit.getOnlinePlayers().size() - 1;
         Vanilife.jda.getPresence().setActivity(Activity.customStatus(0 < online ? online + " 人がばにらいふ！ をプレイ中！" : "azisaba.net をプレイ中！"));
 
+        event.quitMessage(null);
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Language.translate("msg.quit", p, "name=" + ComponentUtility.getAsString(user.getName()))));
     }
 
@@ -148,7 +59,14 @@ public class PlayerListener implements Listener
 
         if (to != null && from != to)
         {
-            player.sendActionBar(Component.text("Plot: ").color(NamedTextColor.GREEN).append(Component.text(to.getName()).color(NamedTextColor.GRAY)));
+            Component info = Component.text("Plot: ").color(NamedTextColor.GREEN).append(Component.text(to.getName()).color(NamedTextColor.GRAY));
+
+            if (to.canPvP() && to.isMember(player ))
+            {
+                info = info.append(Component.text(" - ").color(NamedTextColor.DARK_GRAY)).append(Component.text("PvP").color(NamedTextColor.RED));
+            }
+
+            player.sendActionBar(info);
         }
     }
 
@@ -254,17 +172,26 @@ public class PlayerListener implements Listener
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event)
     {
         Player player = event.getPlayer();
 
-        if (event.getPlayer().getRespawnLocation() != null)
+        Location respawn = event.getRespawnLocation();
+
+        if (player.getRespawnLocation() != null
+                && VanilifeWorld.getInstance(player.getRespawnLocation().getWorld()) != null
+                && VanilifeWorld.getInstance(respawn.getWorld()) != null)
         {
             return;
         }
 
         VanilifeWorld world = VanilifeWorld.getInstance(player.getLocation().getWorld());
+
+        if (world == null)
+        {
+            world = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
+        }
 
         if (world == null)
         {
@@ -319,7 +246,15 @@ public class PlayerListener implements Listener
 
         Vanilife.filter.onAsyncChat(event);
 
-        Component msg = Component.text("").append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(Component.text(user.getSettings().METUBOU.isValid() ? "(*'▽') " : "").color(NamedTextColor.WHITE).append(Component.text(content)).color(NamedTextColor.WHITE));
+        if (user.getSettings().METUBOU.isValid())
+        {
+            content = content.replace("!1", "(*'▽')");
+            content = content.replace("!2", "(/・ω・)/");
+            content = content.replace("!3", "(^^♪");
+            content = content.replace("!4", "( 一一)");
+        }
+
+        Component msg = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(ComponentUtility.toLink(Component.text(content).color(NamedTextColor.WHITE)));
         Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).toList().forEach(p -> p.sendMessage(msg));
     }
 }

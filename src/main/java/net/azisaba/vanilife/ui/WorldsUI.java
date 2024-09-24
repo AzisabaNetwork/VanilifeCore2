@@ -2,6 +2,7 @@ package net.azisaba.vanilife.ui;
 
 import net.azisaba.vanilife.util.SeasonUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
+import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -24,41 +25,90 @@ public class WorldsUI extends InventoryUI
     {
         super(player, Bukkit.createInventory(null, 36, Language.translate("ui.worlds.title", player)));
 
-        this.render();
+        final VanilifeWorld spring = VanilifeWorld.getInstance(switch (SeasonUtility.getSeason())
+        {
+            case SeasonUtility.Season.SPRING -> VanilifeWorldManager.getLatestVersion();
+            case SeasonUtility.Season.SUMMER -> VanilifeWorldManager.getLatestVersion() - 1;
+            case SeasonUtility.Season.FALL -> VanilifeWorldManager.getLatestVersion() - 2;
+            case SeasonUtility.Season.WINTER -> VanilifeWorldManager.getLatestVersion() - 3;
+        });
 
-        ItemStack backStack = new ItemStack(Material.ARROW);
-        ItemMeta backMeta = backStack.getItemMeta();
-        backMeta.displayName(Language.translate("ui.back", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        backMeta.lore(List.of(Language.translate("ui.back.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
-        backStack.setItemMeta(backMeta);
-        this.inventory.setItem(27, backStack);
+        final VanilifeWorld summer = VanilifeWorld.getInstance(switch (SeasonUtility.getSeason())
+        {
+            case SeasonUtility.Season.SPRING -> VanilifeWorldManager.getLatestVersion() - 3;
+            case SeasonUtility.Season.SUMMER -> VanilifeWorldManager.getLatestVersion();
+            case SeasonUtility.Season.FALL -> VanilifeWorldManager.getLatestVersion() - 1;
+            case SeasonUtility.Season.WINTER -> VanilifeWorldManager.getLatestVersion() - 2;
+        });
 
-        ItemStack nextStack = new ItemStack(Material.ARROW);
-        ItemMeta nextMeta = nextStack.getItemMeta();
-        nextMeta.displayName(Language.translate("ui.next", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        nextMeta.lore(List.of(Language.translate("ui.next.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
-        nextStack.setItemMeta(nextMeta);
-        this.inventory.setItem(35, nextStack);
+        final VanilifeWorld fall = VanilifeWorld.getInstance(switch (SeasonUtility.getSeason())
+        {
+            case SeasonUtility.Season.SPRING -> VanilifeWorldManager.getLatestVersion() - 2;
+            case SeasonUtility.Season.SUMMER -> VanilifeWorldManager.getLatestVersion() - 3;
+            case SeasonUtility.Season.FALL -> VanilifeWorldManager.getLatestVersion();
+            case SeasonUtility.Season.WINTER -> VanilifeWorldManager.getLatestVersion() - 1;
+        });
+
+        final VanilifeWorld winter = VanilifeWorld.getInstance(switch (SeasonUtility.getSeason())
+        {
+            case SeasonUtility.Season.SPRING -> VanilifeWorldManager.getLatestVersion() - 1;
+            case SeasonUtility.Season.SUMMER -> VanilifeWorldManager.getLatestVersion() - 2;
+            case SeasonUtility.Season.FALL -> VanilifeWorldManager.getLatestVersion() - 3;
+            case SeasonUtility.Season.WINTER -> VanilifeWorldManager.getLatestVersion();
+        });
+
+        this.registerListener(10, this.getItemStack(spring, SeasonUtility.Season.SPRING), spring);
+        this.registerListener(12, this.getItemStack(summer, SeasonUtility.Season.SUMMER), summer);
+        this.registerListener(14, this.getItemStack(fall, SeasonUtility.Season.FALL), fall);
+        this.registerListener(16, this.getItemStack(winter, SeasonUtility.Season.WINTER), winter);
+
+        ItemStack closeStack = new ItemStack(Material.BARRIER);
+        ItemMeta closeMeta = closeStack.getItemMeta();
+        closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+        closeMeta.lore(List.of(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        closeStack.setItemMeta(closeMeta);
+        this.inventory.setItem(31, closeStack);
     }
 
-    private void render()
+    protected @NotNull ItemStack getItemStack(VanilifeWorld world, @NotNull SeasonUtility.Season season)
     {
-        int i = 0;
+        ItemStack worldStack = new ItemStack(SeasonUtility.getSeasonMaterial(season));
+        ItemMeta worldMeta = worldStack.getItemMeta();
+        worldMeta.displayName(Language.translate("ui.worlds." + season.name().toLowerCase(), this.player).color(SeasonUtility.getSeasonColor(season)).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        for (VanilifeWorld world : VanilifeWorld.getInstances().subList(this.page * 8, Math.min((this.page + 1) * 8, VanilifeWorld.getInstances().size())))
+        List<Component> springLore = new ArrayList<>();
+
+        springLore.add(Language.translate("ui.state", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Language.translate(world == null ? "ui.worlds.state.close" : "ui.worlds.state.open", this.player).color(world == null ? NamedTextColor.RED : NamedTextColor.GREEN)));
+        springLore.add(Language.translate("ui.worlds.online", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text((world == null ? 0 : world.getOnline()) + " player(s)").color(world == null || world.getOnline() == 0 ? NamedTextColor.RED : NamedTextColor.GREEN)));
+
+        if (world != null)
         {
-            ItemStack worldStack = new ItemStack(SeasonUtility.getSeasonMaterial(world.getSeason()));
-            ItemMeta worldMeta = worldStack.getItemMeta();
-            worldMeta.displayName(Component.text(world.getName().replace("-", "年") + "月 ワールド").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-            worldMeta.lore(List.of(Language.translate("ui.worlds.version", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(world.getVersion()).color(NamedTextColor.GREEN)).decoration(TextDecoration.ITALIC, false),
-                    Component.text().build(),
-                    (world.contains(this.player) ? Language.translate("ui.worlds.playing", this.player) : Language.translate("ui.worlds.players", this.player, "players=" + world.getOnline())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+            springLore.add(Component.text().build());
 
-            worldStack.setItemMeta(worldMeta);
-            this.registerListener((i < 5) ? 11 + i : 20 + (i - 5), worldStack, String.format("vanilife:world %s", world.getName()), ExecutionType.CLIENT);
-
-            i ++;
+            if (world.contains(this.player))
+            {
+                springLore.add(Language.translate("ui.worlds.playing", this.player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+            }
+            else
+            {
+                springLore.add(Language.translate("ui.click-to-play", this.player).color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+            }
         }
+
+        worldMeta.lore(springLore);
+        worldStack.setItemMeta(worldMeta);
+        return worldStack;
+    }
+
+    protected void registerListener(int index, @NotNull ItemStack stack, VanilifeWorld world)
+    {
+        if (world == null)
+        {
+            this.inventory.setItem(index, stack);
+            return;
+        }
+
+        super.registerListener(index, stack, "vanilife:world " + world.getName(), ExecutionType.CLIENT);
     }
 
     @Override
@@ -66,17 +116,9 @@ public class WorldsUI extends InventoryUI
     {
         super.onUiClick(event);
 
-        ArrayList<VanilifeWorld> worlds = new ArrayList<>(VanilifeWorld.getInstances().subList(this.page * 8, Math.min((this.page + 1) * 8, VanilifeWorld.getInstances().size())).stream().toList());
-
-        if (event.getSlot() == 27)
+        if (event.getSlot() == 31)
         {
-            this.page = Math.max(0, this.page - 1);
-            this.render();
-        }
-
-        if (event.getSlot() == 35)
-        {
-            this.page = Math.min(worlds.size() / 10, this.page + 1);
+            this.player.closeInventory();
         }
     }
 }

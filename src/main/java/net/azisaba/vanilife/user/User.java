@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.mail.Mail;
@@ -81,6 +82,8 @@ public class User
     private int mola;
     private UserStatus status;
     private JsonObject storage;
+
+    private Housing housing;
 
     private final Settings settings;
 
@@ -190,7 +193,7 @@ public class User
         this.mails = UserUtility.getMails(this);
     }
 
-    public User(@NotNull UUID id, boolean b)
+    public User(@NotNull UUID id, boolean write)
     {
         this.id = id;
 
@@ -207,7 +210,7 @@ public class User
 
         User.instances.add(this);
 
-        if (b)
+        if (write)
         {
             try
             {
@@ -237,6 +240,7 @@ public class User
             }
         }
 
+        this.housing = null;
         this.settings = Settings.getInstance(this);
         this.mails = UserUtility.getMails(this);
     }
@@ -248,7 +252,7 @@ public class User
 
     public @NotNull Component getName()
     {
-        return this.getSara().role.append(Component.text(this.getNick(), this.getSara().color)).clickEvent(ClickEvent.runCommand(String.format("/profile %s", this.getPlaneName()))).hoverEvent(HoverEvent.showText(Component.text("クリックしてプロフィールを開きます")));
+        return this.getSara().role.append(Component.text(this.getNick(), this.getSara().getColor())).clickEvent(ClickEvent.runCommand(String.format("/profile %s", this.getPlaneName()))).hoverEvent(HoverEvent.showText(Component.text("クリックしてプロフィールを開きます")));
     }
 
     public @NotNull String getPlaneName()
@@ -628,38 +632,42 @@ public class User
         }
     }
 
-    @NotNull
-    public Settings getSettings()
+    public Housing getHousing()
+    {
+        return this.housing;
+    }
+
+    public void setHousing(Housing housing)
+    {
+        this.housing = housing;
+    }
+
+    public @NotNull Settings getSettings()
     {
         return this.settings;
     }
 
-    @NotNull
-    public List<User> getFriends()
+    public @NotNull List<User> getFriends()
     {
         return this.friends;
     }
 
-    @NotNull
-    public List<User> getBlocks()
+    public @NotNull List<User> getBlocks()
     {
         return this.blocks;
     }
 
-    @NotNull
-    public List<Mail> getMails()
+    public @NotNull List<Mail> getMails()
     {
         return this.mails;
     }
 
-    @NotNull
-    public List<ISubscription> getSubscriptions()
+    public @NotNull List<ISubscription> getSubscriptions()
     {
         return this.subscriptions;
     }
 
-    @NotNull
-    public List<IRequest> getRequests()
+    public @NotNull List<IRequest> getRequests()
     {
         return this.requests;
     }
@@ -669,8 +677,7 @@ public class User
         return Bukkit.getPlayer(this.id);
     }
 
-    @NotNull
-    public OfflinePlayer getAsOfflinePlayer()
+    public @NotNull OfflinePlayer getAsOfflinePlayer()
     {
         return Bukkit.getOfflinePlayer(this.id);
     }
@@ -688,6 +695,16 @@ public class User
     public boolean isBlock(User user)
     {
         return this.blocks.contains(user);
+    }
+
+    public boolean inHousing()
+    {
+        return this.isOnline() && this.getAsPlayer().getWorld().equals(Housing.getWorld());
+    }
+
+    public boolean hasHousing()
+    {
+        return this.housing != null;
     }
 
     public boolean hasSubscription(ISubscription subscription)

@@ -1,10 +1,12 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.util.SeasonUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,6 +27,12 @@ public class WorldCommand implements CommandExecutor, TabCompleter
         if (! (sender instanceof Player player))
         {
             sender.sendMessage(Component.text("Please run this from within the game.").color(NamedTextColor.RED));
+            return true;
+        }
+
+        if (args.length == 0)
+        {
+            Bukkit.dispatchCommand(player, "vanilife:worlds");
             return true;
         }
 
@@ -51,7 +59,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter
 
         player.teleport(world.getLocation(player));
 
-        player.sendMessage(Language.translate("cmd.world.teleported", player, "world=" + args[0]).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+        player.sendMessage(Language.translate("cmd.world.teleported", player, "world=" + args[0]).color(SeasonUtility.getSeasonColor(world.getSeason())).decorate(TextDecoration.BOLD));
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         return true;
     }

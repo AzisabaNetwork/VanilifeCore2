@@ -158,7 +158,7 @@ public class Jnkn
 
             this.player2.sendMessage(Language.translate("msg.jnkn.me", this.player2).color(NamedTextColor.GRAY).append(Language.translate(this.hand2.name, this.player2).color(NamedTextColor.GREEN)));
             this.player2.sendMessage(Language.translate("msg.jnkn.partner", this.player2).color(NamedTextColor.GRAY).append(Language.translate(this.hand1.name, this.player2).color(NamedTextColor.GREEN)));
-            this.player2.showTitle(Title.title(Language.translate("jnkn.result.favour", this.player1).color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD), Component.text().build()));
+            this.player2.showTitle(Title.title(Language.translate("jnkn.result.favour", this.player2).color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD), Component.text().build()));
 
             broadcast(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
             return;

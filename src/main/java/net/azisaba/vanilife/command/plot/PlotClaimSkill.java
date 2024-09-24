@@ -3,11 +3,13 @@ package net.azisaba.vanilife.command.plot;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Chunk;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -42,7 +44,7 @@ public class PlotClaimSkill implements ICommandSkill
 
         if (args.length != 0)
         {
-            sender.sendMessage(Component.text("Correct syntax: /plot claim").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: //plot claim").color(NamedTextColor.RED));
             return;
         }
 
@@ -50,7 +52,8 @@ public class PlotClaimSkill implements ICommandSkill
 
         if (user.getMola() < Vanilife.MOLA_PLOT_CLAIM)
         {
-            sender.sendMessage(Component.text(String.format("Plot の拡張には %s Mola が必要です", Vanilife.MOLA_PLOT_CLAIM)).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.shortage", player, "need=" + (Vanilife.MOLA_PLOT_CLAIM - user.getMola())).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
@@ -60,13 +63,13 @@ public class PlotClaimSkill implements ICommandSkill
 
         if (Math.sqrt(chunkX * chunkX + chunkZ * chunkZ) <= 100)
         {
-            sender.sendMessage(Component.text("スポーン地点から 100m 以内のチャンクを取得することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.spawn-protection", player).color(NamedTextColor.RED));
             return;
         }
 
         if (Plot.getInstance(chunk) != null)
         {
-            sender.sendMessage(Component.text("このチャンクは既に Plot の範囲内です").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.already", player).color(NamedTextColor.RED));
             return;
         }
 
@@ -93,25 +96,25 @@ public class PlotClaimSkill implements ICommandSkill
 
         if (plot == null)
         {
-            sender.sendMessage(Component.text("このチャンクに隣接する Plot が見つかりませんでした").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.claim.not-found", player).color(NamedTextColor.RED));
             return;
         }
 
         if (User.getInstance(player) != plot.getOwner())
         {
-            sender.sendMessage(Component.text("あなたはこの Plot のオーナーではありません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.permission-error", player).color(NamedTextColor.RED));
             return;
         }
 
         if (1 < i)
         {
-            sender.sendMessage(Component.text("他の Plot と隣接するチャンクを取得することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.claim.cant-adjacent", player).color(NamedTextColor.RED));
             return;
         }
 
         plot.claim(chunk);
         user.setMola(user.getMola() - Vanilife.MOLA_PLOT_CLAIM);
-        sender.sendMessage(Component.text(String.format("%s Mola を消費してこのチャンクを %s に取得しました！", Vanilife.MOLA_PLOT_CLAIM, plot.getName())).color(NamedTextColor.GREEN));
+        sender.sendMessage(Language.translate("cmd.plot.claim.complete", player, "cost=" + Vanilife.MOLA_PLOT_CLAIM).color(NamedTextColor.GREEN));
     }
 
     @Override

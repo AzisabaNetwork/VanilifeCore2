@@ -1,7 +1,9 @@
 package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.attribute.Attribute;
@@ -25,7 +27,24 @@ public class EntityListener implements Listener
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
+        Entity damager = event.getDamager();
         Entity entity = event.getEntity();
+
+        if (damager instanceof Player p && entity instanceof Player)
+        {
+            Plot plot = Plot.getInstance(damager.getChunk());
+
+            if (plot != null)
+            {
+                plot.onEntityDamageByEntity(event);
+            }
+            else if (! UserUtility.isModerator(p))
+            {
+                event.setCancelled(true);
+            }
+
+            return;
+        }
 
         if (! (entity instanceof Monster monster))
         {

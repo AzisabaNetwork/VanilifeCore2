@@ -2,9 +2,10 @@ package net.azisaba.vanilife.command.plot;
 
 import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.user.request.PlotInvitation;
+import net.azisaba.vanilife.user.request.PlotInvite;
 import net.azisaba.vanilife.user.request.PlotRequest;
 import net.azisaba.vanilife.user.request.TradeRequest;
 import net.azisaba.vanilife.util.UserUtility;
@@ -45,7 +46,7 @@ public class PlotJoinSkill implements ICommandSkill
 
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /plot join <plot>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: //plot join <plot>").color(NamedTextColor.RED));
             return;
         }
 
@@ -53,33 +54,33 @@ public class PlotJoinSkill implements ICommandSkill
 
         if (plot == null)
         {
-            sender.sendMessage(Component.text("Plot が見つかりませんでした").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.not-found", player).color(NamedTextColor.RED));
             return;
         }
 
         User user = User.getInstance(player);
 
-        if (plot.isMember(user))
+        if (plot.getMembers().contains(user))
         {
-            sender.sendMessage(Component.text("あなたは既にこの Plot のメンバーです").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.join.already", player).color(NamedTextColor.RED));
             return;
         }
 
         if (! plot.getOwner().isOnline())
         {
-            sender.sendMessage(Component.text("Plot オーナーがオフラインのため、現在 Plot 申請を送信することはできません").color(NamedTextColor.RED));
-            player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
+            sender.sendMessage(Language.translate("cmd.plot.join.offline", player).color(NamedTextColor.RED));
+            return;
         }
 
-        if (user.getRequests().stream().anyMatch(r -> r.auth(PlotInvitation.class, plot.getOwner().getAsOfflinePlayer().getPlayer())))
+        if (user.getRequests().stream().anyMatch(r -> r.auth(PlotInvite.class, plot.getOwner().getAsPlayer())))
         {
-            user.getRequests().stream().filter(r -> r.auth(PlotInvitation.class, plot.getOwner().getAsOfflinePlayer().getPlayer())).toList().getFirst().onAllow();
+            user.getRequests().stream().filter(r -> r.auth(PlotInvite.class, plot.getOwner().getAsPlayer())).toList().getFirst().onAllow();
             return;
         }
 
         if (! UserUtility.isAdmin(sender) && plot.getOwner().getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
         {
-            sender.sendMessage(Component.text(String.format("あなたは既に %s に Plot 申請を送信しています", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.join.already-sent", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }

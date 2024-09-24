@@ -60,7 +60,7 @@ public class VwmUpdateSkill implements ICommandSkill
             name = String.format(basename + "." + (++ i));
         }
 
-        Bukkit.setWhitelist(true);
+        VanilifeWorldManager.running = true;
         Bukkit.getOnlinePlayers().forEach(p -> p.kick(Component.text("アップデートを実行しています…\n完了までしばらくお待ちください").color(NamedTextColor.RED)));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("vanilife:vwm create %s", name));
 
@@ -71,8 +71,8 @@ public class VwmUpdateSkill implements ICommandSkill
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("vanilife:vwm delete %s", oldWorld.getName()));
         }
 
-        sender.sendMessage(Component.text("vw のアップデートが完了しました").color(NamedTextColor.GREEN));
-        Bukkit.setWhitelist(false);
+        sender.sendMessage(Component.text("アップデートを完了しました").color(NamedTextColor.GREEN));
+        VanilifeWorldManager.running = false;
     }
 
     @Override

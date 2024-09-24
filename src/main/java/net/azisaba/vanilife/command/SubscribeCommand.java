@@ -48,9 +48,15 @@ public class SubscribeCommand implements CommandExecutor, TabCompleter
 
         User user = User.getInstance(player);
 
+        if (user.hasSubscription(subscription))
+        {
+            sender.sendMessage(Language.translate("cmd.subscribe.already", player, "subscription=" + subscription.getName()));
+            return true;
+        }
+
         if (user.getMola() < cost)
         {
-            sender.sendMessage(Language.translate("cmd.subscribe.shortage", player, "need=" + (cost - user.getMola())).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.shortage", player, "need=" + (cost - user.getMola())).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return true;
         }

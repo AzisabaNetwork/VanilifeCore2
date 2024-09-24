@@ -27,7 +27,7 @@ public class PlayingRewardRunnable extends BukkitRunnable
             user.setMola(user.getMola() + 5, "reward.category.played-time", NamedTextColor.GREEN);
         }
 
-        new PlayingRewardRunnable().runTaskLater(Vanilife.getPlugin(), PlayingRewardRunnable.getLaterTicks());
+        new PlayingRewardRunnable().runTaskLater(Vanilife.getPlugin());
     }
 
     public void runTaskLater(Plugin plugin)

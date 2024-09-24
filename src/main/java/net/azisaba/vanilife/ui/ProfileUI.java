@@ -1,8 +1,10 @@
 package net.azisaba.vanilife.ui;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.request.HousingInvite;
 import net.azisaba.vanilife.util.HeadUtility;
 import net.azisaba.vanilife.util.Typing;
 import net.kyori.adventure.text.Component;
@@ -16,7 +18,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -42,54 +43,60 @@ public class ProfileUI extends InventoryUI
         friendStack.setItemMeta(friendMeta);
         this.registerListener(12, friendStack, String.format("vanilife:friend %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
 
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
+        Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
+            ItemStack headStack = HeadUtility.getPlayerHead(this.profile.getPlaneName());
+            ItemMeta headMeta = headStack.getItemMeta();
+            headMeta.displayName(this.profile.getName().decoration(TextDecoration.ITALIC, false));
+
+            ArrayList<Component> headLore = new ArrayList<>();
+            StringBuilder sb = new StringBuilder();
+
+            if (this.profile.getBio() != null)
             {
-                ItemStack headStack = HeadUtility.getPlayerHead(profile.getPlaneName());
-                ItemMeta headMeta = headStack.getItemMeta();
-                headMeta.displayName(profile.getName().decoration(TextDecoration.ITALIC, false));
-
-                ArrayList<Component> headLore = new ArrayList<>();
-                StringBuilder sb = new StringBuilder();
-
-                if (profile.getBio() != null)
+                for (int i = 0; i < this.profile.getBio().length(); i ++)
                 {
-                    for (int i = 0; i < profile.getBio().length(); i ++)
-                    {
-                        sb.append(profile.getBio().charAt(i));
+                    sb.append(this.profile.getBio().charAt(i));
 
-                        if (16 <= sb.length())
-                        {
-                            headLore.add(Component.text(sb.toString()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
-                            sb = new StringBuilder();
-                        }
-                    }
-
-                    if (sb.length() < 16)
+                    if (16 <= sb.length())
                     {
                         headLore.add(Component.text(sb.toString()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+                        sb = new StringBuilder();
                     }
-
-                    headLore.add(Component.text(""));
                 }
 
-                headLore.add(Language.translate("ui.state", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                                .append((profile.isOnline() ? Language.translate("ui.profile.online", player) : Language.translate("ui.profile.offline", player)).color(profile.isOnline() ? NamedTextColor.GREEN : NamedTextColor.RED)));
-
-                if (profile.getSettings().BIRTHDAY.isWithinScope(user) && profile.getBirthday() != null)
+                if (sb.length() < 16)
                 {
-                    headLore.add(Language.translate("ui.profile.birthday", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                            .append(Component.text(Vanilife.sdf3.format(profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+                    headLore.add(Component.text(sb.toString()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
                 }
 
-                headMeta.lore(headLore);
-
-                headStack.setItemMeta(headMeta);
-                inventory.setItem(13, headStack);
+                headLore.add(Component.text(""));
             }
-        }.runTaskAsynchronously(Vanilife.getPlugin());
+
+            headLore.add(Language.translate("ui.state", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                    .append((profile.isOnline() ? Language.translate("ui.profile.online", this.player) : Language.translate("ui.profile.offline", player)).color(profile.isOnline() ? NamedTextColor.GREEN : NamedTextColor.RED)));
+
+            if (! this.profile.isOnline())
+            {
+                headLore.add(Language.translate("ui.profile.last-login", this.player).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(Component.text(Vanilife.sdf2.format(profile.getLastLogin())).color(NamedTextColor.GREEN)));
+            }
+
+            if (this.profile.getSettings().BIRTHDAY.isWithinScope(user) && this.profile.getBirthday() != null)
+            {
+                headLore.add(Language.translate("ui.profile.birthday", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                        .append(Component.text(Vanilife.sdf3.format(this.profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+            }
+
+            if (this.profile.hasHousing() && this.profile.inHousing() && this.profile.read("settings.housing.activity").getAsBoolean())
+            {
+                headLore.add(Component.text().build());
+                headLore.add(Language.translate("ui.profile.playing-housing", this.player).color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+            }
+
+            headMeta.lore(headLore);
+
+            headStack.setItemMeta(headMeta);
+            this.inventory.setItem(13, headStack);
+        });
 
         ItemStack reportStack = new ItemStack(Material.PAPER);
         ItemMeta reportMeta = reportStack.getItemMeta();
@@ -161,20 +168,6 @@ public class ProfileUI extends InventoryUI
         discordStack.setItemMeta(discordMeta);
         this.inventory.setItem(23, discordStack);
 
-        ItemStack tradeStack = new ItemStack(Material.CHEST);
-        ItemMeta tradeMeta = tradeStack.getItemMeta();
-        tradeMeta.displayName(Component.text("Trade").color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        tradeMeta.lore(Collections.singletonList(Component.text("Trade 申請を送信します").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
-        tradeStack.setItemMeta(tradeMeta);
-        this.registerListener(30, tradeStack, String.format("vanilife:trade %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
-
-        ItemStack closeStack = new ItemStack(Material.OAK_DOOR);
-        ItemMeta closeMeta = closeStack.getItemMeta();
-        closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
-        closeMeta.lore(Collections.singletonList(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
-        closeStack.setItemMeta(closeMeta);
-        this.inventory.setItem(31, closeStack);
-
         ItemStack blockStack = new ItemStack(Material.HOPPER);
         ItemMeta blockMeta = blockStack.getItemMeta();
         blockMeta.displayName((user.isBlock(profile) ? Language.translate("ui.profile.unblock", player) : Language.translate("ui.profile.block", player)).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
@@ -182,7 +175,22 @@ public class ProfileUI extends InventoryUI
                 Language.translate("ui.profile.block.details.2", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Language.translate("ui.profile.block.details.3", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)));
         blockStack.setItemMeta(blockMeta);
-        this.registerListener(32, blockStack, (user.isBlock(profile) ? "vanilife:unblock " : "vanilife:block ") + this.profile.getPlaneName(), ExecutionType.CLIENT);
+        this.registerListener(30, blockStack, (user.isBlock(profile) ? "vanilife:unblock " : "vanilife:block ") + this.profile.getPlaneName(), ExecutionType.CLIENT);
+
+        ItemStack tradeStack = new ItemStack(Material.CHEST);
+        ItemMeta tradeMeta = tradeStack.getItemMeta();
+        tradeMeta.displayName(Language.translate("ui.profile.trade", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        tradeMeta.lore(Collections.singletonList(Language.translate("ui.profile.trade.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        tradeStack.setItemMeta(tradeMeta);
+        this.registerListener(31, tradeStack, String.format("vanilife:trade %s", this.profile.getPlaneName()), ExecutionType.CLIENT);
+
+        ItemStack housingStack = new ItemStack(Material.DARK_OAK_DOOR);
+        ItemMeta housingMeta = housingStack.getItemMeta();
+        housingMeta.displayName(Language.translate("ui.profile.housing", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        housingMeta.lore(List.of(Language.translate("ui.profile.housing.details.1", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.profile.housing.details.2", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        housingStack.setItemMeta(housingMeta);
+        this.inventory.setItem(32, housingStack);
     }
 
     @Override
@@ -229,9 +237,33 @@ public class ProfileUI extends InventoryUI
             };
         }
 
-        if (event.getSlot() == 31)
+        if (event.getSlot() == 32)
         {
-            this.player.closeInventory();
+            if (event.isLeftClick())
+            {
+                Bukkit.dispatchCommand(this.player, "housing " + this.profile.getPlaneName());
+            }
+
+            if (event.isRightClick())
+            {
+                if (! this.profile.isOnline())
+                {
+                    this.player.sendMessage(Language.translate("msg.offline", this.player, "name=" + this.profile.getPlaneName()).color(NamedTextColor.RED));
+                    return;
+                }
+
+                User user = User.getInstance(this.player);
+
+                Housing housing = user.getHousing();
+
+                if (housing == null)
+                {
+                    this.player.sendMessage(Language.translate("msg.housing.not-found", this.player).color(NamedTextColor.RED));
+                    return;
+                }
+
+                new HousingInvite(housing, this.profile.getAsPlayer());
+            }
         }
     }
 }

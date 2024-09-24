@@ -20,7 +20,7 @@ public class VoiceChatRunnable extends BukkitRunnable
             if (vc == null)
             {
                 player.playerListName(user.getName());
-                return;
+                continue;
             }
 
             player.playerListName(user.getName().append(Component.text(" 🔊").color(NamedTextColor.WHITE)));

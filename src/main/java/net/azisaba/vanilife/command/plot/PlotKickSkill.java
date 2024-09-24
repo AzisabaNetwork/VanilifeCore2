@@ -2,6 +2,7 @@ package net.azisaba.vanilife.command.plot;
 
 import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
@@ -41,7 +42,7 @@ public class PlotKickSkill implements ICommandSkill
 
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /plot add <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: //plot kick <player>").color(NamedTextColor.RED));
             return;
         }
 
@@ -49,7 +50,7 @@ public class PlotKickSkill implements ICommandSkill
 
         if (plot == null)
         {
-            sender.sendMessage(Component.text("Plot が見つかりませんでした").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.not-found", player).color(NamedTextColor.RED));
             return;
         }
 
@@ -57,29 +58,29 @@ public class PlotKickSkill implements ICommandSkill
 
         if (user != plot.getOwner())
         {
-            sender.sendMessage(Component.text("あなたはこの Plot のオーナーではありません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.permission-error", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         User member = User.getInstance(args[0]);
 
-        if (! plot.isMember(member))
+        if (! plot.getMembers().contains(member))
         {
-            sender.sendMessage(Component.text(String.format("%s はこの Plot のメンバーではありません", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.kick.not-found", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (plot.getOwner() == member)
         {
-            sender.sendMessage(Component.text("Plot のオーナーを追放することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.kick.cant-kick-owner", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         plot.removeMember(member);
-        sender.sendMessage(Component.text(String.format("%s を Plot から追放しました", args[0])).color(NamedTextColor.GREEN));
+        sender.sendMessage(Language.translate("cmd.plot.kick.complete", player, "name=" + args[0]).color(NamedTextColor.GREEN));
     }
 
     @Override

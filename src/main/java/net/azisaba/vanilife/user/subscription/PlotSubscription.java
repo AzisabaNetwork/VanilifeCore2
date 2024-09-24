@@ -27,6 +27,12 @@ public class PlotSubscription implements ISubscription
     }
 
     @Override
+    public @NotNull Component getDisplayName(@NotNull Language lang)
+    {
+        return Component.text(this.plot.getName() + " (Plot)").color(NamedTextColor.YELLOW);
+    }
+
+    @Override
     public @NotNull Material getIcon()
     {
         return Material.GRASS_BLOCK;
@@ -35,7 +41,7 @@ public class PlotSubscription implements ISubscription
     @Override
     public @NotNull List<Component> getDetails(@NotNull Language lang)
     {
-        return List.of(lang.translate("subscription.plot.details.1"),
+        return List.of(lang.translate("subscription.plot.details.1", "chunks=" + this.plot.getChunks().size()),
                 Component.text(this.getCost() + " Mola").color(NamedTextColor.GREEN).append(Component.text(" (").color(NamedTextColor.GRAY).append(Component.text("➡").color(NamedTextColor.DARK_GRAY).decorate(TextDecoration.BOLD)).append(Component.text("40 Mola × " + this.plot.getChunks().size() + ")").color(NamedTextColor.GRAY))));
     }
 

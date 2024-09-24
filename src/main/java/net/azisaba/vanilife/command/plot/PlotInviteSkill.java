@@ -2,9 +2,11 @@ package net.azisaba.vanilife.command.plot;
 
 import net.azisaba.vanilife.command.skill.ICommandSkill;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.user.request.PlotInvitation;
+import net.azisaba.vanilife.user.request.FriendRequest;
+import net.azisaba.vanilife.user.request.PlotInvite;
 import net.azisaba.vanilife.user.request.PlotRequest;
 import net.azisaba.vanilife.user.request.TradeRequest;
 import net.azisaba.vanilife.util.UserUtility;
@@ -45,23 +47,23 @@ public class PlotInviteSkill implements ICommandSkill
             return;
         }
 
-        if (args.length != 1)
+        if (args.length != 2)
         {
-            sender.sendMessage(Component.text("Correct syntax: /plot add <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: //plot invite <player> <plot>").color(NamedTextColor.RED));
             return;
         }
 
-        Plot plot = Plot.getInstance(player.getChunk());
+        Plot plot = Plot.getInstance(args[1]);
 
         if (plot == null)
         {
-            sender.sendMessage(Component.text("Plot が見つかりませんでした").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.not-found", player).color(NamedTextColor.RED));
             return;
         }
 
         if (player.getName().equals(args[0]))
         {
-            sender.sendMessage(Component.text("自分自身に招待を送信することはできません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.invite.cant-yourself", player).color(NamedTextColor.RED));
             return;
         }
 
@@ -69,41 +71,41 @@ public class PlotInviteSkill implements ICommandSkill
 
         if (user != plot.getOwner())
         {
-            sender.sendMessage(Component.text("あなたはこの Plot のオーナーではありません").color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.permission-error", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (Bukkit.getPlayerExact(args[0]) == null)
         {
-            sender.sendMessage(Component.text(String.format("%s は現在オフラインです", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("msg.offline", player, "name=" + args[0]).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         User member = User.getInstance(args[0]);
 
-        if (member.getRequests().stream().anyMatch(r -> r.auth(PlotRequest.class, Bukkit.getPlayer(args[0]))))
+        if (plot.getOwner().getRequests().stream().anyMatch(r -> r.auth(PlotRequest.class, member.getAsPlayer())))
         {
-            member.getRequests().stream().filter(r -> r.auth(PlotRequest.class, Bukkit.getPlayer(args[0]))).toList().getFirst().onAllow();
+            plot.getOwner().getRequests().stream().filter(r -> r.auth(PlotRequest.class, member.getAsPlayer())).toList().getFirst().onAllow();
             return;
         }
 
-        if (plot.isMember(member))
+        if (plot.getMembers().contains(member))
         {
-            sender.sendMessage(Component.text(String.format("%s は既にこの Plot のメンバーです", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.invite.already", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
         if (! UserUtility.isAdmin(sender) && plot.getOwner().getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
         {
-            sender.sendMessage(Component.text(String.format("あなたは既に %s にこの Plot への招待を送信しています", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.plot.invite.already-sent", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
             return;
         }
 
-        new PlotInvitation(plot, Bukkit.getPlayer(args[0]));
+        new PlotInvite(plot, Bukkit.getPlayer(args[0]));
     }
 
     @Override

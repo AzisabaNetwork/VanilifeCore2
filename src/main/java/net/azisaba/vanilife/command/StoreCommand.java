@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command;
 
-import net.azisaba.vanilife.ui.StoreUI;
+import net.azisaba.vanilife.ui.VanilifeStoreUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -30,7 +30,7 @@ public class StoreCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        new StoreUI(player);
+        new VanilifeStoreUI(player);
         return true;
     }
 

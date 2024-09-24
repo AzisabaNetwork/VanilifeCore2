@@ -1,11 +1,11 @@
 package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
-import net.azisaba.vanilife.util.PlotUtility;
 import net.azisaba.vanilife.util.ReportUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -54,7 +54,7 @@ public class DiscordListener extends ListenerAdapter
         }
 
         UserUtility.mount();
-        PlotUtility.mount();
+        Bukkit.getScheduler().runTask(Vanilife.getPlugin(), Housing::mount);
         ReportUtility.mount();
     }
 
