@@ -230,11 +230,6 @@ public class PlayerListener implements Listener
 
         String content = ((TextComponent) event.message()).content();
 
-        if (user.hasSubscription(Subscriptions.NEON))
-        {
-            content = ChatColor.translateAlternateColorCodes('&', content);
-        }
-
         Typing typing = Typing.getInstance(player);
 
         if (typing != null)
@@ -246,15 +241,7 @@ public class PlayerListener implements Listener
 
         Vanilife.filter.onAsyncChat(event);
 
-        if (user.getSettings().METUBOU.isValid())
-        {
-            content = content.replace("!1", "(*'▽')");
-            content = content.replace("!2", "(/・ω・)/");
-            content = content.replace("!3", "(^^♪");
-            content = content.replace("!4", "( 一一)");
-        }
-
-        Component msg = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(ComponentUtility.toLink(Component.text(content).color(NamedTextColor.WHITE)));
+        Component msg = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(ComponentUtility.parseChat(content, user));
         Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).toList().forEach(p -> p.sendMessage(msg));
     }
 }
