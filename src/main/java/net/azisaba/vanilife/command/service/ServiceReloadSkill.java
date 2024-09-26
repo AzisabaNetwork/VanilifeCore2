@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.service;
 
-import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ISubcommand;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.service.ServiceManager;
 import net.azisaba.vanilife.user.Sara;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceReloadSkill implements ICommandSkill
+public class ServiceReloadSkill implements ISubcommand
 {
     @Override
     @NotNull

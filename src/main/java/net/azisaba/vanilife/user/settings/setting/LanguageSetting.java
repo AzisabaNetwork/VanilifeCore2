@@ -38,6 +38,12 @@ public class LanguageSetting extends SwitchSetting<String>
     }
 
     @Override
+    public @NotNull ItemStack getStateIcon()
+    {
+        return new ItemStack(Material.LIME_DYE);
+    }
+
+    @Override
     public String getDefault()
     {
         return "ja-jp";

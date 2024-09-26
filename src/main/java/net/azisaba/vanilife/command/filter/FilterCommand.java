@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.filter;
 
-import net.azisaba.vanilife.command.skill.SkillCommand;
+import net.azisaba.vanilife.command.skill.ParentCommand;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-public class FilterCommand extends SkillCommand
+public class FilterCommand extends ParentCommand
 {
     @Override
     public String getName()

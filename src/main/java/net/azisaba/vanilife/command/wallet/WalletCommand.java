@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.wallet;
 
-import net.azisaba.vanilife.command.skill.SkillCommand;
+import net.azisaba.vanilife.command.skill.ParentCommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WalletCommand extends SkillCommand
+public class WalletCommand extends ParentCommand
 {
     @Override
     public String getName()

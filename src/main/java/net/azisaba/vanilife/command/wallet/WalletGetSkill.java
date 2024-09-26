@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.command.wallet;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ISubcommand;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class WalletGetSkill implements ICommandSkill
+public class WalletGetSkill implements ISubcommand
 {
     @Override
     @NotNull

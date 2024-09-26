@@ -55,19 +55,16 @@ public class EmoteCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        Location location = player.getLocation().add(0, 3, 0);
-
         new BukkitRunnable()
         {
             @Override
             public void run()
             {
-                emote.use(location);
+                emote.use(player);
             }
         }.runTask(Vanilife.getPlugin());
 
         sender.sendMessage(Language.translate("cmd.emote.used", player, "emote=" + ComponentUtility.getAsString(emote.getDisplayName(Language.getInstance(user)))));
-        player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
         return true;
     }
 

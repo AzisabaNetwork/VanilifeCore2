@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.command.filter;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ISubcommand;
 import net.azisaba.vanilife.user.Sara;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class FilterAddSkill implements ICommandSkill
+public class FilterAddSkill implements ISubcommand
 {
     @Override
     @NotNull

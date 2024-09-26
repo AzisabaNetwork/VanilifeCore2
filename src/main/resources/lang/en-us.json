@@ -252,6 +252,7 @@
     "msg.housing.accept": "${name} has joined Housing!",
     "msg.housing.time-over": "&eThe invitation to Housing has expired after &c${limit}&e seconds.",
     "msg.housing.not-found": "You do not own any Housing.",
+    "msg.housing.cant-yourself": "You cannot send a Housing invitation to yourself.",
 
     "msg.jnkn.requested": "&eYou have sent a rock-paper-scissors request to ${name}&e! Approval expires in &c${limit}&e seconds.",
     "msg.jnkn.received": "${name}&e has sent you a rock-paper-scissors request!",
@@ -294,7 +295,7 @@
 
     "cmd.emote.undefined": "${emote} is an undefined emote.",
     "cmd.emote.cant": "You must have purchased ${subscription} to use this emote.",
-    "cmd.emote.used": "&e${emote} &aを使用しました!",
+    "cmd.emote.used": "&e${emote} &ahas been used!",
 
     "cmd.feedback.limit-over": "The first argument must not exceed 255 characters",
     "cmd.feedback.thank-you.1": "Thanks for the feedback!",
@@ -518,9 +519,6 @@
     "settings.language.name": "Language Setting",
     "settings.language.description.1": "&7You can change the display language in Vanilife!",
 
-    "settings.mail.name": "E-mail receipt settings",
-    "settings.mail.description.1": "&7Setting up players who can send emails to you",
-
     "settings.metubou.name": "Use of Emoticons in Chat",
     "settings.metubou.description.1": "&7Specific commands in chat",
     "settings.metubou.description.2": "&7will be converted to cute metubou-style emoticons!",
@@ -529,10 +527,6 @@
     "settings.metubou.description.5": "&8!2: (/・ω・)/",
     "settings.metubou.description.6": "&8!3: (^^♪",
     "settings.metubou.description.7": "&8!4: ( 一一)",
-
-    "settings.preview.name": "Experimental Function",
-    "settings.preview.description.1": "&7Do you use experimental features?",
-    "settings.preview.description.2": "&cExperimental features are unstable and may be removed",
 
     "settings.scope.public": "Public",
     "settings.scope.friend": "Friend's Public",
@@ -560,15 +554,30 @@
 
     "subscription.feature": "All subscriptions are automatically debited on the first day of each month:",
 
+    "subscription.angry_emote.name": "Angry Emote",
+    "subscription.angry_emote.description.1": "You will gain access to the Angry Emote!",
+    "subscription.angry_emote.description.2": "Use it with /e angry",
+    "subscription.angry_emote.details.1": "Requirements to use the Angry Emote:",
+
     "subscription.heart_emote.name": "Heart emote",
     "subscription.heart_emote.description.1": "Hart emote will be available!",
-    "subscription.heart_emote.description.2": "Can be used with /emote heart",
+    "subscription.heart_emote.description.2": "Can be used with /e heart",
     "subscription.heart_emote.details.1": "Required to use the heart emote:",
 
     "subscription.neon.name": "NEON",
     "subscription.neon.description.1": "Decoration codes will",
     "subscription.neon.description.2": "be available in the Vanilife chat!",
     "subscription.neon.details.1": "Chat decoration using the “&” sign:",
+
+    "subscription.rich_emote.name": "Rich Emote",
+    "subscription.rich_emote.description.1": "You will gain access to the Rich Emote!",
+    "subscription.rich_emote.description.2": "Use it with /e rich",
+    "subscription.rich_emote.details.1": "Requirements to use the Rich Emote:",
+
+    "subscription.sadness_emote.name": "Sadness Emote",
+    "subscription.sadness_emote.description.1": "Feeling like crying? You will gain access to the Sadness Emote...",
+    "subscription.sadness_emote.description.2": "Use it with /e sadness",
+    "subscription.sadness_emote.details.1": "Requirements to use the Sadness Emote:",
 
     "subscription.plot.name": "Plot",
     "subscription.plot.description.1": "Required to maintain Plot.",

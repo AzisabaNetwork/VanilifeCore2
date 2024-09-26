@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class HeartEmoteSubscription implements IEmoteSubscription
     @Override
     public @NotNull Material getIcon()
     {
-        return Material.APPLE;
+        return Material.RED_DYE;
     }
 
     @Override
@@ -41,12 +42,14 @@ public class HeartEmoteSubscription implements IEmoteSubscription
     @Override
     public int getCost()
     {
-        return 200;
+        return 100;
     }
 
     @Override
-    public void use(@NotNull Location location)
+    public void use(@NotNull Player player)
     {
+        final Location location = player.getLocation().add(0, 3, 0);
+
         double yaw = Math.toRadians(location.getYaw());
 
         for (double t = 0; t <= Math.PI * 2; t += 0.1)

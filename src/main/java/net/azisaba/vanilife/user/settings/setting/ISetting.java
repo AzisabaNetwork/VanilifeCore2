@@ -14,6 +14,8 @@ public interface ISetting<T extends Serializable>
 
     @NotNull ItemStack getIcon();
 
+    @NotNull ItemStack getStateIcon();
+
     @NotNull List<Component> getDetails();
 
     T getDefault();

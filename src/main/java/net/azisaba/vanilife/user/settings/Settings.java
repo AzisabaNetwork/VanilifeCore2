@@ -18,15 +18,13 @@ public class Settings
 
     private final User user;
 
-    public final MailSetting MAIL;
     public final BioSetting BIO;
     public final BirthdaySetting BIRTHDAY;
-    public final LanguageSetting LANGUAGE;
-    public final MetubouSetting METUBOU;
     public final YouTubeSetting YOUTUBE;
     public final TwitterSetting TWITTER;
     public final DiscordSetting DISCORD;
-    public final PreviewSetting PREVIEW;
+    public final MetubouSetting METUBOU;
+    public final LanguageSetting LANGUAGE;
 
     private final ArrayList<ISetting<?>> settings = new ArrayList<>();
 
@@ -34,15 +32,13 @@ public class Settings
     {
         this.user = user;
 
-        this.MAIL = (MailSetting) this.register(new MailSetting(this.user));
         this.BIO = (BioSetting) this.register(new BioSetting(this.user));
         this.BIRTHDAY = (BirthdaySetting) this.register(new BirthdaySetting(this.user));
-        this.LANGUAGE = (LanguageSetting) this.register(new LanguageSetting(this.user));
-        this.METUBOU = (MetubouSetting) this.register(new MetubouSetting(this.user));
         this.YOUTUBE = (YouTubeSetting) this.register(new YouTubeSetting(this.user));
         this.TWITTER = (TwitterSetting) this.register(new TwitterSetting(this.user));
         this.DISCORD = (DiscordSetting) this.register(new DiscordSetting(this.user));
-        this.PREVIEW = (PreviewSetting) this.register(new PreviewSetting(this.user));
+        this.METUBOU = (MetubouSetting) this.register(new MetubouSetting(this.user));
+        this.LANGUAGE = (LanguageSetting) this.register(new LanguageSetting(this.user));
 
         Settings.instances.add(this);
     }

@@ -9,7 +9,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

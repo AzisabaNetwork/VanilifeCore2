@@ -147,7 +147,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
                 String subject = (args.length == 3) ? args[1] : "件名なし";
                 String message = (args.length == 3) ? args[2] : args[1];
 
-                if (! to.getSettings().MAIL.isWithinScope(from) || to.isBlock(from))
+                if (to.isBlock(from))
                 {
                     sender.sendMessage(Language.translate("cmd.mail.cant", player, "name=" + to.getPlaneName()).color(NamedTextColor.RED));
                     return;

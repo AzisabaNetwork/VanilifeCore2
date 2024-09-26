@@ -25,6 +25,7 @@ import net.azisaba.vanilife.housing.HousingRunnable;
 import net.azisaba.vanilife.runnable.PlayingRewardRunnable;
 import net.azisaba.vanilife.service.ServiceManager;
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.user.subscription.RichEmoteSubscription;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ChatFilter;
 import net.azisaba.vanilife.util.PlotUtility;
@@ -138,6 +139,8 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
         this.getServer().getPluginManager().registerEvents(new Afk(), this);
+
+        this.getServer().getPluginManager().registerEvents(new RichEmoteSubscription(), this);
 
         this.getCommand("block").setExecutor(new BlockCommand());
         this.getCommand("checkout").setExecutor(new CheckoutCommand());

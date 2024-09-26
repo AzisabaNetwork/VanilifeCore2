@@ -6,9 +6,11 @@ import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,6 +30,12 @@ public abstract class BooleanSetting extends Setting<Boolean>
         }
 
         this.value = this.read().getAsBoolean();
+    }
+
+    @Override
+    public @NotNull ItemStack getStateIcon()
+    {
+        return new ItemStack(this.value ? Material.LIME_DYE : Material.GRAY_DYE);
     }
 
     @Override

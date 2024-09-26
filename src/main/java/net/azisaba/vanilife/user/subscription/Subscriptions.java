@@ -11,9 +11,15 @@ public class Subscriptions
 
     private static final List<ISubscription> products = new ArrayList<>();
 
-    public static HeartEmoteSubscription HEART_STAMP = (HeartEmoteSubscription) Subscriptions.register(new HeartEmoteSubscription());
+    public static final AngryEmoteSubscription ANGRY_EMOTE = (AngryEmoteSubscription) Subscriptions.register(new AngryEmoteSubscription());
 
-    public static NeonSubscription NEON = (NeonSubscription) Subscriptions.register(new NeonSubscription());
+    public static final HeartEmoteSubscription HEART_EMOTE = (HeartEmoteSubscription) Subscriptions.register(new HeartEmoteSubscription());
+
+    public static final NeonSubscription NEON = (NeonSubscription) Subscriptions.register(new NeonSubscription());
+
+    public static final RichEmoteSubscription RICH_EMOTE = (RichEmoteSubscription) Subscriptions.register(new RichEmoteSubscription());
+
+    public static final SadnessEmote SADNESS_EMOTE = (SadnessEmote) Subscriptions.register(new SadnessEmote());
 
     private static ISubscription register(@NotNull ISubscription subscription)
     {

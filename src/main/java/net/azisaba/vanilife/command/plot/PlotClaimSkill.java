@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.command.plot;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ISubcommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class PlotClaimSkill implements ICommandSkill
+public class PlotClaimSkill implements ISubcommand
 {
     @Override
     @NotNull

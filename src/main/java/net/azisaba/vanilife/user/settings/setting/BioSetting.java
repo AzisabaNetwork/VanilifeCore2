@@ -8,7 +8,9 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -34,7 +36,17 @@ public class BioSetting extends Setting<String>
     @Override
     public @NotNull ItemStack getIcon()
     {
-        return new ItemStack(Material.BOOK);
+        ItemStack iconStack = new ItemStack(Material.WRITTEN_BOOK);
+        ItemMeta iconMeta = iconStack.getItemMeta();
+        iconMeta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+        iconStack.setItemMeta(iconMeta);
+        return iconStack;
+    }
+
+    @Override
+    public @NotNull ItemStack getStateIcon()
+    {
+        return new ItemStack(this.user.getBio() == null ? Material.GRAY_DYE : Material.LIME_DYE);
     }
 
     @Override

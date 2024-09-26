@@ -15,11 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class SkillCommand implements CommandExecutor, TabCompleter
+public abstract class ParentCommand implements CommandExecutor, TabCompleter
 {
-    protected final Map<String, ICommandSkill> skills = new HashMap<>();
+    protected final Map<String, ISubcommand> skills = new HashMap<>();
 
-    public SkillCommand()
+    public ParentCommand()
     {
         this.registerSkills();
     }
@@ -29,29 +29,28 @@ public abstract class SkillCommand implements CommandExecutor, TabCompleter
         return null;
     }
 
-    protected void registerSkill(ICommandSkill skill)
+    protected void registerSkill(@NotNull ISubcommand skill)
     {
         this.skills.put(skill.getName(), skill);
     }
 
     protected void registerSkills() {}
 
-    @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
         if (args.length == 0)
         {
-            sender.sendMessage(Component.text(String.format("Correct syntax: /%s <skill> [args…]", this.getName())).color(NamedTextColor.RED));
+            sender.sendMessage(Component.text(String.format("Correct syntax: /%s <subcommand> [args…]", this.getName())).color(NamedTextColor.RED));
             return true;
         }
 
         if (! this.skills.containsKey(args[0]))
         {
-            sender.sendMessage(Component.text(String.format("%s is an unknown skill.", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Component.text(String.format("%s is an unknown subcommand.", args[0])).color(NamedTextColor.RED));
             return true;
         }
 
-        ICommandSkill skill = this.skills.get(args[0]);
+        ISubcommand skill = this.skills.get(args[0]);
 
         if (! UserUtility.isAdmin(sender) && UserUtility.getSara(sender).level < skill.getRequirement().level)
         {
@@ -68,11 +67,11 @@ public abstract class SkillCommand implements CommandExecutor, TabCompleter
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {
-            for (ICommandSkill skill : this.skills.values())
+            for (ISubcommand skill : this.skills.values())
             {
                 if ((! sender.isOp() && UserUtility.getSara(sender).level < skill.getRequirement().level) || ! skill.getName().startsWith(args[0]))
                 {

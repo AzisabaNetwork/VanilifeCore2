@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.vwm;
 
-import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ISubcommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VwmDeleteSkill implements ICommandSkill
+public class VwmDeleteSkill implements ISubcommand
 {
     @Override
     @NotNull

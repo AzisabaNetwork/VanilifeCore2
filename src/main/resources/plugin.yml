@@ -24,7 +24,7 @@ commands:
     usage: /feedback <details>
   filter:
     description: Edit the chat filter.
-    usage: /filter <skill> [args…]
+    usage: /filter <subcommand> [args…]
   friend:
     description: Send a friend request.
     usage: /friend <player>
@@ -64,7 +64,7 @@ commands:
     usage: /plot [plot]
   /plot:
     description: Command set for plot.
-    usage: /plot <skill> [args…]
+    usage: /plot <subcommand> [args…]
   poll:
     description: Create a poll.
     usage: /poll <option1> <option2> [options…]
@@ -85,10 +85,13 @@ commands:
     usage: /sara <player> <sara>
   service:
     description: Manage service configured on the Vanilife server.
-    usage: /service <skill> [args…]
+    usage: /service <subcommand> [args…]
   settings:
     description: Edit settings in ばにらいふ.
     usage: /settings
+    aliases:
+      - config
+      - setting
   store:
     description: Open the Vanilife store.
     usage: /store
@@ -120,15 +123,12 @@ commands:
   unsubscribe:
     description: Cancel any subscription.
     usage: /unsubscribe <subscription>
-  update:
-    description: Check the update details.
-    usage: /update
   vote:
     description: Vote for any option.
     usage: /vote <poll> <option>
   vwm:
     description: Command set for Vanilife World Manager administrators.
-    usage: /vwm <skill> [args…]
+    usage: /vwm <subcommand> [args…]
   wallet:
     description: Mola Management and Display.
     usage: /wallet [skill] [args…]

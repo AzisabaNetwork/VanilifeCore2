@@ -13,6 +13,7 @@ import net.azisaba.vanilife.user.settings.Settings;
 import net.azisaba.vanilife.user.subscription.ISubscription;
 import net.azisaba.vanilife.user.subscription.SingletonSubscription;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
+import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -178,7 +179,7 @@ public class User
 
                 if (subscription != null)
                 {
-                    this.subscribe(subscription);
+                    this.subscriptions.add(subscription);
                 }
             }
 
@@ -506,7 +507,11 @@ public class User
                     .append(Component.text(mola).color(NamedTextColor.DARK_AQUA))
                     .append(Component.text(" Mola").color(NamedTextColor.GRAY)), progress, BossBar.Color.PINK, BossBar.Overlay.PROGRESS);
 
-            player.playSound(player, (progress == 1.0f) ? Sound.ENTITY_PLAYER_LEVELUP : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+            if (! Afk.isAfk(player))
+            {
+                player.playSound(player, (progress == 1.0f) ? Sound.ENTITY_PLAYER_LEVELUP : Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+            }
+
             player.sendMessage(Component.text(String.format("+ %s Mola! (", (mola - this.mola))).color(color).append(Language.translate(category, player)).append(Component.text(")")));
             this.bossBar.addViewer(player);
 
@@ -838,6 +843,11 @@ public class User
 
     public void subscribe(@NotNull ISubscription subscription)
     {
+        if (this.hasSubscription(subscription))
+        {
+            return;
+        }
+
         this.subscriptions.add(subscription);
 
         if (! subscription.getClass().isAnnotationPresent(SingletonSubscription.class))
@@ -848,6 +858,7 @@ public class User
         try
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+
             PreparedStatement stmt = con.prepareStatement("INSERT INTO subscription VALUES(?, ?)");
             stmt.setString(1, this.id.toString());
             stmt.setString(2, subscription.getName());
@@ -855,6 +866,7 @@ public class User
             stmt.executeUpdate();
 
             stmt.close();
+
             con.close();
         }
         catch (SQLException e)

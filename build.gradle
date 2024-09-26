@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.azisaba'
-version = '1.7.0'
+version = '1.7.1'
 
 repositories {
     mavenCentral()
@@ -39,6 +39,11 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
+}
+
+task runServer(type: Exec)
+{
+    commandLine 'cmd', '/c', ''
 }
 
 tasks.withType(JavaCompile).configureEach {

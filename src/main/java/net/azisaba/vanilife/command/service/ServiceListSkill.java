@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.service;
 
-import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ISubcommand;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.user.Sara;
 import net.kyori.adventure.text.Component;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ServiceListSkill implements ICommandSkill
+public class ServiceListSkill implements ISubcommand
 {
     @Override
     @NotNull

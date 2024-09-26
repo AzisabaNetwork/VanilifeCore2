@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.user.settings.setting;
 
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.util.HeadUtility;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +21,6 @@ public class MetubouSetting extends BooleanSetting
     @Override
     public @NotNull ItemStack getIcon()
     {
-        return HeadUtility.getPlayerHead("metubou");
+        return new ItemStack(Material.OAK_SIGN);
     }
 }

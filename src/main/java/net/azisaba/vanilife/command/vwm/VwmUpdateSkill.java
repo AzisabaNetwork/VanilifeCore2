@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.command.vwm;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.command.skill.ICommandSkill;
+import net.azisaba.vanilife.command.skill.ISubcommand;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class VwmUpdateSkill implements ICommandSkill
+public class VwmUpdateSkill implements ISubcommand
 {
     @Override
     @NotNull

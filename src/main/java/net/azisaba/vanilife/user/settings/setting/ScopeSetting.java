@@ -4,7 +4,9 @@ import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.ui.SettingsUI;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
@@ -25,6 +27,17 @@ public abstract class ScopeSetting extends SwitchSetting<String>
 
         this.value = this.read().getAsString();
         this.scope = Scope.valueOf(this.value);
+    }
+
+    @Override
+    public @NotNull ItemStack getStateIcon()
+    {
+        return new ItemStack(switch (this.scope)
+        {
+            case PUBLIC -> Material.LIME_DYE;
+            case FRIEND -> Material.YELLOW_DYE;
+            case PRIVATE -> Material.GRAY_DYE;
+        });
     }
 
     @Override
