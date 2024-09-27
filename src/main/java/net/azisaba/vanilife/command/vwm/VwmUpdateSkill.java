@@ -53,7 +53,7 @@ public class VwmUpdateSkill implements ISubcommand
         {
             if (56 < i)
             {
-                name = Vanilife.sdf4.format(new Date());
+                name = Vanilife.sdf5.format(new Date());
                 break;
             }
 

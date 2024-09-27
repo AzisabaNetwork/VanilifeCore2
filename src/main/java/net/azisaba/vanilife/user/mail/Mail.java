@@ -2,12 +2,12 @@ package net.azisaba.vanilife.user.mail;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -55,7 +55,7 @@ public class Mail
             this.from = User.getInstance(UUID.fromString(rs.getString("user_from")));
             this.to = User.getInstance(UUID.fromString(rs.getString("user_to")));
             this.subject = rs.getString("subject");
-            this.date = Vanilife.sdf1.parse(rs.getString("date"));
+            this.date = Vanilife.sdf2.parse(rs.getString("date"));
             this.message = rs.getString("message");
             this.read = rs.getBoolean("readed");
 
@@ -92,7 +92,7 @@ public class Mail
             stmt.setString(2, this.from.getId().toString());
             stmt.setString(3, this.to.getId().toString());
             stmt.setString(4, this.subject);
-            stmt.setString(5, Vanilife.sdf1.format(this.date));
+            stmt.setString(5, Vanilife.sdf2.format(this.date));
             stmt.setString(6, this.message);
             stmt.setBoolean(7, false);
 
@@ -112,7 +112,7 @@ public class Mail
         {
             Player player = this.to.getAsPlayer();
 
-            player.sendMessage(Component.text("✉ ").color(NamedTextColor.GRAY).append(this.from.getName().decorate(TextDecoration.BOLD)).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(Component.text(this.message).color(NamedTextColor.WHITE))));
+            player.sendMessage(Component.text("✉ ").color(NamedTextColor.GRAY).append(this.from.getName().decorate(TextDecoration.BOLD)).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(ComponentUtility.parseChat(this.message, this.from))));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             this.read();
         }

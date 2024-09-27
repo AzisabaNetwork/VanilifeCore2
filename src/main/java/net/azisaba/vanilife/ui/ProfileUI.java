@@ -2,7 +2,6 @@ package net.azisaba.vanilife.ui;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.housing.Housing;
-import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.HousingInvite;
 import net.azisaba.vanilife.util.HeadUtility;
@@ -77,13 +76,13 @@ public class ProfileUI extends InventoryUI
 
             if (! this.profile.isOnline())
             {
-                headLore.add(Language.translate("ui.profile.last-login", this.player).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(Component.text(Vanilife.sdf2.format(profile.getLastLogin())).color(NamedTextColor.GREEN)));
+                headLore.add(Language.translate("ui.profile.last-login", this.player).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(Component.text(Vanilife.sdf3.format(profile.getLastLogin())).color(NamedTextColor.GREEN)));
             }
 
             if (this.profile.getSettings().BIRTHDAY.isWithinScope(user) && this.profile.getBirthday() != null)
             {
                 headLore.add(Language.translate("ui.profile.birthday", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                        .append(Component.text(Vanilife.sdf3.format(this.profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+                        .append(Component.text(Vanilife.sdf4.format(this.profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
             }
 
             if (this.profile.hasHousing() && this.profile.inHousing() && this.profile.read("settings.housing.activity").getAsBoolean())
@@ -231,7 +230,7 @@ public class ProfileUI extends InventoryUI
                         return;
                     }
 
-                    new Report(User.getInstance(this.player), string, profile);
+                    // new Report(User.getInstance(this.player), string, profile);
                     this.player.sendMessage(Language.translate("ui.profile.report.created", this.player).color(NamedTextColor.GREEN));
                 }
             };

@@ -60,7 +60,7 @@ public class ComponentUtility
             src = src.replace("!4", "( 一一)");
         }
 
-        Component component = Component.text(src);
+        Component component = Component.text(src).color(NamedTextColor.WHITE);
 
         for (ChatCommand command : ChatCommand.values())
         {

@@ -1,7 +1,6 @@
 package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
@@ -12,8 +11,6 @@ import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -153,7 +150,7 @@ public class PlayerJoinListener implements Listener
         Player player = event.getPlayer();
         User user = User.getInstance(player);
 
-        final String version = Vanilife.getVersion();
+        final String version = Vanilife.getPluginVersion();
 
         if (user.getStorage().has("version"))
         {

@@ -70,13 +70,13 @@ public class HousingUI extends InventoryUI
 
             if (! this.owner.isOnline())
             {
-                headLore.add(Language.translate("ui.profile.last-login", this.player).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(Component.text(Vanilife.sdf2.format(this.owner.getLastLogin())).color(NamedTextColor.GREEN)));
+                headLore.add(Language.translate("ui.profile.last-login", this.player).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(Component.text(Vanilife.sdf3.format(this.owner.getLastLogin())).color(NamedTextColor.GREEN)));
             }
 
             if (this.owner.getSettings().BIRTHDAY.isWithinScope(User.getInstance(player)) && this.owner.getBirthday() != null)
             {
                 headLore.add(Language.translate("ui.profile.birthday", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                        .append(Component.text(Vanilife.sdf3.format(this.owner.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+                        .append(Component.text(Vanilife.sdf4.format(this.owner.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
             }
 
             headMeta.lore(headLore);

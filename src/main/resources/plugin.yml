@@ -2,6 +2,8 @@ name: Vanilife
 version: '${version}'
 main: net.azisaba.vanilife.Vanilife
 api-version: '1.21'
+depend:
+  - CoreProtect
 commands:
   block:
     description: Block any player.

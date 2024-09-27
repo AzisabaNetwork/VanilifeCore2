@@ -164,6 +164,30 @@
     "ui.profile.housing.details.2": "&7右クリック:&a Housing に招待する",
     "ui.profile.playing-housing": "Housing をプレイ中！",
 
+    "ui.report.title": "レポートの作成",
+    "ui.report.reported": "レポートを送信しました！",
+    "ui.report.cancelled": "レポートの送信をキャンセルしました",
+    "ui.report.yes": "はい",
+    "ui.report.yes.details": "レポートを送信します",
+    "ui.report.no": "いいえ",
+    "ui.report.no.details": "レポートの作成をキャンセルします",
+    "ui.report.attach": "証拠を添付",
+    "ui.report.attach.details": "任意のブロックを証拠として添付します",
+    "ui.report.attach.help": "レポートに添付するブロックをクリックしてください",
+
+    "ui.report-attach.title": "レポート: 証拠の添付",
+    "ui.report-attach.added": "レポートにブロックを追加しました。続けてブロックを選択できます。",
+    "ui.report-attach.removed": "レポートからブロックを削除しました。続けてブロックを選択できます。",
+    "ui.report-attach.cant": "1つのレポートに10個以上のブロックを添付することはできません",
+    "ui.report-attach.add": "追加",
+    "ui.report-attach.add.details": "証拠としてブロックをレポートに添付します",
+    "ui.report-attach.remove": "削除",
+    "ui.report-attach.remove.details": "このブロックをレポートから削除します",
+    "ui.report-attach.cancel": "レポートをキャンセル",
+    "ui.report-attach.cancel.details": "レポートの作成をキャンセルします",
+    "ui.report-attach.submit": "レポートを送信",
+    "ui.report-attach.submit.details": "レポートを送信します",
+
     "ui.sara.title": "皿",
     "ui.sara.buy": "購入",
     "ui.sara.100": "100 円皿",
@@ -374,7 +398,6 @@
     "cmd.ptp.permission-error": "この Plot のメンバーではないためこれを使用できません",
 
     "cmd.report.limit-over": "250文字以内で入力してください",
-    "cmd.report.reported": "レポートを作成しました",
 
     "cmd.rtp.not-found": "ワールドが見つかりませんでした",
     "cmd.rtp.searching": "テレポート可能な場所を検索中…",

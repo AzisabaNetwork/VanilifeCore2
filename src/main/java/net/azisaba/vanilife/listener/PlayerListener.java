@@ -3,10 +3,11 @@ package net.azisaba.vanilife.listener;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.report.ReportDataContainer;
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.ui.ReportAttachUI;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
-import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.Typing;
 import net.azisaba.vanilife.vc.VoiceChat;
@@ -18,6 +19,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,6 +43,13 @@ public class PlayerListener implements Listener
             Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
                 Vanilife.publicServer.kickVoiceMember(Vanilife.publicServer.retrieveMemberById(user.getDiscord().getId()).complete()).queue();
             });
+        }
+
+        ReportDataContainer report = ReportDataContainer.getInstance(user);
+
+        if (report != null)
+        {
+            report.cancel();
         }
 
         int online = Bukkit.getOnlinePlayers().size() - 1;
@@ -73,12 +82,31 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        Plot plot = Plot.getInstance(event.getPlayer().getChunk());
+        Player player = event.getPlayer();
+        Plot plot = Plot.getInstance(player.getChunk());
+        ReportDataContainer report = ReportDataContainer.getInstance(player);
 
-        if (plot != null)
+        if (plot != null && report == null)
         {
             plot.onPlayerInteract(event);
+            return;
         }
+
+        if (report == null)
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        Block block = event.getClickedBlock();
+
+        if (block == null)
+        {
+            return;
+        }
+
+        new ReportAttachUI(player, report, block.getLocation());
     }
 
     @EventHandler

@@ -5,9 +5,11 @@ import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.MathUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -30,7 +32,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
 {
     private static Component getComponent(Mail mail)
     {
-        Component component = Component.text("");
+        TextComponent.Builder builder = Component.text();
         String[] rows = mail.getMessage().split("\n");
 
         for (int i = 0; i < rows.length; i ++)
@@ -44,23 +46,23 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
                 if (16 <= sb.length())
                 {
-                    component = component.append(Component.text(sb.toString()));
+                    builder.append(ComponentUtility.parseChat(sb.toString(), mail.getFrom()));
                     sb = new StringBuilder();
                 }
             }
 
             if (sb.length() % 16 != 0)
             {
-                component = component.append(Component.text(sb.toString()));
+                builder.append(ComponentUtility.parseChat(sb.toString(), mail.getFrom()));
             }
 
             if (i + 1 != rows.length)
             {
-                component = component.appendNewline();
+                builder.appendNewline();
             }
         }
 
-        return component;
+        return builder.build();
     }
 
     @Override
@@ -107,7 +109,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
             {
                 for (Mail mail: mails.subList((page - 1) * 8, Math.min(page * 8, mails.size())))
                 {
-                    sender.sendMessage(Component.text(Vanilife.sdf1.format(mail.getDate()) + " ").color(NamedTextColor.GRAY)
+                    sender.sendMessage(Component.text(Vanilife.sdf2.format(mail.getDate()) + " ").color(NamedTextColor.GRAY)
                             .append((mail.isRead() ? Language.translate("cmd.mail.read", player) : Language.translate("cmd.mail.unread", player)).color(mail.isRead() ? NamedTextColor.GREEN : NamedTextColor.RED))
                             .append(Component.text((mail.getFrom() == from) ? "To: " + mail.getTo().getPlaneName() + " " : "From: " + mail.getFrom().getPlaneName() + " ").color(NamedTextColor.WHITE)
                             .append(Language.translate("cmd.mail.subject", player).append(Component.text(mail.getSubject()).color(NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(MailCommand.getComponent(mail)))))));
@@ -169,7 +171,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
                 if (to.isOnline())
                 {
-                    player.sendMessage(Component.text("✉").color(NamedTextColor.GRAY).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(to.getName().decorate(TextDecoration.BOLD)).append(Component.text(" : ").color(NamedTextColor.GRAY)).append(Component.text(message).color(NamedTextColor.WHITE))));
+                    player.sendMessage(Component.text("✉").color(NamedTextColor.GRAY).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(to.getName().decorate(TextDecoration.BOLD)).append(Component.text(" : ").color(NamedTextColor.GRAY)).append(ComponentUtility.parseChat(message, from))));
                 }
                 else
                 {

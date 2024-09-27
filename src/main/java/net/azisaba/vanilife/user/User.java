@@ -115,7 +115,7 @@ public class User
             this.nick = rs.getString("nick");
             this.sara = Sara.valueOf(rs.getString("sara"));
             this.bio = rs.getString("bio");
-            this.birthday = (rs.getString("birthday") == null) ? null : Vanilife.sdf1.parse(rs.getString("birthday"));
+            this.birthday = (rs.getString("birthday") == null) ? null : Vanilife.sdf2.parse(rs.getString("birthday"));
             this.youtube = rs.getString("youtube");
             this.twitter = rs.getString("twitter");
             this.discord = rs.getString("discord") == null ? null : Vanilife.jda.retrieveUserById(rs.getString("discord")).complete();
@@ -163,7 +163,7 @@ public class User
             ResultSet rs4 = stmt4.executeQuery();
             rs4.next();
 
-            this.lastLogin = (rs4.getString("login") == null) ? null : Vanilife.sdf1.parse(rs4.getString("login"));
+            this.lastLogin = (rs4.getString("login") == null) ? null : Vanilife.sdf2.parse(rs4.getString("login"));
             this.loginStreak = rs4.getInt("streak");
 
             rs4.close();
@@ -360,7 +360,7 @@ public class User
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("UPDATE user SET birthday = ? WHERE id = ?");
-            stmt.setString(1, Vanilife.sdf1.format(this.birthday));
+            stmt.setString(1, Vanilife.sdf2.format(this.birthday));
             stmt.setString(2, this.id.toString());
 
             stmt.executeUpdate();
@@ -596,7 +596,7 @@ public class User
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
 
             PreparedStatement stmt = con.prepareStatement("UPDATE login SET login = ? WHERE user = ?");
-            stmt.setString(1, (this.lastLogin == null) ? null : Vanilife.sdf1.format(this.lastLogin));
+            stmt.setString(1, (this.lastLogin == null) ? null : Vanilife.sdf2.format(this.lastLogin));
             stmt.setString(2, this.id.toString());
 
             stmt.executeUpdate();

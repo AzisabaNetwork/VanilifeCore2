@@ -2,23 +2,27 @@ package net.azisaba.vanilife.report;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
+import net.coreprotect.CoreProtectAPI;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.sql.*;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 public class Report
 {
-    private static final ArrayList<Report> instances = new ArrayList<>();
+    private static final List<Report> instances = new ArrayList<>();
 
     public static Report getInstance(UUID id)
     {
@@ -32,6 +36,41 @@ public class Report
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
+    public static EmbedBuilder getCoreProtectViewer(@NotNull Location location, int page)
+    {
+        final CoreProtectAPI coreprotect = Vanilife.getCoreProtect();
+        final Block block = location.getBlock();
+
+        final int i1 = page * 10;
+        final int i2 = i1 + 10;
+
+        List<String[]> results = coreprotect.blockLookup(block, Integer.MAX_VALUE);
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < results.size(); i ++)
+        {
+            if (i < i1 || i2 < i)
+            {
+                continue;
+            }
+
+            CoreProtectAPI.ParseResult record = coreprotect.parseResult(results.get(i));
+            String date = Vanilife.sdf1.format(new Date(record.getTimestamp()));
+            String player = record.getPlayer();
+            String action = record.getActionString();
+            String type = record.getType().toString().toLowerCase();
+
+            sb.append(String.format("%s : %s : %s %s", date, player, action, type));
+            sb.append('\n');
+        }
+
+        return new EmbedBuilder()
+                .setTitle(String.format("%s: %s, %s, %s", location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()))
+                .setColor(Color.YELLOW)
+                .setDescription(sb.toString())
+                .setFooter(String.format("page=%s&world=%s&x=%s&y=%s&z=%s", page, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+    }
+
     private final UUID id;
 
     private User sender;
@@ -41,13 +80,21 @@ public class Report
     private Message controller;
     private boolean supported;
 
-    public Report(User sender, String details)
+    public Report(@NotNull ReportDataContainer container)
     {
         this.id = UUID.randomUUID();
-        this.sender = sender;
-        this.details = details;
+        this.sender = container.getSender();
+        this.details = container.getDetails();
         this.date = new Date();
-        this.location = sender.getAsPlayer().getLocation();
+        this.location = this.sender.getAsPlayer().getLocation();
+
+        if (container.hasTarget())
+        {
+            User target = container.getTarget();
+            this.details = String.format("To: %s (%s)\n%s", target.getPlaneName(), target.getId().toString(), this.details);
+        }
+
+        container.cancel();
 
         EmbedBuilder builder = new EmbedBuilder()
                 .setAuthor(sender.getPlaneName(), null, String.format("https://api.mineatar.io/face/%s", sender.getId().toString().replace("-", "")))
@@ -72,7 +119,7 @@ public class Report
                 stmt.setInt(5, this.location.getBlockX());
                 stmt.setInt(6, this.location.getBlockY());
                 stmt.setInt(7, this.location.getBlockZ());
-                stmt.setString(8, Vanilife.sdf1.format(this.date));
+                stmt.setString(8, Vanilife.sdf2.format(this.date));
                 stmt.setString(9, this.controller.getId());
 
                 stmt.executeUpdate();
@@ -86,15 +133,17 @@ public class Report
             }
         });
 
+        for (Location loc : container.getLocations())
+        {
+            Vanilife.consoleChannel.sendMessageEmbeds(Report.getCoreProtectViewer(loc, 0).build())
+                    .setActionRow(Button.primary("vanilife:coreprotect.back", "前へ"), Button.primary("vanilife:coreprotect.next", "次へ"))
+                    .queue();
+        }
+
         Report.instances.add(this);
     }
 
-    public Report(User sender, String details, User to)
-    {
-        this(sender, String.format("To: %s\n%s", to.getPlaneName(), details));
-    }
-
-    private Report(UUID id)
+    private Report(@NotNull UUID id)
     {
         this.id = id;
 
@@ -110,7 +159,7 @@ public class Report
             this.sender = User.getInstance(rs.getString("sender"));
             this.details = rs.getString("details");
             this.location = new Location(Bukkit.getWorld(rs.getString("world")), rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
-            this.date = Vanilife.sdf1.parse(rs.getString("date"));
+            this.date = Vanilife.sdf2.parse(rs.getString("date"));
 
             Vanilife.consoleChannel.retrieveMessageById(rs.getString("controller")).queue(message -> {
                 this.controller = message;

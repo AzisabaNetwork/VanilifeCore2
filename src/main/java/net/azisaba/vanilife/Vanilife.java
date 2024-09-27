@@ -34,6 +34,8 @@ import net.azisaba.vanilife.vc.VoiceChatListener;
 import net.azisaba.vanilife.vc.VoiceChatRunnable;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -53,6 +55,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.SimpleDateFormat;
@@ -68,9 +71,17 @@ public final class Vanilife extends JavaPlugin
 
     public static final Random random = new Random();
 
+    public static final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");
+    public static final SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd-HH:mm");
+    public static final SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy/MM/dd");
+    public static final SimpleDateFormat sdf4 = new SimpleDateFormat("MM/dd");
+    public static final SimpleDateFormat sdf5 = new SimpleDateFormat("yyMMddHHmmss");
+
     public static final Pattern pattern1 = Pattern.compile("^\\d{4}/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])$");
 
     public static final OkHttpClient httpclient = new OkHttpClient();
+
+    private static CoreProtectAPI coreprotect;
 
     public static JDA jda;
     public static Guild publicServer;
@@ -80,11 +91,6 @@ public final class Vanilife extends JavaPlugin
     public static Category category;
 
     public static ChatFilter filter;
-
-    public static final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd-HH:mm");
-    public static final SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
-    public static final SimpleDateFormat sdf3 = new SimpleDateFormat("MM/dd");
-    public static final SimpleDateFormat sdf4 = new SimpleDateFormat("yyMMddHHmmss");
 
     public static String DB_URL;
     public static String DB_USER;
@@ -105,7 +111,7 @@ public final class Vanilife extends JavaPlugin
         return Vanilife.plugin;
     }
 
-    public static String getVersion()
+    public static String getPluginVersion()
     {
         return Vanilife.version;
     }
@@ -118,6 +124,11 @@ public final class Vanilife extends JavaPlugin
     public static FileConfiguration getPluginConfig()
     {
         return Vanilife.getPlugin().getConfig();
+    }
+
+    public static CoreProtectAPI getCoreProtect()
+    {
+        return Vanilife.coreprotect;
     }
 
     @Override
@@ -218,6 +229,25 @@ public final class Vanilife extends JavaPlugin
         new HousingRunnable().runTaskTimer(this, 0L, 10L);
         new PlayingRewardRunnable().runTask(this);
         new VoiceChatRunnable().runTaskTimerAsynchronously(this, 0L, 20L * 2);
+
+        Plugin coreprotectPlugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
+
+        if (! (coreprotectPlugin instanceof CoreProtect))
+        {
+            throw new RuntimeException("Failed to acquire CoreProtect.");
+        }
+
+        Vanilife.coreprotect = ((CoreProtect) coreprotectPlugin).getAPI();
+
+        if (! Vanilife.coreprotect.isEnabled())
+        {
+            throw new RuntimeException("Failed to acquire CoreProtect.");
+        }
+
+        if (Vanilife.coreprotect.APIVersion() < 10)
+        {
+            throw new RuntimeException("Failed to acquire CoreProtect.");
+        }
 
         ShapedRecipe elytraRecipe = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA));
         elytraRecipe.shape("PNP", "PWP", "P P");

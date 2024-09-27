@@ -7,10 +7,12 @@ import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.ReportUtility;
+import net.azisaba.vanilife.util.StringUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -18,9 +20,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.Map;
 import java.util.UUID;
 
 public class DiscordListener extends ListenerAdapter
@@ -109,6 +114,37 @@ public class DiscordListener extends ListenerAdapter
 
                 event.replyEmbeds(builder.build()).queue();
             });
+        }
+
+        if (event.getButton().getId().startsWith("vanilife:coreprotect."))
+        {
+            MessageEmbed message = event.getMessage().getEmbeds().getFirst();
+            MessageEmbed.Footer footer = message.getFooter();
+
+            if (footer == null)
+            {
+                return;
+            }
+
+            String footerText = footer.getText();
+
+            if (footerText == null)
+            {
+                return;
+            }
+
+            Map<String, String> parameters = StringUtility.parameters(footerText);
+
+            int page = Integer.parseInt(parameters.get("page"));
+            World world = Bukkit.getWorld(parameters.get("world"));
+            int x = Integer.parseInt(parameters.get("x"));
+            int y = Integer.parseInt(parameters.get("y"));
+            int z = Integer.parseInt(parameters.get("z"));
+
+            page = (event.getButton().getId().endsWith("back")) ? Math.max(page - 1, 0) : page + 1;
+
+            event.getMessage().editMessageEmbeds(Report.getCoreProtectViewer(new Location(world, x, y, z), page).build()).queue();
+            event.deferEdit().queue();
         }
     }
 

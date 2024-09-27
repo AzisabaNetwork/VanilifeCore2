@@ -164,6 +164,30 @@
     "ui.profile.housing.details.2": "&7Right Click: &aInvite to Housing",
     "ui.profile.playing-housing": "Playing Housing!",
 
+    "ui.report.title": "Create Report",
+    "ui.report.reported": "Report has been submitted!",
+    "ui.report.cancelled": "Report submission has been canceled",
+    "ui.report.yes": "Yes",
+    "ui.report.yes.details": "Submitting the report",
+    "ui.report.no": "No",
+    "ui.report.no.details": "Canceling the report creation",
+    "ui.report.attach": "Attach Evidence",
+    "ui.report.attach.details": "Attach any block as evidence",
+    "ui.report.attach.help": "Click on the block to attach it to the report",
+
+    "ui.report-attach.title": "Report: Attach Evidence",
+    "ui.report-attach.added": "Block has been added to the report. You can continue selecting blocks.",
+    "ui.report-attach.removed": "Block has been removed from the report. You can continue selecting blocks.",
+    "ui.report-attach.cant": "You cannot attach more than 10 blocks to one report.",
+    "ui.report-attach.add": "Add",
+    "ui.report-attach.add.details": "Attach a block as evidence to the report",
+    "ui.report-attach.remove": "Remove",
+    "ui.report-attach.remove.details": "Remove this block from the report",
+    "ui.report-attach.cancel": "Cancel Report",
+    "ui.report-attach.cancel.details": "Cancel the report creation",
+    "ui.report-attach.submit": "Submit Report",
+    "ui.report-attach.submit.details": "Submitting the report",
+
     "ui.sara.title": "Sara",
     "ui.sara.buy": "Purchase",
     "ui.sara.100": "100 Yen Sara",
@@ -374,7 +398,6 @@
     "cmd.ptp.permission-error": "You cannot use this because you are not a member of this Plot.",
 
     "cmd.report.limit-over": "Please enter within 250 characters.",
-    "cmd.report.reported": "Report created.",
 
     "cmd.rtp.not-found": "World not found.",
     "cmd.rtp.searching": "Searching for possible teleportation locations.…",

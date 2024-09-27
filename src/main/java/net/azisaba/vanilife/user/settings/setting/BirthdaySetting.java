@@ -67,7 +67,7 @@ public class BirthdaySetting extends ScopeSetting
                 {
                     try
                     {
-                        Date birthday = Vanilife.sdf2.parse(string);
+                        Date birthday = Vanilife.sdf3.parse(string);
 
                         if (birthday.after(new Date()))
                         {
