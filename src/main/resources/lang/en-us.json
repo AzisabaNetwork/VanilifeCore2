@@ -258,7 +258,7 @@
     "msg.muted": "You are currently muted.",
     "msg.empty": "Shhhh... nothing seems to be happening here.",
     "msg.offline": "${name} is currently offline.",
-    "cmd.shortage": "Not enough Mola! You need ${need} more Mola!",
+    "msg.shortage": "Not enough Mola! You need ${need} more Mola!",
     "msg.click-to-accept": "Click here to approve!",
     "msg.click-to-run": "Click to run ${command}",
     "msg.click-to-open": "Click to open",

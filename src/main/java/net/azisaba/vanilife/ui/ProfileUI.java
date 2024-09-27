@@ -193,7 +193,7 @@ public class ProfileUI extends InventoryUI
     }
 
     @Override
-    public void onUiClick(InventoryClickEvent event)
+    public void onUiClick(@NotNull InventoryClickEvent event)
     {
         super.onUiClick(event);
 
@@ -230,8 +230,7 @@ public class ProfileUI extends InventoryUI
                         return;
                     }
 
-                    // new Report(User.getInstance(this.player), string, profile);
-                    this.player.sendMessage(Language.translate("ui.profile.report.created", this.player).color(NamedTextColor.GREEN));
+                    Bukkit.dispatchCommand(this.player, String.format("report %s %s", profile.getPlaneName(), string));
                 }
             };
         }

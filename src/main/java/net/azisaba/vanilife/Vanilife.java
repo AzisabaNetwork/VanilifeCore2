@@ -100,8 +100,8 @@ public final class Vanilife extends JavaPlugin
     public static Role ROLE_MCONSOLE;
     public static Role ROLE_DEVELOPER;
 
-    public static final int MOLA_PLOT_NEW = 50;
-    public static final int MOLA_PLOT_CLAIM = 40;
+    public static final int MOLA_PLOT_NEW = 100;
+    public static final int MOLA_PLOT_CLAIM = 80;
 
     public static String METUBOT_SERVER;
     public static UUID METUBOT_PROVIDER;

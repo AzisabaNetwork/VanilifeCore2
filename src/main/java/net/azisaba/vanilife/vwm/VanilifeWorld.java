@@ -291,7 +291,16 @@ public class VanilifeWorld
             WorldCreator creator = new WorldCreator(String.format("%s/%s", namespace, name));
             creator.type(WorldType.NORMAL);
             creator.environment(environment);
-            Bukkit.createWorld(creator);
+            World world = Bukkit.createWorld(creator);
+
+            if (world == null)
+            {
+                throw new RuntimeException();
+            }
+
+            WorldBorder border = world.getWorldBorder();
+            border.setCenter(0, 0);
+            border.setSize(environment == World.Environment.NORMAL ? 10000 : 14000);
         }
     }
 }

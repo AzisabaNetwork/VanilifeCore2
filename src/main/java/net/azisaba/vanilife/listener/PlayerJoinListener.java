@@ -67,7 +67,6 @@ public class PlayerJoinListener implements Listener
                 Language lang = switch (PlayerUtility.getCountry(player))
                 {
                     case "JP" -> Language.getInstance("ja-jp");
-                    case "CN" -> Language.getInstance("zh-ch");
                     default -> Language.getInstance("en-us");
                 };
 

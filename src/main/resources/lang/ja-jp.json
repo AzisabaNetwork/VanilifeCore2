@@ -258,7 +258,7 @@
     "msg.muted": "あなたは現在ミュートされています",
     "msg.empty": "しーん…ここには何もないようです",
     "msg.offline": "${name} は現在オフラインです",
-    "cmd.shortage": "Mola が足りません！あと ${need} Mola 必要です！",
+    "msg.shortage": "Mola が足りません！あと ${need} Mola 必要です！",
     "msg.click-to-accept": "こちらをクリックして承認！",
     "msg.click-to-run": "クリックして ${command} を実行",
     "msg.click-to-open": "クリックして開く",

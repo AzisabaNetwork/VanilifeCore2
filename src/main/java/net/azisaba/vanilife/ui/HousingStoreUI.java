@@ -4,6 +4,7 @@ import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.pack.HousingPacks;
 import net.azisaba.vanilife.housing.pack.IHousingPack;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -153,7 +154,7 @@ public class HousingStoreUI extends InventoryUI
 
         this.player.closeInventory();
 
-        this.player.sendMessage(Language.translate("housing.pack.bought", this.player, "pack=" + pack.getName()));
+        this.player.sendMessage(Language.translate("housing.pack.bought", this.player, "pack=" + ComponentUtility.getAsString(Language.translate("housing.pack" + pack.getName() + ".name", this.player))));
         this.player.playSound(this.player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
 
         housing.addPack(pack);
