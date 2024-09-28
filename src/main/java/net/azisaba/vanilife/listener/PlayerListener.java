@@ -2,6 +2,7 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.util.MetubouIME;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.report.ReportDataContainer;
 import net.azisaba.vanilife.ui.Language;
@@ -269,7 +270,19 @@ public class PlayerListener implements Listener
 
         Vanilife.filter.onAsyncChat(event);
 
-        Component msg = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(ComponentUtility.parseChat(content, user));
-        Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).toList().forEach(p -> p.sendMessage(msg));
+        Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY));
+
+        if (Language.getInstance(user).getId().equals("ja-jp") && content.matches("[a-zA-Z0-9\\p{Punct}]*") && ! content.contains(":"))
+        {
+            chat = chat.append(Component.text(MetubouIME.convert(MetubouIME.hira(content)))).append(Component.text(" (" + content + ")").color(NamedTextColor.DARK_GRAY));
+        }
+        else
+        {
+            chat =chat.append(ComponentUtility.parseChat(content, user));
+        }
+
+        final Component message = chat;
+
+        Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).toList().forEach(p -> p.sendMessage(message));
     }
 }

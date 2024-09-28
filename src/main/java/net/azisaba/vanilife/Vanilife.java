@@ -200,6 +200,7 @@ public final class Vanilife extends JavaPlugin
         this.saveResource("service/vwm-reset.yml", false);
         this.saveResource("structure/housing.nbt", true);
         this.saveResource("vwm/vwm.json", false);
+        this.saveResource("dictionary.json", true);
 
         SqlUtility.jdbc("org.mariadb.jdbc.Driver");
         Language.mount();
