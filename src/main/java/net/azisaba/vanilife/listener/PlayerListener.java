@@ -2,7 +2,7 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.util.MetubouIME;
+import net.azisaba.vanilife.util.TkmizIme;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.report.ReportDataContainer;
 import net.azisaba.vanilife.ui.Language;
@@ -274,7 +274,7 @@ public class PlayerListener implements Listener
 
         if (Language.getInstance(user).getId().equals("ja-jp") && content.matches("[a-zA-Z0-9\\p{Punct}]*") && ! content.contains(":"))
         {
-            chat = chat.append(Component.text(MetubouIME.convert(MetubouIME.hira(content)))).append(Component.text(" (" + content + ")").color(NamedTextColor.DARK_GRAY));
+            chat = chat.append(Component.text(TkmizIme.convert(TkmizIme.hira(content)))).append(Component.text(" (" + content + ")").color(NamedTextColor.DARK_GRAY));
         }
         else
         {
