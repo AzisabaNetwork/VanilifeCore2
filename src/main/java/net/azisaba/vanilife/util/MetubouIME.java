@@ -110,6 +110,8 @@ public class MetubouIME
         MetubouIME.register("sya", "しゃ");
         MetubouIME.register("kyu", "きゅ");
         MetubouIME.register("kyo", "きょ");
+        MetubouIME.register("nyu", "にゅ");
+        MetubouIME.register("nyo", "にょ");
         MetubouIME.register("!", "！");
         MetubouIME.register("?", "？");
         MetubouIME.register("[", "「");
