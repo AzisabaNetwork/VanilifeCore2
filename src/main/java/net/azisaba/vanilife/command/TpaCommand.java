@@ -48,13 +48,13 @@ public class TpaCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (fromUser.getRequests().stream().noneMatch(r -> r.auth(TeleportRequest.class, toPlayer)))
+        if (fromUser.getRequests().stream().noneMatch(r -> r.match(TeleportRequest.class, toPlayer)))
         {
             sender.sendMessage(Language.translate("cmd.tpa.not-found", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
-        fromUser.getRequests().stream().filter(r -> r.auth(TeleportRequest.class, toPlayer)).toList().getFirst().onAllow();
+        fromUser.getRequests().stream().filter(r -> r.match(TeleportRequest.class, toPlayer)).toList().getFirst().onAccept();
         return true;
     }
 

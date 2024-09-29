@@ -43,9 +43,9 @@ public class HousingInvite extends Request
     }
 
     @Override
-    public void onAllow()
+    public void onAccept()
     {
-        super.onAllow();
+        super.onAccept();
         this.from.sendMessage(Language.translate("msg.housing.accept", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName())));
     }
 

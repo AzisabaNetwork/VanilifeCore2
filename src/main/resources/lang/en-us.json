@@ -343,6 +343,14 @@
     "cmd.housing.not-found": "Unable to find housing.",
     "cmd.housing.permission-error": "You cannot join this housing.",
 
+    "cmd.gomenne.on": "&aChat character conversion has been &eenabled&a.",
+    "cmd.gomenne.on.already": "Chat character conversion is already set to enabled.",
+    "cmd.gomenne.off": "&aChat character conversion has been &edisabled&a.",
+    "cmd.gomenne.off.already": "Chat character conversion is already set to disabled.",
+    "cmd.gomenne.request.cant": "The 'reading' must be specified in hiragana.",
+    "cmd.gomenne.request.limit-over": "The 'reading' and 'writing' must be specified within 16 characters.",
+    "cmd.gomenne.request.requested": "Conversion request has been sent!",
+
     "cmd.jnkn.cant": "You cannot send a rock-paper-scissors application to this player.",
     "cmd.jnkn.cant-yourself": "You cannot send a rock-paper-scissors application to yourself.",
     "cmd.jnkn.already": "You have already sent a rock-paper-scissors request to ${name}.",
@@ -404,6 +412,10 @@
 
     "cmd.subscribe.undefined": "${subscription} is an undefined subscription.",
     "cmd.subscribe.already": "&cYou have already purchased ${subscription}.",
+
+    "cmd.togglechat.true": "Chat has been enabled!",
+    "cmd.togglechat.false": "Chat has been disabled!",
+    "cmd.togglechat.cant-send": "Chat is currently disabled. Use /togglechat to enable it.",
 
     "cmd.tpa.cant-yourself": "You cannot send a Teleport request to yourself.",
     "cmd.tpa.not-found": "Teleport request from ${name} not found.",

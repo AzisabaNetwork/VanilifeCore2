@@ -343,6 +343,14 @@
     "cmd.housing.not-found": "Housing を見つけることができません",
     "cmd.housing.permission-error": "あなたはこの Housing に参加できません",
 
+    "cmd.gomenne.on": "&aチャットの文字変換を &e有効&a にしました！",
+    "cmd.gomenne.on.already": "チャットの文字変換は既に有効に設定されています",
+    "cmd.gomenne.off": "&aチャットの文字変換を &e無効&a にしました！",
+    "cmd.gomenne.off.already": "チャットの文字変換は既に無効に設定されています",
+    "cmd.gomenne.request.cant": "「よみ」はひらがなで指定する必要があります",
+    "cmd.gomenne.request.limit-over": "「よみ」と「かき」は16文字以内で指定する必要があります",
+    "cmd.gomenne.request.requested": "変換リクエストを送信しました！",
+
     "cmd.jnkn.cant": "このプレイヤーにジャンケン申請を送ることはできません",
     "cmd.jnkn.cant-yourself": "自分自身にジャンケン申請を送信することはできません",
     "cmd.jnkn.already": "あなたは既に ${name} にジャンケン申請を送信しています",
@@ -404,6 +412,10 @@
 
     "cmd.subscribe.undefined": "${subscription} は未定義のサブスクリプションです",
     "cmd.subscribe.already": "&cあなたは既に ${subscription} を購入しています",
+
+    "cmd.togglechat.true": "チャットを有効にしました！",
+    "cmd.togglechat.false": "チャットを無効にしました！",
+    "cmd.togglechat.cant-send": "チャットは現在無効です。有効にするには /togglechat を使用します。",
 
     "cmd.tpa.cant-yourself": "自分自身に Teleport リクエストを送信することはできません",
     "cmd.tpa.not-found": "${name} からの Teleport リクエストが見つかりませんでした",

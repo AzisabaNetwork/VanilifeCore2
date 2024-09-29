@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.service;
 
-import net.azisaba.vanilife.command.skill.ParentCommand;
+import net.azisaba.vanilife.command.subcommand.ParentCommand;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,13 +17,13 @@ public class ServiceCommand extends ParentCommand
     }
 
     @Override
-    protected void registerSkills()
+    protected void register()
     {
-        this.registerSkill(new ServiceListSkill());
-        this.registerSkill(new ServiceReloadSkill());
-        this.registerSkill(new ServiceRunSkill());
-        this.registerSkill(new ServiceStartSkill());
-        this.registerSkill(new ServiceStopSkill());
+        this.register(new ServiceListSubcommand());
+        this.register(new ServiceReloadSubcommand());
+        this.register(new ServiceRunSubcommand());
+        this.register(new ServiceStartSubcommand());
+        this.register(new ServiceStopSubcommand());
     }
 
     @Override

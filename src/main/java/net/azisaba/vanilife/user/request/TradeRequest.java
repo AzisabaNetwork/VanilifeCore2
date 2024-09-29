@@ -44,9 +44,9 @@ public class TradeRequest extends Request
     }
 
     @Override
-    public void onAllow()
+    public void onAccept()
     {
-        super.onAllow();
+        super.onAccept();
         new Trade(this.from, this.to);
     }
 

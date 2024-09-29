@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
@@ -11,6 +12,8 @@ import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -126,7 +129,7 @@ public class PlayerJoinListener implements Listener
         PlayerUtility.giveItemStack(player, bread);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void sendJoinMessage(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
@@ -166,6 +169,28 @@ public class PlayerJoinListener implements Listener
         }
 
         user.write("version", version);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void sendImeRequests(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+
+        if (! UserUtility.isModerator(player))
+        {
+            return;
+        }
+
+        int unconfirmed = ConvertRequest.getInstances().size();
+
+        if (unconfirmed < 1)
+        {
+            return;
+        }
+
+        player.sendMessage(Component.text("通知: 未処理の変換リクエストが " + unconfirmed + " 件届いています！").color(NamedTextColor.GREEN)
+                .append(Component.text("こちらをクリックして確認").color(NamedTextColor.GOLD).hoverEvent(HoverEvent.showText(Component.text("クリックして /gomenne requests を実行"))).clickEvent(ClickEvent.runCommand("/vanilife:gomenne requests"))));
+        player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

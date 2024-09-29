@@ -40,6 +40,13 @@ commands:
   housing:
     description: Teleport to Housing.
     usage: /housing
+  ime:
+    description: Performs IME-related operations.
+    usage: /ime <subcommand> [args…]
+    aliases:
+      - gomenne
+      - gmn
+      - henkan
   jnkn:
     description: Send a janken request.
     usage: /jnkn <player>
@@ -76,6 +83,9 @@ commands:
   ptp:
     description: Teleport to any plot.
     usage: /ptp <plot>
+  realname:
+    description: Displays the actual MCID of the player using the nickname.
+    usage: /realname <player>
   report:
     description: Report the player.
     usage: /report <player> <details>
@@ -100,6 +110,9 @@ commands:
   subscribe:
     description: Sign up for any subscription.
     usage: /subscribe <subscription>
+  togglechat:
+    description: Enable or disable chat.
+    usage: /togglechat
   tpa:
     description: Accept teleport request.
     usage: /tpa <player>

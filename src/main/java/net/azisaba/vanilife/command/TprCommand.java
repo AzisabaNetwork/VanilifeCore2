@@ -56,7 +56,7 @@ public class TprCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(TeleportRequest.class, player)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.match(TeleportRequest.class, player)))
         {
             sender.sendMessage(Language.translate("cmd.tpr.already", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;

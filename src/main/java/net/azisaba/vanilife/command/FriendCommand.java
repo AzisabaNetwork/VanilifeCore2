@@ -64,13 +64,13 @@ public class FriendCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (fromUser.getRequests().stream().anyMatch(r -> r.auth(FriendRequest.class, to)))
+        if (fromUser.getRequests().stream().anyMatch(r -> r.match(FriendRequest.class, to)))
         {
-            fromUser.getRequests().stream().filter(r -> r.auth(FriendRequest.class, to)).toList().getFirst().onAllow();
+            fromUser.getRequests().stream().filter(r -> r.match(FriendRequest.class, to)).toList().getFirst().onAccept();
             return true;
         }
 
-        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(FriendRequest.class, from)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.match(FriendRequest.class, from)))
         {
             from.sendMessage(Language.translate("cmd.friend.already", from, "name=" + args[0]).color(NamedTextColor.RED));
             return true;

@@ -44,9 +44,9 @@ public class JnknRequest extends Request
     }
 
     @Override
-    public void onAllow()
+    public void onAccept()
     {
-        super.onAllow();
+        super.onAccept();
 
         new Jnkn(this.from, this.to);
     }

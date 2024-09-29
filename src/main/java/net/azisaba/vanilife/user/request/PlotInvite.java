@@ -49,9 +49,9 @@ public class PlotInvite extends Request
     }
 
     @Override
-    public void onAllow()
+    public void onAccept()
     {
-        super.onAllow();
+        super.onAccept();
 
         this.plot.addMember(User.getInstance(this.from));
 

@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.wallet;
 
-import net.azisaba.vanilife.command.skill.ParentCommand;
+import net.azisaba.vanilife.command.subcommand.ParentCommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
@@ -27,11 +27,11 @@ public class WalletCommand extends ParentCommand
     }
 
     @Override
-    protected void registerSkills()
+    protected void register()
     {
-        this.registerSkill(new WalletGetSkill());
-        this.registerSkill(new WalletGiveSkill());
-        this.registerSkill(new WalletSetSkill());
+        this.register(new WalletGetSubcommand());
+        this.register(new WalletGiveSubcommand());
+        this.register(new WalletSetSubcommand());
     }
 
     @Override

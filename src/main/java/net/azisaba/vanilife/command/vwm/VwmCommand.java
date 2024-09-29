@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.vwm;
 
-import net.azisaba.vanilife.command.skill.ParentCommand;
+import net.azisaba.vanilife.command.subcommand.ParentCommand;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,15 +17,15 @@ public class VwmCommand extends ParentCommand
     }
 
     @Override
-    protected void registerSkills()
+    protected void register()
     {
-        this.registerSkill(new VwmBackupCommand());
-        this.registerSkill(new VwmCreateSkill());
-        this.registerSkill(new VwmDeleteSkill());
-        this.registerSkill(new VwmListSkill());
-        this.registerSkill(new VwmSaveSkill());
-        this.registerSkill(new VwmTeleportSkill());
-        this.registerSkill(new VwmUpdateSkill());
+        this.register(new VwmBackupSubcommand());
+        this.register(new VwmCreateSubcommand());
+        this.register(new VwmDeleteSubcommand());
+        this.register(new VwmListSubcommand());
+        this.register(new VwmSaveSubcommand());
+        this.register(new VwmTeleportSubcommand());
+        this.register(new VwmUpdateSubcommand());
     }
 
     @Override

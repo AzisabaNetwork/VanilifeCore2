@@ -44,9 +44,9 @@ public class TeleportRequest extends Request
     }
 
     @Override
-    public void onAllow()
+    public void onAccept()
     {
-        super.onAllow();
+        super.onAccept();
 
         this.from.teleport(this.to.getLocation());
 

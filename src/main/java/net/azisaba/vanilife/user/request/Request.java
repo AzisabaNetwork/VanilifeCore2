@@ -35,8 +35,8 @@ public abstract class Request implements IRequest
         this.from = from;
         this.to = to;
 
-        this.fromUser = User.getInstance(from);
-        this.toUser = User.getInstance(to);
+        this.fromUser = User.getInstance(this.from);
+        this.toUser = User.getInstance(this.to);
 
         this.toUser.getRequests().add(this);
 
@@ -53,39 +53,36 @@ public abstract class Request implements IRequest
     }
 
     @Override
-    @NotNull
-    public Player getFrom()
+    public @NotNull Player getFrom()
     {
         return this.from;
     }
 
-    @NotNull
-    public User getFromUser()
+    public @NotNull User getFromUser()
     {
         return this.fromUser;
     }
 
     @Override
-    @NotNull
-    public Player getTo()
+    public @NotNull Player getTo()
     {
         return this.to;
     }
 
-    public User getToUser()
+    public @NotNull User getToUser()
     {
         return this.toUser;
     }
 
     @Override
-    public void onAllow()
+    public void onAccept()
     {
         this.toUser.getRequests().remove(this);
         this.runnable.cancel();
     }
 
     @Override
-    public void onDisallow()
+    public void onReject()
     {
         this.toUser.getRequests().remove(this);
         this.runnable.cancel();
@@ -98,8 +95,8 @@ public abstract class Request implements IRequest
     }
 
     @Override
-    public boolean auth(Class<? extends IRequest> clazz, Player player)
+    public boolean match(Class<? extends IRequest> clazz, Player sender)
     {
-        return this.getClazz().isAssignableFrom(clazz) && this.from == player;
+        return this.getClazz().isAssignableFrom(clazz) && this.from == sender;
     }
 }

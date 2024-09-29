@@ -1,14 +1,13 @@
 package net.azisaba.vanilife.util;
 
 import com.google.gson.JsonArray;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.sql.*;
@@ -47,12 +46,12 @@ public class ChatFilter
         return this.filters;
     }
 
-    public boolean filter(String string)
+    public boolean filter(@NotNull String string)
     {
         return this.filters.stream().anyMatch(filter -> string.toLowerCase().contains(filter));
     }
 
-    public void register(String string)
+    public void register(@NotNull String string)
     {
         if (this.filters.contains(string))
         {
@@ -63,7 +62,7 @@ public class ChatFilter
         this.upload();
     }
 
-    public void unregister(String string)
+    public void unregister(@NotNull String string)
     {
         this.filters.remove(string);
         this.upload();
@@ -76,34 +75,27 @@ public class ChatFilter
         return jsonArray;
     }
 
-    public void onAsyncChat(AsyncChatEvent event)
+    public void onChat(@NotNull Player sender, @NotNull String message)
     {
-        Player player = event.getPlayer();
-        String content = ((TextComponent) event.message()).content();
-
-        if (Vanilife.filter.filter(content) && ! UserUtility.isModerator(player))
+        if (UserUtility.isModerator(sender) || ! Vanilife.filter.filter(message))
         {
-            EmbedBuilder builder = new EmbedBuilder()
-                    .setAuthor(player.getName(), null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
-                    .setTitle("チャットフィルタリング")
-                    .setDescription(String.format("%s このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします", Vanilife.ROLE_SUPPORT))
-                    .setFooter(player.getUniqueId().toString())
-                    .addField("メッセージ", content, true)
-                    .setColor(new Color(255, 85, 85));
-
-            Vanilife.consoleChannel.sendMessageEmbeds(builder.build())
-                    .addActionRow(Button.danger("vanilife:mute", String.format("%s をミュートする", player.getName())),
-                            Button.secondary("vanilife:unmute", "または…アンミュート")).queue();
+            Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+                    .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
+                    .setDescription(message)
+                    .setFooter(sender.getUniqueId().toString())
+                    .setColor(new Color(85, 255, 85)).build()).queue();
             return;
-        }
+        };
 
-        EmbedBuilder builder = new EmbedBuilder()
-                .setAuthor(player.getName(), null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
-                .setDescription(content)
-                .setFooter(player.getUniqueId().toString())
-                .setColor(new Color(85, 255, 85));
-
-        Vanilife.consoleChannel.sendMessageEmbeds(builder.build()).queue();
+        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+                        .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
+                        .setTitle("チャットフィルタリング")
+                        .setDescription(String.format("%s このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします", Vanilife.ROLE_SUPPORT))
+                        .setFooter(sender.getUniqueId().toString())
+                        .addField("メッセージ", message, true)
+                        .setColor(new Color(255, 85, 85)).build())
+                .addActionRow(Button.danger("vanilife:mute", String.format("%s をミュートする", sender.getName())),
+                        Button.secondary("vanilife:unmute", "または…アンミュート")).queue();
     }
 
     private void upload()

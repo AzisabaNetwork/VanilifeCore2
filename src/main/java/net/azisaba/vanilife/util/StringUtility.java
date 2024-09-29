@@ -8,6 +8,19 @@ import java.util.Map;
 @Utility
 public class StringUtility
 {
+    public static boolean isHiragana(@NotNull String src)
+    {
+        for (char ch : src.toCharArray())
+        {
+            if (!((ch >= '\u3040' && ch <= '\u309F') || (ch >= '\u3000' && ch <= '\u303F') || (ch >= '\uFF00' && ch <= '\uFFEF')))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static @NotNull Map<String, String> parameters(@NotNull String src)
     {
         Map<String, String> parameters = new HashMap<>();

@@ -14,9 +14,11 @@ import net.azisaba.vanilife.command.discord.MetubotCommand;
 import net.azisaba.vanilife.command.discord.VanilifeLinkCommand;
 import net.azisaba.vanilife.command.discord.VanilifeUnlinkCommand;
 import net.azisaba.vanilife.command.filter.FilterCommand;
+import net.azisaba.vanilife.command.gomenne.GomenneCommand;
 import net.azisaba.vanilife.command.wallet.WalletCommand;
 import net.azisaba.vanilife.command.service.ServiceCommand;
 import net.azisaba.vanilife.command.vwm.VwmCommand;
+import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.listener.*;
@@ -162,6 +164,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("friend").setExecutor(new FriendCommand());
         this.getCommand("friendlist").setExecutor(new FriendListCommand());
         this.getCommand("housing").setExecutor(new HousingCommand());
+        this.getCommand("ime").setExecutor(new GomenneCommand());
         this.getCommand("jnkn").setExecutor(new JnknCommand());
         this.getCommand("language").setExecutor(new LanguageCommand());
         this.getCommand("mail").setExecutor(new MailCommand());
@@ -172,6 +175,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("poll").setExecutor(new PollCommand());
         this.getCommand("profile").setExecutor(new ProfileCommand());
         this.getCommand("ptp").setExecutor(new PtpCommand());
+        this.getCommand("realname").setExecutor(new RealNameCommand());
         this.getCommand("report").setExecutor(new ReportCommand());
         this.getCommand("rtp").setExecutor(new RtpCommand());
         this.getCommand("sara").setExecutor(new SaraCommand());
@@ -179,6 +183,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("settings").setExecutor(new SettingsCommand());
         this.getCommand("store").setExecutor(new StoreCommand());
         this.getCommand("subscribe").setExecutor(new SubscribeCommand());
+        this.getCommand("togglechat").setExecutor(new ToggleChatCommand());
         this.getCommand("tpa").setExecutor(new TpaCommand());
         this.getCommand("tpr").setExecutor(new TprCommand());
         this.getCommand("trade").setExecutor(new TradeCommand());
@@ -200,11 +205,9 @@ public final class Vanilife extends JavaPlugin
         this.saveResource("service/vwm-reset.yml", false);
         this.saveResource("structure/housing.nbt", true);
         this.saveResource("vwm/vwm.json", false);
-        this.saveResource("dictionary.json", true);
+        this.saveResource("gomenne.json", false);
 
         SqlUtility.jdbc("org.mariadb.jdbc.Driver");
-        Language.mount();
-        ServiceManager.mount();
 
         Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).setActivity(Activity.playing("azisaba.net")).build();
         Vanilife.jda.addEventListener(new DiscordListener());
@@ -222,8 +225,11 @@ public final class Vanilife extends JavaPlugin
         Vanilife.METUBOT_PROVIDER = UUID.fromString(this.getConfig().getString("metubot.provider"));
 
         Vanilife.filter = new ChatFilter();
+
         VanilifeWorldManager.mount();
         PlotUtility.mount();
+        ServiceManager.mount();
+        ConvertRequest.mount();
 
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);

@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.filter;
 
-import net.azisaba.vanilife.command.skill.ParentCommand;
+import net.azisaba.vanilife.command.subcommand.ParentCommand;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,11 +17,11 @@ public class FilterCommand extends ParentCommand
     }
 
     @Override
-    protected void registerSkills()
+    protected void register()
     {
-        this.registerSkill(new FilterAddSkill());
-        this.registerSkill(new FilterListSkill());
-        this.registerSkill(new FilterRemoveSkill());
+        this.register(new FilterAddSubcommand());
+        this.register(new FilterListSubcommand());
+        this.register(new FilterRemoveSubcommand());
     }
 
     @Override

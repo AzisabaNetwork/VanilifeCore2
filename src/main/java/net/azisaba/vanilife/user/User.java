@@ -209,6 +209,9 @@ public class User
         this.status = UserStatus.DEFAULT;
         this.storage = new JsonObject();
 
+        this.write("settings.ime", true);
+        this.write("settings.chat", true);
+
         User.instances.add(this);
 
         if (write)

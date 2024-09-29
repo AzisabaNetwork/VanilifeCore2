@@ -57,13 +57,13 @@ public class TradeCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (fromUser.getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, to)))
+        if (fromUser.getRequests().stream().anyMatch(r -> r.match(TradeRequest.class, to)))
         {
-            fromUser.getRequests().stream().filter(r -> r.auth(TradeRequest.class, to)).toList().getFirst().onAllow();
+            fromUser.getRequests().stream().filter(r -> r.match(TradeRequest.class, to)).toList().getFirst().onAccept();
             return true;
         }
 
-        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(TradeRequest.class, player)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.match(TradeRequest.class, player)))
         {
             sender.sendMessage(Language.translate("cmd.trade.already", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;

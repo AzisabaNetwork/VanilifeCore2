@@ -2,6 +2,7 @@ package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.housing.Housing;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
@@ -58,6 +59,7 @@ public class DiscordListener extends ListenerAdapter
             channel.delete().queue();
         }
 
+        Language.mount();
         UserUtility.mount();
         Bukkit.getScheduler().runTask(Vanilife.getPlugin(), Housing::mount);
         ReportUtility.mount();

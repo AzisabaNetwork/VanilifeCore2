@@ -17,7 +17,7 @@ gojyuon = [
 
 def register(hira, kanji):
     dictionary = {}
-    path = 'src/main/resources/dictionary.json'
+    path = 'src/main/resources/gomenne.json'
 
     with open(path, 'r', encoding='utf-8') as f:
         dictionary = json.load(f)

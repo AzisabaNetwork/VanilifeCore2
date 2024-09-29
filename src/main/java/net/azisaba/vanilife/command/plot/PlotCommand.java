@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.plot;
 
-import net.azisaba.vanilife.command.skill.ParentCommand;
+import net.azisaba.vanilife.command.subcommand.ParentCommand;
 
 public class PlotCommand extends ParentCommand
 {
@@ -11,14 +11,14 @@ public class PlotCommand extends ParentCommand
     }
 
     @Override
-    protected void registerSkills()
+    protected void register()
     {
-        this.registerSkill(new PlotClaimSkill());
-        this.registerSkill(new PlotInviteSkill());
-        this.registerSkill(new PlotJoinSkill());
-        this.registerSkill(new PlotKickSkill());
-        this.registerSkill(new PlotNewSkill());
-        this.registerSkill(new PlotQuitSkill());
-        this.registerSkill(new PlotUnclaimSkill());
+        this.register(new PlotClaimSubcommand());
+        this.register(new PlotInviteSubcommand());
+        this.register(new PlotJoinSubcommand());
+        this.register(new PlotKickSubcommand());
+        this.register(new PlotNewSubcommand());
+        this.register(new PlotQuitSubcommand());
+        this.register(new PlotUnclaimSubcommand());
     }
 }

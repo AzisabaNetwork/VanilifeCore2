@@ -57,13 +57,13 @@ public class JnknCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (fromUser.getRequests().stream().anyMatch(r -> r.auth(JnknRequest.class, to)))
+        if (fromUser.getRequests().stream().anyMatch(r -> r.match(JnknRequest.class, to)))
         {
-            fromUser.getRequests().stream().filter(r -> r.auth(JnknRequest.class, to)).toList().getFirst().onAllow();
+            fromUser.getRequests().stream().filter(r -> r.match(JnknRequest.class, to)).toList().getFirst().onAccept();
             return true;
         }
 
-        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.auth(JnknRequest.class, from)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.match(JnknRequest.class, from)))
         {
             from.sendMessage(Language.translate("cmd.jnkn.already", from, "name=" + args[0]).color(NamedTextColor.RED));
             return true;

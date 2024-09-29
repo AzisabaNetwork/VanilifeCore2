@@ -13,11 +13,11 @@ public interface IRequest
 
     @NotNull Class<? extends IRequest> getClazz();
 
-    void onAllow();
+    void onAccept();
 
-    void onDisallow();
+    void onReject();
 
     void onTimeOver();
 
-    boolean auth(Class<? extends IRequest> clazz, Player player);
+    boolean match(Class<? extends IRequest> clazz, Player player);
 }

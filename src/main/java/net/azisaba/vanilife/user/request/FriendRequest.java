@@ -43,9 +43,9 @@ public class FriendRequest extends Request
     }
 
     @Override
-    public void onAllow()
+    public void onAccept()
     {
-        super.onAllow();
+        super.onAccept();
 
         this.getFromUser().friend(this.toUser);
 

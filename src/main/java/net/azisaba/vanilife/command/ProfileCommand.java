@@ -38,44 +38,32 @@ public class ProfileCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
+        Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
+            UUID uuid = Bukkit.getPlayerUniqueId(args[0]);
+
+            if (uuid == null)
             {
-                UUID uuid = Bukkit.getPlayerUniqueId(args[0]);
-
-                if (uuid == null)
-                {
-                    sender.sendMessage(Language.translate("msg.not-found.player", player, "name=" + args[0]).color(NamedTextColor.RED));
-                    return;
-                }
-
-                if (! UserUtility.exists(uuid))
-                {
-                    sender.sendMessage(Language.translate("msg.not-found.user", player, "name=" + args[0]).color(NamedTextColor.RED));
-                    return;
-                }
-
-                User user = User.getInstance(player);
-                User view = User.getInstance(args[0]);
-
-                if (view.isBlock(user))
-                {
-                    sender.sendMessage(Language.translate("cmd.profile.cant", player).color(NamedTextColor.RED));
-                    return;
-                }
-
-                new BukkitRunnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        new ProfileUI(player, view);
-                    }
-                }.runTask(Vanilife.getPlugin());
+                sender.sendMessage(Language.translate("msg.not-found.player", player, "name=" + args[0]).color(NamedTextColor.RED));
+                return;
             }
-        }.runTaskAsynchronously(Vanilife.getPlugin());
+
+            if (! UserUtility.exists(uuid))
+            {
+                sender.sendMessage(Language.translate("msg.not-found.user", player, "name=" + args[0]).color(NamedTextColor.RED));
+                return;
+            }
+
+            User user = User.getInstance(player);
+            User profile = User.getInstance(args[0]);
+
+            if (profile.isBlock(user))
+            {
+                sender.sendMessage(Language.translate("cmd.profile.cant", player).color(NamedTextColor.RED));
+                return;
+            }
+
+            Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> new ProfileUI(player, profile));
+        });
 
         return true;
     }

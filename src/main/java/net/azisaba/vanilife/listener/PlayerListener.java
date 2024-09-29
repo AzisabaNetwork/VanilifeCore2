@@ -2,7 +2,8 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.util.TkmizIme;
+import net.azisaba.vanilife.user.subscription.Subscriptions;
+import net.azisaba.vanilife.gomenne.Gomenne;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.report.ReportDataContainer;
 import net.azisaba.vanilife.ui.Language;
@@ -11,6 +12,7 @@ import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.Typing;
+import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vc.VoiceChat;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
@@ -18,6 +20,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.block.Block;
@@ -26,6 +29,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerListener implements Listener
 {
@@ -257,32 +263,44 @@ public class PlayerListener implements Listener
             return;
         }
 
-        String content = ((TextComponent) event.message()).content();
+        if (! user.read("settings.chat").getAsBoolean())
+        {
+            player.sendMessage(Language.translate("cmd.togglechat.cant-send", player).color(NamedTextColor.RED));
+            return;
+        }
+
+        String message = ((TextComponent) event.message()).content();
 
         Typing typing = Typing.getInstance(player);
 
         if (typing != null)
         {
-            player.sendMessage(Component.text(" " + content).color(NamedTextColor.GRAY));
-            typing.onTyped(content);
+            player.sendMessage(Component.text(" " + message).color(NamedTextColor.GRAY));
+            typing.onTyped(message);
             return;
         }
 
-        Vanilife.filter.onAsyncChat(event);
-
-        Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY));
-
-        if (Language.getInstance(user).getId().equals("ja-jp") && content.matches("[a-zA-Z0-9\\p{Punct}]*") && ! content.contains(":"))
+        if (Language.getInstance(user).getId().equals("ja-jp") && message.matches("[a-zA-Z0-9\\p{Punct}]*") && ! message.contains(":") && user.read("settings.ime").getAsBoolean())
         {
-            chat = chat.append(Component.text(TkmizIme.convert(TkmizIme.hira(content)))).append(Component.text(" (" + content + ")").color(NamedTextColor.DARK_GRAY));
-        }
-        else
-        {
-            chat =chat.append(ComponentUtility.parseChat(content, user));
+            message = Gomenne.convert(Gomenne.hira(message)) + " §8(" + message + "§r§8)";
         }
 
-        final Component message = chat;
+        if (user.hasSubscription(Subscriptions.NEON))
+        {
+            message = ChatColor.translateAlternateColorCodes('&', message);
+        }
 
-        Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).toList().forEach(p -> p.sendMessage(message));
+        Vanilife.filter.onChat(player, message);
+
+        Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(LegacyComponentSerializer.legacySection().deserialize(message));
+
+        List<Player> players = new ArrayList<>();
+
+        if (! UserUtility.isModerator(user))
+        {
+            players.addAll(Bukkit.getOnlinePlayers().stream().filter(p -> !User.getInstance(p).isBlock(user) && User.getInstance(p).read("settings.chat").getAsBoolean()).toList());
+        }
+
+        players.forEach(p -> p.sendMessage(chat));
     }
 }

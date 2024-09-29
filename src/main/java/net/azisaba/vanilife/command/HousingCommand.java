@@ -94,15 +94,15 @@ public class HousingCommand implements CommandExecutor, TabCompleter
                 return;
             }
 
-            if (! housing.withInScope(user) && ! UserUtility.isModerator(user) && user.getRequests().stream().noneMatch(r -> r.auth(HousingInvite.class, housing.getUser().getAsPlayer())))
+            if (! housing.withInScope(user) && ! UserUtility.isModerator(user) && user.getRequests().stream().noneMatch(r -> r.match(HousingInvite.class, housing.getUser().getAsPlayer())))
             {
                 sender.sendMessage(Language.translate("cmd.housing.permission-error", player).color(NamedTextColor.RED));
                 return;
             }
 
-            if (user.getRequests().stream().anyMatch(r -> r.auth(FriendRequest.class, housing.getUser().getAsPlayer())))
+            if (user.getRequests().stream().anyMatch(r -> r.match(FriendRequest.class, housing.getUser().getAsPlayer())))
             {
-                user.getRequests().stream().filter(r -> r.auth(HousingInvite.class, housing.getUser().getAsPlayer())).toList().getFirst().onAllow();
+                user.getRequests().stream().filter(r -> r.match(HousingInvite.class, housing.getUser().getAsPlayer())).toList().getFirst().onAccept();
             }
 
             Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
