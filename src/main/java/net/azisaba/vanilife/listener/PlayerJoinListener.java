@@ -129,7 +129,7 @@ public class PlayerJoinListener implements Listener
         PlayerUtility.giveItemStack(player, bread);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void sendJoinMessage(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();

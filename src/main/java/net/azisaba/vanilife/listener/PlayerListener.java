@@ -290,6 +290,8 @@ public class PlayerListener implements Listener
             message = ChatColor.translateAlternateColorCodes('&', message);
         }
 
+        message = LegacyComponentSerializer.legacySection().serialize(ComponentUtility.parseChat(message, user));
+
         Vanilife.filter.onChat(player, message);
 
         Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(LegacyComponentSerializer.legacySection().deserialize(message));
@@ -299,6 +301,10 @@ public class PlayerListener implements Listener
         if (! UserUtility.isModerator(user))
         {
             players.addAll(Bukkit.getOnlinePlayers().stream().filter(p -> !User.getInstance(p).isBlock(user) && User.getInstance(p).read("settings.chat").getAsBoolean()).toList());
+        }
+        else
+        {
+            players.addAll(Bukkit.getOnlinePlayers());
         }
 
         players.forEach(p -> p.sendMessage(chat));
