@@ -8,6 +8,7 @@
 
 package net.azisaba.vanilife;
 
+import net.azisaba.vanilife.arcade.Paint;
 import net.azisaba.vanilife.command.*;
 import net.azisaba.vanilife.command.discord.MconsoleCommand;
 import net.azisaba.vanilife.command.discord.MetubotCommand;
@@ -26,7 +27,6 @@ import net.azisaba.vanilife.runnable.CacheClearRunnable;
 import net.azisaba.vanilife.housing.HousingRunnable;
 import net.azisaba.vanilife.runnable.PlayingRewardRunnable;
 import net.azisaba.vanilife.service.ServiceManager;
-import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.subscription.RichEmoteSubscription;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ChatFilter;
@@ -152,7 +152,7 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
         this.getServer().getPluginManager().registerEvents(new Afk(), this);
-
+        this.getServer().getPluginManager().registerEvents(new Paint(), this);
         this.getServer().getPluginManager().registerEvents(new RichEmoteSubscription(), this);
 
         this.getCommand("block").setExecutor(new BlockCommand());
