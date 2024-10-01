@@ -1,6 +1,5 @@
 package net.azisaba.vanilife.util;
 
-@Utility
 public class SqlUtility
 {
     public static boolean jdbc(String clazz)

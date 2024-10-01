@@ -230,7 +230,7 @@ public class ProfileUI extends InventoryUI
                         return;
                     }
 
-                    Bukkit.dispatchCommand(this.player, String.format("report %s %s", profile.getPlaneName(), string));
+                    Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> Bukkit.dispatchCommand(this.player, String.format("vanilife:report %s %s", profile.getPlaneName(), string)));
                 }
             };
         }

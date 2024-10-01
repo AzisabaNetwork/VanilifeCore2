@@ -12,7 +12,6 @@ import org.bukkit.World;
 import java.sql.*;
 import java.util.UUID;
 
-@Utility
 public class PlotUtility
 {
     public static boolean isAdjacent(Chunk chunk)

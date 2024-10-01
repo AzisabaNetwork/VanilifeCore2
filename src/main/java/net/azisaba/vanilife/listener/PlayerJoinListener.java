@@ -5,6 +5,7 @@ import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.Skin;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.PlayerUtility;
 import net.azisaba.vanilife.util.UserUtility;
@@ -76,6 +77,21 @@ public class PlayerJoinListener implements Listener
                 user.getSettings().LANGUAGE.setLanguage(lang);
             }
         }.runTaskAsynchronously(Vanilife.getPlugin());
+    }
+
+    @EventHandler
+    public void setSkin(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+        User user = User.getInstance(player);
+        Skin skin = user.getSkin();
+
+        if (skin == null)
+        {
+            return;
+        }
+
+        skin.use(player);
     }
 
     @EventHandler

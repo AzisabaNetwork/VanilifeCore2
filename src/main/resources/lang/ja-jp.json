@@ -223,6 +223,22 @@
 
     "ui.settings.title": "設定",
 
+    "ui.skin.title": "スキン",
+    "ui.skin.left": "&7左クリック: &aスキンを選択",
+    "ui.skin.right": "&7シフト + 右クリック: &aスキンを削除",
+    "ui.skin.empty": "空きスロット",
+    "ui.skin.upload": "アップロード",
+    "ui.skin.upload.details": "現在のスキンをアップロードします",
+    "ui.skin.deleted": "スキンを削除しました",
+    "ui.skin.pls-send-name": "スキンの設定する名前を送信してください:",
+    "ui.skin.pls-send-name.details": "「:」を送信してキャンセルします",
+    "ui.skin.pls-send-name.already": "既にこの名前を使用しています",
+    "ui.skin.pls-send-name.error": "ごめんなさい！アップロードの途中に予期せぬエラーが発生しました",
+    "ui.skin.pls-send-name.limit-under": "スキン名は3文字以上で設定する必要があります",
+    "ui.skin-pls-send-name.limit-over": "スキン名は8文字以内で設定する必要があります",
+    "ui.skin.pls-send-name.cancelled": "スキンのアップロードをキャンセルしました",
+    "ui.skin.pls-send-name.uploaded": "スキンのアップロードが完了しました！",
+
     "ui.store.title": "ばにらいふ！ ストア",
     "ui.store.sara": "皿",
     "ui.store.sara.details": "ばにらいふ！でも楽しめるアジ鯖の皿",
@@ -409,6 +425,10 @@
 
     "cmd.rtp.not-found": "ワールドが見つかりませんでした",
     "cmd.rtp.searching": "テレポート可能な場所を検索中…",
+
+    "cmd.skin.not-found": "スキンが見つかりませんでした",
+    "cmd.skin.already": "既にこのスキンを選択しています",
+    "cmd.skin.changed": "スキンを変更しました！",
 
     "cmd.subscribe.undefined": "${subscription} は未定義のサブスクリプションです",
     "cmd.subscribe.already": "&cあなたは既に ${subscription} を購入しています",

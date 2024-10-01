@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-@Utility
 public class StringUtility
 {
     public static boolean isHiragana(@NotNull String src)

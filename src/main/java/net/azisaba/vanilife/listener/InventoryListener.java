@@ -20,7 +20,7 @@ public class InventoryListener implements Listener
         if (InventoryUI.getInstances().containsValue(inventory))
         {
             Map.Entry<InventoryUI, Inventory> entry = InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == inventory).toList().getFirst();
-            entry.getKey().onInventoryClick(event);
+            entry.getKey().onClick(event);
 
             if (InventoryUI.getInstances().containsValue(event.getClickedInventory()))
             {
@@ -38,7 +38,7 @@ public class InventoryListener implements Listener
         if (InventoryUI.getInstances().containsValue(inventory))
         {
             Map.Entry<InventoryUI, Inventory> entry = InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == inventory).toList().getFirst();
-            entry.getKey().onInventoryDrag(event);
+            entry.getKey().onDrag(event);
         }
     }
 
@@ -50,7 +50,7 @@ public class InventoryListener implements Listener
         if (InventoryUI.getInstances().containsValue(inventory))
         {
             Map.Entry<InventoryUI, Inventory> entry = InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == inventory).toList().getFirst();
-            entry.getKey().onInventoryClose(event);
+            entry.getKey().onClose(event);
         }
     }
 }

@@ -88,9 +88,9 @@ public class ReportUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClose(@NotNull InventoryCloseEvent event)
+    public void onClose(@NotNull InventoryCloseEvent event)
     {
-        super.onInventoryClose(event);
+        super.onClose(event);
 
         if (this.cancel)
         {

@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 
-@Utility
 public class ResourceUtility
 {
     public static File getResource(String name)

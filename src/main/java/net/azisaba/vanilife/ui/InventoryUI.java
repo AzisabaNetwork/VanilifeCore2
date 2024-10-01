@@ -35,7 +35,7 @@ public abstract class InventoryUI
 
         if (InventoryUI.getInstances().containsValue(currentInv))
         {
-            InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == currentInv).toList().getFirst().getKey().onInventoryClose(new InventoryCloseEvent(player.getOpenInventory()));
+            InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == currentInv).toList().getFirst().getKey().onClose(new InventoryCloseEvent(player.getOpenInventory()));
         }
 
         this.player.openInventory(this.inventory);
@@ -64,6 +64,11 @@ public abstract class InventoryUI
         this.inventory.setItem(index, stack);
     }
 
+    public void onClick(@NotNull InventoryClickEvent event)
+    {
+        event.setCancelled(true);
+    }
+
     public void onUiClick(@NotNull InventoryClickEvent event)
     {
         if (event.getCurrentItem() == null)
@@ -84,17 +89,12 @@ public abstract class InventoryUI
         }
     }
 
-    public void onInventoryClick(@NotNull InventoryClickEvent event)
+    public void onDrag(@NotNull InventoryDragEvent event)
     {
         event.setCancelled(true);
     }
 
-    public void onInventoryDrag(@NotNull InventoryDragEvent event)
-    {
-        event.setCancelled(true);
-    }
-
-    public void onInventoryClose(@NotNull InventoryCloseEvent event)
+    public void onClose(@NotNull InventoryCloseEvent event)
     {
         InventoryUI.instances.remove(this);
     }

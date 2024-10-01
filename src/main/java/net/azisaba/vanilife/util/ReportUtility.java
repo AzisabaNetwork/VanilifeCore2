@@ -8,7 +8,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import java.sql.*;
 import java.util.UUID;
 
-@Utility
 public class ReportUtility
 {
     public static void mount()

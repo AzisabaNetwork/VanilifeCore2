@@ -223,6 +223,22 @@
 
     "ui.settings.title": "Settings",
 
+    "ui.skin.title": "Skin",
+    "ui.skin.left": "&7Left Click: &aSelect Skin",
+    "ui.skin.right": "&7Shift + Right Click: &aDelete Skin",
+    "ui.skin.empty": "Empty Slot",
+    "ui.skin.upload": "Upload",
+    "ui.skin.upload.details": "Uploading the current skin.",
+    "ui.skin.deleted": "Skin has been deleted.",
+    "ui.skin.pls-send-name": "Please send the name for the skin.",
+    "ui.skin.pls-send-name.details": "Send ':' to cancel.",
+    "ui.skin.pls-send-name.already": "This name is already in use.",
+    "ui.skin.pls-send-name.error": "Sorry! An unexpected error occurred during the upload.",
+    "ui.skin.pls-send-name.limit-under": "The skin name must be at least 3 characters long.",
+    "ui.skin.pls-send-name.limit-over": "The skin name must be no more than 8 characters long.",
+    "ui.skin.pls-send-name.cancelled": "Skin upload has been cancelled.",
+    "ui.skin.pls-send-name.uploaded": "Skin upload complete!",
+
     "ui.store.title": "Vanilife! Store",
     "ui.store.sara": "Sara",
     "ui.store.sara.details": "Azisaba saras that can also be enjoyed at Vanilife!",
@@ -409,6 +425,10 @@
 
     "cmd.rtp.not-found": "World not found.",
     "cmd.rtp.searching": "Searching for possible teleportation locations.…",
+
+    "cmd.skin.not-found": "Skin not found.",
+    "cmd.skin.already": "This skin is already selected.",
+    "cmd.skin.changed": "Skin has been changed!",
 
     "cmd.subscribe.undefined": "${subscription} is an undefined subscription.",
     "cmd.subscribe.already": "&cYou have already purchased ${subscription}.",

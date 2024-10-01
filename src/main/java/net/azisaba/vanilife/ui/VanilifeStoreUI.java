@@ -71,7 +71,7 @@ public class VanilifeStoreUI extends InventoryUI
         walletStack.setItemMeta(walletMeta);
         this.registerListener(16, walletStack, "vanilife:wallet", ExecutionType.CLIENT);
 
-        ItemStack closeStack = new ItemStack(Material.BARRIER);
+        ItemStack closeStack = new ItemStack(Material.ARROW);
         ItemMeta closeMeta = closeStack.getItemMeta();
         closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
         closeMeta.lore(List.of(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));

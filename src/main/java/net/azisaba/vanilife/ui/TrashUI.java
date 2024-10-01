@@ -2,7 +2,6 @@ package net.azisaba.vanilife.ui;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.util.Typing;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,12 +23,12 @@ public class TrashUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClick(@NotNull InventoryClickEvent event) {}
+    public void onClick(@NotNull InventoryClickEvent event) {}
 
     @Override
-    public void onInventoryClose(@NotNull InventoryCloseEvent event)
+    public void onClose(@NotNull InventoryCloseEvent event)
     {
-        super.onInventoryClose(event);
+        super.onClose(event);
 
         ArrayList<ItemStack> stacks = new ArrayList<>();
 

@@ -117,7 +117,7 @@ public class TradeUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClick(@NotNull InventoryClickEvent event)
+    public void onClick(@NotNull InventoryClickEvent event)
     {
         event.setCancelled(event.isCancelled()
                 || this.trade.getAgree((Player) event.getWhoClicked()) != Trade.Agree.NONE
@@ -158,9 +158,9 @@ public class TradeUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClose(@NotNull InventoryCloseEvent event)
+    public void onClose(@NotNull InventoryCloseEvent event)
     {
-        super.onInventoryClose(event);
+        super.onClose(event);
 
         if (! this.trade.getAgree())
         {

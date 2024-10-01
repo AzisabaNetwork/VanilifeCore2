@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Pattern;
 
-@Utility
 public class ComponentUtility
 {
     private static final Pattern URL_PATTERN = Pattern.compile("(https?://\\S+)");

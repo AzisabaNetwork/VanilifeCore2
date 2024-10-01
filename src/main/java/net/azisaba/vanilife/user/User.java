@@ -50,6 +50,7 @@ public class User
         return User.getInstance(player.getUniqueId());
     }
 
+    @Deprecated
     public static User getInstance(String name)
     {
         return User.getInstance(Bukkit.getOfflinePlayer(name).getUniqueId());
@@ -71,17 +72,42 @@ public class User
         return User.instances;
     }
 
+    public static void mount()
+    {
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("SELECT id FROM user");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                User.getInstance(UUID.fromString(rs.getString("id")));
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to mount user: %s", e.getMessage())).color(NamedTextColor.RED));
+        }
+    }
+
     private final UUID id;
 
     private String nick;
-    private Sara sara;
     private String bio;
     private Date birthday;
     private String youtube;
     private String twitter;
     private net.dv8tion.jda.api.entities.User discord;
     private int mola;
+    private Sara sara;
     private UserStatus status;
+    private Skin skin;
     private JsonObject storage;
 
     private Housing housing;
@@ -94,6 +120,7 @@ public class User
     private final List<User> friends = new ArrayList<>();
     private final List<User> blocks = new ArrayList<>();
     private final List<Mail> mails;
+    private final List<Skin> skins = new ArrayList<>();
     private final List<ISubscription> subscriptions = new ArrayList<>();
     private final List<IRequest> requests = new ArrayList<>();
 
@@ -113,13 +140,13 @@ public class User
             rs.next();
 
             this.nick = rs.getString("nick");
-            this.sara = Sara.valueOf(rs.getString("sara"));
             this.bio = rs.getString("bio");
             this.birthday = (rs.getString("birthday") == null) ? null : Vanilife.sdf2.parse(rs.getString("birthday"));
             this.youtube = rs.getString("youtube");
             this.twitter = rs.getString("twitter");
             this.discord = rs.getString("discord") == null ? null : Vanilife.jda.retrieveUserById(rs.getString("discord")).complete();
             this.mola = rs.getInt("mola");
+            this.sara = Sara.valueOf(rs.getString("sara"));
             this.status = UserStatus.valueOf(rs.getString("status"));
             this.storage = JsonParser.parseString(rs.getString("storage")).getAsJsonObject();
 
@@ -220,7 +247,7 @@ public class User
             {
                 Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
 
-                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, ?, NULL, NULL, NULL, NULL, NULL, 0, ?, '{}')");
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, NULL, NULL, NULL, NULL, NULL, 0, ?, ?, NULL, '{}')");
                 stmt.setString(1, this.id.toString());
                 stmt.setString(2, this.sara.toString());
                 stmt.setString(3, this.status.toString());
@@ -283,33 +310,6 @@ public class User
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("UPDATE user SET nick = ? WHERE id = ?");
             stmt.setString(1, this.nick);
-            stmt.setString(2, this.id.toString());
-
-            stmt.executeUpdate();
-
-            stmt.close();
-            con.close();
-        }
-        catch (SQLException e)
-        {
-            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
-        }
-    }
-
-    public @NotNull Sara getSara()
-    {
-        return (this.sara != null) ? this.sara : Sara.DEFAULT;
-    }
-
-    public void setSara(@NotNull Sara sara)
-    {
-        this.sara = sara;
-
-        try
-        {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("UPDATE user SET sara = ? WHERE id = ?");
-            stmt.setString(1, this.sara.toString());
             stmt.setString(2, this.id.toString());
 
             stmt.executeUpdate();
@@ -531,6 +531,33 @@ public class User
         this.setMola(mola);
     }
 
+    public @NotNull Sara getSara()
+    {
+        return (this.sara != null) ? this.sara : Sara.DEFAULT;
+    }
+
+    public void setSara(@NotNull Sara sara)
+    {
+        this.sara = sara;
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET sara = ? WHERE id = ?");
+            stmt.setString(1, this.sara.toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
     @NotNull
     public UserStatus getStatus()
     {
@@ -557,6 +584,48 @@ public class User
         {
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
+    }
+
+    public Skin getSkin()
+    {
+        return this.skin;
+    }
+
+    public void setSkin(Skin skin)
+    {
+        this.skin = skin;
+
+        if (this.isOnline() && this.skin != null)
+        {
+            this.skin.use(this.getAsPlayer());
+        }
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET skin = ? WHERE id = ?");
+            stmt.setString(1, this.skin == null ? null : this.skin.getName());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void addSkin(@NotNull Skin skin)
+    {
+        if (this.skins.contains(skin))
+        {
+            return;
+        }
+
+        this.skins.add(skin);
     }
 
     @NotNull
@@ -668,6 +737,11 @@ public class User
     public @NotNull List<Mail> getMails()
     {
         return this.mails;
+    }
+
+    public @NotNull List<Skin> getSkins()
+    {
+        return this.skins;
     }
 
     public @NotNull List<ISubscription> getSubscriptions()

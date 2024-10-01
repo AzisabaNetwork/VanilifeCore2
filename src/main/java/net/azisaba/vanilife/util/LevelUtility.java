@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 
-@Utility
 public class LevelUtility
 {
     public static void generate(@NotNull Location location, @NotNull String name)

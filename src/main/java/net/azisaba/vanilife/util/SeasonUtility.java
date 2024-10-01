@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 import static net.azisaba.vanilife.util.SeasonUtility.Season.*;
 
-@Utility
 public class SeasonUtility
 {
     public static Season getSeason()

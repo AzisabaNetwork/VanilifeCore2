@@ -51,9 +51,9 @@ public class JnknUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClick(@NotNull InventoryClickEvent event)
+    public void onClick(@NotNull InventoryClickEvent event)
     {
-        super.onInventoryClick(event);
+        super.onClick(event);
 
         if (event.getCurrentItem() == null)
         {
@@ -103,9 +103,9 @@ public class JnknUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClose(@NotNull InventoryCloseEvent event)
+    public void onClose(@NotNull InventoryCloseEvent event)
     {
-        super.onInventoryClose(event);
+        super.onClose(event);
 
         this.jnkn.cancel();
     }

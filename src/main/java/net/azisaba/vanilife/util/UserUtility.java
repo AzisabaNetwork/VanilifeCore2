@@ -13,7 +13,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
-@Utility
 public class UserUtility
 {
     public static final UUID UUID_AZISABA = UUID.fromString("8052db20-6fa8-4d26-ac59-30fd04c34f5e");
@@ -160,30 +159,6 @@ public class UserUtility
         catch (SQLException ignored)
         {
             return false;
-        }
-    }
-
-    public static void mount()
-    {
-        try
-        {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("SELECT id FROM user");
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next())
-            {
-                User.getInstance(UUID.fromString(rs.getString("id")));
-            }
-
-            rs.close();
-            stmt.close();
-            con.close();
-        }
-        catch (SQLException e)
-        {
-            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to mount user: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }
 }

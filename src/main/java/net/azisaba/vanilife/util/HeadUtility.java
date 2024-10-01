@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
-@Utility
 public class HeadUtility
 {
     public static final String YOUTUBE = "https://textures.minecraft.net/texture/e7c9eec58d666b8e7754deb3aaebd6c27c2441c2dbb649dd4234878d30dd85b1";

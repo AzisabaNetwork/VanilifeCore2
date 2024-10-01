@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-@Utility
 public class FileUtility
 {
     public static boolean rmdir(File directory)

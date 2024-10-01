@@ -104,6 +104,9 @@ commands:
     aliases:
       - config
       - setting
+  skin:
+    description: Change your skin.
+    usage: /skin <avatar>
   store:
     description: Open the Vanilife store.
     usage: /store

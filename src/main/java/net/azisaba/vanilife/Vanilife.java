@@ -181,6 +181,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("sara").setExecutor(new SaraCommand());
         this.getCommand("service").setExecutor(new ServiceCommand());
         this.getCommand("settings").setExecutor(new SettingsCommand());
+        this.getCommand("skin").setExecutor(new SkinCommand());
         this.getCommand("store").setExecutor(new StoreCommand());
         this.getCommand("subscribe").setExecutor(new SubscribeCommand());
         this.getCommand("togglechat").setExecutor(new ToggleChatCommand());

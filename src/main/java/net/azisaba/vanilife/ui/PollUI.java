@@ -61,9 +61,9 @@ public class PollUI extends InventoryUI
     }
 
     @Override
-    public void onInventoryClick(@NotNull InventoryClickEvent event)
+    public void onClick(@NotNull InventoryClickEvent event)
     {
-        super.onInventoryClick(event);
+        super.onClick(event);
 
         if (event.getCurrentItem() == null)
         {
