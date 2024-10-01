@@ -68,7 +68,7 @@ public class ProfileUI extends InventoryUI
                     headLore.add(Component.text(sb.toString()).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
                 }
 
-                headLore.add(Component.text(""));
+                headLore.add(Component.text().build());
             }
 
             headLore.add(Language.translate("ui.state", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
@@ -83,6 +83,11 @@ public class ProfileUI extends InventoryUI
             {
                 headLore.add(Language.translate("ui.profile.birthday", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                         .append(Component.text(Vanilife.sdf4.format(this.profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
+            }
+
+            if (this.profile.hasOsatou() && this.profile.read("settings.osatou.open").getAsBoolean() && user.read("settings.osatou.open").getAsBoolean())
+            {
+                headLore.add(Language.translate("ui.profile.osatou", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(this.profile.getOsatou().getName()));
             }
 
             if (this.profile.hasHousing() && this.profile.inHousing() && this.profile.read("settings.housing.activity").getAsBoolean())

@@ -26,6 +26,10 @@
     "ui.365.wallet": "所持金",
     "ui.365.wallet.mola": "Mola: ",
 
+    "ui.confirm.title": "確認",
+    "ui.confirm.accept": "承認",
+    "ui.confirm.reject": "拒否",
+
     "ui.housing.title": "Housing",
     "ui.housing.spawn": "Spawn",
     "ui.housing.spawn.details": "スポーンを現在の位置に変更します",
@@ -67,6 +71,20 @@
     "ui.jnkn.cancel.details": "ジャンケンを中止します",
     "ui.jnkn.waiting": "相手の手を待っています…",
     "ui.jnkn.waiting.details": "このまましばらくお待ちください",
+
+    "ui.osatou.title": "お砂糖",
+    "ui.osatou.profile": "クリックしてプロフィールを表示！",
+    "ui.osatou.empty": "空のスロット",
+    "ui.osatou.empty.details.1": "まだお砂糖はいないようです",
+    "ui.osatou.empty.details.2": "/osatou <player> でお砂糖申請を送信できます！",
+    "ui.osatou.open": "公開設定",
+    "ui.osatou.open.details.1": "プロフィールでお砂糖を公開しますか？",
+    "ui.osatou.open.details.2": "双方が有効にすることで表示されるようになります！",
+    "ui.osatou.open.you": "あなた: ",
+    "ui.osatou.open.partner": "パートナー: ",
+    "ui.osatou.delete": "削除",
+    "ui.osatou.delete.details": "お砂糖を解除します",
+    "ui.osatou.delete.deleted": "${name} とのお砂糖を解除しました…",
 
     "ui.plot.owner": "Owner: ",
     "ui.plot.member": "メンバー",
@@ -152,6 +170,7 @@
     "ui.profile.offline": "オフライン",
     "ui.profile.last-login": "最終ログイン: ",
     "ui.profile.birthday": "お誕生日: ",
+    "ui.profile.osatou": "お砂糖: ",
     "ui.profile.report": "報告",
     "ui.profile.report.details": "ルール違反ですか？レポートを作成しましょう…",
     "ui.profile.report.pls-send-details": "詳細を送信してください:",
@@ -312,6 +331,12 @@
     "msg.jnkn.cancelled": "&cジャンケンは中止されました！",
     "msg.jnkn.time-over": "&c${limit}&e 秒が経過したため、&r${name}&e へのジャンケンリクエストは無効になりました",
 
+    "msg.osatou.requested": "${name}&e にお砂糖申請を送信しました。承認の有効期限は &c${limit}&e 秒です。",
+    "msg.osatou.received": "${name}&e からお砂糖申請が届きました",
+    "msg.osatou.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
+    "msg.osatou.hold": "${name} &eとお砂糖になりました！",
+    "msg.osatou.time-over": "&c${limit}&e 秒が経過したため、&r${name}&e へのお砂糖申請は無効になりました",
+
     "msg.plot.requested": "${plot}&e に参加リクエストを送信しました！承認の有効期限は &c${limit}&e 秒です。",
     "msg.plot.received": "${name}&e から ${plot} への参加リクエストが届きました！",
     "msg.plot.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
@@ -384,6 +409,11 @@
 
     "cmd.nick.reset": "nick をリセットしました",
     "cmd.nick.changed": "${nick} を nick に設定しました",
+
+    "cmd.osatou.cant-yourself": "自分自身にお砂糖申請を送信することはできません",
+    "cmd.osatou.cant": "お砂糖申請は Friend にのみ送信することができます",
+    "cmd.osatou.already": "既にこのプレイヤーとお砂糖です！",
+    "cmd.osatou.already-sent": "既に ${name} にお砂糖申請を送信しています",
 
     "cmd.plot.not-found": "Plot が見つかりませんでした",
     "cmd.plot.cant-adjacent": "他の Plot と隣接するチャンクを取得することはできません",

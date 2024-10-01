@@ -97,6 +97,7 @@ public abstract class InventoryUI
     public void onClose(@NotNull InventoryCloseEvent event)
     {
         InventoryUI.instances.remove(this);
+        this.player.updateInventory();
     }
 
     enum ExecutionType

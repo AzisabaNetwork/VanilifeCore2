@@ -1,8 +1,9 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.ui.OsatouUI;
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.user.request.FriendRequest;
+import net.azisaba.vanilife.user.request.OsatouRequest;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendCommand implements CommandExecutor, TabCompleter
+public class OsatouCommand implements CommandExecutor, TabCompleter
 {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
@@ -29,9 +30,15 @@ public class FriendCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
+        if (args.length == 0)
+        {
+            new OsatouUI(player);
+            return true;
+        }
+
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /friend <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + label + " <player>").color(NamedTextColor.RED));
             return true;
         }
 
@@ -48,47 +55,53 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (player == toPlayer)
         {
-            sender.sendMessage(Language.translate("cmd.friend.cant-yourself", player).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.osatou.cant-yourself", player).color(NamedTextColor.RED));
             return true;
         }
 
-        if (toUser.isBlock(user))
+        if (user.getOsatou() == toUser)
         {
-            sender.sendMessage(Language.translate("cmd.friend.cant", player).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.osatou.already", player).color(NamedTextColor.GREEN));
             return true;
         }
 
-        if (toUser.isFriend(user))
+        if (! user.isFriend(toUser) || toUser.isBlock(user))
         {
-            user.unfriend(toUser);
-            sender.sendMessage(Language.translate("cmd.friend.removed", player, "name=" + args[0]).color(NamedTextColor.GREEN));
+            sender.sendMessage(Language.translate("cmd.osatou.cant", player).color(NamedTextColor.RED));
             return true;
         }
 
-        if (user.getRequests().stream().anyMatch(r -> r.match(FriendRequest.class, toPlayer)))
+        if (user.getRequests().stream().anyMatch(r -> r.match(OsatouRequest.class, toPlayer)))
         {
-            user.getRequests().stream().filter(r -> r.match(FriendRequest.class, toPlayer)).toList().getFirst().onAccept();
+            user.getRequests().stream().filter(r -> r.match(OsatouRequest.class, toPlayer)).toList().getFirst().onAccept();
             return true;
         }
 
-        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.match(FriendRequest.class, player)))
+        if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.match(OsatouRequest.class, player)))
         {
-            player.sendMessage(Language.translate("cmd.friend.already", player, "name=" + args[0]).color(NamedTextColor.RED));
+            player.sendMessage(Language.translate("cmd.osatou.already-sent", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 
-        new FriendRequest(player, toPlayer);
+        new OsatouRequest(player, toPlayer);
         return true;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
+        if (! (sender instanceof Player player))
+        {
+            return List.of();
+        }
+
+        User user = User.getInstance(player);
+
         List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(p -> suggest.add(p.getName()));
+            user.getFriends().forEach(p -> suggest.add(p.getPlaneName()));
         }
 
         return suggest;

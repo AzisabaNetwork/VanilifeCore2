@@ -68,6 +68,11 @@ commands:
   nick:
     description: Sets the user's nickname.
     usage: /nick [name]
+  osatou:
+    description: Send a osatou request
+    usage: /osatou <player>
+    aliases:
+      - sugar
   plot:
     description: Open any plot menu.
     usage: /plot [plot]

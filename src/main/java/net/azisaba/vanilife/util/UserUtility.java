@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -139,7 +140,7 @@ public class UserUtility
         return sender.isOp();
     }
 
-    public static boolean exists(UUID id)
+    public static boolean exists(@NotNull UUID id)
     {
         try
         {

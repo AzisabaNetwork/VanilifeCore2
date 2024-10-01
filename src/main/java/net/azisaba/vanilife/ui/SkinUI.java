@@ -81,7 +81,7 @@ public class SkinUI extends InventoryUI
         uploadMeta.setOwningPlayer(this.player);
         uploadStack.setItemMeta(uploadMeta);
 
-        if (Skin.getInstance(this.player) == null && this.user.getSkins().size() < 7)
+        if (! Skin.match(this.player) && this.user.getSkins().size() < 7)
         {
             this.inventory.setItem(30, uploadStack);
         }

@@ -25,6 +25,10 @@
     "ui.365.wallet": "Money in hand",
     "ui.365.wallet.mola": "Mola: ",
 
+    "ui.confirm.title": "Confirmation",
+    "ui.confirm.accept": "Accept",
+    "ui.confirm.reject": "Reject",
+
     "ui.housing.title": "Housing",
     "ui.housing.spawn": "Spawn",
     "ui.housing.spawn.details": "Change the spawn point to the current location",
@@ -67,6 +71,15 @@
     "ui.jnkn.cancel.details": "Stop the rock-paper-scissors game.",
     "ui.jnkn.waiting": "Waiting for the other person's hand…",
     "ui.jnkn.waiting.details": "Please wait a moment.",
+
+    "ui.osatou.title": "Sugar",
+    "ui.osatou.profile": "Click to view profile!",
+    "ui.osatou.empty": "Empty slot",
+    "ui.osatou.empty.details.1": "It seems there is no sugar yet",
+    "ui.osatou.empty.details.2": "You can send a sugar request with /osatou <player>!",
+    "ui.osatou.delete": "Delete",
+    "ui.osatou.delete.details": "Remove sugar",
+    "ui.osatou.delete.deleted": "Removed sugar with ${name}...",
 
     "ui.plot.owner": "Owner: ",
     "ui.plot.member": "Member",
@@ -152,6 +165,7 @@
     "ui.profile.offline": "Offline",
     "ui.profile.last-login": "Last Login: ",
     "ui.profile.birthday": "Birthday: ",
+    "ui.profile.osatou": "Sugar: ",
     "ui.profile.report": "Report",
     "ui.profile.report.details": "Breaking the rules? Create a report...",
     "ui.profile.report.pls-send-details": "Please send your details:",
@@ -384,6 +398,11 @@
 
     "cmd.nick.reset": "nick reset.",
     "cmd.nick.changed": "${nick} is set to nick.",
+
+    "cmd.osatou.cant-yourself": "You cannot send a sugar request to yourself.",
+    "cmd.osatou.cant": "Sugar requests can only be sent to friends.",
+    "cmd.osatou.already": "You are already sugar with this player!",
+    "cmd.osatou.already-sent": "You have already sent a sugar request to ${name}.",
 
     "cmd.plot.not-found": "Plot not found.",
     "cmd.plot.cant-adjacent": "You cannot claim a chunk adjacent to another Plot.",

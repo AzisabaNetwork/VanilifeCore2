@@ -39,7 +39,7 @@ public class User
 {
     private static final ArrayList<User> instances = new ArrayList<>();
 
-    public static User getInstance(UUID id)
+    public static User getInstance(@NotNull UUID id)
     {
         List<User> filteredInstances = User.instances.stream().filter(i -> i.getId().equals(id)).toList();
         return filteredInstances.isEmpty() ? UserUtility.exists(id) ? new User(id) : new User(id, true) : filteredInstances.getFirst();
@@ -50,7 +50,6 @@ public class User
         return User.getInstance(player.getUniqueId());
     }
 
-    @Deprecated
     public static User getInstance(String name)
     {
         return User.getInstance(Bukkit.getOfflinePlayer(name).getUniqueId());
@@ -83,7 +82,9 @@ public class User
 
             while (rs.next())
             {
-                User.getInstance(UUID.fromString(rs.getString("id")));
+                UUID id = UUID.fromString(rs.getString("id"));
+
+                if (User.getInstance(id) == null) new User(id);
             }
 
             rs.close();
@@ -108,6 +109,7 @@ public class User
     private Sara sara;
     private UserStatus status;
     private Skin skin;
+    private User osatou;
     private JsonObject storage;
 
     private Housing housing;
@@ -148,11 +150,13 @@ public class User
             this.mola = rs.getInt("mola");
             this.sara = Sara.valueOf(rs.getString("sara"));
             this.status = UserStatus.valueOf(rs.getString("status"));
+            this.osatou = rs.getString("osatou") == null ? null : User.getInstance(UUID.fromString(rs.getString("osatou")));
             this.storage = JsonParser.parseString(rs.getString("storage")).getAsJsonObject();
+
+            User.instances.add(this);
 
             rs.close();
             stmt.close();
-            User.instances.add(this);
 
             PreparedStatement stmt2 = con.prepareStatement("SELECT * FROM friend WHERE user1 = ? OR user2 = ?");
             stmt2.setString(1, this.id.toString());
@@ -221,7 +225,7 @@ public class User
         this.mails = UserUtility.getMails(this);
     }
 
-    public User(@NotNull UUID id, boolean write)
+    private User(@NotNull UUID id, boolean write)
     {
         this.id = id;
 
@@ -236,9 +240,6 @@ public class User
         this.status = UserStatus.DEFAULT;
         this.storage = new JsonObject();
 
-        this.write("settings.ime", true);
-        this.write("settings.chat", true);
-
         User.instances.add(this);
 
         if (write)
@@ -247,7 +248,7 @@ public class User
             {
                 Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
 
-                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, NULL, NULL, NULL, NULL, NULL, 0, ?, ?, NULL, '{}')");
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, NULL, NULL, NULL, NULL, NULL, 0, ?, ?, NULL, NULL, '{}')");
                 stmt.setString(1, this.id.toString());
                 stmt.setString(2, this.sara.toString());
                 stmt.setString(3, this.status.toString());
@@ -264,6 +265,9 @@ public class User
                 stmt2.close();
 
                 con.close();
+
+                this.write("settings.ime", true);
+                this.write("settings.chat", true);
             }
             catch (SQLException e)
             {
@@ -628,6 +632,39 @@ public class User
         this.skins.add(skin);
     }
 
+    public User getOsatou()
+    {
+        return this.osatou;
+    }
+
+    public void setOsatou(User osatou)
+    {
+        if (this.osatou == osatou)
+        {
+            return;
+        }
+
+        if (osatou == this)
+        {
+            return;
+        }
+
+        final User former = this.osatou;
+
+        this.write("settings.osatou.open", false);
+        this.osatou = osatou;
+
+        if (former != null)
+        {
+            former.setOsatou(null);
+        }
+
+        if (this.osatou != null && this.osatou.getOsatou() != this)
+        {
+            osatou.setOsatou(this);
+        }
+    }
+
     @NotNull
     public JsonObject getStorage()
     {
@@ -782,6 +819,11 @@ public class User
     public boolean inHousing()
     {
         return this.isOnline() && this.getAsPlayer().getWorld().equals(Housing.getWorld());
+    }
+
+    public boolean hasOsatou()
+    {
+        return this.osatou != null;
     }
 
     public boolean hasHousing()

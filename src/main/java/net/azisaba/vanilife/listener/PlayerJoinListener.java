@@ -1,5 +1,7 @@
 package net.azisaba.vanilife.listener;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.ui.Language;
@@ -29,8 +31,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class PlayerJoinListener implements Listener
 {
@@ -79,10 +80,17 @@ public class PlayerJoinListener implements Listener
         }.runTaskAsynchronously(Vanilife.getPlugin());
     }
 
+    public static final Map<Player, ProfileProperty> texturesMap = new HashMap<>();
+
     @EventHandler
     public void setSkin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+
+        PlayerProfile profile = player.getPlayerProfile();
+        ProfileProperty textures = profile.getProperties().stream().filter(property -> property.getName().equals("textures")).toList().getFirst();
+        PlayerJoinListener.texturesMap.put(player, new ProfileProperty(textures.getName(), textures.getValue(), textures.getSignature()));
+
         User user = User.getInstance(player);
         Skin skin = user.getSkin();
 

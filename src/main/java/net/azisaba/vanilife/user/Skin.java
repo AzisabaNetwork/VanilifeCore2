@@ -3,6 +3,9 @@ package net.azisaba.vanilife.user;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.listener.PlayerJoinListener;
+import net.azisaba.vanilife.util.HeadUtility;
+import net.azisaba.vanilife.util.MojangAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
@@ -23,19 +26,11 @@ public class Skin
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    public static Skin getInstance(@NotNull Player player)
+    public static boolean match(@NotNull Player player)
     {
-        PlayerProfile profile = player.getPlayerProfile();
-
-        if (profile.getProperties().stream().noneMatch(property -> property.getName().equals("textures")))
-        {
-            return null;
-        }
-
-        ProfileProperty textures = profile.getProperties().stream().filter(property -> property.getName().equals("textures")).toList().getFirst();
-
-        List<Skin> filteredInstances = Skin.instances.stream().filter(i -> i.value.equals(textures.getValue()) && i.signature.equals(textures.getSignature())).toList();
-        return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
+        ProfileProperty textures = PlayerJoinListener.texturesMap.get(player);
+        List<Skin> filteredInstances = Skin.instances.stream().filter(i -> MojangAPI.getSkin(i.getTexture()).equals(MojangAPI.getSkin(textures.getValue()))).toList();
+        return ! filteredInstances.isEmpty();
     }
 
     public static void mount()
