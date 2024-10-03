@@ -209,6 +209,15 @@ public final class Vanilife extends JavaPlugin
 
         SqlUtility.jdbc("org.mariadb.jdbc.Driver");
 
+        Vanilife.DB_URL = this.getConfig().getString("database.url");
+        Vanilife.DB_USER = this.getConfig().getString("database.user");
+        Vanilife.DB_PASS = this.getConfig().getString("database.pass");
+
+        Vanilife.METUBOT_SERVER = this.getConfig().getString("metubot.server");
+        Vanilife.METUBOT_PROVIDER = UUID.fromString(this.getConfig().getString("metubot.provider"));
+
+        SqlUtility.setup();
+
         Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).setActivity(Activity.playing("azisaba.net")).build();
         Vanilife.jda.addEventListener(new DiscordListener());
         Vanilife.jda.addEventListener(new VoiceChatListener());
@@ -217,25 +226,11 @@ public final class Vanilife extends JavaPlugin
         Vanilife.jda.addEventListener(new VanilifeLinkCommand());
         Vanilife.jda.addEventListener(new VanilifeUnlinkCommand());
 
-        Vanilife.DB_URL = this.getConfig().getString("database.url");
-        Vanilife.DB_USER = this.getConfig().getString("database.user");
-        Vanilife.DB_PASS = this.getConfig().getString("database.pass");
-
-        Vanilife.METUBOT_SERVER = this.getConfig().getString("metubot.server");
-        Vanilife.METUBOT_PROVIDER = UUID.fromString(this.getConfig().getString("metubot.provider"));
-
         Vanilife.filter = new ChatFilter();
 
         VanilifeWorldManager.mount();
         PlotUtility.mount();
         ServiceManager.mount();
-
-        if (VanilifeWorldManager.hasUpdate())
-        {
-            VanilifeWorldManager.update();
-        }
-
-        VanilifeWorldManager.backup();
 
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);

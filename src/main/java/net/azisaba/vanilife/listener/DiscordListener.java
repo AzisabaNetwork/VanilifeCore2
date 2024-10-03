@@ -11,6 +11,7 @@ import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.ReportUtility;
 import net.azisaba.vanilife.util.StringUtility;
+import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -63,6 +64,15 @@ public class DiscordListener extends ListenerAdapter
 
             channel.delete().queue();
         }
+
+        Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
+            if (VanilifeWorldManager.hasUpdate())
+            {
+                VanilifeWorldManager.update();
+            }
+
+            VanilifeWorldManager.backup();
+        });
 
         Language.mount();
         User.mount();
