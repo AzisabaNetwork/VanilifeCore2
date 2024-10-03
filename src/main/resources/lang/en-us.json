@@ -369,6 +369,13 @@
     "msg.trade.received.details": "&eApproval expires in &c${limit}&e seconds.",
     "msg.trade.time-over": "&eThe trade request to &r${name}&e is now invalid because &c${limit}&e seconds have elapsed.",
 
+    "mail.receipt.subject": "[Receipt] Payment for this month's ${subscription} has been completed",
+    "mail.receipt.message": "The fee for ${subscription} for the month of ${month} has been charged.\nYou can cancel your subscription from the subscription page in the store (/store).\n\nAmount charged: ${charge} Mola",
+    "mail.unpaid.subject": "[Important] Payment for this month's ${subscription} has failed",
+    "mail.unpaid.message": "We were unable to charge the fee for this month's ${subscription}.\nThis subscription is currently canceled.\n\nAmount due: ${charge}\nShortfall: ${shortfall}\nBalance at time of charge: ${balance} Mola",
+    "mail.unpaid.plot.subject": "[Important] Failed to maintain plot",
+    "mail.unpaid.plot.message": "${plot} has been deleted due to failure to charge the maintenance fee.\n\nAmount due: ${charge} Mola\nShortfall: ${shortfall} Mola\nBalance at time of charge: ${balance} Mola",
+
     "cmd.block.cant-yourself": "You can't block yourself.",
     "cmd.block.already": "You have already blocked ${name}.",
     "cmd.block.blocked": "Blocked ${name}.",

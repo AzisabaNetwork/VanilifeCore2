@@ -3,6 +3,7 @@ package net.azisaba.vanilife.user.subscription;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -59,8 +60,13 @@ public class PlotSubscription implements ISubscription
     @Override
     public void onShortage(@NotNull User user)
     {
+        user.unsubscribe(this);
         this.plot.delete();
-        this.plot.getOwner().sendNotice(String.format("Plot %s を維持できませんでした", this.plot.getName()), String.format("あなたが所有していた %s の維持費は Mola が不足していたために、引き落としされませんでした。\nつきましては %s が削除されましたので、通知させていただきました。\n\n請求額: %s Mola\n引き落とし時残高: %s Mola\n不足額: %s Mola\n\n以上、ご確認よろしくお願いします。", plot.getName(), plot.getName(), this.getCost(), this.plot.getOwner().getMola(), Math.abs(this.getCost() - this.plot.getOwner().getMola())));
+        this.plot.getOwner().sendNotice(ComponentUtility.getAsString(Language.translate("mail.unpaid.plot.subject", user)),
+                ComponentUtility.getAsString(Language.translate("mail.unpaid.plot.message", user,
+                        "charge=" + this.getCost(),
+                        "shortfall=" + Math.abs(this.getCost() - this.plot.getOwner().getMola()),
+                        "balance=" + this.plot.getOwner().getMola())));
     }
 
     @Override

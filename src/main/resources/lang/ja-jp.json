@@ -380,6 +380,13 @@
     "msg.trade.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
     "msg.trade.time-over": "&c${limit}&e 秒が経過したため、&r${name}&e への Trade 申請は無効になりました",
 
+    "mail.receipt.subject": "[レシート] 今月分の ${subscription} の支払いが完了しました",
+    "mail.receipt.message": "${subscription} の ${month}月分の料金を引き落としました。\nサブスクリプションの解約はストア (/store) のサブスクリプションページから行えます。\n\nお支払額: ${charge} Mola",
+    "mail.unpaid.subject": "[重要] 今月分の ${subscription} の支払いに失敗しました",
+    "mail.unpaid.message": "${subscription} の 今月分の料金を引き落としできませんでした。\n現在このサブスクリプションは解約されています。\n\n請求額: ${charge}\n不足額: ${shortfall}\n引き落とし時残高: ${balance} Mola",
+    "mail.unpaid.plot.subject": "[重要] プロットを維持できませんでした",
+    "mail.unpaid.plot.message": "${plot} は、維持費の引き落としに失敗したため削除されました。\n\n請求額: ${charge} Mola\n不足額: ${shortfall} Mola\n引き落とし時残高: ${balance} Mola",
+
     "cmd.block.cant-yourself": "自分自身をブロックすることはできません",
     "cmd.block.already": "あなたは既に ${name} をブロックしています",
     "cmd.block.blocked": "${name} をブロックしました",
