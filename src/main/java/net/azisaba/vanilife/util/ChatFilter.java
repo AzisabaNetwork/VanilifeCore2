@@ -87,12 +87,13 @@ public class ChatFilter
         Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                         .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
                         .setTitle(":shield:チャットフィルタリング")
-                        .setDescription(String.format("%s このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします", Vanilife.ROLE_SUPPORT))
+                        .setDescription(message)
                         .setFooter(sender.getUniqueId().toString())
-                        .addField("メッセージ", message, true)
                         .setColor(new Color(255, 85, 85)).build())
                 .addActionRow(Button.danger("vanilife:mute", String.format("%s をミュートする", sender.getName())),
                         Button.secondary("vanilife:unmute", "または…アンミュート")).queue();
+
+        Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_SUPPORT.getAsMention() + " このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします").queue();
     }
 
     private void upload()

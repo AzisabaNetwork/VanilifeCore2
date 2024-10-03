@@ -121,11 +121,13 @@ public class VanilifeWorldManager
         Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle(":recycle: ワールド更新が完了しました")
                 .setColor(Color.GREEN)
-                .setDescription(Vanilife.ROLE_DEVELOPER.getAsMention())
+                .setDescription("以下の変更がありました：")
                 .addField("(+) 生成", newWorld.getName(), false)
                 .addField("(-) 削除", oldWorld == null ? "なし" : oldWorld.getName(), false)
                 .addField("経過", df.format(seconds) + "秒", false)
                 .build()).queue();
+
+        Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " ワールドの更新を実行しました").queue();
     }
 
     public static void mount()

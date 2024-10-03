@@ -51,10 +51,11 @@ public class FeedbackCommand implements CommandExecutor, TabCompleter
 
         Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("フィードバック")
-                .setDescription(Vanilife.ROLE_DEVELOPER.getAsMention() + args[0])
                 .addField("送信者", String.format("%s (%s)", player.getName(), player.getUniqueId()), false)
                 .setColor(new Color(216, 197, 226))
                 .build()).queue();
+
+        Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " 1件の新しいフィードバックを受信しました").queue();
 
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
 

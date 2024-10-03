@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.azisaba'
-version = '1.7.15'
+version = '1.7.16'
 
 repositories {
     mavenCentral()
@@ -24,7 +24,6 @@ repositories {
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT'
-    compileOnly "org.spigotmc:spigot:1.21.1-R0.1-SNAPSHOT"
     compileOnly fileTree(dir: 'jar')
 
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'

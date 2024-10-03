@@ -122,13 +122,14 @@ public class Mail
         {
             Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                     .setTitle(":shield: メール")
-                    .setDescription(Vanilife.ROLE_SUPPORT.getAsMention() + " このメールはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします")
                     .setColor(Color.RED)
                     .addField("From:", String.format("%s (%s)", this.from.getPlaneName(), this.from.getId()), false)
                     .addField("To:", String.format("%s (%s)", this.to.getPlaneName(), this.to.getId()), false)
                     .addField("Subject", this.subject, false)
                     .addField("Message", this.message, false)
                     .build()).queue();
+
+            Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_SUPPORT.getAsMention() + " このメールはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします").queue();
             return;
         }
 

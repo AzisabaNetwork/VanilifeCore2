@@ -26,7 +26,7 @@ public class Report
 
     public static Report getInstance(UUID id)
     {
-        ArrayList<Report> filteredInstances = new ArrayList<>(Report.instances.stream().filter(i -> i.getId().equals(id)).toList());
+        List<Report> filteredInstances = new ArrayList<>(Report.instances.stream().filter(i -> i.getId().equals(id)).toList());
         return filteredInstances.isEmpty() ? new Report(id) : filteredInstances.getFirst();
     }
 
@@ -96,42 +96,41 @@ public class Report
 
         container.cancel();
 
-        EmbedBuilder builder = new EmbedBuilder()
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                 .setAuthor(sender.getPlaneName(), null, String.format("https://api.mineatar.io/face/%s", sender.getId().toString().replace("-", "")))
                 .setTitle("レポートを受信しました")
-                .setDescription(Vanilife.ROLE_SUPPORT.getAsMention())
                 .addField("レポート内容", details, true)
                 .addField("座標", String.format("%s : %s, %s, %s", this.location.getWorld().getName(), this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ()), false)
                 .setFooter("サポートを発行するにはこのメッセージに返信してください")
-                .setColor(Color.YELLOW);
+                .setColor(Color.YELLOW).build()).queue(message -> {
+                this.controller = message;
 
-        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(builder.build()).queue(message -> {
-            this.controller = message;
+                try
+                {
+                    Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+                    PreparedStatement stmt = con.prepareStatement("INSERT INTO report VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
+                    stmt.setString(1, this.id.toString());
+                    stmt.setString(2, this.sender.getId().toString());
+                    stmt.setString(3, this.details);
+                    stmt.setString(4, this.location.getWorld().getName());
+                    stmt.setInt(5, this.location.getBlockX());
+                    stmt.setInt(6, this.location.getBlockY());
+                    stmt.setInt(7, this.location.getBlockZ());
+                    stmt.setString(8, Vanilife.sdf2.format(this.date));
+                    stmt.setString(9, this.controller.getId());
 
-            try
-            {
-                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-                PreparedStatement stmt = con.prepareStatement("INSERT INTO report VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
-                stmt.setString(1, this.id.toString());
-                stmt.setString(2, this.sender.getId().toString());
-                stmt.setString(3, this.details);
-                stmt.setString(4, this.location.getWorld().getName());
-                stmt.setInt(5, this.location.getBlockX());
-                stmt.setInt(6, this.location.getBlockY());
-                stmt.setInt(7, this.location.getBlockZ());
-                stmt.setString(8, Vanilife.sdf2.format(this.date));
-                stmt.setString(9, this.controller.getId());
+                    stmt.executeUpdate();
 
-                stmt.executeUpdate();
-
-                stmt.close();
-                con.close();
-            }
-            catch (SQLException e)
-            {
-                Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert report record: %s", e.getMessage())).color(NamedTextColor.RED));
-            }
+                    stmt.close();
+                    con.close();
+                }
+                catch (SQLException e)
+                {
+                    Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert report record: %s", e.getMessage())).color(NamedTextColor.RED));
+                }
         });
+
+        Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_SUPPORT.getAsMention() + " 1件の新しいレポートがあります").queue();
 
         for (Location loc : container.getLocations())
         {
