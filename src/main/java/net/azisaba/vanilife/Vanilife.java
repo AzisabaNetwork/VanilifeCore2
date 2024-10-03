@@ -25,6 +25,7 @@ import net.azisaba.vanilife.runnable.CacheClearRunnable;
 import net.azisaba.vanilife.housing.HousingRunnable;
 import net.azisaba.vanilife.runnable.PlayingRewardRunnable;
 import net.azisaba.vanilife.service.ServiceManager;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.subscription.RichEmoteSubscription;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ChatFilter;
@@ -217,6 +218,7 @@ public final class Vanilife extends JavaPlugin
         Vanilife.METUBOT_PROVIDER = UUID.fromString(this.getConfig().getString("metubot.provider"));
 
         SqlUtility.setup();
+        Language.mount();
 
         Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).setActivity(Activity.playing("azisaba.net")).build();
         Vanilife.jda.addEventListener(new DiscordListener());

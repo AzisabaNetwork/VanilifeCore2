@@ -74,7 +74,6 @@ public class DiscordListener extends ListenerAdapter
             VanilifeWorldManager.backup();
         });
 
-        Language.mount();
         User.mount();
         Skin.mount();
         Bukkit.getScheduler().runTask(Vanilife.getPlugin(), Housing::mount);
