@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -185,20 +186,33 @@ public class VanilifeWorld
     {
         this.worlds.forEach(w -> w.getPlayers().forEach(p -> p.kick(Component.text(String.format("ごめんなさい！%s はアンロードされたため、プレイすることはできません", this.name)).color(NamedTextColor.RED))));
         this.worlds.forEach(w -> Bukkit.unloadWorld(w, true));
+
+        new ArrayList<>(this.plots).forEach(Plot::delete);
+
         VanilifeWorld.instances.remove(this);
         VanilifeWorldManager.setWorldProperties(this, null);
+
+        long start = System.nanoTime();
 
         try
         {
             File archives = new File(Vanilife.getPlugin().getDataFolder().getPath(), "/vwm/archive");
 
-            if (! archives.exists())
+            if (! archives.exists() && archives.mkdirs())
             {
-                archives.mkdirs();
+                Vanilife.CHANNEL_CONSOLE.sendMessage(String.format(":file_folder: %s `%s' のアーカイブに失敗しました (`/vwm/archive' の生成)", Vanilife.ROLE_DEVELOPER.getAsMention(), this.name)).queue();
+                return null;
             }
 
             String archiveName = String.format("{%s-%s}", this.name, Vanilife.sdf5.format(new Date()));
             Files.move(Paths.get(String.format("./%s", this.name)), Paths.get(archives.toPath() + "/" + archiveName));
+
+            long end = System.nanoTime();
+            double seconds = (end - start) / 1_000_000_000.0;
+            DecimalFormat df = new DecimalFormat("#.##");
+
+            Vanilife.CHANNEL_CONSOLE.sendMessage(String.format(":file_folder: `%s' のアーカイブに成功しました (%s秒)", this.name, df.format(seconds))).queue();
+
             return archiveName;
         }
         catch (IOException e)
@@ -211,6 +225,9 @@ public class VanilifeWorld
     {
         this.worlds.forEach(w -> w.getPlayers().forEach(p -> p.kick(Component.text(String.format("現在、 %s のバックアップを実行しています\nしばらくしてから再接続をお願いします", this.name)).color(NamedTextColor.RED))));
         this.worlds.forEach(w -> Bukkit.unloadWorld(w, true));
+
+        long start = System.nanoTime();
+
         VanilifeWorld.instances.remove(this);
 
         File backup = new File(Vanilife.getPlugin().getDataFolder().getPath(), "/vwm/backup");
@@ -231,12 +248,11 @@ public class VanilifeWorld
 
         FileUtility.cpdir(Paths.get(String.format("./%s", this.name)), backupPath);
 
-        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
-                .setTitle(String.format("ワールド %s のバックアップに成功しました", this.name))
-                .setFooter("以前のバックアップは削除されます")
-                .setColor(new Color(85, 255, 85))
-                .addField("バックアップ先", String.format("./plugins/Vanilife/vwm/backup/%s", backupName), false)
-                .build()).queue();
+        long end = System.nanoTime();
+        double seconds = (end - start) / 1_000_000_000.0;
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        Vanilife.CHANNEL_CONSOLE.sendMessage(String.format(":inbox_tray: `%s` のバックアップに成功しました (%s秒)", this.name, df.format(seconds))).queue();
 
         VanilifeWorld world = new VanilifeWorld(this.name);
         this.plots.forEach(plot -> world.getPlots().add(plot));

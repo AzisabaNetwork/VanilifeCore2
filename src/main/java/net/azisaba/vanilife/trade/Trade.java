@@ -231,7 +231,7 @@ public class Trade
                 .setFooter("(*'▽')")
                 .setColor(new Color(85, 255, 85));
 
-        Vanilife.consoleChannel.sendMessageEmbeds(builder.build()).queue();
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(builder.build()).queue();
     }
 
     public void cancel()

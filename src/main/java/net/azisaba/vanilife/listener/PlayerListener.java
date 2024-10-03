@@ -2,6 +2,7 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.gomenne.Gomenne;
 import net.azisaba.vanilife.plot.Plot;
@@ -16,6 +17,7 @@ import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vc.VoiceChat;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -30,6 +32,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,9 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event)
     {
-        User user = User.getInstance(event.getPlayer());
+        Player player = event.getPlayer();
+        User user = User.getInstance(player);
+
         user.getRequests().clear();
 
         VoiceChat vc = VoiceChat.getInstance(user);
@@ -48,7 +53,7 @@ public class PlayerListener implements Listener
             vc.disconnect(user);
 
             Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
-                Vanilife.publicServer.kickVoiceMember(Vanilife.publicServer.retrieveMemberById(user.getDiscord().getId()).complete()).queue();
+                Vanilife.SERVER_PUBLIC.kickVoiceMember(Vanilife.SERVER_PUBLIC.retrieveMemberById(user.getDiscord().getId()).complete()).queue();
             });
         }
 
@@ -63,7 +68,12 @@ public class PlayerListener implements Listener
         Vanilife.jda.getPresence().setActivity(Activity.customStatus(0 < online ? online + " 人がばにらいふ！ をプレイ中！" : "azisaba.net をプレイ中！"));
 
         event.quitMessage(null);
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Language.translate("msg.quit", p, "name=" + ComponentUtility.getAsString(user.getName()))));
+        Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).forEach(p -> p.sendMessage(Language.translate("msg.quit", p, "name=" + ComponentUtility.getAsString(user.getName()))));
+
+        Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
+                .setAuthor(player.getName() + " (" + player.getUniqueId() + ")", null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
+                .setDescription(player.getName() + " が切断しました")
+                .setColor(Color.RED).build()).queue();
     }
 
     @EventHandler
@@ -75,7 +85,8 @@ public class PlayerListener implements Listener
 
         if (to != null && from != to)
         {
-            Component info = Component.text("Plot: ").color(NamedTextColor.GREEN).append(Component.text(to.getName()).color(NamedTextColor.GRAY));
+            Component info = Component.text("Plot: ").color(NamedTextColor.GREEN)
+                    .append(Sara.$2000YEN.level < to.getOwner().getSara().level && to.getName().contains("&") ? ComponentUtility.getAsComponent(to.getName()) : Component.text(to.getName()).color(NamedTextColor.GRAY));
 
             if (to.canPvP() && to.isMember(player ))
             {
@@ -280,10 +291,15 @@ public class PlayerListener implements Listener
             return;
         }
 
+        boolean gomenne = false;
+
         if (Language.getInstance(user).getId().equals("ja-jp") && message.matches("[a-zA-Z0-9\\p{Punct}]*") && ! message.contains(":") && user.read("settings.ime").getAsBoolean())
         {
             message = Gomenne.convert(Gomenne.hira(message)) + " §8(" + message + "§r§8)";
+            gomenne = true;
         }
+
+        Vanilife.filter.onChat(player, ! gomenne ? message : Gomenne.convert(Gomenne.hira(((TextComponent) event.message()).content())) + " (" + ((TextComponent) event.message()).content() + ")");
 
         if (user.hasSubscription(Subscriptions.NEON))
         {
@@ -291,8 +307,6 @@ public class PlayerListener implements Listener
         }
 
         message = LegacyComponentSerializer.legacySection().serialize(ComponentUtility.parseChat(message, user));
-
-        Vanilife.filter.onChat(player, message);
 
         Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(LegacyComponentSerializer.legacySection().deserialize(message));
 

@@ -13,6 +13,7 @@ import net.azisaba.vanilife.util.PlayerUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -31,6 +32,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.awt.*;
 import java.util.*;
 
 public class PlayerJoinListener implements Listener
@@ -96,7 +98,14 @@ public class PlayerJoinListener implements Listener
 
         if (skin == null)
         {
-            return;
+            String name = player.getName();
+
+            if (8 < name.length())
+            {
+                name = name.substring(0, 8);
+            }
+
+            skin = new Skin(name, user, textures.getValue(), textures.getSignature());
         }
 
         skin.use(player);
@@ -168,6 +177,16 @@ public class PlayerJoinListener implements Listener
         {
             player.sendMessage(Language.translate("msg.new-mail", player, "unread=" + unread));
         }
+    }
+
+    @EventHandler
+    public void sendJoinHistory(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+        Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
+                .setAuthor(player.getName() + " (" + player.getUniqueId() + ")", null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
+                .setDescription(player.getName() + " が参加しました")
+                .setColor(Color.GREEN).build()).queue();
     }
 
     @EventHandler(priority = EventPriority.HIGH)

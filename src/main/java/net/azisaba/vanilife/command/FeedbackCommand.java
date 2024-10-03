@@ -49,7 +49,7 @@ public class FeedbackCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("フィードバック")
                 .setDescription(Vanilife.ROLE_DEVELOPER.getAsMention() + args[0])
                 .addField("送信者", String.format("%s (%s)", player.getName(), player.getUniqueId()), false)

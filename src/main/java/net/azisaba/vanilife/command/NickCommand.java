@@ -6,6 +6,7 @@ import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,7 @@ public class NickCommand implements CommandExecutor, TabCompleter
 
         Sara sara = UserUtility.getSara(player);
 
-        if (sara != Sara.GAMING && ! UserUtility.isModerator(sender))
+        if (sara.level < Sara.$10000YEN.level)
         {
             sender.sendMessage(Component.text("You do not have sufficient permissions to execute the command.").color(NamedTextColor.RED));
             return true;
@@ -44,8 +45,22 @@ public class NickCommand implements CommandExecutor, TabCompleter
         }
         else if (args.length == 1)
         {
+            if (args[0].length() < 3)
+            {
+                sender.sendMessage(Language.translate("cmd.nick.limit-under", player).color(NamedTextColor.RED));
+                player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
+                return true;
+            }
+
+            if (16 < args[0].length())
+            {
+                sender.sendMessage(Language.translate("cmd.nick.limit-over", player).color(NamedTextColor.RED));
+                player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
+                return true;
+            }
+
             user.setNick("~" + args[0]);
-            sender.sendMessage(Language.translate("cmd.nick.changed", player, "nick=" + args[0]).color(NamedTextColor.GREEN));
+            sender.sendMessage(Language.translate("cmd.nick.changed", player, "nick=" + args[0].replace("&", "＆")).color(NamedTextColor.GREEN));
         }
         else
         {

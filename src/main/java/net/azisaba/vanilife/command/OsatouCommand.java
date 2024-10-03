@@ -8,6 +8,7 @@ import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -56,12 +57,14 @@ public class OsatouCommand implements CommandExecutor, TabCompleter
         if (player == toPlayer)
         {
             sender.sendMessage(Language.translate("cmd.osatou.cant-yourself", player).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
             return true;
         }
 
         if (user.getOsatou() == toUser)
         {
-            sender.sendMessage(Language.translate("cmd.osatou.already", player).color(NamedTextColor.GREEN));
+            sender.sendMessage(Language.translate("cmd.osatou.already", player).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
             return true;
         }
 

@@ -18,8 +18,6 @@ import net.azisaba.vanilife.command.filter.FilterCommand;
 import net.azisaba.vanilife.command.gomenne.GomenneCommand;
 import net.azisaba.vanilife.command.wallet.WalletCommand;
 import net.azisaba.vanilife.command.service.ServiceCommand;
-import net.azisaba.vanilife.command.vwm.VwmCommand;
-import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.listener.*;
@@ -44,6 +42,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
+import net.dv8tion.jda.api.entities.channel.concrete.NewsChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.kyori.adventure.text.Component;
@@ -82,14 +81,18 @@ public final class Vanilife extends JavaPlugin
 
     private static CoreProtectAPI coreprotect;
 
+    public static ChatFilter filter;
+
     public static JDA jda;
-    public static Guild publicServer;
-    public static Guild privateServer;
-    public static VoiceChannel voiceChatChannel;
-    public static TextChannel consoleChannel;
     public static Category category;
 
-    public static ChatFilter filter;
+    public static Guild SERVER_PUBLIC;
+    public static Guild SERVER_PRIVATE;
+
+    public static NewsChannel CHANNEL_ANNOUNCE;
+    public static TextChannel CHANNEL_CONSOLE;
+    public static TextChannel CHANNEL_HISTORY;
+    public static VoiceChannel CHANNEL_VOICE;
 
     public static String DB_URL;
     public static String DB_USER;
@@ -188,10 +191,10 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("trade").setExecutor(new TradeCommand());
         this.getCommand("trash").setExecutor(new TrashCommand());
         this.getCommand("unblock").setExecutor(new UnblockCommand());
+        this.getCommand("unfriend").setExecutor(new UnfriendCommand());
         this.getCommand("unmute").setExecutor(new UnmuteCommand());
         this.getCommand("unsubscribe").setExecutor(new UnsubscribeCommand());
         this.getCommand("vote").setExecutor(new VoteCommand());
-        this.getCommand("vwm").setExecutor(new VwmCommand());
         this.getCommand("wallet").setExecutor(new WalletCommand());
         this.getCommand("world").setExecutor(new WorldCommand());
         this.getCommand("worlds").setExecutor(new WorldsCommand());
@@ -200,8 +203,6 @@ public final class Vanilife extends JavaPlugin
         this.saveResource("lang/en-us.json", true);
         this.saveResource("lang/ja-jp.json", true);
         this.saveResource("service/checkout.yml", false);
-        this.saveResource("service/vwm-backup.yml", false);
-        this.saveResource("service/vwm-reset.yml", false);
         this.saveResource("structure/housing.nbt", true);
         this.saveResource("vwm/vwm.json", false);
         this.saveResource("gomenne.json", false);
@@ -228,7 +229,13 @@ public final class Vanilife extends JavaPlugin
         VanilifeWorldManager.mount();
         PlotUtility.mount();
         ServiceManager.mount();
-        ConvertRequest.mount();
+
+        if (VanilifeWorldManager.hasUpdate())
+        {
+            VanilifeWorldManager.update();
+        }
+
+        VanilifeWorldManager.backup();
 
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
@@ -268,6 +275,8 @@ public final class Vanilife extends JavaPlugin
     {
         VanilifeWorld.getInstances().forEach(w -> w.getWorlds().forEach(World::save));
         Housing.getWorld().save();
+
+        VanilifeWorldManager.backup();
 
         if (Vanilife.jda != null)
         {

@@ -4,5 +4,6 @@ public enum HousingScope
 {
     PUBLIC,
     FRIEND,
+    OSATOU,
     PRIVATE;
 }

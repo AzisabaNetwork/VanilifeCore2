@@ -50,14 +50,10 @@ public class SkinUI extends InventoryUI
                 SkullMeta skinMeta = (SkullMeta) skinStack.getItemMeta();
                 skinMeta.displayName(Component.text(skin.getName()).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
                 skinMeta.lore(List.of(Language.translate("ui.skin.left", this.player).decoration(TextDecoration.ITALIC, false),
-                        Language.translate("ui.skin.right", this.player).decoration(TextDecoration.ITALIC, false)));
+                        Language.translate("ui.skin.right", this.player).decoration(TextDecoration.ITALIC, false),
+                        Component.text().build(),
+                        Language.translate(this.user.getSkin() == skin ? "ui.skin.selecting" : "ui.skin.click-to-select", this.player).color(this.user.getSkin() == skin ? NamedTextColor.GREEN : NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
                 skinMeta.setPlayerProfile(HeadUtility.getPlayerProfile(MojangAPI.getSkin(skin.getTexture())));
-
-                if (this.user.getSkin() == skin)
-                {
-                    skinMeta.addEnchant(Enchantment.INFINITY, 1, false);
-                    skinMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
 
                 skinStack.setItemMeta(skinMeta);
 

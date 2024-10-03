@@ -62,7 +62,7 @@ public class ImereqUI extends InventoryUI
         nextStack.setItemMeta(nextMeta);
         this.inventory.setItem(53, nextStack);
 
-        ItemStack closeStack = new ItemStack(Material.OAK_DOOR);
+        ItemStack closeStack = new ItemStack(Material.ANVIL);
         ItemMeta closeMeta = closeStack.getItemMeta();
         closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
         closeMeta.lore(List.of(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
@@ -151,7 +151,7 @@ public class ImereqUI extends InventoryUI
                 request.accept();
                 this.player.sendMessage(Component.text(request.getKaki() + " を承認しました").color(NamedTextColor.GREEN));
 
-                Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+                Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                         .setTitle("変換リクエストの承認")
                         .setColor(Color.GREEN)
                         .addField("送信者", request.getSender().getPlaneName() + " (" + request.getSender().getId().toString() + ")", false)
@@ -165,7 +165,7 @@ public class ImereqUI extends InventoryUI
                 request.reject();
                 this.player.sendMessage(Component.text(request.getKaki() + " を拒否しました").color(NamedTextColor.RED));
 
-                Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+                Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                         .setTitle("変換リクエストの拒否")
                         .setColor(Color.RED)
                         .addField("送信者", request.getSender().getPlaneName() + " (" + request.getSender().getId().toString() + ")", false)

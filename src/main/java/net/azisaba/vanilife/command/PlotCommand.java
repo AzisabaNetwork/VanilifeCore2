@@ -51,6 +51,7 @@ public class PlotCommand implements CommandExecutor, TabCompleter
         {
             new PlotUI(player, plot);
         }
+
         return true;
     }
 

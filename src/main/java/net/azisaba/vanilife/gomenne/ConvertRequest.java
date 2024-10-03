@@ -64,7 +64,7 @@ public class ConvertRequest
             ResultSet rs = stmt.executeQuery();
             rs.next();
 
-            this.sender = User.getInstance(UUID.fromString(rs.getString("id")));
+            this.sender = User.getInstance(UUID.fromString(rs.getString("sender")));
             this.date = Vanilife.sdf2.parse(rs.getString("date"));
             this.yomi = rs.getString("yomi");
             this.kaki = rs.getString("kaki");
@@ -139,6 +139,7 @@ public class ConvertRequest
     public void accept()
     {
         Gomenne.register(this.yomi, this.kaki);
+        Vanilife.CHANNEL_ANNOUNCE.sendMessage(String.format(":printer: 変換リクエストから `%s (%s)` が IME 辞書に追加されました！", this.kaki, this.yomi)).queue();
         this.delete("追加");
     }
 

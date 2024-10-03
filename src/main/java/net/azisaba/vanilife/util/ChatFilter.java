@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -79,17 +80,13 @@ public class ChatFilter
     {
         if (UserUtility.isModerator(sender) || ! Vanilife.filter.filter(message))
         {
-            Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
-                    .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
-                    .setDescription(message)
-                    .setFooter(sender.getUniqueId().toString())
-                    .setColor(new Color(85, 255, 85)).build()).queue();
+            Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**%s (%s)**: %s", sender.getName(), sender.getUniqueId(), LegacyComponentSerializer.legacySection().deserialize(message).content())).queue();
             return;
         };
 
-        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                         .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
-                        .setTitle("チャットフィルタリング")
+                        .setTitle(":shield:チャットフィルタリング")
                         .setDescription(String.format("%s このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします", Vanilife.ROLE_SUPPORT))
                         .setFooter(sender.getUniqueId().toString())
                         .addField("メッセージ", message, true)

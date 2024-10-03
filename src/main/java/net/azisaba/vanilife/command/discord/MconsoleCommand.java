@@ -23,7 +23,7 @@ public class MconsoleCommand extends DiscordCommand
     @Override
     public void install(@NotNull Guild server)
     {
-        if (server != Vanilife.privateServer)
+        if (server != Vanilife.SERVER_PRIVATE)
         {
             return;
         }

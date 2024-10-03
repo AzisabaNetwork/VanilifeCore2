@@ -140,6 +140,9 @@ commands:
   unblock:
     description: Unblock any player.
     usage: /unblock <player>
+  unfriend:
+    description: Unfriend any friend.
+    usage: /unfriend <friend>
   unmute:
     description: Unmute any player.
     usage: /unmute <player>
@@ -149,9 +152,6 @@ commands:
   vote:
     description: Vote for any option.
     usage: /vote <poll> <option>
-  vwm:
-    description: Command set for Vanilife World Manager administrators.
-    usage: /vwm <subcommand> [args…]
   wallet:
     description: Mola Management and Display.
     usage: /wallet [skill] [args…]

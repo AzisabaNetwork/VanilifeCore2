@@ -60,8 +60,7 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (toUser.isFriend(user))
         {
-            user.unfriend(toUser);
-            sender.sendMessage(Language.translate("cmd.friend.removed", player, "name=" + args[0]).color(NamedTextColor.GREEN));
+            sender.sendMessage(Language.translate("cmd.friend.already", player).color(NamedTextColor.RED));
             return true;
         }
 
@@ -73,7 +72,7 @@ public class FriendCommand implements CommandExecutor, TabCompleter
 
         if (! UserUtility.isAdmin(sender) && toUser.getRequests().stream().anyMatch(r -> r.match(FriendRequest.class, player)))
         {
-            player.sendMessage(Language.translate("cmd.friend.already", player, "name=" + args[0]).color(NamedTextColor.RED));
+            player.sendMessage(Language.translate("cmd.friend.already-sent", player, "name=" + args[0]).color(NamedTextColor.RED));
             return true;
         }
 

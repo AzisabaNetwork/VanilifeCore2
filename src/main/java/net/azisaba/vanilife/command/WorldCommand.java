@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.SeasonUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
@@ -59,7 +60,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter
 
         player.teleport(world.getLocation(player));
 
-        player.sendMessage(Language.translate("cmd.world.teleported", player, "world=" + args[0]).color(SeasonUtility.getSeasonColor(world.getSeason())).decorate(TextDecoration.BOLD));
+        player.sendMessage(Language.translate("cmd.world.teleported", player, "world=" + ComponentUtility.getAsString(Language.translate("ui.worlds." + world.getSeason().name().toLowerCase(), player))).color(SeasonUtility.getSeasonColor(world.getSeason())).decorate(TextDecoration.BOLD));
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         return true;
     }

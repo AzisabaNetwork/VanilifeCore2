@@ -24,7 +24,7 @@ public class VanilifeUnlinkCommand extends DiscordCommand
     @Override
     public void install(@NotNull Guild server)
     {
-        if (server != Vanilife.publicServer)
+        if (server != Vanilife.SERVER_PUBLIC)
         {
             return;
         }

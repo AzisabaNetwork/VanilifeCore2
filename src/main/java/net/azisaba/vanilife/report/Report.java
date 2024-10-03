@@ -105,7 +105,7 @@ public class Report
                 .setFooter("サポートを発行するにはこのメッセージに返信してください")
                 .setColor(Color.YELLOW);
 
-        Vanilife.consoleChannel.sendMessageEmbeds(builder.build()).queue(message -> {
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(builder.build()).queue(message -> {
             this.controller = message;
 
             try
@@ -135,7 +135,7 @@ public class Report
 
         for (Location loc : container.getLocations())
         {
-            Vanilife.consoleChannel.sendMessageEmbeds(Report.getCoreProtectViewer(loc, 0).build())
+            Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(Report.getCoreProtectViewer(loc, 0).build())
                     .setActionRow(Button.primary("vanilife:coreprotect.back", "前へ"), Button.primary("vanilife:coreprotect.next", "次へ"))
                     .queue();
         }
@@ -161,7 +161,7 @@ public class Report
             this.location = new Location(Bukkit.getWorld(rs.getString("world")), rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
             this.date = Vanilife.sdf2.parse(rs.getString("date"));
 
-            Vanilife.consoleChannel.retrieveMessageById(rs.getString("controller")).queue(message -> {
+            Vanilife.CHANNEL_CONSOLE.retrieveMessageById(rs.getString("controller")).queue(message -> {
                 this.controller = message;
             });
 

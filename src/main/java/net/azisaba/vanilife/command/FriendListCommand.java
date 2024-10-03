@@ -43,8 +43,8 @@ public class FriendListCommand implements CommandExecutor, TabCompleter
 
         User user = User.getInstance(player);
 
-        ArrayList<User> friends = new ArrayList<>();
-        friends.addAll(user.getFriends().stream().filter(f -> f.isOnline()).toList());
+        List<User> friends = new ArrayList<>();
+        friends.addAll(user.getFriends().stream().filter(User::isOnline).toList());
         friends.addAll(user.getFriends().stream().filter(f -> ! f.isOnline()).toList());
 
         int page = (args.length == 0) ? 1 : Integer.valueOf(args[0]);

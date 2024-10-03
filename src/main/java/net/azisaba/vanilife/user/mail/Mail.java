@@ -117,15 +117,25 @@ public class Mail
             this.read();
         }
 
-        boolean filtered = (Vanilife.filter.filter(this.message) || Vanilife.filter.filter(this.subject)) && ! UserUtility.isModerator(this.from);
 
-        Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+        if ((Vanilife.filter.filter(this.message) || Vanilife.filter.filter(this.subject)) && ! UserUtility.isModerator(this.from))
+        {
+            Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+                    .setTitle(":shield: メール")
+                    .setDescription(Vanilife.ROLE_SUPPORT.getAsMention() + " このメールはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします")
+                    .setColor(Color.RED)
+                    .addField("From:", String.format("%s (%s)", this.from.getPlaneName(), this.from.getId()), false)
+                    .addField("To:", String.format("%s (%s)", this.to.getPlaneName(), this.to.getId()), false)
+                    .addField("Subject", this.subject, false)
+                    .addField("Message", this.message, false)
+                    .build()).queue();
+            return;
+        }
+
+        Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("メール")
-                .setDescription(filtered ? Vanilife.ROLE_SUPPORT + " このメールはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします" : null)
-                .setAuthor(this.from.getPlaneName(), null, String.format("https://api.mineatar.io/face/%s", this.from.getId().toString().replace("-", "")))
-                .setColor(filtered ? new Color(255, 85, 85) : new Color(85, 255, 85))
-                .addField("From:", String.format("%s (%s)", this.from.getPlaneName(), this.from.getId().toString()), false)
-                .addField("To:", String.format("%s (%s)", this.to.getPlaneName(), this.to.getId().toString()), false)
+                .addField("From:", String.format("%s (%s)", this.from.getPlaneName(), this.from.getId()), false)
+                .addField("To:", String.format("%s (%s)", this.to.getPlaneName(), this.to.getId()), false)
                 .addField("Subject", this.subject, false)
                 .addField("Message", this.message, false)
                 .build()).queue();

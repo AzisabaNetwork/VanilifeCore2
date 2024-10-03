@@ -4,5 +4,6 @@ public enum PlotScope
 {
     PUBLIC,
     FRIEND,
+    OSATOU,
     PRIVATE;
 }

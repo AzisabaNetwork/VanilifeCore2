@@ -3,7 +3,9 @@ package net.azisaba.vanilife.ui;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.plot.PlotScope;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.HeadUtility;
 import net.azisaba.vanilife.util.Typing;
 import net.kyori.adventure.text.Component;
@@ -36,7 +38,8 @@ public class PlotSettingsUI extends InventoryUI
         Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
             ItemStack ownerStack = HeadUtility.getPlayerHead(this.plot.getOwner().getPlaneName());
             ItemMeta ownerMeta = ownerStack.getItemMeta();
-            ownerMeta.displayName(Component.text(this.plot.getName()).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+            ownerMeta.displayName((Sara.$2000YEN.level < this.plot.getOwner().getSara().level && this.plot.getName().contains("&") ? ComponentUtility.getAsComponent(this.plot.getName()) : Component.text(this.plot.getName()).color(NamedTextColor.GREEN))
+                    .decoration(TextDecoration.ITALIC, false));
             ownerMeta.lore(List.of(Language.translate("ui.plot.owner", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(this.plot.getOwner().getName())));
             ownerStack.setItemMeta(ownerMeta);
             this.inventory.setItem(4, ownerStack);
@@ -103,9 +106,10 @@ public class PlotSettingsUI extends InventoryUI
         scopeMeta.displayName(Language.translate("ui.plot-settings.scope", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         scopeMeta.lore(List.of(Language.translate("ui.plot-settings.scope.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text().build(),
-                Language.translate("settings.scope.public", player).color(this.plot.getScope() == PlotScope.PUBLIC ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
-                Language.translate("settings.scope.friend", player).color(this.plot.getScope() == PlotScope.FRIEND ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
-                Language.translate("settings.scope.private", player).color(this.plot.getScope() == PlotScope.PRIVATE ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
+                Language.translate("ui.plot.scope.public", player).color(this.plot.getScope() == PlotScope.PUBLIC ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.plot.scope.friend", player).color(this.plot.getScope() == PlotScope.FRIEND ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.plot.scope.osatou", player).color(this.plot.getScope() == PlotScope.OSATOU ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.plot.scope.private", player).color(this.plot.getScope() == PlotScope.PRIVATE ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
         scopeStack.setItemMeta(scopeMeta);
         this.inventory.setItem(29, scopeStack);
 
@@ -359,7 +363,8 @@ public class PlotSettingsUI extends InventoryUI
             PlotScope scope = switch (this.plot.getScope())
             {
                 case PUBLIC -> PlotScope.FRIEND;
-                case FRIEND -> PlotScope.PRIVATE;
+                case FRIEND -> PlotScope.OSATOU;
+                case OSATOU -> PlotScope.PRIVATE;
                 default -> PlotScope.PUBLIC;
             };
 

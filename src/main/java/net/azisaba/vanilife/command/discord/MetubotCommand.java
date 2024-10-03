@@ -32,7 +32,7 @@ public class MetubotCommand extends DiscordCommand
     @Override
     public void install(@NotNull Guild server)
     {
-        if (server != Vanilife.privateServer)
+        if (server != Vanilife.SERVER_PRIVATE)
         {
             return;
         }
@@ -123,7 +123,7 @@ public class MetubotCommand extends DiscordCommand
                     File tempFile = File.createTempFile(String.format("%s-%s-%s-%s", world.getName(), x, y, z), ".png");
                     Files.write(tempFile.toPath(), response.body().bytes());
 
-                    Vanilife.consoleChannel.sendMessageEmbeds(new EmbedBuilder()
+                    Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                             .setTitle("キャプチャを取得しました")
                             .setFooter("この機能はベータ版です、適切なキャプチャではない可能性があります")
                             .addField("座標", location.toString(), true)

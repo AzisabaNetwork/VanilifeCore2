@@ -4,7 +4,6 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.listener.PlayerJoinListener;
-import net.azisaba.vanilife.util.HeadUtility;
 import net.azisaba.vanilife.util.MojangAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

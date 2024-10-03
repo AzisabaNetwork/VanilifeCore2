@@ -138,6 +138,7 @@ public class HousingUI extends InventoryUI
                 Component.text().build(),
                 Language.translate("ui.housing.scope.public", this.player).color(this.housing.getScope() == HousingScope.PUBLIC ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
                 Language.translate("ui.housing.scope.friend", this.player).color(this.housing.getScope() == HousingScope.FRIEND ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.housing.scope.osatou", this.player).color(this.housing.getScope() == HousingScope.OSATOU ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
                 Language.translate("ui.housing.scope.private", this.player).color(this.housing.getScope() == HousingScope.PRIVATE ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
         scopeStack.setItemMeta(scopeMeta);
         this.inventory.setItem(29, scopeStack);
@@ -210,7 +211,8 @@ public class HousingUI extends InventoryUI
             this.housing.setScope(switch (this.housing.getScope())
             {
                 case HousingScope.PUBLIC -> HousingScope.FRIEND;
-                case HousingScope.FRIEND -> HousingScope.PRIVATE;
+                case HousingScope.FRIEND -> HousingScope.OSATOU;
+                case HousingScope.OSATOU -> HousingScope.PRIVATE;
                 case HousingScope.PRIVATE -> HousingScope.PUBLIC;
             });
 

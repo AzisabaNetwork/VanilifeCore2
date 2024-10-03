@@ -2,7 +2,9 @@ package net.azisaba.vanilife.ui;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.HeadUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -38,7 +40,8 @@ public class PlotUI extends InventoryUI
         Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
             ItemStack ownerStack = HeadUtility.getPlayerHead(this.plot.getOwner().getPlaneName());
             ItemMeta ownerMeta = ownerStack.getItemMeta();
-            ownerMeta.displayName(Component.text(this.plot.getName()).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+            ownerMeta.displayName((Sara.$2000YEN.level < this.plot.getOwner().getSara().level && this.plot.getName().contains("&") ? ComponentUtility.getAsComponent(this.plot.getName()) : Component.text(this.plot.getName()).color(NamedTextColor.GREEN))
+                    .decoration(TextDecoration.ITALIC, false));
             ownerMeta.lore(List.of(Language.translate("ui.plot.owner", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(this.plot.getOwner().getName().decoration(TextDecoration.ITALIC, false))));
             ownerStack.setItemMeta(ownerMeta);
             this.inventory.setItem(4, ownerStack);

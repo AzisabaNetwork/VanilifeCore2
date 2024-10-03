@@ -6,6 +6,7 @@ import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.HousingInvite;
 import net.azisaba.vanilife.util.HeadUtility;
 import net.azisaba.vanilife.util.Typing;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -85,7 +86,7 @@ public class ProfileUI extends InventoryUI
                         .append(Component.text(Vanilife.sdf4.format(this.profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
             }
 
-            if (this.profile.hasOsatou() && this.profile.read("settings.osatou.open").getAsBoolean() && user.read("settings.osatou.open").getAsBoolean())
+            if (this.profile.hasOsatou() && (UserUtility.isAdmin(player) || this.profile.read("settings.osatou.open").getAsBoolean() && user.read("settings.osatou.open").getAsBoolean()))
             {
                 headLore.add(Language.translate("ui.profile.osatou", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(this.profile.getOsatou().getName()));
             }

@@ -92,13 +92,13 @@ public class VoiceChat
     }
 
     private final String name = VoiceChat.name();
-    private final AudioChannel channel = Vanilife.publicServer.createVoiceChannel(this.name, Vanilife.category).complete();
+    private final AudioChannel channel = Vanilife.SERVER_PUBLIC.createVoiceChannel(this.name, Vanilife.category).complete();
 
     private final List<User> members = new ArrayList<>();
 
     public VoiceChat()
     {
-        this.channel.getManager().putPermissionOverride(Vanilife.publicServer.getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL)).queue();
+        this.channel.getManager().putPermissionOverride(Vanilife.SERVER_PUBLIC.getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL)).queue();
 
         VoiceChat.instances.add(this);
     }
@@ -175,8 +175,8 @@ public class VoiceChat
         this.members.add(user);
 
         Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
-            Member member = Vanilife.publicServer.retrieveMemberById(user.getDiscord().getId()).complete();
-            Vanilife.publicServer.moveVoiceMember(member, this.channel).queue();
+            Member member = Vanilife.SERVER_PUBLIC.retrieveMemberById(user.getDiscord().getId()).complete();
+            Vanilife.SERVER_PUBLIC.moveVoiceMember(member, this.channel).queue();
         });
     }
 
