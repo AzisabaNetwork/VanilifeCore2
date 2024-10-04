@@ -22,7 +22,6 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -125,6 +124,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to mount user: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }
@@ -220,6 +220,7 @@ public class User
         }
         catch (SQLException | ParseException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get user record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
@@ -273,6 +274,7 @@ public class User
             }
             catch (SQLException e)
             {
+                Vanilife.sendExceptionReport(e);
                 Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert user record: %s", e.getMessage())).color(NamedTextColor.RED));
             }
         }
@@ -327,6 +329,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -354,6 +357,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -381,6 +385,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -408,6 +413,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -435,6 +441,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -462,6 +469,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -494,6 +502,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -562,6 +571,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -590,6 +600,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -622,6 +633,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -682,6 +694,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -708,6 +721,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -736,6 +750,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update login record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -763,6 +778,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update login record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -896,6 +912,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to insert friend record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -926,6 +943,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to delete friend record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -959,6 +977,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to insert block record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -988,6 +1007,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to delete block record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -1022,6 +1042,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to insert subscription record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -1049,6 +1070,7 @@ public class User
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to delete subscription record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }

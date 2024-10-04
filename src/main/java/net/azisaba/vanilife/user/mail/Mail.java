@@ -67,6 +67,7 @@ public class Mail
         }
         catch (SQLException | ParseException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get mail record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }
@@ -105,6 +106,7 @@ public class Mail
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert mail record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
@@ -194,6 +196,7 @@ public class Mail
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to update mail record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }

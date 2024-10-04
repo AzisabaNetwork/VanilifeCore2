@@ -39,6 +39,7 @@ public class LevelUtility
         }
         catch (IOException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to generate " + name + ": " + e.getMessage()).color(NamedTextColor.RED));
         }
     }

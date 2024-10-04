@@ -38,6 +38,7 @@ public class ChatFilter
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get filter record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }
@@ -119,6 +120,7 @@ public class ChatFilter
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert filter record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }

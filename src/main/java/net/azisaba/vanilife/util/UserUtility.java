@@ -56,6 +56,7 @@ public class UserUtility
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get mails: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
@@ -157,8 +158,9 @@ public class UserUtility
 
             return exists;
         }
-        catch (SQLException ignored)
+        catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             return false;
         }
     }

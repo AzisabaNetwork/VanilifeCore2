@@ -126,6 +126,7 @@ public class Report
                 }
                 catch (SQLException e)
                 {
+                    Vanilife.sendExceptionReport(e);
                     Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert report record: %s", e.getMessage())).color(NamedTextColor.RED));
                 }
         });
@@ -172,6 +173,7 @@ public class Report
         }
         catch (SQLException | ParseException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get report record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
@@ -225,6 +227,7 @@ public class Report
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to update report record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }

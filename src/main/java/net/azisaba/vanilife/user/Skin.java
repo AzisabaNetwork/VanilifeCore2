@@ -51,6 +51,7 @@ public class Skin
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to mount skins: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -103,6 +104,7 @@ public class Skin
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to get skin record: " + e.getMessage()).color(NamedTextColor.RED));
         }
 
@@ -134,6 +136,7 @@ public class Skin
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to insert skin record: " + e.getMessage()).color(NamedTextColor.RED));
         }
 
@@ -182,6 +185,7 @@ public class Skin
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to delete a skin record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }

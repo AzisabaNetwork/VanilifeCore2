@@ -34,6 +34,7 @@ public class MojangAPI
         }
         catch (IOException e)
         {
+            Vanilife.sendExceptionReport(e);
             return null;
         }
     }
@@ -57,6 +58,7 @@ public class MojangAPI
         }
         catch (IOException e)
         {
+            Vanilife.sendExceptionReport(e);
             return null;
         }
     }

@@ -1,5 +1,7 @@
 package net.azisaba.vanilife.util;
 
+import net.azisaba.vanilife.Vanilife;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -46,9 +48,9 @@ public class FileUtility
                 {
                     Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
                 }
-                catch (IOException ignored)
+                catch (IOException e)
                 {
-
+                    Vanilife.sendExceptionReport(e);
                 }
             });
         }

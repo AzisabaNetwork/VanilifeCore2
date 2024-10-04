@@ -39,6 +39,7 @@ public class ConvertRequest
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to mount ime requests: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -76,6 +77,7 @@ public class ConvertRequest
         }
         catch (SQLException | ParseException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to get imereq record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -107,6 +109,7 @@ public class ConvertRequest
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to insert imereq record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -172,6 +175,7 @@ public class ConvertRequest
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to delete an ime request.").color(NamedTextColor.RED));
         }
     }

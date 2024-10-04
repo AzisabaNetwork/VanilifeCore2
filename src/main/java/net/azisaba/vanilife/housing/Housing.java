@@ -99,6 +99,7 @@ public class Housing
             }
             catch (SQLException e)
             {
+                Vanilife.sendExceptionReport(e);
                 Vanilife.getPluginLogger().warn(Component.text("Failed to select housing table: " + e.getMessage()).color(NamedTextColor.RED));
             }
         }
@@ -141,6 +142,7 @@ public class Housing
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to get housing record: " + e.getMessage()).color(NamedTextColor.RED));
         }
 
@@ -225,6 +227,7 @@ public class Housing
             }
             catch (SQLException e)
             {
+                Vanilife.sendExceptionReport(e);
                 Vanilife.getPluginLogger().warn(Component.text("Failed to insert housing record: " + e.getMessage()).color(NamedTextColor.RED));
             }
         });
@@ -267,6 +270,7 @@ public class Housing
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to update housing record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -296,6 +300,7 @@ public class Housing
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text("Failed to update housing record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -324,6 +329,7 @@ public class Housing
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update housing record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }

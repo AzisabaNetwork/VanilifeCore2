@@ -56,6 +56,7 @@ public class SqlUtility
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to setup tables: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -69,6 +70,7 @@ public class SqlUtility
         }
         catch (ClassNotFoundException e)
         {
+            Vanilife.sendExceptionReport(e);
             return false;
         }
     }
@@ -90,6 +92,7 @@ public class SqlUtility
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             return false;
         }
     }

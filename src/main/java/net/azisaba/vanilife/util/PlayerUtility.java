@@ -38,7 +38,10 @@ public class PlayerUtility
                     return response.body().string();
                 }
             }
-            catch (IOException ignored) {}
+            catch (IOException e)
+            {
+                Vanilife.sendExceptionReport(e);
+            }
         }
 
         return ip;
@@ -58,7 +61,10 @@ public class PlayerUtility
                 return json.get("country").getAsString();
             }
         }
-        catch (IOException ignored) {}
+        catch (IOException e)
+        {
+            Vanilife.sendExceptionReport(e);
+        }
 
         return "JP";
     }

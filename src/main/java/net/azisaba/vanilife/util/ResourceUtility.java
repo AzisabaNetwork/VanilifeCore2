@@ -28,6 +28,7 @@ public class ResourceUtility
         }
         catch (FileNotFoundException e)
         {
+            Vanilife.sendExceptionReport(e);
             throw new RuntimeException(e);
         }
     }
@@ -40,6 +41,7 @@ public class ResourceUtility
         }
         catch (IOException e)
         {
+            Vanilife.sendExceptionReport(e);
             throw new RuntimeException(e);
         }
     }
@@ -52,6 +54,7 @@ public class ResourceUtility
         }
         catch (IOException e)
         {
+            Vanilife.sendExceptionReport(e);
             throw new RuntimeException(e);
         }
     }

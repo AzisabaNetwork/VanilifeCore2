@@ -107,6 +107,7 @@ public class MetubotCommand extends DiscordCommand
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e)
                 {
+                    Vanilife.sendExceptionReport(e);
                     Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get capture: %s", e.getMessage())).color(NamedTextColor.RED));
                     event.replyEmbeds(new EmbedBuilder().setTitle("キャプチャの取得に失敗しました").setDescription(e.getMessage()).setColor(new Color(255, 85, 85)).build()).queue();
                 }

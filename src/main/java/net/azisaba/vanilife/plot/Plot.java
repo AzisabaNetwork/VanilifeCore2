@@ -64,6 +64,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to mount plots: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -146,6 +147,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to get plot record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
@@ -187,6 +189,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to insert plot record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
 
@@ -216,6 +219,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -244,6 +248,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -271,6 +276,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -298,6 +304,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -338,6 +345,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -370,6 +378,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -392,6 +401,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -414,6 +424,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to update plot record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -441,6 +452,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to insert member record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -467,6 +479,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed delete member record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -631,6 +644,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to insert chunk record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
@@ -654,6 +668,7 @@ public class Plot
             }
             catch (SQLException e)
             {
+                Vanilife.sendExceptionReport(e);
                 Vanilife.getPluginLogger().warn(Component.text("Failed to delete chunk record: " + e.getMessage()).color(NamedTextColor.RED));
             }
 
@@ -693,6 +708,7 @@ public class Plot
         }
         catch (SQLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(String.format("Failed to delete plot record: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }

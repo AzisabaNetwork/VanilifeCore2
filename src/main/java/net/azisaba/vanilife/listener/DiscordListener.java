@@ -4,7 +4,6 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.user.Skin;
-import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
@@ -79,6 +78,8 @@ public class DiscordListener extends ListenerAdapter
         Bukkit.getScheduler().runTask(Vanilife.getPlugin(), Housing::mount);
         ReportUtility.mount();
         ConvertRequest.mount();
+
+        Vanilife.CHANNEL_CONSOLE.sendMessage(":open_file_folder: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " サーバーを開始しました").queue();
     }
 
     @Override

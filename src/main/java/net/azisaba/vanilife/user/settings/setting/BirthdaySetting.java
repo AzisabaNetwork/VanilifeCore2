@@ -79,6 +79,7 @@ public class BirthdaySetting extends ScopeSetting
                     }
                     catch (ParseException e)
                     {
+                        Vanilife.sendExceptionReport(e);
                         throw new RuntimeException(e);
                     }
 

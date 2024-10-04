@@ -37,6 +37,7 @@ import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -50,14 +51,19 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import okhttp3.OkHttpClient;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 import java.util.UUID;
@@ -137,6 +143,39 @@ public final class Vanilife extends JavaPlugin
         return Vanilife.coreprotect;
     }
 
+    public static void sendExceptionReport(@NotNull Exception exception)
+    {
+        if (Vanilife.CHANNEL_CONSOLE == null)
+        {
+            return;
+        }
+
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+        String clazz = null;
+        String method = null;
+        int line = -1;
+
+        if (2 < stackTrace.length)
+        {
+            StackTraceElement caller = stackTrace[2];
+            clazz = caller.getClassName();
+            method = caller.getMethodName();
+            line = caller.getLineNumber();
+        }
+
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+                .setTitle(exception.getClass().getSimpleName())
+                .setDescription(exception.getMessage())
+                .addField("クラス", clazz == null ? "不明": clazz, false)
+                .addField("メソッド", method == null ? "不明" : method, false)
+                .addField("行", line < 0 ? "不明" : String.valueOf(line), false)
+                .setColor(Color.RED)
+                .build()).queue();
+
+        Vanilife.CHANNEL_CONSOLE.sendMessage(":warning: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " **予期しない例外が発生しました**").queue();
+    }
+
     @Override
     public void onEnable()
     {
@@ -175,7 +214,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("mute").setExecutor(new MuteCommand());
         this.getCommand("nick").setExecutor(new NickCommand());
         this.getCommand("osatou").setExecutor(new OsatouCommand());
-        this.getCommand("plot").setExecutor(new net.azisaba.vanilife.command.PlotCommand());
+        this.getCommand("plot").setExecutor(new PlotCommand());
         this.getCommand("/plot").setExecutor(new net.azisaba.vanilife.command.plot.PlotCommand());
         this.getCommand("poll").setExecutor(new PollCommand());
         this.getCommand("profile").setExecutor(new ProfileCommand());
@@ -278,6 +317,8 @@ public final class Vanilife extends JavaPlugin
     @Override
     public void onDisable()
     {
+        Vanilife.CHANNEL_CONSOLE.sendMessage(":file_folder: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " サーバーを停止しました").queue();
+
         Bukkit.getOnlinePlayers().forEach(Player::kick);
         VanilifeWorld.getInstances().forEach(w -> w.getWorlds().forEach(World::save));
         Housing.getWorld().save();

@@ -56,6 +56,7 @@ public class HeadUtility
         }
         catch (MalformedURLException e)
         {
+            Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().error(Component.text(e.getMessage()).color(NamedTextColor.RED));
             return null;
         }

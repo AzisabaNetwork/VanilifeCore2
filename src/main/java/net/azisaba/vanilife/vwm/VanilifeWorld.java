@@ -214,6 +214,7 @@ public class VanilifeWorld
         }
         catch (IOException e)
         {
+            Vanilife.sendExceptionReport(e);
             throw new RuntimeException(e);
         }
     }

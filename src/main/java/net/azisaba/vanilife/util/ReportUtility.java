@@ -30,7 +30,8 @@ public class ReportUtility
         }
         catch (SQLException e)
         {
-            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to mount report: %s", e.getMessage())).color(NamedTextColor.RED));
+            Vanilife.sendExceptionReport(e);
+            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to mount reports: %s", e.getMessage())).color(NamedTextColor.RED));
         }
     }
 }
