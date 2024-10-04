@@ -52,9 +52,16 @@ public class NickCommand implements CommandExecutor, TabCompleter
                 return true;
             }
 
-            if (16 < args[0].length())
+            if (15 < args[0].length())
             {
                 sender.sendMessage(Language.translate("cmd.nick.limit-over", player).color(NamedTextColor.RED));
+                player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
+                return true;
+            }
+
+            if (User.getInstances().stream().anyMatch(usr -> ! user.getNick().equals(usr.getPlaneName()) && usr.getNick().equals(args[0])))
+            {
+                sender.sendMessage(Language.translate("cmd.nick.already-in-use", player).color(NamedTextColor.RED));
                 player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
                 return true;
             }

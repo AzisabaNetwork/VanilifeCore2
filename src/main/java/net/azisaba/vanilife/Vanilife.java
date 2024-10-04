@@ -56,7 +56,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
@@ -319,11 +318,9 @@ public final class Vanilife extends JavaPlugin
     {
         Vanilife.CHANNEL_CONSOLE.sendMessage(":file_folder: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " サーバーを停止しました").queue();
 
-        Bukkit.getOnlinePlayers().forEach(Player::kick);
+        Bukkit.getOnlinePlayers().forEach(player -> player.kick(Component.text("サーバーを停止しています").color(NamedTextColor.RED)));
         VanilifeWorld.getInstances().forEach(w -> w.getWorlds().forEach(World::save));
         Housing.getWorld().save();
-
-        VanilifeWorldManager.backup();
 
         if (Vanilife.jda != null)
         {

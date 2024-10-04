@@ -181,6 +181,11 @@ public class PlotSettingsUI extends InventoryUI
                 Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> inventory.setItem(20, memberStack));
 
                 this.i ++;
+
+                if (plot.getMembers().size() == 1)
+                {
+                    this.cancel();
+                }
             }
         };
 

@@ -90,7 +90,7 @@ commands:
     usage: /ptp <plot>
   realname:
     description: Displays the actual MCID of the player using the nickname.
-    usage: /realname <player>
+    usage: /realname <nick>
   report:
     description: Report the player.
     usage: /report <player> <details>

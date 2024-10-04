@@ -1,9 +1,7 @@
 package net.azisaba.vanilife.command;
 
-import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
-import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -17,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class RealNameCommand implements CommandExecutor, TabCompleter
 {
@@ -26,33 +23,26 @@ public class RealNameCommand implements CommandExecutor, TabCompleter
     {
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /realname <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /realname <nick>").color(NamedTextColor.RED));
             return true;
         }
 
         Language lang = sender instanceof Player player ? Language.getInstance(player) : Language.getInstance("ja-jp");
 
-        Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
-            UUID uuid = Bukkit.getPlayerUniqueId(args[0]);
+        User target = User.getInstances().stream()
+                        .filter(u -> u.getNick().equals(args[0]))
+                        .reduce((first, second) -> second)
+                        .orElse(null);
 
-            if (uuid == null)
-            {
-                sender.sendMessage(lang.translate("msg.not-found.player", "name=" + args[0]).color(NamedTextColor.RED));
-                return;
-            }
+        if (target == null)
+        {
+            sender.sendMessage(lang.translate("msg.not-found.user", "name=" + args[0]).color(NamedTextColor.RED));
+            return true;
+        }
 
-            if (! UserUtility.exists(uuid))
-            {
-                sender.sendMessage(lang.translate("msg.not-found.user", "name=" + args[0]).color(NamedTextColor.RED));
-                return;
-            }
-
-            User target = User.getInstance(args[0]);
-
-            sender.sendMessage(Component.text().build());
-            sender.sendMessage(Component.text(args[0] + "'s real name: ").color(NamedTextColor.GRAY).append(Component.text(target.getPlaneName()).color(NamedTextColor.GREEN)));
-            sender.sendMessage(Component.text().build());
-        });
+        sender.sendMessage(Component.text().build());
+        sender.sendMessage(Component.text(args[0] + "'s real name: ").color(NamedTextColor.GRAY).append(Component.text(target.getPlaneName()).color(NamedTextColor.GREEN)));
+        sender.sendMessage(Component.text().build());
 
         return true;
     }
@@ -64,7 +54,7 @@ public class RealNameCommand implements CommandExecutor, TabCompleter
         
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(player -> suggest.add(player.getName()));
+            Bukkit.getOnlinePlayers().forEach(player -> suggest.add(User.getInstance(player).getNick()));
         }
         
         return suggest;

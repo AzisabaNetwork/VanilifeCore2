@@ -423,7 +423,8 @@
     "cmd.mail.sent": "Email sent to ${name}.",
 
     "cmd.nick.limit-under": "The nickname must be at least 3 characters long.",
-    "cmd.nick.limit-over": "The nickname must be 16 characters or fewer.",
+    "cmd.nick.limit-over": "The nickname must be 15 characters or fewer.",
+    "cmd.nick.already-in-use": "This nickname is already in use.",
     "cmd.nick.reset": "nick reset.",
     "cmd.nick.changed": "${nick} is set to nick.",
 

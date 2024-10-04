@@ -235,7 +235,7 @@ public class VanilifeWorld
             backup.mkdirs();
         }
 
-        String backupName = String.format("{%s}", this.name);
+        String backupName = String.format("{%s-%s}", this.name, Vanilife.sdf5.format(new Date()));
         Path backupPath = Paths.get(backup.toPath() + "/" + backupName);
 
         if (Files.exists(backupPath))

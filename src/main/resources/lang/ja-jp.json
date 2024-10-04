@@ -434,7 +434,8 @@
     "cmd.mail.sent": "${name} にメールを送信しました",
 
     "cmd.nick.limit-under": "ニックネームは3文字以上で設定する必要があります",
-    "cmd.nick.limit-over": "ニックネームは16文字以内で設定する必要があります",
+    "cmd.nick.limit-over": "ニックネームは15文字以内で設定する必要があります",
+    "cmd.nick.already-in-use": "このニックネームは既に使用されています",
     "cmd.nick.reset": "ニックネームをリセットしました",
     "cmd.nick.changed": "${nick} &r&aをニックネームに設定しました",
 
