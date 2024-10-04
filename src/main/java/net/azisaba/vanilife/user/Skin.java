@@ -25,6 +25,11 @@ public class Skin
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
+    public static List<Skin> getInstances()
+    {
+        return Skin.instances;
+    }
+
     public static boolean match(@NotNull Player player)
     {
         ProfileProperty textures = PlayerJoinListener.texturesMap.get(player);

@@ -9,6 +9,7 @@ import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.Skin;
 import net.azisaba.vanilife.util.ComponentUtility;
+import net.azisaba.vanilife.util.MojangAPI;
 import net.azisaba.vanilife.util.PlayerUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
@@ -96,7 +97,7 @@ public class PlayerJoinListener implements Listener
         User user = User.getInstance(player);
         Skin skin = user.getSkin();
 
-        if (skin == null)
+        if (skin == null && Skin.getInstances().stream().noneMatch(s -> MojangAPI.getSkin(s.getTexture()).equals(MojangAPI.getSkin(textures.getValue()))))
         {
             String name = player.getName();
 
@@ -106,9 +107,13 @@ public class PlayerJoinListener implements Listener
             }
 
             skin = new Skin(name, user, textures.getValue(), textures.getSignature());
+            user.addSkin(skin);
         }
 
-        skin.use(player);
+        if (skin != null)
+        {
+            skin.use(player);
+        }
     }
 
     @EventHandler

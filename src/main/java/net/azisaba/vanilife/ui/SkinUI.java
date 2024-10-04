@@ -52,7 +52,7 @@ public class SkinUI extends InventoryUI
                 skinMeta.lore(List.of(Language.translate("ui.skin.left", this.player).decoration(TextDecoration.ITALIC, false),
                         Language.translate("ui.skin.right", this.player).decoration(TextDecoration.ITALIC, false),
                         Component.text().build(),
-                        Language.translate(this.user.getSkin() == skin ? "ui.skin.selecting" : "ui.skin.click-to-select", this.player).color(this.user.getSkin() == skin ? NamedTextColor.GREEN : NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                        Language.translate(this.user.getSkin() == skin ? "ui.skin.selected" : "ui.skin.click-to-select", this.player).color(this.user.getSkin() == skin ? NamedTextColor.GREEN : NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
                 skinMeta.setPlayerProfile(HeadUtility.getPlayerProfile(MojangAPI.getSkin(skin.getTexture())));
 
                 skinStack.setItemMeta(skinMeta);
