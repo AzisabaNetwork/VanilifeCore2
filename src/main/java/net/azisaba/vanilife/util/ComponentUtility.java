@@ -69,7 +69,7 @@ public class ComponentUtility
             component = component.replaceText(builder -> builder.matchLiteral(command.name).replacement(command.component));
         }
 
-        return ComponentUtility.parseUrl(component);
+        return component;
     }
 
     public static @NotNull Component parseUrl(@NotNull Component src)
@@ -82,6 +82,10 @@ public class ComponentUtility
                     return Component.text(url)
                             .color(NamedTextColor.BLUE)
                             .decorate(TextDecoration.UNDERLINED)
+                            .decoration(TextDecoration.ITALIC, false)
+                            .decoration(TextDecoration.BOLD, false)
+                            .decoration(TextDecoration.STRIKETHROUGH, false)
+                            .decoration(TextDecoration.OBFUSCATED, false)
                             .hoverEvent(HoverEvent.showText(Component.text("Click to open url")))
                             .clickEvent(ClickEvent.openUrl(url));
                 })).build();

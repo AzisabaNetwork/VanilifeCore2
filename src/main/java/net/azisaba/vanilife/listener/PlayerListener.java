@@ -308,7 +308,7 @@ public class PlayerListener implements Listener
 
         message = LegacyComponentSerializer.legacySection().serialize(ComponentUtility.parseChat(message, user));
 
-        Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(LegacyComponentSerializer.legacySection().deserialize(message));
+        Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(message)));
 
         List<Player> players = new ArrayList<>();
 
