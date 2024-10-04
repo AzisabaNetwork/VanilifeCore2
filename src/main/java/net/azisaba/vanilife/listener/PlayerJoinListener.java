@@ -239,11 +239,13 @@ public class PlayerJoinListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void checkVwm(PlayerLoginEvent event)
     {
-        if (VanilifeWorldManager.running)
+        if (Vanilife.publisher)
         {
-            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
-            event.kickMessage(Component.text("Vanilife World Manager is running!"));
+            return;
         }
+
+        event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+        event.kickMessage(Component.text("Server does not allow connections…").color(NamedTextColor.RED));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

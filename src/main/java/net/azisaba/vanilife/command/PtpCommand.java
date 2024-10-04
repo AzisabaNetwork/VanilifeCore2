@@ -4,6 +4,7 @@ import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.Language;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -47,8 +48,10 @@ public class PtpCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        player.teleport(plot.getSpawn());
+        Location spawn = plot.getSpawn();
+        player.teleport(spawn);
         player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.2f);
+
         return true;
     }
 

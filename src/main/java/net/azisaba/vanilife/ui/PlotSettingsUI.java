@@ -257,7 +257,7 @@ public class PlotSettingsUI extends InventoryUI
 
             if (event.isLeftClick())
             {
-                Bukkit.dispatchCommand(this.player, "ptp " + this.plot.getName());
+                Bukkit.dispatchCommand(this.player, "vanilife:ptp " + this.plot.getName());
                 return;
             }
 

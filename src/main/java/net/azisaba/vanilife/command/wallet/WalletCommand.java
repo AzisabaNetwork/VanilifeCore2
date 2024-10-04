@@ -1,7 +1,6 @@
 package net.azisaba.vanilife.command.wallet;
 
 import net.azisaba.vanilife.command.subcommand.ParentCommand;
-import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
@@ -9,14 +8,10 @@ import net.azisaba.vanilife.user.subscription.ISubscription;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WalletCommand extends ParentCommand
 {
@@ -46,10 +41,6 @@ public class WalletCommand extends ParentCommand
             }
 
             User user = User.getInstance(player);
-            List<Plot> plots = Plot.getInstances().stream().filter(p -> p.getOwner() == user).toList();
-            List<Chunk> chunks = new ArrayList<>();
-
-            plots.forEach(p -> chunks.addAll(p.getChunks()));
 
             sender.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.DARK_AQUA));
             sender.sendMessage(Component.text(CLI.getSpaces(1) + "YOUR MOLA").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD));

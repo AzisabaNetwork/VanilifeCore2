@@ -21,6 +21,7 @@ import net.azisaba.vanilife.command.service.ServiceCommand;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.listener.*;
+import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.runnable.CacheClearRunnable;
 import net.azisaba.vanilife.housing.HousingRunnable;
 import net.azisaba.vanilife.runnable.PlayingRewardRunnable;
@@ -29,7 +30,6 @@ import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.subscription.RichEmoteSubscription;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ChatFilter;
-import net.azisaba.vanilife.util.PlotUtility;
 import net.azisaba.vanilife.util.SqlUtility;
 import net.azisaba.vanilife.vc.VoiceChatListener;
 import net.azisaba.vanilife.vc.VoiceChatRunnable;
@@ -52,6 +52,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import okhttp3.OkHttpClient;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
@@ -108,6 +109,8 @@ public final class Vanilife extends JavaPlugin
 
     public static String METUBOT_SERVER;
     public static UUID METUBOT_PROVIDER;
+
+    public static boolean publisher = false;
 
     public static Vanilife getPlugin()
     {
@@ -231,8 +234,13 @@ public final class Vanilife extends JavaPlugin
         Vanilife.filter = new ChatFilter();
 
         VanilifeWorldManager.mount();
-        PlotUtility.mount();
         ServiceManager.mount();
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            Plot.mount();
+            Vanilife.publisher = true;
+        }, 20L);
+
+        Bukkit.getScheduler().runTaskLater(this, Plot::mount, 20L * 10);
 
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
@@ -270,6 +278,7 @@ public final class Vanilife extends JavaPlugin
     @Override
     public void onDisable()
     {
+        Bukkit.getOnlinePlayers().forEach(Player::kick);
         VanilifeWorld.getInstances().forEach(w -> w.getWorlds().forEach(World::save));
         Housing.getWorld().save();
 

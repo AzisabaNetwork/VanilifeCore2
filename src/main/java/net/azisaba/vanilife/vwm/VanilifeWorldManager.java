@@ -17,8 +17,6 @@ public class VanilifeWorldManager
 {
     private static JsonArray config = ResourceUtility.getJsonResource("vwm/vwm.json").getAsJsonArray();
 
-    public static boolean running;
-
     private static int latestVersion;
 
     public static int getLatestVersion()

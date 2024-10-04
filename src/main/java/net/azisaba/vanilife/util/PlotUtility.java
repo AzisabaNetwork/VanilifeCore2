@@ -1,16 +1,8 @@
 package net.azisaba.vanilife.util;
 
-import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
-import net.azisaba.vanilife.user.subscription.PlotSubscription;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-
-import java.sql.*;
-import java.util.UUID;
 
 public class PlotUtility
 {
@@ -33,33 +25,5 @@ public class PlotUtility
         Plot north = Plot.getInstance(world.getChunkAt(x, z + 1));
 
         return (west != null && west != plot) || (east != null && east != plot) || (south != null && south != plot) || (north != null && north != plot);
-    }
-
-    public static void mount()
-    {
-        try
-        {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM plot");
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next())
-            {
-                if (Bukkit.getWorld(rs.getString("world")) != null)
-                {
-                    Plot instance = new Plot(UUID.fromString(rs.getString("id")));
-                    instance.getOwner().subscribe(new PlotSubscription(instance));
-                }
-            }
-
-            rs.close();
-            stmt.close();
-            con.close();
-        }
-        catch (SQLException e)
-        {
-            Vanilife.getPluginLogger().error(Component.text(String.format("Failed to mount plot: %s", e.getMessage())).color(NamedTextColor.RED));
-        }
     }
 }

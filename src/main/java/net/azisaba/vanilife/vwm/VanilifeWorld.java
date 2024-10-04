@@ -5,7 +5,6 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.util.FileUtility;
 import net.azisaba.vanilife.util.SeasonUtility;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
@@ -14,7 +13,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -182,7 +180,7 @@ public class VanilifeWorld
         return this.getOnlinePlayers().size();
     }
 
-    public String archive()
+    public void archive()
     {
         this.worlds.forEach(w -> w.getPlayers().forEach(p -> p.kick(Component.text(String.format("ごめんなさい！%s はアンロードされたため、プレイすることはできません", this.name)).color(NamedTextColor.RED))));
         this.worlds.forEach(w -> Bukkit.unloadWorld(w, true));
@@ -201,7 +199,7 @@ public class VanilifeWorld
             if (! archives.exists() && archives.mkdirs())
             {
                 Vanilife.CHANNEL_CONSOLE.sendMessage(String.format(":file_folder: %s `%s' のアーカイブに失敗しました (`/vwm/archive' の生成)", Vanilife.ROLE_DEVELOPER.getAsMention(), this.name)).queue();
-                return null;
+                return;
             }
 
             String archiveName = String.format("{%s-%s}", this.name, Vanilife.sdf5.format(new Date()));
@@ -213,7 +211,6 @@ public class VanilifeWorld
 
             Vanilife.CHANNEL_CONSOLE.sendMessage(String.format(":file_folder: `%s' のアーカイブに成功しました (%s秒)", this.name, df.format(seconds))).queue();
 
-            return archiveName;
         }
         catch (IOException e)
         {
@@ -221,7 +218,7 @@ public class VanilifeWorld
         }
     }
 
-    public String backup()
+    public void backup()
     {
         this.worlds.forEach(w -> w.getPlayers().forEach(p -> p.kick(Component.text(String.format("現在、 %s のバックアップを実行しています\nしばらくしてから再接続をお願いします", this.name)).color(NamedTextColor.RED))));
         this.worlds.forEach(w -> Bukkit.unloadWorld(w, true));
@@ -256,7 +253,6 @@ public class VanilifeWorld
 
         VanilifeWorld world = new VanilifeWorld(this.name);
         this.plots.forEach(plot -> world.getPlots().add(plot));
-        return backupName;
     }
 
     public boolean contains(World world)

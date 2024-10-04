@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class Plot
 {
@@ -44,6 +45,29 @@ public class Plot
         return Plot.instances;
     }
 
+    public static void mount()
+    {
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("SELECT id FROM plot");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                new Plot(UUID.fromString(rs.getString("id")));
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.getPluginLogger().warn(Component.text("Failed to mount plots: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
     private final UUID id;
 
     private String name;
@@ -63,7 +87,7 @@ public class Plot
 
     private VanilifeWorld vanilifeWorld;
 
-    public Plot(@NotNull UUID id)
+    private Plot(@NotNull UUID id)
     {
         this.id = id;
 
@@ -72,8 +96,8 @@ public class Plot
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM plot WHERE id = ?");
             stmt.setString(1, this.id.toString());
-
             ResultSet rs = stmt.executeQuery();
+
             rs.next();
 
             this.name = rs.getString("name");
@@ -94,7 +118,6 @@ public class Plot
 
             PreparedStatement stmt2 = con.prepareStatement("SELECT * FROM chunk WHERE plot = ?");
             stmt2.setString(1, this.id.toString());
-
             ResultSet rs2 = stmt2.executeQuery();
 
             while (rs2.next())
@@ -109,7 +132,6 @@ public class Plot
 
             PreparedStatement stmt3 = con.prepareStatement("SELECT user FROM member WHERE plot = ?");
             stmt3.setString(1, this.id.toString());
-
             ResultSet rs3 = stmt3.executeQuery();
 
             while (rs3.next())
@@ -143,7 +165,7 @@ public class Plot
         this.spawn = new Location(this.world, x, this.world.getHighestBlockYAt(x, z) + 1, z);
 
         this.claim(chunk);
-        this.chunks.addAll(List.of(chunks));
+        Stream.of(chunks).forEach(this::claim);
         this.vanilifeWorld.getPlots().add(this);
 
         try
