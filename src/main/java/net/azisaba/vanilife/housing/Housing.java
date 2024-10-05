@@ -396,7 +396,10 @@ public class Housing
 
     public boolean withInScope(User user)
     {
-        return (this.getScope() == HousingScope.PUBLIC) || (this.getScope() == HousingScope.FRIEND && this.user.isFriend(user)) || (this.getScope() == HousingScope.OSATOU && this.user.getOsatou() == user);
+        return this.user == user ||
+                (this.getScope() == HousingScope.PUBLIC) ||
+                (this.getScope() == HousingScope.FRIEND && this.user.isFriend(user)) ||
+                (this.getScope() == HousingScope.OSATOU && this.user.getOsatou() == user);
     }
 
     public boolean has(IHousingPack pack)
