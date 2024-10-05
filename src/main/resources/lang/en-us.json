@@ -55,6 +55,7 @@
     "ui.housing.worlds": "Return to the normal world",
     "ui.housing.worlds.details": "Opens the world selection screen",
     "ui.housing.worlds.help": "Hint: Can also be used with /worlds",
+    "ui.housing.do-not-have": "You do not own Housing. (/housing)",
 
 
     "ui.housing-block.title": "Housing: Blocks",
@@ -312,7 +313,7 @@
     "msg.click-to-run": "Click to run ${command}",
     "msg.click-to-open": "Click to open",
     "msg.join": "&a+ &r${name}&7 joined!",
-    "msg.first-join": "&d+ &r${name}&7 participated for the first time!",
+    "msg.first-join": "&d+ &r${name}&7 joined for the first time!",
     "msg.ranker-join": " &b>&c>&a> &r${name}&6 joined! &a<&c<&b<",
     "msg.quit": "&c- &r${name}&7 quit…",
     "msg.login-bonus": "&aLogin Bonus + ${mola} Mola (10 × ${streak})",

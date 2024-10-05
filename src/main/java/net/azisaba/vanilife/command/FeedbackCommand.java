@@ -51,8 +51,9 @@ public class FeedbackCommand implements CommandExecutor, TabCompleter
 
         Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("フィードバック")
-                .addField("送信者", String.format("%s (%s)", player.getName(), player.getUniqueId()), false)
+                .setDescription(args[0])
                 .setColor(new Color(216, 197, 226))
+                .addField("送信者", String.format("%s (%s)", player.getName(), player.getUniqueId()), false)
                 .build()).queue();
 
         Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " 1件の新しいフィードバックを受信しました").queue();

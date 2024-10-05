@@ -56,6 +56,7 @@
     "ui.housing.worlds": "通常ワールドに戻る",
     "ui.housing.worlds.details": "ワールド選択画面を開きます",
     "ui.housing.worlds.help": "ヒント: /worlds でも使用できます",
+    "ui.housing.do-not-have": "あなたは Housing を所有していません。(/housing)",
 
     "ui.housing-block.title": "Housing: ブロック",
     "ui.housing-block.store": "ストア",

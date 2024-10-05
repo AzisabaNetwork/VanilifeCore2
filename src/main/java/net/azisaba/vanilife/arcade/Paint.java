@@ -85,7 +85,8 @@ public class Paint implements Listener
                     return;
                 }
 
-                Bukkit.getOnlinePlayers().stream().filter(p -> p.getLocation().distance(location) <= 20).forEach(p -> p.spawnParticle(Particle.DUST, location, 2, new Particle.DustOptions(brush.color(), 1)));
+                Bukkit.getOnlinePlayers().stream().filter(p -> p.getWorld().equals(location.getWorld()) && p.getLocation().distance(location) <= 20)
+                        .forEach(p -> p.spawnParticle(Particle.DUST, location, 2, new Particle.DustOptions(brush.color(), 1)));
             }
         }.runTaskTimer(Vanilife.getPlugin(), 0, 1L);
     }
