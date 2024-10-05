@@ -269,6 +269,13 @@ public class VanilifeWorld
     private World mount(@NotNull String name, @NotNull World.Environment environment)
     {
         World world = new WorldCreator(String.format("%s/%s", this.name, name)).environment(environment).createWorld();
+
+        if (world == null)
+        {
+            throw new RuntimeException("Failed to mount World: " + this.name + "/" + name);
+        }
+
+        world.setGameRule(GameRule.KEEP_INVENTORY, true);
         this.worlds.add(world);
         return world;
     }
@@ -308,8 +315,10 @@ public class VanilifeWorld
 
             if (world == null)
             {
-                throw new RuntimeException();
+                throw new RuntimeException("World creation failed: " + creator.name());
             }
+
+            world.setGameRule(GameRule.KEEP_INVENTORY, true);
 
             WorldBorder border = world.getWorldBorder();
             border.setCenter(0, 0);

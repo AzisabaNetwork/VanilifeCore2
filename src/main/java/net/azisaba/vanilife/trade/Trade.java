@@ -222,16 +222,14 @@ public class Trade
         this.stacks1.forEach(s -> sb1.append(String.format("%s: × %s", s.getType().toString().toLowerCase(), s.getAmount())));
 
         StringBuilder sb2 = new StringBuilder();
-        this.stacks2.forEach(s -> sb2.append(String.format("%s: × %s\n", s.getType().toString().toLowerCase(), s.getAmount())));
+        this.stacks2.forEach(s -> sb2.append(String.format("%s: × %s\n", s.getType().toString().toLowerCase(), s.getAmount())));;
 
-        EmbedBuilder builder = new EmbedBuilder()
+        Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("1件の Trade が成立しました")
                 .addField(String.format("%s (%s)", this.player1.getName(), this.player1.getUniqueId()), sb1.toString(), true)
                 .addField(String.format("%s (%s)", this.player2.getName(), this.player2.getUniqueId()), sb2.toString(), true)
                 .setFooter("(*'▽')")
-                .setColor(new Color(85, 255, 85));
-
-        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(builder.build()).queue();
+                .setColor(new Color(85, 255, 85)).build()).queue();
     }
 
     public void cancel()

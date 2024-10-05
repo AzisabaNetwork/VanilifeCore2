@@ -28,8 +28,8 @@ public class Paint implements Listener
 
         if (event.getAction().isLeftClick())
         {
-            new HashMap<>(this.particles).keySet().stream().filter(particle -> particle.distance(player.getLocation()) < 1.3).forEach(this.particles::remove);
-            new HashMap<>(this.particles).keySet().stream().filter(particle -> particle.distance(location) < 1.5).forEach(this.particles::remove);
+            new HashMap<>(this.particles).keySet().stream().filter(particle -> particle.getWorld().equals(location.getWorld()) && particle.distance(player.getLocation()) < 1.3).forEach(this.particles::remove);
+            new HashMap<>(this.particles).keySet().stream().filter(particle -> particle.getWorld().equals(location.getWorld()) && particle.distance(location) < 1.5).forEach(this.particles::remove);
             return;
         }
 

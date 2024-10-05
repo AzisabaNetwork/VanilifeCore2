@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.event.world.TimeSkipEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class HousingListener implements Listener
 {
@@ -153,7 +154,7 @@ public class HousingListener implements Listener
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event)
     {
-        event.setCancelled(event.isCancelled() || Housing.getWorld().equals(event.getEntity().getWorld()));
+        event.setCancelled(event.isCancelled() || (Housing.getWorld().equals(event.getEntity().getWorld())) && event.getFoodLevel() < event.getEntity().getFoodLevel());
     }
 
     @EventHandler

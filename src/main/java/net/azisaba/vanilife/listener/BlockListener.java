@@ -8,7 +8,9 @@ import net.azisaba.vanilife.util.Materials;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +19,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener
 {
@@ -32,8 +35,11 @@ public class BlockListener implements Listener
         }
 
         Player player = event.getPlayer();
+        ItemStack tool = player.getInventory().getItemInMainHand();
 
-        if (! event.isCancelled() && player.getGameMode() == GameMode.SURVIVAL)
+        boolean silktouch = tool.getType() != Material.AIR && 0 < tool.getEnchantmentLevel(Enchantment.SILK_TOUCH);
+
+        if (! event.isCancelled() && player.getGameMode() == GameMode.SURVIVAL && ! silktouch)
         {
             User user = User.getInstance(player);
 

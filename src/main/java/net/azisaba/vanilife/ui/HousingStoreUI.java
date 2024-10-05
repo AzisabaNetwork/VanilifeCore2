@@ -40,14 +40,14 @@ public class HousingStoreUI extends InventoryUI
     {
         super(player, Bukkit.createInventory(null, 54, Language.translate("ui.housing-store.title", player)));
 
+        this.page = page;
+
         if (User.getInstance(player).hasHousing())
         {
             player.closeInventory();
             player.sendMessage(Language.translate("ui.housing.do-not-have", player).color(NamedTextColor.RED));
             return;
         }
-
-        this.page = page;
 
         final User user = User.getInstance(player);
         final Housing housing = user.getHousing();

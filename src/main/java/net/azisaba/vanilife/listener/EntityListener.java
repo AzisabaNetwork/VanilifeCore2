@@ -4,9 +4,7 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -15,10 +13,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.entity.EntityExplodeEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class EntityListener implements Listener
 {
@@ -30,72 +27,28 @@ public class EntityListener implements Listener
         Entity damager = event.getDamager();
         Entity entity = event.getEntity();
 
-        if (damager instanceof Player p && entity instanceof Player)
-        {
-            Plot plot = Plot.getInstance(damager.getChunk());
-
-            if (plot != null)
-            {
-                plot.onEntityDamageByEntity(event);
-            }
-            else if (! UserUtility.isModerator(p))
-            {
-                event.setCancelled(true);
-            }
-
-            return;
-        }
-
-        if (! (entity instanceof Monster monster))
+        if (! (damager instanceof Player player) || ! (entity instanceof Player))
         {
             return;
         }
 
-        if (! (event.getDamager() instanceof Player))
+        Plot plot = Plot.getInstance(damager.getChunk());
+
+        if (plot != null)
         {
-            return;
+            plot.onEntityDamageByEntity(event);
         }
-
-        this.monsters.add(entity);
-
-        double ratio = monster.getHealth() / monster.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        NamedTextColor color;
-
-        if (0.7 <= ratio)
+        else if (! UserUtility.isModerator(player))
         {
-            color = NamedTextColor.GREEN;
+            event.setCancelled(true);
         }
-        else if (0.3 <= ratio)
-        {
-            color = NamedTextColor.YELLOW;
-        }
-        else
-        {
-            color = NamedTextColor.RED;
-        }
+    }
 
-        entity.customName(Component.text("HP ").color(NamedTextColor.GRAY)
-                .append(Component.text((int) monster.getHealth()).color(color))
-                .append(Component.text("/").color(NamedTextColor.WHITE))
-                .append(Component.text((int) monster.getMaxHealth()).color(NamedTextColor.GREEN))
-                .append(Component.text("❤").color(NamedTextColor.RED)));
-
-        entity.setCustomNameVisible(true);
-
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                if (Collections.frequency(monsters, entity) == 1)
-                {
-                    entity.setCustomNameVisible(false);
-                    entity.customName(null);
-                }
-
-                monsters.remove(entity);
-            }
-        }.runTaskLater(Vanilife.getPlugin(), 20L * 2);
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event)
+    {
+        Plot plot = Plot.getInstance(event.getLocation().getChunk());
+        event.setCancelled(plot != null || event.isCancelled());
     }
 
     @EventHandler
@@ -107,9 +60,6 @@ public class EntityListener implements Listener
         {
             return;
         }
-
-        entity.setCustomNameVisible(false);
-        entity.customName(null);
 
         Player player = entity.getKiller();
 
