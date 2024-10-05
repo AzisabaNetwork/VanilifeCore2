@@ -42,7 +42,7 @@ public class HousingStoreUI extends InventoryUI
 
         this.page = page;
 
-        if (User.getInstance(player).hasHousing())
+        if (! User.getInstance(player).hasHousing())
         {
             player.closeInventory();
             player.sendMessage(Language.translate("ui.housing.do-not-have", player).color(NamedTextColor.RED));

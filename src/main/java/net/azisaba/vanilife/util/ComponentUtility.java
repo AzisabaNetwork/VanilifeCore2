@@ -13,6 +13,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 public class ComponentUtility
@@ -79,7 +81,7 @@ public class ComponentUtility
                 .replacement(((matchResult, builder) -> {
                     String url = matchResult.group();
 
-                    return Component.text(url)
+                    return Component.text(URLDecoder.decode(url, StandardCharsets.UTF_8))
                             .color(NamedTextColor.BLUE)
                             .decorate(TextDecoration.UNDERLINED)
                             .decoration(TextDecoration.ITALIC, false)
