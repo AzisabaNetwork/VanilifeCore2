@@ -38,10 +38,10 @@ public class DiscordListener extends ListenerAdapter
         Vanilife.SERVER_PUBLIC = event.getJDA().getGuildById(Vanilife.getPluginConfig().getString("discord.server.public"));
         Vanilife.SERVER_PRIVATE = event.getJDA().getGuildById(Vanilife.getPluginConfig().getString("discord.server.private"));
 
-        Vanilife.CHANNEL_ANNOUNCE = Vanilife.SERVER_PRIVATE.getNewsChannelById(Vanilife.getPluginConfig().getString("discord.channel.announce"));
+        Vanilife.CHANNEL_ANNOUNCE = Vanilife.SERVER_PUBLIC.getNewsChannelById(Vanilife.getPluginConfig().getString("discord.channel.announce"));
         Vanilife.CHANNEL_CONSOLE = Vanilife.SERVER_PRIVATE.getTextChannelById(Vanilife.getPluginConfig().getString("discord.channel.console"));
         Vanilife.CHANNEL_HISTORY = Vanilife.SERVER_PRIVATE.getTextChannelById(Vanilife.getPluginConfig().getString("discord.channel.history"));
-        Vanilife.CHANNEL_VOICE = Vanilife.SERVER_PRIVATE.getVoiceChannelById(Vanilife.getPluginConfig().getString("discord.channel.voice-chat"));
+        Vanilife.CHANNEL_VOICE = Vanilife.SERVER_PUBLIC.getVoiceChannelById(Vanilife.getPluginConfig().getString("discord.channel.voice-chat"));
 
         Vanilife.ROLE_SUPPORT = Vanilife.SERVER_PRIVATE.getRoleById(Vanilife.getPluginConfig().getString("discord.role.support"));
         Vanilife.ROLE_MCONSOLE = Vanilife.SERVER_PRIVATE.getRoleById(Vanilife.getPluginConfig().getString("discord.role.mconsole"));
