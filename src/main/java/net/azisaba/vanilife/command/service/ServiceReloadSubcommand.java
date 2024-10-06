@@ -42,6 +42,7 @@ public class ServiceReloadSubcommand implements ISubcommand
         services.forEach(Service::stop);
         Service.getInstances().clear();
         Service.mount();
+        Service.getInstances().forEach(Service::start);
 
         sender.sendMessage(Component.text("サービスのリロードに成功しました！").color(NamedTextColor.GREEN));
     }

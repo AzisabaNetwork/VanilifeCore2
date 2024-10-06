@@ -2,10 +2,9 @@ script:
   - checkout
 schedule:
   main:
-    type: vanilife:match
-    year: -1
-    month: -1
-    day: 1
-    hour: 1
-    minutes: 0
+    year: '*'
+    month: '*'
+    date: 1
+    hour: 0
+    minute: 0
     second: 0

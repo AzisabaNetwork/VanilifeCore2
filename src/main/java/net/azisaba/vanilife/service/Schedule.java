@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.service;
 
 import net.azisaba.vanilife.Vanilife;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,14 @@ import java.util.*;
 public class Schedule
 {
     private final Service service;
+
+    private final int year;
+    private final int month;
+    private final int date;
+    private final int hour;
+    private final int minute;
+    private final int second;
+
     private final Map<Integer, Integer> match = new LinkedHashMap<>();
 
     private BukkitRunnable runnable;
@@ -18,13 +27,19 @@ public class Schedule
     {
         this.service = service;
 
-        this.match.put(Calendar.YEAR, Objects.equals(source.getString("year"), "*") ? -1 : source.getInt("year"));
-        this.match.put(Calendar.MONTH, Objects.equals(source.getString("month"), "*") ? -1 : source.getInt("month") - 1);
-        this.match.put(Calendar.DATE, Objects.equals(source.getString("date"), "*") ? -1 : source.getInt("date"));
-        this.match.put(Calendar.HOUR_OF_DAY, Objects.equals(source.getString("hour"), "*") ? -1 : source.getInt("hour"));
-        this.match.put(Calendar.MINUTE, Objects.equals(source.getString("minute"), "*") ? -1 : source.getInt("minute"));
-        this.match.put(Calendar.SECOND, Objects.equals(source.getString("second"), "*") ? -1 : source.getInt("second"));
-        this.match.put(Calendar.MILLISECOND, 0);
+        this.year = Objects.equals(source.getString("year"), "*") ? -1 : source.getInt("year");
+        this.month = Objects.equals(source.getString("month"), "*") ? -1 : source.getInt("month") - 1;
+        this.date = Objects.equals(source.getString("date"), "*") ? -1 : source.getInt("date");
+        this.hour = Objects.equals(source.getString("hour"), "*") ? -1 : source.getInt("hour");
+        this.minute = Objects.equals(source.getString("minute"), "*") ? -1 : source.getInt("minute");
+        this.second = Objects.equals(source.getString("second"), "*") ? -1 : source.getInt("second");
+
+        this.match.put(Calendar.SECOND, this.second);
+        this.match.put(Calendar.MINUTE, this.minute);
+        this.match.put(Calendar.HOUR_OF_DAY, this.hour);
+        this.match.put(Calendar.DATE, this.date);
+        this.match.put(Calendar.MONTH, this.month);
+        this.match.put(Calendar.YEAR, this.year);
     }
 
     public void start()
@@ -42,7 +57,7 @@ public class Schedule
             public void run()
             {
                 service.run();
-                start();
+                Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> start(), 20L * 2);
             }
         };
 
@@ -63,32 +78,30 @@ public class Schedule
     {
         Calendar now = Calendar.getInstance();
         Calendar next = Calendar.getInstance();
-        next.set(now.getMinimum(Calendar.YEAR), now.getMinimum(Calendar.MONTH), now.getMinimum(Calendar.DATE), now.getMinimum(Calendar.HOUR_OF_DAY), now.getMinimum(Calendar.MINUTE), now.getMinimum(Calendar.SECOND));
 
-        Integer[] keys = this.match.keySet().toArray(new Integer[0]);
-        Integer[] values = this.match.values().toArray(new Integer[0]);
+        next.set(Calendar.YEAR, 0 <= this.year ? this.year : now.get(Calendar.YEAR));
+        next.set(Calendar.MONTH, 0 <= this.month ? this.month : now.get(Calendar.MONTH));
+        next.set(Calendar.DATE, 0 <= this.date ? this.date : now.get(Calendar.DATE));
+        next.set(Calendar.HOUR_OF_DAY, 0 <= this.hour ? this.hour : now.get(Calendar.HOUR_OF_DAY));
+        next.set(Calendar.MINUTE, 0 <= this.minute ? this.minute : now.get(Calendar.MINUTE));
+        next.set(Calendar.SECOND, 0 <= this.second ? this.second : now.get(Calendar.SECOND));
 
-        for (int i = 0; i < keys.length - 1; i ++)
+        if (next.equals(now))
         {
-            if (0 <= values[i])
-            {
-                next.set(keys[i], values[i]);
-            }
-
-            for (int j = i - 1; 0 <= j; j --)
-            {
-                int k = j + 1;
-
-                if (! (values[j] < 0 && 0 <= values[k]))
-                {
-                    continue;
-                }
-
-                next.set(keys[j], next.get(keys[k]) < now.get(keys[k]) ? this.next(keys[j]) : keys[j] == Calendar.YEAR ? now.get(Calendar.YEAR) : now.getMinimum(keys[j]));
-            }
+            return next;
         }
 
-        return next;
+        if (next.after(now))
+        {
+            return optimize();
+        }
+
+        if (0 <= this.year)
+        {
+            return null;
+        }
+
+        return search();
     }
 
     private int next(int field)
@@ -98,5 +111,62 @@ public class Schedule
         int max = calendar.getActualMaximum(field);
 
         return (now + 1) % (max + 1);
+    }
+
+    private @NotNull Calendar optimize()
+    {
+        Calendar calendar = Calendar.getInstance();
+        boolean flag = false;
+
+        for (Map.Entry<Integer, Integer> entry : this.match.entrySet())
+        {
+            int field = entry.getKey();
+            int value = entry.getValue();
+
+            if (0 <= value)
+            {
+                flag = true;
+                calendar.set(field, value);
+                continue;
+            }
+
+            calendar.set(field, flag ? calendar.get(field) : calendar.getMinimum(field));
+        }
+
+        return calendar;
+    }
+
+    private @NotNull Calendar search()
+    {
+        Calendar calendar = Calendar.getInstance();
+        boolean b1 = false;
+        boolean b2 = false;
+
+        for (Map.Entry<Integer, Integer> entry : this.match.entrySet())
+        {
+            int field = entry.getKey();
+            int value = entry.getValue();
+
+            if (0 <= value)
+            {
+                b1 = true;
+                calendar.set(field, value);
+                continue;
+            }
+
+            if (b1 && ! b2)
+            {
+                calendar.set(field, this.next(field));
+                b2 = true;
+                continue;
+            }
+
+            if (! b1)
+            {
+                calendar.set(field, calendar.getMinimum(field));
+            }
+        }
+
+        return calendar;
     }
 }

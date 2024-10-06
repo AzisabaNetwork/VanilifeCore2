@@ -180,7 +180,11 @@ public class PlayerJoinListener implements Listener
 
         if (0 < unread)
         {
-            player.sendMessage(Language.translate("msg.new-mail", player, "unread=" + unread));
+            player.sendMessage(Language.translate("msg.new-mail", player, "unread=" + unread)
+                    .color(NamedTextColor.GREEN)
+                    .hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", player, "command=/mail")))
+                    .clickEvent(ClickEvent.runCommand("/mail")));
+            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         }
     }
 

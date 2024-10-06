@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -176,6 +177,6 @@ public class HousingListener implements Listener
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event)
     {
-        event.setCancelled(event.isCancelled() || (event.getLocation().getWorld().equals(Housing.getWorld())) && event.getEntity() instanceof Monster);
+        event.setCancelled(event.isCancelled() || (event.getLocation().getWorld().equals(Housing.getWorld())) && event.getEntityType() == EntityType.ITEM);
     }
 }

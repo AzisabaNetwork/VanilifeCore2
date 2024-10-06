@@ -49,7 +49,7 @@ public class Service
                 continue;
             }
 
-            new Service(service.getName());
+            new Service(service.getName()).start();
         }
     }
 

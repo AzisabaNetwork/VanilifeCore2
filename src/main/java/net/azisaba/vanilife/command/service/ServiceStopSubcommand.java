@@ -37,13 +37,16 @@ public class ServiceStopSubcommand implements ISubcommand
             return;
         }
 
-        if (Service.getInstance(args[0]) == null)
+        Service service = Service.getInstance(args[0]);
+
+        if (service == null)
         {
             sender.sendMessage(Component.text("This service is already not started.").color(NamedTextColor.RED));
             return;
         }
 
-        Service.getInstance(args[0]).stop();
+        service.stop();
+        Service.getInstances().remove(service);
         sender.sendMessage(Component.text("The service has been stopped.").color(NamedTextColor.GREEN));
     }
 
