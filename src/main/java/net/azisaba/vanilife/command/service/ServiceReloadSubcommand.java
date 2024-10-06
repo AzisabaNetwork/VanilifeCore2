@@ -2,7 +2,6 @@ package net.azisaba.vanilife.command.service;
 
 import net.azisaba.vanilife.command.subcommand.ISubcommand;
 import net.azisaba.vanilife.service.Service;
-import net.azisaba.vanilife.service.ServiceManager;
 import net.azisaba.vanilife.user.Sara;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -38,15 +37,13 @@ public class ServiceReloadSubcommand implements ISubcommand
             return;
         }
 
-        ArrayList<Service> services = new ArrayList<>(Service.getInstances());
+        List<Service> services = new ArrayList<>(Service.getInstances());
 
-        sender.sendMessage(Component.text(String.format("%s 件のサービスを終了しています…", services.size())).color(NamedTextColor.GREEN));
         services.forEach(Service::stop);
+        Service.getInstances().clear();
+        Service.mount();
 
-        sender.sendMessage(Component.text("サービスをマウントしています…").color(NamedTextColor.GREEN));
-        ServiceManager.mount();
-
-        sender.sendMessage(Component.text("サービスのリロードに成功しました").color(NamedTextColor.GREEN));
+        sender.sendMessage(Component.text("サービスのリロードに成功しました！").color(NamedTextColor.GREEN));
     }
 
     @Override

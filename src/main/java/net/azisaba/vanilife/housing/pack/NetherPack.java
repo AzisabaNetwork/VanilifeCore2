@@ -22,7 +22,7 @@ public class NetherPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 800;
+        return 120;
     }
 
     @Override

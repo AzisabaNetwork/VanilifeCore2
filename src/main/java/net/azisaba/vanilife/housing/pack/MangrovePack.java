@@ -22,7 +22,7 @@ public class MangrovePack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 100;
+        return 70;
     }
 
     @Override

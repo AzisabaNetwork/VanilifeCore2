@@ -22,13 +22,18 @@ public class MidnightPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 300;
+        return 90;
     }
 
     @Override
     public @NotNull List<Material> getMaterials()
     {
-        return List.of(Material.WHITE_BED,
+        return List.of(
+                Material.CAMPFIRE,
+                Material.SOUL_CAMPFIRE,
+                Material.TORCH,
+                Material.SOUL_TORCH,
+                Material.WHITE_BED,
                 Material.LIGHT_GRAY_BED,
                 Material.GRAY_BED,
                 Material.BLACK_BED,
@@ -43,8 +48,6 @@ public class MidnightPack implements IHousingPack
                 Material.BLUE_BED,
                 Material.PURPLE_BED,
                 Material.MAGENTA_BED,
-                Material.PINK_BED,
-                Material.CAMPFIRE,
-                Material.SOUL_CAMPFIRE);
+                Material.PINK_BED);
     }
 }

@@ -22,7 +22,7 @@ public class BambooPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 110;
+        return 80;
     }
 
     @Override

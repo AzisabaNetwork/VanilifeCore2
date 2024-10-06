@@ -55,7 +55,7 @@ public class ServiceStopSubcommand implements ISubcommand
 
         if (args.length == 1)
         {
-            Service.getInstances().forEach(i -> suggest.add(i.getName()));
+            Service.getInstances().forEach(i -> suggest.add(i.name()));
         }
 
         return suggest;

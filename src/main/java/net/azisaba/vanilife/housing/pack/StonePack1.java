@@ -22,7 +22,7 @@ public class StonePack1 implements IHousingPack
     @Override
     public int getCost()
     {
-        return 600;
+        return 200;
     }
 
     @Override

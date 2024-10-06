@@ -22,7 +22,7 @@ public class TerrainPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 400;
+        return 120;
     }
 
     @Override

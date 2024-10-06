@@ -41,12 +41,12 @@ public class ServiceRunSubcommand implements ISubcommand
 
         if (service == null)
         {
-            sender.sendMessage(Component.text(String.format("%s is an undefined service.", args[0])).color(NamedTextColor.RED));
+            sender.sendMessage(Component.text(String.format("%s は未定義のサービスです", args[0])).color(NamedTextColor.RED));
             return;
         }
 
         service.run();
-        sender.sendMessage(Component.text(String.format("%s has been run.", args[0])).color(NamedTextColor.GREEN));
+        sender.sendMessage(Component.text(String.format("%s を実行しました", args[0])).color(NamedTextColor.GREEN));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ServiceRunSubcommand implements ISubcommand
 
         if (args.length == 1)
         {
-            Service.getInstances().forEach(i -> suggest.add(i.getName()));
+            Service.getInstances().forEach(i -> suggest.add(i.name()));
         }
 
         return suggest;

@@ -48,7 +48,7 @@ public class VoiceChat
         VoiceChat voiceChat = null;
         double distance = -1;
 
-        for (VoiceChat vc : VoiceChat.getInstances().stream().filter(i -> i.getLocation().getWorld() == player.getWorld()).toList())
+        for (VoiceChat vc : VoiceChat.getInstances().stream().filter(i -> i.getLocation().getWorld().getName().equals(player.getWorld().getName())).toList())
         {
             if (vc == currentVoiceChant && currentVoiceChant.getMembers().size() == 1)
             {
@@ -62,7 +62,7 @@ public class VoiceChat
                 distance = distance2;
             }
 
-            if (distance2 <= distance)
+            if (distance2 <= distance || distance == -1)
             {
                 voiceChat = vc;
                 distance = distance2;

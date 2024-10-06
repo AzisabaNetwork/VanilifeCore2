@@ -1,72 +1,98 @@
 package net.azisaba.vanilife.service;
 
-import net.azisaba.vanilife.service.schedule.IServiceSchedule;
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.util.ResourceUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Service
 {
-    private static final ArrayList<Service> instances = new ArrayList<>();
+    private static final List<Service> instances = new ArrayList<>();
 
-    public static Service getInstance(String name)
+    public static Service getInstance(@NotNull String name)
     {
-        ArrayList<Service> filteredInstances = new ArrayList<>(Service.instances.stream().filter(i -> i.getName().equals(name)).toList());
+        List<Service> filteredInstances = Service.instances.stream().filter(i -> i.name().equals(name)).toList();
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    public static ArrayList<Service> getInstances()
+    public static List<Service> getInstances()
     {
         return Service.instances;
     }
 
+    public static void mount()
+    {
+        File directory = new File(Vanilife.getPlugin().getDataFolder(), "/service");
+
+        if (! directory.exists())
+        {
+            directory.mkdirs();
+        }
+
+        File[] services = directory.listFiles();
+
+        if (services == null)
+        {
+            return;
+        }
+
+        for (File service : services)
+        {
+            if (! service.isFile())
+            {
+                continue;
+            }
+
+            new Service(service.getName());
+        }
+    }
+
     private final String name;
 
-    private final YamlConfiguration parameters;
-    private final ArrayList<String> script = new ArrayList<>();
-    public final ArrayList<IServiceSchedule> schedules = new ArrayList<>();
-    private boolean stopped = false;
+    private final List<String> script;
 
-    public Service(String name)
+    private final List<Schedule> schedules = new ArrayList<>();
+
+    public Service(@NotNull String name)
     {
         this.name = name;
-        this.parameters = ResourceUtility.getYamlResource("/service/" + name);
-        this.script.addAll(new ArrayList<>(this.parameters.getStringList("script")));
 
-        for (String scheduleName : this.parameters.getConfigurationSection("schedule").getKeys(false))
+        YamlConfiguration source = ResourceUtility.getYamlResource("/service/" + name);
+
+        this.script = source.getStringList("script");
+
+        for (String schedule : source.getConfigurationSection("schedule").getKeys(false))
         {
-            ConfigurationSection config = this.parameters.getConfigurationSection(String.format("schedule.%s", scheduleName));
-            ServiceManager.schedules.get(config.getString(String.format("type", this.name))).start(this, config);
+            ConfigurationSection s = source.getConfigurationSection("schedule." + schedule);
+            this.schedules.add(new Schedule(this, s));
         }
 
         Service.instances.add(this);
     }
 
-    public String getName()
+    public String name()
     {
         return this.name;
     }
 
-    public boolean isStopped()
+    public void start()
     {
-        return this.stopped;
-    }
-
-    public void run()
-    {
-        if (this.stopped)
-        {
-            return;
-        }
-
-        this.script.forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ServiceManager.compileScript(s)));
+        this.schedules.forEach(Schedule::start);
     }
 
     public void stop()
     {
-        Service.instances.remove(this);
+        this.schedules.forEach(Schedule::stop);
+    }
+
+    public void run()
+    {
+        this.script.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
     }
 }

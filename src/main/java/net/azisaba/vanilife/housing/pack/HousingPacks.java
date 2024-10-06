@@ -35,6 +35,8 @@ public class HousingPacks
 
     public static final TerrainPack TERRAIN = (TerrainPack) HousingPacks.register(new TerrainPack());
 
+    public static final CrafterPack CRAFTER = (CrafterPack)HousingPacks.register(new CrafterPack());
+
     public static final ColorPack COLOR = (ColorPack) HousingPacks.register(new ColorPack());
 
     public static final MidnightPack MIDNIGHT = (MidnightPack) HousingPacks.register(new MidnightPack());

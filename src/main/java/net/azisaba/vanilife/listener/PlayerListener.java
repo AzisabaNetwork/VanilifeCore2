@@ -187,7 +187,16 @@ public class PlayerListener implements Listener
             return;
         }
 
-        world.getTeleporter().teleport(event.getPlayer());
+        Player player = event.getPlayer();
+        Location respawn = player.getRespawnLocation();
+
+        if (respawn != null)
+        {
+            player.teleport(respawn);
+            return;
+        }
+
+        world.getTeleporter().teleport(player);
     }
 
     @EventHandler

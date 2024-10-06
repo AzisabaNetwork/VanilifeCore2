@@ -42,7 +42,7 @@ public class HeartEmoteSubscription implements IEmoteSubscription
     @Override
     public int getCost()
     {
-        return 100;
+        return 90;
     }
 
     @Override
