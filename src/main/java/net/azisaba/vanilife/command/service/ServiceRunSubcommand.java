@@ -57,7 +57,7 @@ public class ServiceRunSubcommand implements ISubcommand
 
         if (args.length == 1)
         {
-            Service.getInstances().forEach(i -> suggest.add(i.name()));
+            Service.getInstances().forEach(i -> suggest.add(i.getName()));
         }
 
         return suggest;

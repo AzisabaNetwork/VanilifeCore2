@@ -3,7 +3,6 @@ package net.azisaba.vanilife.service;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.util.ResourceUtility;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +16,7 @@ public class Service
 
     public static Service getInstance(@NotNull String name)
     {
-        List<Service> filteredInstances = Service.instances.stream().filter(i -> i.name().equals(name)).toList();
+        List<Service> filteredInstances = Service.instances.stream().filter(i -> i.getName().equals(name)).toList();
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
@@ -49,34 +48,42 @@ public class Service
                 continue;
             }
 
-            new Service(service.getName()).start();
+            new Service(service.getName());
+        }
+    }
+
+    public static void kill()
+    {
+        while (! Service.instances.isEmpty())
+        {
+            Service.instances.getFirst().stop();
         }
     }
 
     private final String name;
 
     private final List<String> script;
-
     private final List<Schedule> schedules = new ArrayList<>();
 
     public Service(@NotNull String name)
     {
         this.name = name;
 
-        YamlConfiguration source = ResourceUtility.getYamlResource("/service/" + name);
+        YamlConfiguration source = ResourceUtility.getYamlResource("/service/" + this.name);
 
         this.script = source.getStringList("script");
 
         for (String schedule : source.getConfigurationSection("schedule").getKeys(false))
         {
-            ConfigurationSection s = source.getConfigurationSection("schedule." + schedule);
-            this.schedules.add(new Schedule(this, s));
+            this.schedules.add(new Schedule(this, source.getConfigurationSection("schedule." + schedule)));
         }
 
         Service.instances.add(this);
+
+        this.start();
     }
 
-    public String name()
+    public String getName()
     {
         return this.name;
     }
@@ -89,6 +96,8 @@ public class Service
     public void stop()
     {
         this.schedules.forEach(Schedule::stop);
+        this.schedules.clear();
+        Service.instances.remove(this);
     }
 
     public void run()

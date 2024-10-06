@@ -40,7 +40,7 @@ public class ServiceStartSubcommand implements ISubcommand
             return;
         }
 
-        if (! ResourceUtility.getResource(args[0]).exists())
+        if (! ResourceUtility.getResource("/service/" + args[0]).exists())
         {
             sender.sendMessage(Component.text(String.format("%s は未定義のサービスです", args[0])).color(NamedTextColor.RED));
             return;

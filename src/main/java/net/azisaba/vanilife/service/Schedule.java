@@ -6,11 +6,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Schedule
 {
-    private final Service service;
+    private Service service;
 
     private final int year;
     private final int month;
@@ -51,27 +54,23 @@ public class Schedule
             return;
         }
 
-        this.runnable = new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                service.run();
-                Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> start(), 20L * 2);
-            }
-        };
-
-        this.runnable.runTaskLater(Vanilife.getPlugin(), delay / 50);
+        Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), this::run, delay / 50);
     }
 
     public void stop()
     {
-        if (this.runnable == null)
+        this.service = null;
+    }
+
+    private void run()
+    {
+        if (this.service == null)
         {
             return;
         }
 
-        this.runnable.cancel();
+        this.service.run();
+        Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), this::start, 20L * 2);
     }
 
     public Calendar next()

@@ -46,7 +46,6 @@ public class ServiceStopSubcommand implements ISubcommand
         }
 
         service.stop();
-        Service.getInstances().remove(service);
         sender.sendMessage(Component.text("The service has been stopped.").color(NamedTextColor.GREEN));
     }
 
@@ -58,7 +57,7 @@ public class ServiceStopSubcommand implements ISubcommand
 
         if (args.length == 1)
         {
-            Service.getInstances().forEach(i -> suggest.add(i.name()));
+            Service.getInstances().forEach(i -> suggest.add(i.getName()));
         }
 
         return suggest;

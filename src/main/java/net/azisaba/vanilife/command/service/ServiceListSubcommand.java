@@ -42,7 +42,7 @@ public class ServiceListSubcommand implements ISubcommand
         for (Service service : Service.getInstances())
         {
             sender.sendMessage(Component.text("- ").color(NamedTextColor.DARK_GRAY)
-                    .append(Component.text(service.name()).color(NamedTextColor.GRAY)));
+                    .append(Component.text(service.getName()).color(NamedTextColor.GRAY)));
         }
     }
 

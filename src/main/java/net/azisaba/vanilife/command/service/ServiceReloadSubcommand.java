@@ -9,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceReloadSubcommand implements ISubcommand
@@ -37,12 +36,8 @@ public class ServiceReloadSubcommand implements ISubcommand
             return;
         }
 
-        List<Service> services = new ArrayList<>(Service.getInstances());
-
-        services.forEach(Service::stop);
-        Service.getInstances().clear();
+        Service.kill();
         Service.mount();
-        Service.getInstances().forEach(Service::start);
 
         sender.sendMessage(Component.text("サービスのリロードに成功しました！").color(NamedTextColor.GREEN));
     }
