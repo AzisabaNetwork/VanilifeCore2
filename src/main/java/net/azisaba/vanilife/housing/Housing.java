@@ -55,11 +55,6 @@ public class Housing
 
     public static World getWorld()
     {
-        if (Housing.world == null)
-        {
-            Housing.mount();
-        }
-
         return Housing.world;
     }
 

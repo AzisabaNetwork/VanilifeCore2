@@ -80,6 +80,8 @@ public class DiscordListener extends ListenerAdapter
         ConvertRequest.mount();
 
         Vanilife.CHANNEL_CONSOLE.sendMessage(":open_file_folder: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " サーバーを開始しました").queue();
+
+        Vanilife.publisher = true;
     }
 
     @Override
