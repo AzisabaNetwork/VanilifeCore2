@@ -62,41 +62,45 @@ public class Housing
     {
         Housing.world = Bukkit.getWorld("housing");
 
+        if (Housing.world != null)
+        {
+            return;
+        }
+
+        new HousingRunnable().runTaskTimer(Vanilife.getPlugin(), 0L, 10L);
+
+        WorldCreator creator = new WorldCreator("housing");
+        creator.generator(new VoidChunkGenerator());
+        Housing.world = creator.createWorld();
+
         if (Housing.world == null)
         {
-            WorldCreator creator = new WorldCreator("housing");
-            creator.generator(new VoidChunkGenerator());
-            Housing.world = creator.createWorld();
+            return;
+        }
 
-            if (Housing.world == null)
+        Housing.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        Housing.world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        Housing.world.setTime(HousingTime.MIDNIGHT.getTime());
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("SELECT id FROM housing");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
             {
-                return;
+                new Housing(UUID.fromString(rs.getString("id")));
             }
 
-            Housing.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-            Housing.world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-            Housing.world.setTime(HousingTime.MIDNIGHT.getTime());
-
-            try
-            {
-                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-                PreparedStatement stmt = con.prepareStatement("SELECT id FROM housing");
-                ResultSet rs = stmt.executeQuery();
-
-                while (rs.next())
-                {
-                    new Housing(UUID.fromString(rs.getString("id")));
-                }
-
-                rs.close();
-                stmt.close();
-                con.close();
-            }
-            catch (SQLException e)
-            {
-                Vanilife.sendExceptionReport(e);
-                Vanilife.getPluginLogger().warn(Component.text("Failed to select housing table: " + e.getMessage()).color(NamedTextColor.RED));
-            }
+            rs.close();
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.sendExceptionReport(e);
+            Vanilife.getPluginLogger().warn(Component.text("Failed to select housing table: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
 

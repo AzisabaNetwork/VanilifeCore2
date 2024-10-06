@@ -23,7 +23,6 @@ import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.listener.*;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.runnable.CacheClearRunnable;
-import net.azisaba.vanilife.housing.HousingRunnable;
 import net.azisaba.vanilife.runnable.PlayingRewardRunnable;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.ui.Language;
@@ -282,7 +281,6 @@ public final class Vanilife extends JavaPlugin
 
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
-        new HousingRunnable().runTaskTimer(this, 0L, 10L);
         new PlayingRewardRunnable().runTask(this);
         new VoiceChatRunnable().runTaskTimerAsynchronously(this, 0L, 20L * 2);
 
