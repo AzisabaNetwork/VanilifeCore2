@@ -18,7 +18,6 @@ import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;

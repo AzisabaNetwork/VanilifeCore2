@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.listener;
 
+import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.User;
@@ -15,12 +16,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.ArrayList;
-
 public class EntityListener implements Listener
 {
-    private final ArrayList<Entity> monsters = new ArrayList<>();
-
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
@@ -42,6 +39,12 @@ public class EntityListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onEntityAddToWorld(EntityAddToWorldEvent event)
+    {
+
     }
 
     @EventHandler

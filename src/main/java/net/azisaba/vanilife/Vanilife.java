@@ -18,6 +18,7 @@ import net.azisaba.vanilife.command.filter.FilterCommand;
 import net.azisaba.vanilife.command.gomenne.GomenneCommand;
 import net.azisaba.vanilife.command.wallet.WalletCommand;
 import net.azisaba.vanilife.command.service.ServiceCommand;
+import net.azisaba.vanilife.entity.VanilifeEntityListener;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.listener.*;
@@ -191,6 +192,7 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        this.getServer().getPluginManager().registerEvents(new VanilifeEntityListener(), this);
 
         this.getServer().getPluginManager().registerEvents(new Afk(), this);
         this.getServer().getPluginManager().registerEvents(new Paint(), this);
