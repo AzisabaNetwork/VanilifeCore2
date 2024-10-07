@@ -302,7 +302,10 @@ public class PlayerListener implements Listener
 
         boolean gomenne = false;
 
-        if (Language.getInstance(user).getId().equals("ja-jp") && message.matches("[a-zA-Z0-9\\p{Punct}]*") && ! message.contains(":") && user.read("settings.ime").getAsBoolean())
+        if (Language.getInstance(user).getId().equals("ja-jp")
+                && message.matches("[a-zA-Z0-9\\p{Punct}]*")
+                && ! message.contains(":") && user.read("settings.ime").getAsBoolean()
+                && ! ((message.contains("!1") || message.contains("!2") || message.contains("!3") || message.contains("!4")) && user.getSettings().METUBOU.isValid()))
         {
             message = Gomenne.convert(Gomenne.hira(message)) + " §8(" + message + "§r§8)";
             gomenne = true;

@@ -375,7 +375,7 @@ public class User
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("UPDATE user SET birthday = ? WHERE id = ?");
-            stmt.setString(1, Vanilife.sdf2.format(this.birthday));
+            stmt.setString(1, this.birthday == null ? null : Vanilife.sdf2.format(this.birthday));
             stmt.setString(2, this.id.toString());
 
             stmt.executeUpdate();

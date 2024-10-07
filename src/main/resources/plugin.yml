@@ -85,6 +85,9 @@ commands:
   profile:
     description: View any player's profile.
     usage: /profile <player>
+    aliases:
+      - p
+      - bio
   ptp:
     description: Teleport to any plot.
     usage: /ptp <plot>
