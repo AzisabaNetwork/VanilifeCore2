@@ -75,7 +75,7 @@ public class UnsubscribeCommand implements CommandExecutor, TabCompleter
                 }
                 else
                 {
-                    sender.sendMessage(Language.translate("cmd.unsubscribe.canceled", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.RED));
+                    sender.sendMessage(Language.translate("cmd.unsubscribe.cancelled", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.RED));
                 }
             }
         };

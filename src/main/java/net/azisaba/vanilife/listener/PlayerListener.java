@@ -303,7 +303,7 @@ public class PlayerListener implements Listener
         boolean gomenne = false;
 
         if (Language.getInstance(user).getId().equals("ja-jp")
-                && message.matches("[a-zA-Z0-9\\p{Punct}]*")
+                && message.matches("^[A-Za-z0-9 ]+$")
                 && ! message.contains(":") && user.read("settings.ime").getAsBoolean()
                 && ! ((message.contains("!1") || message.contains("!2") || message.contains("!3") || message.contains("!4")) && user.getSettings().METUBOU.isValid()))
         {

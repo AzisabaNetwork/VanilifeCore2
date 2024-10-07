@@ -226,7 +226,7 @@ public class ProfileUI extends InventoryUI
 
                     if (string.equals(":"))
                     {
-                        this.player.sendMessage(Language.translate("ui.profile.report.canceled", this.player).color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("ui.profile.report.cancelled", this.player).color(NamedTextColor.RED));
                         return;
                     }
 

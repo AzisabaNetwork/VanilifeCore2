@@ -44,25 +44,25 @@ public class VoiceChat
     @NotNull
     public static VoiceChat search(@NotNull Player player)
     {
-        VoiceChat currentVoiceChant = VoiceChat.getInstance(player);
+        VoiceChat currentVoiceChat = VoiceChat.getInstance(player);
         VoiceChat voiceChat = null;
         double distance = -1;
 
-        for (VoiceChat vc : VoiceChat.getInstances().stream().filter(i -> i.getLocation().getWorld().getName().equals(player.getWorld().getName())).toList())
+        for (VoiceChat vc : VoiceChat.getInstances())
         {
-            if (vc == currentVoiceChant && currentVoiceChant.getMembers().size() == 1)
+            if (! vc.getLocation().getWorld().equals(player.getWorld()))
+            {
+                continue;
+            }
+
+            if (vc == currentVoiceChat && currentVoiceChat.getMembers().size() == 1)
             {
                 continue;
             }
 
             double distance2 = player.getLocation().distance(vc.getLocation());
 
-            if (distance == -1)
-            {
-                distance = distance2;
-            }
-
-            if (distance2 <= distance || distance == -1)
+            if (voiceChat == null || distance2 < distance)
             {
                 voiceChat = vc;
                 distance = distance2;
@@ -71,7 +71,7 @@ public class VoiceChat
 
         if (50 + (Bukkit.getOnlinePlayers().size() * 5) < distance || voiceChat == null)
         {
-            return currentVoiceChant != null && currentVoiceChant.getMembers().size() == 1 ? currentVoiceChant : new VoiceChat();
+            return currentVoiceChat != null && currentVoiceChat.getMembers().size() == 1 ? currentVoiceChat : new VoiceChat();
         }
 
         return voiceChat;

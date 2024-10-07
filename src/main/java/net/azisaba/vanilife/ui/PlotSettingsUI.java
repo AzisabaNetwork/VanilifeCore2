@@ -221,7 +221,7 @@ public class PlotSettingsUI extends InventoryUI
 
                     if (string.equals(":"))
                     {
-                        this.player.sendMessage(Language.translate("ui.plot-settings.rename.canceled", this.player).color(NamedTextColor.GREEN));
+                        this.player.sendMessage(Language.translate("ui.plot-settings.rename.cancelled", this.player).color(NamedTextColor.GREEN));
                         return;
                     }
 
@@ -299,7 +299,7 @@ public class PlotSettingsUI extends InventoryUI
 
                     if (string.equals(":"))
                     {
-                        this.player.sendMessage(Language.translate("ui.plot-settings.readme.canceled", this.player).color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("ui.plot-settings.readme.cancelled", this.player).color(NamedTextColor.RED));
                         return;
                     }
 
@@ -348,7 +348,7 @@ public class PlotSettingsUI extends InventoryUI
 
                     if (! string.equals(this.code))
                     {
-                        this.player.sendMessage(Language.translate("ui.plot-settings.delete.canceled", this.player).color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("ui.plot-settings.delete.cancelled", this.player).color(NamedTextColor.RED));
                         return;
                     }
 

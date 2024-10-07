@@ -249,7 +249,7 @@ public class Trade
 
         this.tradeSyncRunnable.cancel();
 
-        this.broadcast("trade.canceled");
+        this.broadcast("trade.cancelled");
     }
 
     public enum Agree
