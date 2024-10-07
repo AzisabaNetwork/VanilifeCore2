@@ -86,7 +86,7 @@ public class ProfileUI extends InventoryUI
                         .append(Component.text(Vanilife.sdf4.format(this.profile.getBirthday())).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false)));
             }
 
-            if (this.profile.hasOsatou() && (UserUtility.isAdmin(player) || this.profile.read("settings.osatou.open").getAsBoolean() && user.read("settings.osatou.open").getAsBoolean()))
+            if (this.profile.hasOsatou() && (UserUtility.isAdmin(player) || (this.profile.read("settings.osatou.open").getAsBoolean() && this.profile.getOsatou().read("settings.osatou.open").getAsBoolean())))
             {
                 headLore.add(Language.translate("ui.profile.osatou", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(this.profile.getOsatou().getName()));
             }

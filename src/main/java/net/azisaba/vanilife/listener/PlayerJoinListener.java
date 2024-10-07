@@ -174,7 +174,25 @@ public class PlayerJoinListener implements Listener
         User user = User.getInstance(player);
 
         event.joinMessage(null);
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Language.translate(player.hasPlayedBefore() ? (user.getSara().isRank() ? "msg.ranker-join" : "msg.join") : "msg.first-join", p, "name=" + ComponentUtility.getAsString(user.getName()))));
+
+        if (Sara.$1000YEN.level <= user.getSara().level && user.getSara().isRank())
+        {
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text(" >").color(NamedTextColor.AQUA)
+                    .append(Component.text(">").color(NamedTextColor.RED))
+                    .append(Component.text("> ").color(NamedTextColor.GREEN))
+                    .append(Component.text().append(user.getName(p)).appendSpace().append(Language.translate("msg.join", p).color(NamedTextColor.GOLD)))
+                    .append(Component.text(" <").color(NamedTextColor.GREEN))
+                    .append(Component.text("<").color(NamedTextColor.RED))
+                    .append(Component.text("<").color(NamedTextColor.AQUA))));
+        }
+        else if (player.hasPlayedBefore())
+        {
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.GREEN).append(user.getName(p)).appendSpace().append(Language.translate("msg.join", p).color(NamedTextColor.GRAY))));
+        }
+        else
+        {
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.LIGHT_PURPLE).append(user.getName(p)).appendSpace().append(Language.translate("msg.join-first", p).color(NamedTextColor.GRAY))));
+        }
 
         int unread = user.getMails().stream().filter(m -> ! m.isRead()).toList().size();
 

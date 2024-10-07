@@ -319,20 +319,22 @@ public class PlayerListener implements Listener
         }
 
         message = LegacyComponentSerializer.legacySection().serialize(ComponentUtility.parseChat(message, user));
-
-        Component chat = Component.text().build().append(user.getName()).append(Component.text(": ").color(NamedTextColor.GRAY)).append(ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(message)));
-
+        
         List<Player> players = new ArrayList<>();
 
         if (! UserUtility.isModerator(user))
         {
-            players.addAll(Bukkit.getOnlinePlayers().stream().filter(p -> !User.getInstance(p).isBlock(user) && User.getInstance(p).read("settings.chat").getAsBoolean()).toList());
+            players.addAll(Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user) && User.getInstance(p).read("settings.chat").getAsBoolean()).toList());
         }
         else
         {
             players.addAll(Bukkit.getOnlinePlayers());
         }
+        
+        final String builtMessage = message;
 
-        players.forEach(p -> p.sendMessage(chat));
+        players.forEach(p -> p.sendMessage(Component.text().build().append(user.getName(p))
+                .append(Component.text(": ").color(NamedTextColor.GRAY))
+                .append(ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(builtMessage)))));
     }
 }

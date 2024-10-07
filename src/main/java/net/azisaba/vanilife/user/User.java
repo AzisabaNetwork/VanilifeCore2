@@ -18,6 +18,8 @@ import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -292,8 +294,78 @@ public class User
     public @NotNull Component getName()
     {
         return this.getSara().role.append(Sara.$50000YEN.level < this.getSara().level && this.getNick().contains("&") ?
-                ComponentUtility.getAsComponent(this.getNick())
-                : Component.text(this.getNick(), this.getSara().getColor())).clickEvent(ClickEvent.runCommand(String.format("/profile %s", this.getPlaneName()))).hoverEvent(HoverEvent.showText(Component.text("クリックしてプロフィールを開きます")));
+                ComponentUtility.getAsComponent(this.getNick()) : Component.text(this.getNick(), this.getSara().getColor()));
+    }
+
+    public @NotNull Component getName(@NotNull User user)
+    {
+        TextComponent.Builder summary = Component.text();
+
+        if (this.settings.BIRTHDAY.isWithinScope(user) && this.birthday != null)
+        {
+            summary.append(Language.translate("ui.profile.birthday", user).color(NamedTextColor.GRAY)
+                    .append(Component.text(Vanilife.sdf4.format(this.birthday)).color(NamedTextColor.GREEN)));
+        }
+
+        if (this.hasOsatou() && (UserUtility.isAdmin(user) || (this.read("settings.osatou.open").getAsBoolean() && this.osatou.read("settings.osatou.open").getAsBoolean())))
+        {
+            summary.append(Language.translate("ui.profile.osatou", user).color(NamedTextColor.GRAY).append(this.osatou.getName()));
+        }
+
+        if (this.bio != null)
+        {
+            if (! summary.children().isEmpty())
+            {
+                summary.appendNewline();
+            }
+
+            summary.append(Language.translate("settings.bio.name", user).color(NamedTextColor.GRAY).append(Component.text(":").color(NamedTextColor.GRAY)));
+            summary.appendNewline();
+
+            StringBuilder sb = new StringBuilder();
+
+            int i = 0;
+
+            for (int j = 0; j < this.bio.length(); j ++)
+            {
+                sb.append(this.bio.charAt(j));
+
+                if (16 <= sb.length())
+                {
+                    summary.append(Component.text(sb.toString()).color(NamedTextColor.DARK_GRAY));
+                    summary.appendNewline();
+                    sb = new StringBuilder();
+
+                    if (3 <= (++ i))
+                    {
+                        summary.append(Component.text("…").color(NamedTextColor.DARK_GRAY));
+                        break;
+                    }
+                }
+            }
+
+            if (sb.length() < 16)
+            {
+                summary.append(Component.text(sb.toString()).color(NamedTextColor.DARK_GRAY));
+            }
+        }
+
+        if (! summary.children().isEmpty())
+        {
+            summary.appendNewline();
+            summary.appendNewline();
+        }
+
+        summary.append(Language.translate("msg.click-to-open-profile", user).color(NamedTextColor.YELLOW));
+
+        return this.getName()
+                .hoverEvent(HoverEvent.showText(summary.build()))
+                .clickEvent(ClickEvent.runCommand("/profile " + this.getPlaneName()));
+    }
+
+    public @NotNull Component getName(@NotNull Player player)
+    {
+        return this.getName(User.getInstance(player));
     }
 
     public @NotNull String getPlaneName()
