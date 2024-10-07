@@ -51,6 +51,11 @@ public interface IVanilifeEntity
         return 1.0;
     }
 
+    default long getPeriod()
+    {
+        return 10L;
+    }
+
     void setScale(double scale);
 
     void tick();

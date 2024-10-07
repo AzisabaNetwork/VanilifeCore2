@@ -78,7 +78,7 @@ public abstract class VanilifeEntity implements IVanilifeEntity
         return this.entity;
     }
 
-    private void init()
+    protected void init()
     {
         VanilifeEntity.instances.add(this);
 
@@ -101,7 +101,7 @@ public abstract class VanilifeEntity implements IVanilifeEntity
 
                 VanilifeEntity.this.tick();
             }
-        }.runTaskTimer(Vanilife.getPlugin(), 0L, 10L);
+        }.runTaskTimer(Vanilife.getPlugin(), 0L, this.getPeriod());
     }
 
     @Override
