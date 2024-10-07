@@ -321,7 +321,7 @@
     "msg.click-to-open-profile": "クリックしてプロフィールを開く！",
     "msg.join": "さんが参加しました！",
     "msg.first-join": "さんが初参加しました！",
-    "msg.quit": "&c- &r${name}&7 さんが切断しました…",
+    "msg.quit": "さんが切断しました…",
     "msg.login-bonus": "&aログインボーナス + ${mola} Mola (10 × ${streak})",
     "msg.new-mail": "${unread} 件の新着メールがあります！",
     "msg.not-found.player": "${name} は不明なプレイヤーです",

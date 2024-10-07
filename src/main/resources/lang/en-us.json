@@ -321,7 +321,7 @@
     "msg.click-to-open-profile": "Click to open profile!",
     "msg.join": "joined!",
     "msg.first-join": "joined for the first time!",
-    "msg.quit": "&c- &r${name}&7 quit…",
+    "msg.quit": "quit…",
     "msg.login-bonus": "&aLogin Bonus + ${mola} Mola (10 × ${streak})",
     "msg.new-mail": "There are ${unread} new emails.",
     "msg.not-found.player": "${name} is an unknown player.",

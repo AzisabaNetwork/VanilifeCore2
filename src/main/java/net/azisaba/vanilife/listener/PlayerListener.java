@@ -68,7 +68,7 @@ public class PlayerListener implements Listener
         Vanilife.jda.getPresence().setActivity(Activity.customStatus(0 < online ? online + " 人がばにらいふ！ をプレイ中！" : "azisaba.net をプレイ中！"));
 
         event.quitMessage(null);
-        Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user)).forEach(p -> p.sendMessage(Language.translate("msg.quit", p, "name=" + ComponentUtility.getAsString(user.getName()))));
+        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("- ").color(NamedTextColor.RED).append(user.getName(p)).appendSpace().append(Language.translate("msg.quit", p).color(NamedTextColor.GRAY))));
 
         Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setAuthor(player.getName() + " (" + player.getUniqueId() + ")", null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
