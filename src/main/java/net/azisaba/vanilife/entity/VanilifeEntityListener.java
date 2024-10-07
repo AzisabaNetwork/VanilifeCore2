@@ -43,6 +43,12 @@ public class VanilifeEntityListener implements Listener
         }
 
         Class<? extends VanilifeEntity> clazz = VanilifeEntities.registry.get(entity.getPersistentDataContainer().get(key, PersistentDataType.STRING));
+
+        if (clazz == null)
+        {
+            entity.remove();
+        }
+
         clazz.getConstructor(LivingEntity.class).newInstance(entity);
     }
 }
