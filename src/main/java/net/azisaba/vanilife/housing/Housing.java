@@ -80,6 +80,7 @@ public class Housing
 
         Housing.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         Housing.world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        Housing.world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         Housing.world.setTime(HousingTime.MIDNIGHT.getTime());
 
         try
