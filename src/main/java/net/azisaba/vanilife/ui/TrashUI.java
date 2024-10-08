@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.ui;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.util.PlayerUtility;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -10,12 +11,14 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrashUI extends InventoryUI
 {
     public TrashUI(@NotNull Player player)
     {
         super(player, Bukkit.createInventory(null, 54, Language.translate("ui.trash.title", player)));
+        System.out.println("hi!");
     }
 
     @Override
@@ -26,7 +29,7 @@ public class TrashUI extends InventoryUI
     {
         super.onClose(event);
 
-        ArrayList<ItemStack> stacks = new ArrayList<>();
+        List<ItemStack> stacks = new ArrayList<>();
 
         this.inventory.forEach(stack -> {
             if (stack != null && 0 < stack.getAmount())
@@ -40,11 +43,12 @@ public class TrashUI extends InventoryUI
             return;
         }
 
-        new ConfirmUI(this.player, () -> {
-            this.player.sendMessage(Language.translate("ui.trash.deleted", this.player).color(NamedTextColor.GREEN));
-        }, () -> {
-            PlayerUtility.giveItemStack(this.player, stacks);
-            player.sendMessage(Language.translate("ui.trash.cancelled", player).color(NamedTextColor.GREEN));
-        });
+        Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> {
+            new ConfirmUI(this.player, () -> this.player.sendMessage(Language.translate("ui.trash.deleted", this.player).color(NamedTextColor.GREEN)),
+                    () -> {
+                        PlayerUtility.giveItemStack(this.player, stacks);
+                        this.player.sendMessage(Language.translate("ui.trash.cancelled", this.player).color(NamedTextColor.RED));
+                    });
+        }, 5L);
     }
 }
