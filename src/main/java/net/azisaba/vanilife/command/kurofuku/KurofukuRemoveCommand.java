@@ -38,7 +38,7 @@ public class KurofukuRemoveCommand implements ISubcommand
     {
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /" + command.getName() + " remove <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + command.getLabel() + " remove <player>").color(NamedTextColor.RED));
             return;
         }
 

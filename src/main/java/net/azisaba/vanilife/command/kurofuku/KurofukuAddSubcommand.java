@@ -40,7 +40,7 @@ public class KurofukuAddSubcommand implements ISubcommand
     {
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /" + command.getName() + " add <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + command.getLabel() + " add <player>").color(NamedTextColor.RED));
             return;
         }
 

@@ -194,6 +194,13 @@ public class PlayerJoinListener implements Listener
         else if (player.hasPlayedBefore())
         {
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.GREEN).append(user.getName(p)).appendSpace().append(Language.translate("msg.join", p).color(NamedTextColor.GRAY))));
+            player.sendMessage(Component.text().build());
+            player.sendMessage(Component.text("Wiki: ").color(NamedTextColor.GRAY)
+                    .append(Component.text("https://wiki.azisaba.net/wiki/ばにらいふ２！:メインページ")
+                            .color(NamedTextColor.BLUE)
+                            .hoverEvent(HoverEvent.showText(Component.text("Click to open url")))
+                            .clickEvent(ClickEvent.openUrl("https://wiki.azisaba.net/wiki/ばにらいふ２！:メインページ"))));
+            player.sendMessage(Component.text().build());
         }
         else
         {
@@ -294,6 +301,8 @@ public class PlayerJoinListener implements Listener
 
         if (user.getStatus() != UserStatus.JAILED)
         {
+            player.setHealth(20);
+            player.setFoodLevel(20);
             player.setGameMode(GameMode.SURVIVAL);
             return;
         }

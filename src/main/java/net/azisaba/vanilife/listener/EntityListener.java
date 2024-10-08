@@ -1,10 +1,11 @@
 package net.azisaba.vanilife.listener;
 
-import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -13,11 +14,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class EntityListener implements Listener
 {
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event)
+    {
+        if (! (event.getEntity() instanceof Player player))
+        {
+            return;
+        }
+
+        User user = User.getInstance(player);
+        event.setCancelled((user.getStatus() == UserStatus.JAILED && player.getWorld().equals(VanilifeWorldManager.getJail())) || event.isCancelled());
+    }
+
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
@@ -39,12 +53,6 @@ public class EntityListener implements Listener
         {
             event.setCancelled(true);
         }
-    }
-
-    @EventHandler
-    public void onEntityAddToWorld(EntityAddToWorldEvent event)
-    {
-
     }
 
     @EventHandler

@@ -30,6 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 
 import java.awt.Color;
@@ -221,9 +222,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event)
     {
-        Advancement advancement = event.getAdvancement();
-
-        if (! (advancement.getKey().getKey().startsWith("story/")))
+        if (event.message() == null)
         {
             return;
         }
@@ -286,6 +285,17 @@ public class PlayerListener implements Listener
             player.sendMessage(Language.translate("mail.dont-tell", player).color(NamedTextColor.RED));
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onFoodLevelChange(FoodLevelChangeEvent event)
+    {
+        if (! (event.getEntity() instanceof Player player))
+        {
+            return;
+        }
+
+        event.setCancelled((User.getInstance(player).getStatus() == UserStatus.JAILED && player.getWorld().equals(VanilifeWorldManager.getJail())) || event.isCancelled());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

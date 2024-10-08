@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.ConfirmUI;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.UserUtility;
@@ -36,7 +37,7 @@ public class JailCommand implements CommandExecutor, TabCompleter
 
         if (args.length != 2)
         {
-            sender.sendMessage(Component.text("Correct syntax: /jail <player> <details>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + label + " <player> <details>").color(NamedTextColor.RED));
             return true;
         }
 
@@ -72,6 +73,12 @@ public class JailCommand implements CommandExecutor, TabCompleter
             if (! UserUtility.isAdmin(sender) && (UserUtility.isModerator(target) || target.isKurofuku()))
             {
                 sender.sendMessage(Component.text("このプレイヤーを Jail することはできません").color(NamedTextColor.RED));
+                return;
+            }
+
+            if ((sender instanceof Player player) && User.getInstance(player) == target)
+            {
+                sender.sendMessage(Component.text("自分自身を Jail することはできません").color(NamedTextColor.RED));
                 return;
             }
 

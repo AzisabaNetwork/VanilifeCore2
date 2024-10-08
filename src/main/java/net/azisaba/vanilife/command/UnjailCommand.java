@@ -38,7 +38,7 @@ public class UnjailCommand implements CommandExecutor, TabCompleter
 
         if (args.length != 1)
         {
-            sender.sendMessage(Component.text("Correct syntax: /unjail <player>").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + label + " <player>").color(NamedTextColor.RED));
             return true;
         }
 

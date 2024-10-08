@@ -31,7 +31,7 @@ public class KurofukuListSubcommand implements ISubcommand
     {
         if (args.length != 0)
         {
-            sender.sendMessage(Component.text("Correct syntax: /" + command.getName() + " list").color(NamedTextColor.RED));
+            sender.sendMessage(Component.text("Correct syntax: /" + command.getLabel() + " list").color(NamedTextColor.RED));
             return;
         }
 
