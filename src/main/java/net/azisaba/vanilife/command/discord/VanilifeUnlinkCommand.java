@@ -50,7 +50,7 @@ public class VanilifeUnlinkCommand extends DiscordCommand
 
         if (user.isOnline())
         {
-            Player player = user.getAsPlayer();
+            Player player = user.asPlayer();
             player.sendMessage(Component.text(event.getUser().getEffectiveName() + " との紐づけを解除しました！").color(NamedTextColor.GREEN));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         }

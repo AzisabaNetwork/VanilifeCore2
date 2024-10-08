@@ -40,7 +40,7 @@ public class PlotUI extends InventoryUI
         Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
             ItemStack ownerStack = HeadUtility.getPlayerHead(this.plot.getOwner().getPlaneName());
             ItemMeta ownerMeta = ownerStack.getItemMeta();
-            ownerMeta.displayName((Sara.$2000YEN.level < this.plot.getOwner().getSara().level && this.plot.getName().contains("&") ? ComponentUtility.getAsComponent(this.plot.getName()) : Component.text(this.plot.getName()).color(NamedTextColor.GREEN))
+            ownerMeta.displayName((Sara.$2000YEN.level < this.plot.getOwner().getSara().level && this.plot.getName().contains("&") ? ComponentUtility.asComponent(this.plot.getName()) : Component.text(this.plot.getName()).color(NamedTextColor.GREEN))
                     .decoration(TextDecoration.ITALIC, false));
             ownerMeta.lore(List.of(Language.translate("ui.plot.owner", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(this.plot.getOwner().getName().decoration(TextDecoration.ITALIC, false))));
             ownerStack.setItemMeta(ownerMeta);

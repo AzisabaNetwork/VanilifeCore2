@@ -140,7 +140,7 @@ public class Language
             src = src.replace("${" + name + "}", value);
         }
 
-        return ComponentUtility.getAsComponent(src);
+        return ComponentUtility.asComponent(src);
     }
 
     public boolean has(@NotNull String key)

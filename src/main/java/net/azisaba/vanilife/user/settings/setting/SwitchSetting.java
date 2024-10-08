@@ -53,7 +53,7 @@ public abstract class SwitchSetting<T extends Serializable> extends Setting<T> i
 
         this.value = keys.get(j);
         this.save();
-        new SettingsUI(this.user.getAsPlayer(), this.user.getSettings());
+        new SettingsUI(this.user.asPlayer(), this.user.getSettings());
     }
 
     public void save()

@@ -34,12 +34,12 @@ public class ComponentUtility
         return gaming;
     }
 
-    public static @NotNull String getAsString(@NotNull Component component)
+    public static @NotNull String asString(@NotNull Component component)
     {
         return LegacyComponentSerializer.legacySection().serialize(component).replace('§', '&');
     }
 
-    public static @NotNull Component getAsComponent(@NotNull String src)
+    public static @NotNull Component asComponent(@NotNull String src)
     {
         return LegacyComponentSerializer.legacySection().deserialize(src.replace('&', '§'));
     }

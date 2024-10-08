@@ -112,7 +112,7 @@ public class Mail
 
         if (this.to.isOnline())
         {
-            Player player = this.to.getAsPlayer();
+            Player player = this.to.asPlayer();
 
             player.sendMessage(Component.text("✉ ").color(NamedTextColor.GRAY).append(this.from.getName().decorate(TextDecoration.BOLD)).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(ComponentUtility.parseChat(this.message, this.from))));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);

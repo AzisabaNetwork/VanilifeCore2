@@ -67,7 +67,7 @@ public class VanilifeWorld
     {
         this.name = name;
 
-        this.properties = VanilifeWorldManager.getWorldProperties(this);
+        this.properties = VanilifeWorldManager.read(this);
         this.version = this.properties.get("version").getAsInt();
         this.season = SeasonUtility.Season.valueOf(this.properties.get("season").getAsString());
 
@@ -104,7 +104,7 @@ public class VanilifeWorld
     public void setProperties(@NotNull JsonObject properties)
     {
         this.properties = properties;
-        VanilifeWorldManager.setWorldProperties(this, this.properties);
+        VanilifeWorldManager.write(this, this.properties);
     }
 
     public @NotNull World getOverworld()
@@ -188,7 +188,7 @@ public class VanilifeWorld
         new ArrayList<>(this.plots).forEach(Plot::delete);
 
         VanilifeWorld.instances.remove(this);
-        VanilifeWorldManager.setWorldProperties(this, null);
+        VanilifeWorldManager.write(this, null);
 
         long start = System.nanoTime();
 
@@ -302,7 +302,7 @@ public class VanilifeWorld
 
             properties.add("levels", levels);
 
-            VanilifeWorldManager.setWorldProperties(name, properties);
+            VanilifeWorldManager.write(name, properties);
             return new VanilifeWorld(name);
         }
 

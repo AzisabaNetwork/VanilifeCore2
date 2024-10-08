@@ -63,6 +63,6 @@ public abstract class BooleanSetting extends Setting<Boolean>
         player.playSound(player, Sound.UI_BUTTON_CLICK, 1.0F, 1.2F);
         this.value = ! this.value;
         this.write(this.value);
-        new SettingsUI(this.user.getAsPlayer(), this.user.getSettings());
+        new SettingsUI(this.user.asPlayer(), this.user.getSettings());
     }
 }

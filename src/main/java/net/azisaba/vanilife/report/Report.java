@@ -86,7 +86,7 @@ public class Report
         this.sender = container.getSender();
         this.details = container.getDetails();
         this.date = new Date();
-        this.location = this.sender.getAsPlayer().getLocation();
+        this.location = this.sender.asPlayer().getLocation();
 
         if (container.hasTarget())
         {

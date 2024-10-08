@@ -61,7 +61,7 @@ public class VoiceChatListener extends ListenerAdapter
             return;
         }
 
-        VoiceChat vc = VoiceChat.search(user.getAsPlayer());
+        VoiceChat vc = VoiceChat.search(user.asPlayer());
         vc.connect(user);
     }
 }

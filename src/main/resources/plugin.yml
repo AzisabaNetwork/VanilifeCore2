@@ -47,6 +47,11 @@ commands:
       - gomenne
       - gmn
       - henkan
+  jail:
+    description: Performs a jail on any player.
+    usage: /jail <player>
+    aliases:
+      - 1050
   jnkn:
     description: Send a janken request.
     usage: /jnkn <player>
@@ -54,6 +59,13 @@ commands:
       - janken
       - rock-paper-scissors
       - rps
+  kurofuku:
+    description: Manage black clothes.
+    usage: /kurofuku <subcommand> [args…]
+    aliases:
+      - kurohuku
+      - krfk
+      - krhk
   language:
     description: Change language.
     usage: /language <language>
@@ -146,6 +158,11 @@ commands:
   unfriend:
     description: Unfriend any friend.
     usage: /unfriend <friend>
+  unjail:
+    description: Performs Jail release for any player.
+    usage: /unjail <player>
+    aliases:
+      - -1050
   unmute:
     description: Unmute any player.
     usage: /unmute <player>

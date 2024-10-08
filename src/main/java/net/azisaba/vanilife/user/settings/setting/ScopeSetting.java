@@ -67,7 +67,7 @@ public abstract class ScopeSetting extends SwitchSetting<String>
         this.value = this.scope.toString();
 
         this.save();
-        new SettingsUI(this.user.getAsPlayer(), this.user.getSettings());
+        new SettingsUI(this.user.asPlayer(), this.user.getSettings());
     }
 
     public boolean isWithinScope(User user)

@@ -41,7 +41,7 @@ public class SqlUtility
             {
                 if (SqlUtility.exists(table.getKey()))
                 {
-                    return;
+                    continue;
                 }
 
                 Statement stmt = con.createStatement();

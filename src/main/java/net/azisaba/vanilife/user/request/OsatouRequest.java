@@ -20,11 +20,11 @@ public class OsatouRequest extends Request
         final int limit = (int) (this.getTicks() / 20);
 
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.LIGHT_PURPLE));
-        this.from.sendMessage(Language.translate("msg.osatou.requested", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "limit=" + limit));
+        this.from.sendMessage(Language.translate("msg.osatou.requested", this.from, "name=" + ComponentUtility.asString(this.toUser.getName()), "limit=" + limit));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.LIGHT_PURPLE));
 
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.LIGHT_PURPLE));
-        this.to.sendMessage(Language.translate("msg.osatou.received", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.to.sendMessage(Language.translate("msg.osatou.received", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
         this.to.sendMessage(Language.translate("msg.osatou.received.details", this.to, "limit=" + limit)
                 .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/osatou %s", from.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=/osatou " + from.getName())))));
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.LIGHT_PURPLE));
@@ -49,10 +49,10 @@ public class OsatouRequest extends Request
 
         this.getToUser().setOsatou(this.fromUser);
 
-        this.from.sendMessage(Language.translate("msg.osatou.hold", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName())));
+        this.from.sendMessage(Language.translate("msg.osatou.hold", this.from, "name=" + ComponentUtility.asString(this.toUser.getName())));
         this.from.playSound(this.from, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.0f, 1.0f);
 
-        this.to.sendMessage(Language.translate("msg.osatou.hold", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.to.sendMessage(Language.translate("msg.osatou.hold", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
         this.to.playSound(this.to, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.0f, 1.0f);
     }
 
@@ -61,7 +61,7 @@ public class OsatouRequest extends Request
     {
         super.onTimeOver();
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.osatou.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.getAsString(this.toUser.getName())));
+        this.from.sendMessage(Language.translate("msg.osatou.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.asString(this.toUser.getName())));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 }

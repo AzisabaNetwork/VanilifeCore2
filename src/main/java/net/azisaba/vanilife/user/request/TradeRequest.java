@@ -20,11 +20,11 @@ public class TradeRequest extends Request
         final int limit = (int) this.getTicks() / 20;
 
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.trade.requested", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "limit=" + limit));
+        this.from.sendMessage(Language.translate("msg.trade.requested", this.from, "name=" + ComponentUtility.asString(this.toUser.getName()), "limit=" + limit));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
 
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.to.sendMessage(Language.translate("msg.trade.received", this.to, "name=" + ComponentUtility.getAsString(this.getFromUser().getName())));
+        this.to.sendMessage(Language.translate("msg.trade.received", this.to, "name=" + ComponentUtility.asString(this.getFromUser().getName())));
         this.to.sendMessage(Language.translate("msg.trade.received.details", this.to, "limit=" + limit)
                 .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/trade %s", from.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=/trade " + this.from.getName())))));
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
@@ -55,7 +55,7 @@ public class TradeRequest extends Request
     {
         super.onTimeOver();
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.trade.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.getAsString(this.toUser.getName())));
+        this.from.sendMessage(Language.translate("msg.trade.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.asString(this.toUser.getName())));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 }

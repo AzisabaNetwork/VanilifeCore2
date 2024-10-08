@@ -16,6 +16,7 @@ import net.azisaba.vanilife.command.discord.VanilifeLinkCommand;
 import net.azisaba.vanilife.command.discord.VanilifeUnlinkCommand;
 import net.azisaba.vanilife.command.filter.FilterCommand;
 import net.azisaba.vanilife.command.gomenne.GomenneCommand;
+import net.azisaba.vanilife.command.kurofuku.KurofukuCommand;
 import net.azisaba.vanilife.command.wallet.WalletCommand;
 import net.azisaba.vanilife.command.service.ServiceCommand;
 import net.azisaba.vanilife.entity.VanilifeEntityListener;
@@ -207,8 +208,10 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("friend").setExecutor(new FriendCommand());
         this.getCommand("friendlist").setExecutor(new FriendListCommand());
         this.getCommand("housing").setExecutor(new HousingCommand());
+        this.getCommand("jail").setExecutor(new JailCommand());
         this.getCommand("ime").setExecutor(new GomenneCommand());
         this.getCommand("jnkn").setExecutor(new JnknCommand());
+        this.getCommand("kurofuku").setExecutor(new KurofukuCommand());
         this.getCommand("language").setExecutor(new LanguageCommand());
         this.getCommand("mail").setExecutor(new MailCommand());
         this.getCommand("mute").setExecutor(new MuteCommand());
@@ -235,6 +238,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("trash").setExecutor(new TrashCommand());
         this.getCommand("unblock").setExecutor(new UnblockCommand());
         this.getCommand("unfriend").setExecutor(new UnfriendCommand());
+        this.getCommand("unjail").setExecutor(new UnjailCommand());
         this.getCommand("unmute").setExecutor(new UnmuteCommand());
         this.getCommand("unsubscribe").setExecutor(new UnsubscribeCommand());
         this.getCommand("vote").setExecutor(new VoteCommand());
@@ -247,6 +251,7 @@ public final class Vanilife extends JavaPlugin
         this.saveResource("lang/ja-jp.json", true);
         this.saveResource("service/checkout.yml", false);
         this.saveResource("structure/housing.nbt", true);
+        this.saveResource("structure/jail.nbt", true);
         this.saveResource("vwm/vwm.json", false);
         this.saveResource("gomenne.json", false);
 
@@ -256,10 +261,11 @@ public final class Vanilife extends JavaPlugin
         Vanilife.DB_USER = this.getConfig().getString("database.user");
         Vanilife.DB_PASS = this.getConfig().getString("database.pass");
 
+        SqlUtility.setup();
+
         Vanilife.METUBOT_SERVER = this.getConfig().getString("metubot.server");
         Vanilife.METUBOT_PROVIDER = UUID.fromString(this.getConfig().getString("metubot.provider"));
 
-        SqlUtility.setup();
         Language.mount();
         Service.mount();
 

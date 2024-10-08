@@ -272,7 +272,7 @@ public class ProfileUI extends InventoryUI
                     return;
                 }
 
-                new HousingInvite(housing, this.profile.getAsPlayer());
+                new HousingInvite(housing, this.profile.asPlayer());
             }
         }
     }

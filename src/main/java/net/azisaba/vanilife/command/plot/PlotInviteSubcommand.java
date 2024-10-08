@@ -84,9 +84,9 @@ public class PlotInviteSubcommand implements ISubcommand
 
         User member = User.getInstance(args[0]);
 
-        if (plot.getOwner().getRequests().stream().anyMatch(r -> r.match(PlotRequest.class, member.getAsPlayer())))
+        if (plot.getOwner().getRequests().stream().anyMatch(r -> r.match(PlotRequest.class, member.asPlayer())))
         {
-            plot.getOwner().getRequests().stream().filter(r -> r.match(PlotRequest.class, member.getAsPlayer())).toList().getFirst().onAccept();
+            plot.getOwner().getRequests().stream().filter(r -> r.match(PlotRequest.class, member.asPlayer())).toList().getFirst().onAccept();
             return;
         }
 

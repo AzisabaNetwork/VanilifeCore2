@@ -68,6 +68,12 @@ public class PlayerListener implements Listener
         Vanilife.jda.getPresence().setActivity(Activity.customStatus(0 < online ? online + " 人がばにらいふ！ をプレイ中！" : "azisaba.net をプレイ中！"));
 
         event.quitMessage(null);
+
+        if (UserStatus.MUTED.level() <= user.getStatus().level())
+        {
+            return;
+        }
+
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("- ").color(NamedTextColor.RED).append(user.getName(p)).appendSpace().append(Language.translate("msg.quit", p).color(NamedTextColor.GRAY))));
 
         Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
@@ -86,7 +92,7 @@ public class PlayerListener implements Listener
         if (to != null && from != to)
         {
             Component info = Component.text("Plot: ").color(NamedTextColor.GREEN)
-                    .append(Sara.$2000YEN.level < to.getOwner().getSara().level && to.getName().contains("&") ? ComponentUtility.getAsComponent(to.getName()) : Component.text(to.getName()).color(NamedTextColor.GRAY));
+                    .append(Sara.$2000YEN.level < to.getOwner().getSara().level && to.getName().contains("&") ? ComponentUtility.asComponent(to.getName()) : Component.text(to.getName()).color(NamedTextColor.GRAY));
 
             if (to.canPvP() && to.isMember(player ))
             {
@@ -175,6 +181,20 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerChangedWorld(PlayerChangedWorldEvent event)
     {
+        Player player = event.getPlayer();
+
+        if (VanilifeWorldManager.getJail().equals(player.getWorld()))
+        {
+            player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
+            return;
+        }
+
+        if (User.getInstance(player).getStatus() == UserStatus.JAILED && ! VanilifeWorldManager.getJail().equals(event.getPlayer().getWorld()))
+        {
+            player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
+            return;
+        }
+
         if (! (event.getFrom().getEnvironment() == World.Environment.THE_END && event.getPlayer().getWorld().getEnvironment() == World.Environment.NORMAL))
         {
             return;
@@ -187,7 +207,6 @@ public class PlayerListener implements Listener
             return;
         }
 
-        Player player = event.getPlayer();
         Location respawn = player.getRespawnLocation();
 
         if (respawn != null)
@@ -277,7 +296,7 @@ public class PlayerListener implements Listener
         Player player = event.getPlayer();
         User user = User.getInstance(player);
 
-        if (user.getStatus() != UserStatus.DEFAULT)
+        if (UserStatus.MUTED.level() <= user.getStatus().level())
         {
             player.sendMessage(Language.translate("msg.muted", player).color(NamedTextColor.RED));
             return;

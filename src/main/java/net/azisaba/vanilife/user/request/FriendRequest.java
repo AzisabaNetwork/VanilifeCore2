@@ -19,11 +19,11 @@ public class FriendRequest extends Request
         final int limit = (int) (this.getTicks() / 20);
 
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.friend.requested", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "limit=" + limit));
+        this.from.sendMessage(Language.translate("msg.friend.requested", this.from, "name=" + ComponentUtility.asString(this.toUser.getName()), "limit=" + limit));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
 
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.to.sendMessage(Language.translate("msg.friend.received", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.to.sendMessage(Language.translate("msg.friend.received", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
         this.to.sendMessage(Language.translate("msg.friend.received.details", this.to, "limit=" + limit)
                 .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/friend %s", from.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=/friend " + from.getName())))));
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
@@ -49,8 +49,8 @@ public class FriendRequest extends Request
 
         this.getFromUser().friend(this.toUser);
 
-        this.from.sendMessage(Language.translate("msg.friend.friended", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName())));
-        this.to.sendMessage(Language.translate("msg.friend.friended", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.from.sendMessage(Language.translate("msg.friend.friended", this.from, "name=" + ComponentUtility.asString(this.toUser.getName())));
+        this.to.sendMessage(Language.translate("msg.friend.friended", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FriendRequest extends Request
     {
         super.onTimeOver();
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.friend.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.getAsString(this.toUser.getName())));
+        this.from.sendMessage(Language.translate("msg.friend.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.asString(this.toUser.getName())));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 }

@@ -62,8 +62,8 @@ public class PlotSubscription implements ISubscription
     {
         user.unsubscribe(this);
         this.plot.delete();
-        this.plot.getOwner().sendNotice(ComponentUtility.getAsString(Language.translate("mail.unpaid.plot.subject", user)),
-                ComponentUtility.getAsString(Language.translate("mail.unpaid.plot.message", user,
+        this.plot.getOwner().sendNotice(ComponentUtility.asString(Language.translate("mail.unpaid.plot.subject", user)),
+                ComponentUtility.asString(Language.translate("mail.unpaid.plot.message", user,
                         "charge=" + this.getCost(),
                         "shortfall=" + Math.abs(this.getCost() - this.plot.getOwner().getMola()),
                         "balance=" + this.plot.getOwner().getMola())));

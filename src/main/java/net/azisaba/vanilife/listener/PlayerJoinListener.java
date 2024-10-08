@@ -8,7 +8,7 @@ import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.Skin;
-import net.azisaba.vanilife.util.ComponentUtility;
+import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.MojangAPI;
 import net.azisaba.vanilife.util.PlayerUtility;
 import net.azisaba.vanilife.util.UserUtility;
@@ -22,6 +22,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -175,6 +176,11 @@ public class PlayerJoinListener implements Listener
 
         event.joinMessage(null);
 
+        if (UserStatus.MUTED.level() <= user.getStatus().level())
+        {
+            return;
+        }
+
         if (Sara.$1000YEN.level <= user.getSara().level && user.getSara().isRank())
         {
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text(" >").color(NamedTextColor.AQUA)
@@ -273,6 +279,27 @@ public class PlayerJoinListener implements Listener
 
         event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         event.kickMessage(Component.text("Server does not allow connections…").color(NamedTextColor.RED));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void checkStatus(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+        User user = User.getInstance(player);
+
+        if (UserUtility.isModerator(user))
+        {
+            user.setStatus(UserStatus.DEFAULT);
+        }
+
+        if (user.getStatus() != UserStatus.JAILED)
+        {
+            player.setGameMode(GameMode.SURVIVAL);
+            return;
+        }
+
+        player.setGameMode(GameMode.ADVENTURE);
+        player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

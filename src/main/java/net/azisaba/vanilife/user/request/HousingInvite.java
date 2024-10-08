@@ -15,16 +15,16 @@ public class HousingInvite extends Request
 {
     public HousingInvite(@NotNull Housing from, @NotNull Player to)
     {
-        super(from.getUser().getAsPlayer(), to);
+        super(from.getUser().asPlayer(), to);
 
         final int limit = (int) this.getTicks() / 20;
 
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.housing.requested", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "limit=" + limit));
+        this.from.sendMessage(Language.translate("msg.housing.requested", this.from, "name=" + ComponentUtility.asString(this.toUser.getName()), "limit=" + limit));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
 
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.to.sendMessage(Language.translate("msg.housing.received", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.to.sendMessage(Language.translate("msg.housing.received", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
         this.to.sendMessage(Language.translate("msg.housing.received.details", this.to, "limit=" + limit)
                 .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/housing " + this.from.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=/housing " + this.from.getName()))));
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
@@ -46,7 +46,7 @@ public class HousingInvite extends Request
     public void onAccept()
     {
         super.onAccept();
-        this.from.sendMessage(Language.translate("msg.housing.accept", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName())));
+        this.from.sendMessage(Language.translate("msg.housing.accept", this.from, "name=" + ComponentUtility.asString(this.toUser.getName())));
     }
 
     @Override

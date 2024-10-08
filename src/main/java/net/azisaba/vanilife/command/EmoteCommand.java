@@ -7,7 +7,6 @@ import net.azisaba.vanilife.user.subscription.*;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,7 +49,7 @@ public class EmoteCommand implements CommandExecutor, TabCompleter
 
         if (! user.hasSubscription(emote))
         {
-            sender.sendMessage(Language.translate("cmd.emote.cant", player, "subscription=" + ComponentUtility.getAsString(emote.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.RED));
+            sender.sendMessage(Language.translate("cmd.emote.cant", player, "subscription=" + ComponentUtility.asString(emote.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
             return true;
         }
@@ -64,7 +63,7 @@ public class EmoteCommand implements CommandExecutor, TabCompleter
             }
         }.runTask(Vanilife.getPlugin());
 
-        sender.sendMessage(Language.translate("cmd.emote.used", player, "emote=" + ComponentUtility.getAsString(emote.getDisplayName(Language.getInstance(user)))));
+        sender.sendMessage(Language.translate("cmd.emote.used", player, "emote=" + ComponentUtility.asString(emote.getDisplayName(Language.getInstance(user)))));
         return true;
     }
 

@@ -59,7 +59,7 @@ public class UnsubscribeCommand implements CommandExecutor, TabCompleter
             public void init()
             {
                 this.confirmCode = this.getConfirmCode(6);
-                this.player.sendMessage(Language.translate("cmd.unsubscribe.check", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.GREEN));
+                this.player.sendMessage(Language.translate("cmd.unsubscribe.check", this.player, "subscription=" + ComponentUtility.asString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.GREEN));
                 this.player.sendMessage(Language.translate("cmd.unsubscribe.check.details", this.player, "code=" + this.confirmCode).color(NamedTextColor.YELLOW));
             }
 
@@ -71,11 +71,11 @@ public class UnsubscribeCommand implements CommandExecutor, TabCompleter
                 if (string.equals(this.confirmCode))
                 {
                     user.unsubscribe(subscription);
-                    sender.sendMessage(Language.translate("cmd.unsubscribe.unsubscribed", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.GREEN));
+                    sender.sendMessage(Language.translate("cmd.unsubscribe.unsubscribed", this.player, "subscription=" + ComponentUtility.asString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.GREEN));
                 }
                 else
                 {
-                    sender.sendMessage(Language.translate("cmd.unsubscribe.cancelled", this.player, "subscription=" + ComponentUtility.getAsString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.RED));
+                    sender.sendMessage(Language.translate("cmd.unsubscribe.cancelled", this.player, "subscription=" + ComponentUtility.asString(subscription.getDisplayName(Language.getInstance(user)))).color(NamedTextColor.RED));
                 }
             }
         };

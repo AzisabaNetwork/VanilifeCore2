@@ -72,9 +72,9 @@ public class PlotJoinSubcommand implements ISubcommand
             return;
         }
 
-        if (user.getRequests().stream().anyMatch(r -> r.match(PlotInvite.class, plot.getOwner().getAsPlayer())))
+        if (user.getRequests().stream().anyMatch(r -> r.match(PlotInvite.class, plot.getOwner().asPlayer())))
         {
-            user.getRequests().stream().filter(r -> r.match(PlotInvite.class, plot.getOwner().getAsPlayer())).toList().getFirst().onAccept();
+            user.getRequests().stream().filter(r -> r.match(PlotInvite.class, plot.getOwner().asPlayer())).toList().getFirst().onAccept();
             return;
         }
 

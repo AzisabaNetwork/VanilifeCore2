@@ -12,9 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -57,7 +55,7 @@ public class HousingListener implements Listener
             if (HousingPacks.registry().stream().anyMatch(pack -> pack.include(event.getBlock())))
             {
                 IHousingPack pack = HousingPacks.registry().stream().filter(p -> p.include(event.getBlock())).toList().getFirst();
-                player.sendMessage(Language.translate("housing.cant-place.how", player, "pack=" + ComponentUtility.getAsString(Language.translate("housing.pack." + pack.getName() + ".name", player))));
+                player.sendMessage(Language.translate("housing.cant-place.how", player, "pack=" + ComponentUtility.asString(Language.translate("housing.pack." + pack.getName() + ".name", player))));
             }
             else
             {

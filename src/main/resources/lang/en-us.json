@@ -388,6 +388,8 @@
     "mail.unpaid.message": "We were unable to charge the fee for this month's ${subscription}.\nThis subscription is currently cancelled.\n\nAmount due: ${charge}\nShortfall: ${shortfall}\nBalance at time of charge: ${balance} Mola",
     "mail.unpaid.plot.subject": "[Important] Failed to maintain plot",
     "mail.unpaid.plot.message": "${plot} has been deleted due to failure to charge the maintenance fee.\n\nAmount due: ${charge} Mola\nShortfall: ${shortfall} Mola\nBalance at time of charge: ${balance} Mola",
+    "mail.kurofuku.subject": "[Notification] Jail Permissions Granted",
+    "mail.kurofuku.message": "Thank you for your continued support of Azisaba.\nWe are pleased to inform you that Jail permissions have been granted.\nFrom now on, you will be able to jail players who violate the rules using the command: /jail <player> <details>.\n\nWe look forward to your continued support of Azisaba.",
 
     "cmd.block.cant-yourself": "You can't block yourself.",
     "cmd.block.already": "You have already blocked ${name}.",

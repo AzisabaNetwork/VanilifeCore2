@@ -71,7 +71,7 @@ public class VanilifeLinkCommand extends DiscordCommand
 
         if (user.isOnline())
         {
-            Player player = user.getAsPlayer();
+            Player player = user.asPlayer();
             player.sendMessage(Component.text(event.getUser().getEffectiveName() + " と紐づけしました！").color(NamedTextColor.GREEN));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         }

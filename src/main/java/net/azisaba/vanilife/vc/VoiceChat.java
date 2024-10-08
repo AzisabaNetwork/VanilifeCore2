@@ -131,7 +131,7 @@ public class VoiceChat
 
         for (User user : this.members)
         {
-            Location location = user.getAsPlayer().getLocation();
+            Location location = user.asPlayer().getLocation();
 
             xSum += location.getX();
             ySum += location.getY();
@@ -142,7 +142,7 @@ public class VoiceChat
         double yAverage = ySum / this.members.size();
         double zAverage = zSum / this.members.size();
 
-        return new Location(this.members.getFirst().getAsPlayer().getWorld(), xAverage, yAverage, zAverage);
+        return new Location(this.members.getFirst().asPlayer().getWorld(), xAverage, yAverage, zAverage);
     }
 
     public boolean isMember(User user)
@@ -167,7 +167,7 @@ public class VoiceChat
             return;
         }
 
-        if (! this.members.isEmpty() && this.members.getFirst().getAsPlayer().getWorld() != user.getAsPlayer().getWorld())
+        if (! this.members.isEmpty() && this.members.getFirst().asPlayer().getWorld() != user.asPlayer().getWorld())
         {
             return;
         }

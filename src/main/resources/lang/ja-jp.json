@@ -388,6 +388,8 @@
     "mail.unpaid.message": "${subscription} の 今月分の料金を引き落としできませんでした。\n現在このサブスクリプションは解約されています。\n\n請求額: ${charge}\n不足額: ${shortfall}\n引き落とし時残高: ${balance} Mola",
     "mail.unpaid.plot.subject": "[重要] プロットを維持できませんでした",
     "mail.unpaid.plot.message": "${plot} は、維持費の引き落としに失敗したため削除されました。\n\n請求額: ${charge} Mola\n不足額: ${shortfall} Mola\n引き落とし時残高: ${balance} Mola",
+    "mail.kurofuku.subject": "[通知] Jail 権限が付与されました",
+    "mail.kurofuku.message": "平素よりアジ鯖に格別のご高配を賜り厚く御礼申し上げます。\nこの度、Jail 権限を付与致しましたので通知させて頂きます。\n今後は、/jail <プレイヤー> <詳細> を使用してルールに違反するプレイヤーを Jail することが可能となります。\n\n今度ともどうぞアジ鯖にご支援を賜りますようお願い申し上げます。",
 
     "cmd.block.cant-yourself": "自分自身をブロックすることはできません",
     "cmd.block.already": "あなたは既に ${name} をブロックしています",

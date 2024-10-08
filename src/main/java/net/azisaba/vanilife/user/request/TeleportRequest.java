@@ -20,11 +20,11 @@ public class TeleportRequest extends Request
         final int limit = (int) this.getTicks() / 20;
 
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.teleport.requested", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName()), "limit=" + limit));
+        this.from.sendMessage(Language.translate("msg.teleport.requested", this.from, "name=" + ComponentUtility.asString(this.toUser.getName()), "limit=" + limit));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
 
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.to.sendMessage(Language.translate("msg.teleport.received", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.to.sendMessage(Language.translate("msg.teleport.received", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
         this.to.sendMessage(Language.translate("msg.teleport.received.details", this.to, "limit=" + limit)
                 .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("/tpa %s", from.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.from, "command=/tpa " + this.from.getName())))));
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
@@ -50,8 +50,8 @@ public class TeleportRequest extends Request
 
         this.from.teleport(this.to.getLocation());
 
-        this.from.sendMessage(Language.translate("msg.teleport.teleported", this.from, "name=" + ComponentUtility.getAsString(this.toUser.getName())));
-        this.to.sendMessage(Language.translate("msg.teleport.accept", this.to, "name=" + ComponentUtility.getAsString(this.fromUser.getName())));
+        this.from.sendMessage(Language.translate("msg.teleport.teleported", this.from, "name=" + ComponentUtility.asString(this.toUser.getName())));
+        this.to.sendMessage(Language.translate("msg.teleport.accept", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
 
         this.from.playSound(this.from, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.2f);
         this.to.playSound(this.to, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.2f);
@@ -62,7 +62,7 @@ public class TeleportRequest extends Request
     {
         super.onTimeOver();
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.teleport.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.getAsString(this.toUser.getName())));
+        this.from.sendMessage(Language.translate("msg.teleport.time-over", this.from, "limit=" + (this.getTicks() / 20), "name=" + ComponentUtility.asString(this.toUser.getName())));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 }

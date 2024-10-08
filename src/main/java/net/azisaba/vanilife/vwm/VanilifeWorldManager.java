@@ -4,11 +4,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.housing.HousingTime;
+import net.azisaba.vanilife.housing.world.VoidChunkGenerator;
+import net.azisaba.vanilife.util.LevelUtility;
 import net.azisaba.vanilife.util.ResourceUtility;
 import net.azisaba.vanilife.util.SeasonUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
+import org.bukkit.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +22,8 @@ import java.util.Calendar;
 public class VanilifeWorldManager
 {
     private static JsonArray config = ResourceUtility.getJsonResource("vwm/vwm.json").getAsJsonArray();
+
+    private static World jail;
 
     private static int latestVersion;
 
@@ -29,18 +37,30 @@ public class VanilifeWorldManager
         VanilifeWorldManager.latestVersion = latestVersion;
     }
 
-    public static JsonArray getConfig()
+    public static @NotNull JsonArray getConfig()
     {
         return VanilifeWorldManager.config;
     }
 
-    public static void setConfig(JsonArray config)
+    public static void setConfig(@NotNull JsonArray config)
     {
         VanilifeWorldManager.config = config;
         ResourceUtility.save("vwm/vwm.json", VanilifeWorldManager.config);
     }
 
-    public static JsonObject getWorldProperties(String name)
+    public static @NotNull World getJail()
+    {
+        return VanilifeWorldManager.jail;
+    }
+
+    public static boolean hasUpdate()
+    {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        SeasonUtility.Season season = SeasonUtility.getSeason();
+        return VanilifeWorld.getInstance(year + "-" + season.name().toLowerCase()) == null;
+    }
+
+    public static JsonObject read(@NotNull String name)
     {
         for (JsonElement properties : VanilifeWorldManager.config)
         {
@@ -58,14 +78,14 @@ public class VanilifeWorldManager
         return null;
     }
 
-    public static JsonObject getWorldProperties(VanilifeWorld world)
+    public static JsonObject read(@NotNull VanilifeWorld world)
     {
-        return VanilifeWorldManager.getWorldProperties(world.getName());
+        return VanilifeWorldManager.read(world.getName());
     }
 
-    public static void setWorldProperties(String name, JsonObject properties)
+    public static void write(@NotNull String name, JsonObject properties)
     {
-        VanilifeWorldManager.config.remove(VanilifeWorldManager.getWorldProperties(name));
+        VanilifeWorldManager.config.remove(VanilifeWorldManager.read(name));
 
         if (properties != null)
         {
@@ -75,16 +95,9 @@ public class VanilifeWorldManager
         VanilifeWorldManager.setConfig(VanilifeWorldManager.config);
     }
 
-    public static void setWorldProperties(VanilifeWorld world, JsonObject properties)
+    public static void write(@NotNull VanilifeWorld world, JsonObject properties)
     {
-        VanilifeWorldManager.setWorldProperties(world.getName(), properties);
-    }
-
-    public static boolean hasUpdate()
-    {
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        SeasonUtility.Season season = SeasonUtility.getSeason();
-        return VanilifeWorld.getInstance(year + "-" + season.name().toLowerCase()) == null;
+        VanilifeWorldManager.write(world.getName(), properties);
     }
 
     public static void backup()
@@ -136,5 +149,29 @@ public class VanilifeWorldManager
             VanilifeWorld vw = new VanilifeWorld(properties.get("name").getAsString());
             VanilifeWorldManager.setLatestVersion(Math.max(vw.getVersion(), VanilifeWorldManager.getLatestVersion()));
         }
+
+        VanilifeWorldManager.jail = Bukkit.getWorld("jail");
+
+        if (VanilifeWorldManager.jail != null)
+        {
+            return;
+        }
+
+        WorldCreator creator = new WorldCreator("jail");
+        creator.generator(new VoidChunkGenerator());
+        VanilifeWorldManager.jail = creator.createWorld();
+
+        if (VanilifeWorldManager.jail == null)
+        {
+            return;
+        }
+
+        VanilifeWorldManager.jail.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        VanilifeWorldManager.jail.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        VanilifeWorldManager.jail.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        VanilifeWorldManager.jail.setTime(HousingTime.MIDNIGHT.getTime());
+        VanilifeWorldManager.jail.setSpawnLocation(new Location(VanilifeWorldManager.jail, 0.5, 0, 0.5, 90f, 0f));
+
+        LevelUtility.generate(new Location(VanilifeWorldManager.jail, 0, 9, -1), "jail.nbt");
     }
 }

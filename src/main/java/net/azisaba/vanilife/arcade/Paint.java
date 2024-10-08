@@ -49,7 +49,7 @@ public class Paint implements Listener
 
         if (user.getSara().level < brush.level().level)
         {
-            player.sendMessage(Language.translate("paint.permission-error", player, "permission=" + ComponentUtility.getAsString(brush.level().role)));
+            player.sendMessage(Language.translate("paint.permission-error", player, "permission=" + ComponentUtility.asString(brush.level().role)));
             player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
             return;
         }

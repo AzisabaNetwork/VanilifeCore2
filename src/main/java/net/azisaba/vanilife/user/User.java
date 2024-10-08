@@ -270,6 +270,7 @@ public class User
 
                 con.close();
 
+                this.write("kurofuku", false);
                 this.write("settings.ime", true);
                 this.write("settings.chat", true);
             }
@@ -293,7 +294,7 @@ public class User
     public @NotNull Component getName()
     {
         return this.getSara().role.append(Sara.$50000YEN.level < this.getSara().level && this.getNick().contains("&") ?
-                ComponentUtility.getAsComponent(this.getNick()) : Component.text(this.getNick(), this.getSara().getColor()));
+                ComponentUtility.asComponent(this.getNick()) : Component.text(this.getNick(), this.getSara().getColor()));
     }
 
     public @NotNull Component getName(@NotNull User user)
@@ -580,7 +581,7 @@ public class User
 
     public void setMola(int mola, @NotNull String category, @NotNull TextColor color)
     {
-        Player player = this.getAsPlayer();
+        Player player = this.asPlayer();
 
         if (player != null)
         {
@@ -687,7 +688,7 @@ public class User
 
         if (this.isOnline() && this.skin != null)
         {
-            this.skin.use(this.getAsPlayer());
+            this.skin.use(this.asPlayer());
         }
 
         try
@@ -899,12 +900,17 @@ public class User
         return this.requests;
     }
 
-    public Player getAsPlayer()
+    public void setKurofuku(boolean kurofuku)
+    {
+        this.write("kurofuku", kurofuku);
+    }
+
+    public Player asPlayer()
     {
         return Bukkit.getPlayer(this.id);
     }
 
-    public @NotNull OfflinePlayer getAsOfflinePlayer()
+    public @NotNull OfflinePlayer asOfflinePlayer()
     {
         return Bukkit.getOfflinePlayer(this.id);
     }
@@ -924,9 +930,14 @@ public class User
         return this.blocks.contains(user);
     }
 
+    public boolean isKurofuku()
+    {
+        return Sara.MOD.level <= this.sara.level || this.read("kurofuku").getAsBoolean();
+    }
+
     public boolean inHousing()
     {
-        return this.isOnline() && this.getAsPlayer().getWorld().equals(Housing.getWorld());
+        return this.isOnline() && this.asPlayer().getWorld().equals(Housing.getWorld());
     }
 
     public boolean hasOsatou()
