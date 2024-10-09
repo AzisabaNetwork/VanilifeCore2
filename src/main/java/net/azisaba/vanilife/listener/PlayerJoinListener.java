@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
+import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
@@ -17,6 +18,7 @@ import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -277,6 +279,99 @@ public class PlayerJoinListener implements Listener
         player.sendMessage(Component.text("通知: 未処理の変換リクエストが " + unconfirmed + " 件届いています！").color(NamedTextColor.GREEN)
                 .append(Component.text("こちらをクリックして確認").color(NamedTextColor.GOLD).hoverEvent(HoverEvent.showText(Component.text("クリックして /gomenne requests を実行"))).clickEvent(ClickEvent.runCommand("/vanilife:gomenne requests"))));
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void sendReview(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+
+        if (! UserUtility.isModerator(player))
+        {
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
+            int review = 0;
+            int materials = 0;
+
+            int one = 0;
+            int two = 0;
+            int three = 0;
+            int four = 0;
+            int five = 0;
+
+            for (User user : User.getInstances())
+            {
+                if (user.read("review.score") == null || user.read("review.score").getAsInt() < 0)
+                {
+                    continue;
+                }
+
+                int score = user.read("review.score").getAsInt();
+
+                switch (score)
+                {
+                    case 1:
+                        one += 1;
+                        break;
+                    case 2:
+                        two += 1;
+                        break;
+                    case 3:
+                        three += 1;
+                        break;
+                    case 4:
+                        four += 1;
+                        break;
+                    case 5:
+                        five += 1;
+                        break;
+                }
+
+                review += score;
+                materials ++;
+            }
+
+            double oneRate = 0;
+            double twoRate = 0;
+            double threeRate = 0;
+            double fourRate = 0;
+            double fiveRate = 0;
+
+            if (0 < materials)
+            {
+                review = review / materials;
+
+                oneRate = 0 < one ? ((double) materials / one) * 100 : 0;
+                twoRate = 0 < two ? ((double) materials / two) * 100 : 0;
+                threeRate = 0 < three ? ((double) materials / three) * 100 : 0;
+                fourRate = 0 < four ? ((double) materials / four) * 100 : 0;
+                fiveRate = 0 < five ? ((double) materials / five) * 100 : 0;
+            }
+
+            TextComponent.Builder stars = Component.text();
+
+            for (int i = 1; i <= 5; i ++)
+            {
+                stars.append(Component.text(i <= review ? "★" : "☆").color(i <= review ? NamedTextColor.YELLOW : NamedTextColor.DARK_GRAY));
+            }
+
+            stars.append(Component.text(" " + review));
+
+            player.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.DARK_GRAY));
+            player.sendMessage(Component.text(CLI.getSpaces(12)).append(Component.text("ユーザー評価")));
+            player.sendMessage(stars.build());
+            player.sendMessage(Component.text().build());
+            player.sendMessage(Component.text("★1: ").color(NamedTextColor.YELLOW).append(Component.text(oneRate + "% (" + one + "件)").color(NamedTextColor.GRAY)));
+            player.sendMessage(Component.text("★2: ").color(NamedTextColor.YELLOW).append(Component.text(twoRate + "% (" + two + "件)").color(NamedTextColor.GRAY)));
+            player.sendMessage(Component.text("★3: ").color(NamedTextColor.YELLOW).append(Component.text(threeRate + "% (" + three + "件)").color(NamedTextColor.GRAY)));
+            player.sendMessage(Component.text("★4: ").color(NamedTextColor.YELLOW).append(Component.text(fourRate + "% (" + four + "件)").color(NamedTextColor.GRAY)));
+            player.sendMessage(Component.text("★5: ").color(NamedTextColor.YELLOW).append(Component.text(fiveRate + "% (" + five + "件)").color(NamedTextColor.GRAY)));
+            player.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.DARK_GRAY));
+
+            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

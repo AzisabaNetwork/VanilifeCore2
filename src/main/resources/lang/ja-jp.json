@@ -626,6 +626,11 @@
 
     "paint.permission-error": "&cこの色をペイントするには &r${permission}&r&c以上の皿が必要です。/store または azisaba.buycraft.net から購入！",
 
+    "review.request": "よろしければ、ばにらいふ２！の評価をお聞かせください",
+    "review.cant": "ごめんなさい！現在レビューを送信することができません",
+    "review.out-of-range": "1～5の範囲内の整数を指定してください",
+    "review.thank-you": "ご協力ありがとうございました！頂いたレビューをもとに今後も改善に努めてまいります。改善点・アイデアをお持ちでしたら、/feedback からお気軽にお寄せください。",
+
     "trade.hold": "&aTrade が成立しました",
     "trade.cancelled": "&cTrade はキャンセルされました",
     "trade.reject": "&c拒否",

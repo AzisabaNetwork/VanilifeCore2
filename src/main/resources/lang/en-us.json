@@ -626,6 +626,11 @@
 
     "paint.permission-error": "&cYou need a plate of at least &r${permission}&r&cto paint this color. Purchase from /store or azisaba.buycraft.net!",
 
+    "review.request": "If you don't mind, please share your rating for Vanilife2!",
+    "review.cant": "I'm sorry! We are currently unable to send reviews.",
+    "review.out-of-range": "Please specify an integer between 1 and 5.",
+    "review.thank-you": "Thank you for your cooperation! We will continue to improve based on your reviews. If you have any suggestions or ideas, please feel free to share them at /feedback.",
+
     "trade.hold": "&aTrade has been approved.",
     "trade.cancelled": "&cTrade has been cancelled.",
     "trade.reject": "&cReject",

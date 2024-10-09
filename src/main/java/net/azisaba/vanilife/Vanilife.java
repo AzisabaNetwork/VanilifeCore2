@@ -25,6 +25,7 @@ import net.azisaba.vanilife.listener.*;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.runnable.CacheClearRunnable;
 import net.azisaba.vanilife.runnable.PlayingRewardRunnable;
+import net.azisaba.vanilife.runnable.ReviewRunnable;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.subscription.RichEmoteSubscription;
@@ -222,6 +223,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("ptp").setExecutor(new PtpCommand());
         this.getCommand("realname").setExecutor(new RealNameCommand());
         this.getCommand("report").setExecutor(new ReportCommand());
+        this.getCommand("review").setExecutor(new ReviewCommand());
         this.getCommand("rtp").setExecutor(new RtpCommand());
         this.getCommand("sara").setExecutor(new SaraCommand());
         this.getCommand("service").setExecutor(new ServiceCommand());
@@ -288,6 +290,7 @@ public final class Vanilife extends JavaPlugin
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
         new PlayingRewardRunnable().runTask(this);
+        new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 30);
         new VoiceChatRunnable().runTaskTimerAsynchronously(this, 0L, 20L * 2);
 
         Plugin coreprotectPlugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
