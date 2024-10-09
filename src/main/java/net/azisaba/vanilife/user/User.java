@@ -16,6 +16,8 @@ import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.vwm.VanilifeWorld;
+import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -24,6 +26,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -39,7 +42,7 @@ import java.util.UUID;
 
 public class User
 {
-    private static final ArrayList<User> instances = new ArrayList<>();
+    private static final List<User> instances = new ArrayList<>();
 
     public static User getInstance(@NotNull UUID id)
     {
@@ -68,7 +71,7 @@ public class User
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    public static ArrayList<User> getInstances()
+    public static List<User> getInstances()
     {
         return User.instances;
     }
@@ -270,7 +273,6 @@ public class User
 
                 con.close();
 
-                this.write("kurofuku", false);
                 this.write("settings.ime", true);
                 this.write("settings.chat", true);
             }
@@ -900,11 +902,6 @@ public class User
         return this.requests;
     }
 
-    public void setKurofuku(boolean kurofuku)
-    {
-        this.write("kurofuku", kurofuku);
-    }
-
     public Player asPlayer()
     {
         return Bukkit.getPlayer(this.id);
@@ -920,6 +917,11 @@ public class User
         return Bukkit.getOfflinePlayer(this.id).isOnline();
     }
 
+    public boolean isJailed()
+    {
+        return this.status == UserStatus.JAILED;
+    }
+
     public boolean isFriend(User user)
     {
         return this.friends.contains(user);
@@ -928,11 +930,6 @@ public class User
     public boolean isBlock(User user)
     {
         return this.blocks.contains(user);
-    }
-
-    public boolean isKurofuku()
-    {
-        return Sara.MOD.level <= this.sara.level || this.read("kurofuku").getAsBoolean();
     }
 
     public boolean inHousing()
@@ -1092,6 +1089,48 @@ public class User
             Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to delete block record: " + e.getMessage()).color(NamedTextColor.RED));
         }
+    }
+
+    public void jail()
+    {
+        this.setStatus(UserStatus.JAILED);
+
+        if (! this.isOnline())
+        {
+            return;
+        }
+
+        Player player = this.asPlayer();
+
+        Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
+            player.setGameMode(GameMode.ADVENTURE);
+            player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
+            player.setHealth(20);
+            player.setFoodLevel(20);
+        });
+    }
+
+    public void unjail()
+    {
+        this.setStatus(UserStatus.DEFAULT);
+
+        if (! this.isOnline())
+        {
+            return;
+        }
+
+        Player player = this.asPlayer();
+        VanilifeWorld world = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
+
+        if (world == null)
+        {
+            return;
+        }
+
+        Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
+            player.setGameMode(GameMode.SURVIVAL);
+            world.getTeleporter().teleport(player);
+        });
     }
 
     public void subscribe(@NotNull ISubscription subscription)

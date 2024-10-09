@@ -16,15 +16,16 @@ import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class Mail
 {
-    private static final ArrayList<Mail> instances = new ArrayList<>();
+    private static final List<Mail> instances = new ArrayList<>();
 
     public static Mail getInstance(UUID id)
     {
-        ArrayList<Mail> filteredInstances = new ArrayList<>(Mail.instances.stream().filter(i -> i.getId().equals(id)).toList());
+        List<Mail> filteredInstances = new ArrayList<>(Mail.instances.stream().filter(i -> i.getId().equals(id)).toList());
         return filteredInstances.isEmpty() ? new Mail(id) : filteredInstances.getFirst();
     }
 

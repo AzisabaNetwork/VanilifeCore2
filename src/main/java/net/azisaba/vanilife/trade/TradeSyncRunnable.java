@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TradeSyncRunnable extends BukkitRunnable
 {
@@ -25,7 +26,7 @@ public class TradeSyncRunnable extends BukkitRunnable
 
     private void sync(@NotNull TradeUI from)
     {
-        ArrayList<ItemStack> stacks = new ArrayList<>();
+        List<ItemStack> stacks = new ArrayList<>();
 
         for (int i : Trade.CONTROL)
         {

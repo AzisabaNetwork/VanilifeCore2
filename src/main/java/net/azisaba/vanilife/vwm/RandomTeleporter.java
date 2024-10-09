@@ -2,6 +2,7 @@ package net.azisaba.vanilife.vwm;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
+import net.azisaba.vanilife.ui.Language;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -17,7 +18,7 @@ public class RandomTeleporter
 {
     private final World world;
     private final int bound;
-    private final ArrayList<Material> dangerous = new ArrayList<>();
+    private final List<Material> dangerous = new ArrayList<>();
 
     public RandomTeleporter(World world, int bound, Material... dangerous)
     {
@@ -37,7 +38,7 @@ public class RandomTeleporter
 
                 Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
                     player.teleport(location);
-                    player.sendMessage(Component.text("ランダムな位置にテレポートしました！").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+                    player.sendMessage(Language.translate("cmd.rtp.teleported", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
                     player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.0f);
                 });
             }

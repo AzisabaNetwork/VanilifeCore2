@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UserUtility
@@ -33,9 +34,9 @@ public class UserUtility
         return (sender.isOp()) ? Sara.ADMIN : Sara.DEFAULT;
     }
 
-    public static ArrayList<Mail> getMails(User user)
+    public static List<Mail> getMails(User user)
     {
-        ArrayList<Mail> mails = new ArrayList<>();
+        List<Mail> mails = new ArrayList<>();
 
         try
         {

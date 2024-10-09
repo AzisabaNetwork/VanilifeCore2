@@ -184,7 +184,7 @@ public class PlayerListener implements Listener
     {
         Player player = event.getPlayer();
 
-        if (VanilifeWorldManager.getJail().equals(player.getWorld()))
+        if (User.getInstance(player).isJailed() || VanilifeWorldManager.getJail().equals(player.getWorld()))
         {
             player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
             return;

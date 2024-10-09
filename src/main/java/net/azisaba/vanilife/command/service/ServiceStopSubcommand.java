@@ -53,7 +53,7 @@ public class ServiceStopSubcommand implements ISubcommand
     @NotNull
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {

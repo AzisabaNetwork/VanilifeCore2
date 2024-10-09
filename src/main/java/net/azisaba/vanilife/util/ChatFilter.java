@@ -13,10 +13,11 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatFilter
 {
-    private final ArrayList<String> filters = new ArrayList<>();
+    private final List<String> filters = new ArrayList<>();
 
     public ChatFilter()
     {
@@ -43,7 +44,7 @@ public class ChatFilter
         }
     }
 
-    public ArrayList<String> getFilters()
+    public List<String> getFilters()
     {
         return this.filters;
     }

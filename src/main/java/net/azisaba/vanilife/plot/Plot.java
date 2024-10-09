@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 
 public class Plot
 {
-    private static final ArrayList<Plot> instances = new ArrayList<>();
+    private static final List<Plot> instances = new ArrayList<>();
 
     public static Plot getInstance(String name)
     {

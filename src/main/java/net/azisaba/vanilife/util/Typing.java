@@ -4,14 +4,15 @@ import net.azisaba.vanilife.Vanilife;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Typing
 {
-    private static final ArrayList<Typing> instances = new ArrayList<>();
+    private static final List<Typing> instances = new ArrayList<>();
 
     public static Typing getInstance(Player player)
     {
-        ArrayList<Typing> filteredInstances = new ArrayList<>(Typing.instances.stream().filter(i -> i.getPlayer() == player).toList());
+        List<Typing> filteredInstances = new ArrayList<>(Typing.instances.stream().filter(i -> i.getPlayer() == player).toList());
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 

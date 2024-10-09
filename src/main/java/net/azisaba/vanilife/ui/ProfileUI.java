@@ -48,7 +48,7 @@ public class ProfileUI extends InventoryUI
             ItemMeta headMeta = headStack.getItemMeta();
             headMeta.displayName(this.profile.getName().decoration(TextDecoration.ITALIC, false));
 
-            ArrayList<Component> headLore = new ArrayList<>();
+            List<Component> headLore = new ArrayList<>();
             StringBuilder sb = new StringBuilder();
 
             if (this.profile.getBio() != null)

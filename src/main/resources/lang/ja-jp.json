@@ -388,8 +388,6 @@
     "mail.unpaid.message": "${subscription} の 今月分の料金を引き落としできませんでした。\n現在このサブスクリプションは解約されています。\n\n請求額: ${charge}\n不足額: ${shortfall}\n引き落とし時残高: ${balance} Mola",
     "mail.unpaid.plot.subject": "[重要] プロットを維持できませんでした",
     "mail.unpaid.plot.message": "${plot} は、維持費の引き落としに失敗したため削除されました。\n\n請求額: ${charge} Mola\n不足額: ${shortfall} Mola\n引き落とし時残高: ${balance} Mola",
-    "mail.kurofuku.subject": "[通知] Jail 権限が付与されました",
-    "mail.kurofuku.message": "平素よりアジ鯖に格別のご高配を賜り厚く御礼申し上げます。\nこの度、Jail 権限を付与致しましたので通知させて頂きます。\n今後は、/jail <プレイヤー> <詳細> を使用してルールに違反するプレイヤーを Jail することが可能となります。\n\n今度ともどうぞアジ鯖にご支援を賜りますようお願い申し上げます。",
 
     "cmd.block.cant-yourself": "自分自身をブロックすることはできません",
     "cmd.block.already": "あなたは既に ${name} をブロックしています",
@@ -488,6 +486,7 @@
 
     "cmd.rtp.not-found": "ワールドが見つかりませんでした",
     "cmd.rtp.searching": "テレポート可能な場所を検索中…",
+    "cmd.rtp.teleported": "ランダムな位置にテレポートしました！",
 
     "cmd.skin.not-found": "スキンが見つかりませんでした",
     "cmd.skin.already": "既にこのスキンを選択しています",
@@ -600,6 +599,22 @@
     "housing.pack.midnight.name": "Midnight",
     "housing.pack.midnight.details.1": "火を囲ってフレンドとマシュマロを焼いたり…",
     "housing.pack.midnight.details.2": "夜を過ごすのに最適です！",
+
+    "jail.limit-under": "詳細は8文字以上で入力してください",
+    "jail.limit-over": "詳細は30文字以内で入力してください",
+    "jail.cant": "このプレイヤーを Jail することはできません",
+    "jail.cant-yourself": "タイプミスですか？自分自身を Jail することはできません",
+    "jail.time-over": "${target} への Jail 投票は終了しました",
+    "jail.already": "あなたは既にこの Jail に投票しています",
+    "jail.voted": "投票を行いました",
+    "jail.cancelled": "投票をキャンセルしました",
+    "jail.jailed": "A player has been removed from the server.",
+    "jail.title": "Jail 投票",
+    "jail.subtitle": "はルールに違反していますか？",
+    "jail.controller.details.1": "${target} にルールの違反が見受けられる場合、投票をしてください",
+    "jail.controller.details.2": "投票の制限時間は ${limit} 秒です",
+    "jail.controller.vote": "こちらをクリックして投票",
+    "jail.controller.vote.hover": "ルール違反だと思われる場合にはクリックしてください",
 
     "jnkn.title": "JANKEN",
     "jnkn.result.victory": "勝ち！",

@@ -16,7 +16,6 @@ import net.azisaba.vanilife.command.discord.VanilifeLinkCommand;
 import net.azisaba.vanilife.command.discord.VanilifeUnlinkCommand;
 import net.azisaba.vanilife.command.filter.FilterCommand;
 import net.azisaba.vanilife.command.gomenne.GomenneCommand;
-import net.azisaba.vanilife.command.kurofuku.KurofukuCommand;
 import net.azisaba.vanilife.command.wallet.WalletCommand;
 import net.azisaba.vanilife.command.service.ServiceCommand;
 import net.azisaba.vanilife.entity.VanilifeEntityListener;
@@ -211,7 +210,6 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("jail").setExecutor(new JailCommand());
         this.getCommand("ime").setExecutor(new GomenneCommand());
         this.getCommand("jnkn").setExecutor(new JnknCommand());
-        this.getCommand("kurofuku").setExecutor(new KurofukuCommand());
         this.getCommand("language").setExecutor(new LanguageCommand());
         this.getCommand("mail").setExecutor(new MailCommand());
         this.getCommand("mute").setExecutor(new MuteCommand());

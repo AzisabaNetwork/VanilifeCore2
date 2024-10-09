@@ -3,18 +3,19 @@ package net.azisaba.vanilife.util;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Materials
 {
-    public static final ArrayList<Material> MINING = new ArrayList<>();
+    public static final List<Material> MINING = new ArrayList<>();
     
-    public static final ArrayList<Material> ORES = new ArrayList<>();
+    public static final List<Material> ORES = new ArrayList<>();
 
-    public static final ArrayList<Material> LOGGING = new ArrayList<>();
+    public static final List<Material> LOGGING = new ArrayList<>();
 
-    public static final ArrayList<Material> SEICHI = new ArrayList<>();
+    public static final List<Material> SEICHI = new ArrayList<>();
 
-    public static final ArrayList<Material> FARMING = new ArrayList<>();
+    public static final List<Material> FARMING = new ArrayList<>();
 
     static
     {

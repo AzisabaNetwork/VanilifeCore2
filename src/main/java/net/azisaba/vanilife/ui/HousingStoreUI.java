@@ -162,7 +162,7 @@ public class HousingStoreUI extends InventoryUI
         this.player.closeInventory();
 
         this.player.sendMessage(Language.translate("housing.pack.bought", this.player, "pack=" + ComponentUtility.asString(Language.translate("housing.pack" + pack.getName() + ".name", this.player))));
-        this.player.playSound(this.player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+        this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
 
         housing.addPack(pack);
         user.setMola(user.getMola() - pack.getCost());

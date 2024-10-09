@@ -64,7 +64,7 @@ public class SubscribeCommand implements CommandExecutor, TabCompleter
         user.setMola(user.getMola() - cost);
         user.subscribe(subscription);
         sender.sendMessage(subscription.getDisplayName(Language.getInstance(user)).color(NamedTextColor.GOLD).append(Component.text(" を購入しました").color(NamedTextColor.GREEN)).append(Component.text(String.format(" (%s Mola × %s %%)", subscription.getCost(), (int) (rest * 100))).color(NamedTextColor.GRAY)));
-        player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 0.9f);
+        player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
         return true;
     }
 

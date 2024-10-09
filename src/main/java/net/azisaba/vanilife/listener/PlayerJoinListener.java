@@ -302,14 +302,14 @@ public class PlayerJoinListener implements Listener
             user.setStatus(UserStatus.DEFAULT);
         }
 
-        if (user.getStatus() != UserStatus.JAILED)
+        if (! user.isJailed())
         {
-            player.setHealth(20);
-            player.setFoodLevel(20);
             player.setGameMode(GameMode.SURVIVAL);
             return;
         }
 
+        player.setHealth(20);
+        player.setFoodLevel(20);
         player.setGameMode(GameMode.ADVENTURE);
         player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
     }

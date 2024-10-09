@@ -25,27 +25,27 @@ import java.util.List;
 
 public class VanilifeWorld
 {
-    private static final ArrayList<VanilifeWorld> instances = new ArrayList<>();
+    private static final List<VanilifeWorld> instances = new ArrayList<>();
 
     public static VanilifeWorld getInstance(String name)
     {
-        ArrayList<VanilifeWorld> filteredInstances = new ArrayList<>(VanilifeWorld.instances.stream().filter(i -> i.getName().equals(name)).toList());
+        List<VanilifeWorld> filteredInstances = new ArrayList<>(VanilifeWorld.instances.stream().filter(i -> i.getName().equals(name)).toList());
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
     public static VanilifeWorld getInstance(World world)
     {
-        ArrayList<VanilifeWorld> filteredInstances = new ArrayList<>(VanilifeWorld.instances.stream().filter(i -> i.contains(world)).toList());
+        List<VanilifeWorld> filteredInstances = new ArrayList<>(VanilifeWorld.instances.stream().filter(i -> i.contains(world)).toList());
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
     public static VanilifeWorld getInstance(int version)
     {
-        ArrayList<VanilifeWorld> filteredInstances = new ArrayList<>(VanilifeWorld.instances.stream().filter(i -> i.getVersion() == version).toList());
+        List<VanilifeWorld> filteredInstances = new ArrayList<>(VanilifeWorld.instances.stream().filter(i -> i.getVersion() == version).toList());
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    public static ArrayList<VanilifeWorld> getInstances()
+    public static List<VanilifeWorld> getInstances()
     {
         return VanilifeWorld.instances;
     }
