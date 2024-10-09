@@ -21,6 +21,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Jail
 {
@@ -32,7 +35,7 @@ public class Jail
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    private final List<Player> electors = new ArrayList<>();
+    private final List<Player> electors;
     private final List<Player> voters = new ArrayList<>();
 
     private final User target;
@@ -45,9 +48,13 @@ public class Jail
 
         Jail.instances.add(this);
 
-        Bukkit.getOnlinePlayers().stream()
-                .filter(player -> ! Afk.isAfk(player) && ! player.getUniqueId().equals(this.target.getId()))
-                .forEach(this.electors::add);
+        this.electors = new ArrayList<>(Bukkit.getOnlinePlayers().stream()
+                .filter(player -> ! player.getUniqueId().equals(this.target.getId()))
+                .collect(Collectors.toMap(
+                        player -> Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress(),
+                        player -> player,
+                        (existing, replacement) -> existing
+                )).values());
 
         Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), this::onEnd, this.getTicks());
 
