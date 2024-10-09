@@ -49,7 +49,7 @@ public class Jail
         Jail.instances.add(this);
 
         this.electors = new ArrayList<>(Bukkit.getOnlinePlayers().stream()
-                .filter(player -> ! player.getUniqueId().equals(this.target.getId()))
+                .filter(player -> ! Afk.isAfk(player) && ! player.getUniqueId().equals(this.target.getId()))
                 .collect(Collectors.toMap(
                         player -> Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress(),
                         player -> player,
