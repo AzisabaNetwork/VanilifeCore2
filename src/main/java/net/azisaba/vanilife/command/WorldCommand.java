@@ -1,6 +1,8 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.SeasonUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
@@ -40,6 +42,13 @@ public class WorldCommand implements CommandExecutor, TabCompleter
         if (args.length != 1)
         {
             sender.sendMessage(Component.text("Correct syntax: /world <world>").color(NamedTextColor.RED));
+            return true;
+        }
+
+        User user = User.getInstance(player);
+
+        if (user.getStatus() == UserStatus.JAILED)
+        {
             return true;
         }
 

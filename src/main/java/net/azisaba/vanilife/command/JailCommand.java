@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -91,7 +92,12 @@ public class JailCommand implements CommandExecutor, TabCompleter
 
             if (target.isOnline())
             {
-                target.asPlayer().teleportAsync(VanilifeWorldManager.getJail().getSpawnLocation());
+                Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
+                    target.asPlayer().setHealth(20);
+                    target.asPlayer().setFoodLevel(20);
+                    target.asPlayer().setGameMode(GameMode.ADVENTURE);
+                    target.asPlayer().teleport(VanilifeWorldManager.getJail().getSpawnLocation());
+                });
             }
 
             sender.sendMessage(Component.text(args[0] + " を Jail しました").color(NamedTextColor.GREEN));

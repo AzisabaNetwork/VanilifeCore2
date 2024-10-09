@@ -194,6 +194,11 @@ public class PlayerJoinListener implements Listener
         else if (player.hasPlayedBefore())
         {
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.GREEN).append(user.getName(p)).appendSpace().append(Language.translate("msg.join", p).color(NamedTextColor.GRAY))));
+        }
+        else
+        {
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.LIGHT_PURPLE).append(user.getName(p)).appendSpace().append(Language.translate("msg.join-first", p).color(NamedTextColor.GRAY))));
+
             player.sendMessage(Component.text().build());
             player.sendMessage(Component.text("Wiki: ").color(NamedTextColor.GRAY)
                     .append(Component.text("https://wiki.azisaba.net/wiki/ばにらいふ２！:メインページ")
@@ -201,10 +206,8 @@ public class PlayerJoinListener implements Listener
                             .hoverEvent(HoverEvent.showText(Component.text("Click to open url")))
                             .clickEvent(ClickEvent.openUrl("https://wiki.azisaba.net/wiki/ばにらいふ２！:メインページ"))));
             player.sendMessage(Component.text().build());
-        }
-        else
-        {
-            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.LIGHT_PURPLE).append(user.getName(p)).appendSpace().append(Language.translate("msg.join-first", p).color(NamedTextColor.GRAY))));
+
+            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
         }
 
         int unread = user.getMails().stream().filter(m -> ! m.isRead()).toList().size();

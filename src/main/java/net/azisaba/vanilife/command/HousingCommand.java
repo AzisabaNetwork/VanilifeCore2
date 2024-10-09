@@ -5,6 +5,7 @@ import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.ui.HousingUI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.user.request.FriendRequest;
 import net.azisaba.vanilife.user.request.HousingInvite;
 import net.azisaba.vanilife.util.UserUtility;
@@ -41,6 +42,11 @@ public class HousingCommand implements CommandExecutor, TabCompleter
         }
 
         User user = User.getInstance(player);
+
+        if (user.getStatus() == UserStatus.JAILED)
+        {
+            return true;
+        }
 
         VanilifeWorld world = VanilifeWorld.getInstance(player.getWorld());
 
