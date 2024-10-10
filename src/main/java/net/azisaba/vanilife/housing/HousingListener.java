@@ -57,7 +57,7 @@ public class HousingListener implements Listener
 
         if (! can)
         {
-            if (HousingPacks.registry().stream().anyMatch(pack -> pack.include(event.getBlock())))
+            if (housing.getUser() == user && HousingPacks.registry().stream().anyMatch(pack -> pack.include(event.getBlock())))
             {
                 IHousingPack pack = HousingPacks.registry().stream().filter(p -> p.include(event.getBlock())).toList().getFirst();
                 player.sendMessage(Language.translate("housing.cant-place.how", player, "pack=" + ComponentUtility.asString(Language.translate("housing.pack." + pack.getName() + ".name", player))));

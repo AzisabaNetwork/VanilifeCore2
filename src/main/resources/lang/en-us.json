@@ -562,7 +562,7 @@
     "housing.afk": "You are AFK",
     "housing.afk.details": "Moved to Housing",
     "housing.cant-build": "You cannot build in this Housing.",
-    "housing.cant-place": "This block cannot be used in Housing!",
+    "housing.cant-place": "You can't use this block in this Housing!",
     "housing.cant-place.how": "&aYou can use this block by purchasing &e${pack}&a &8(/store)",
     "housing.pack.bought": "&e${pack}&a has been purchased!",
     "housing.pack.already": "You have already purchased this pack!",
