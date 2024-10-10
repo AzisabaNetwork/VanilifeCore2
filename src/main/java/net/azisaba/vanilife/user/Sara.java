@@ -8,7 +8,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 
 public enum Sara
 {
-    DEFAULT(0, Component.text(""), NamedTextColor.WHITE),
+    DEFAULT(0, Component.text().build(), NamedTextColor.WHITE),
     $100YEN(1, Component.text("[100円皿] ").color(NamedTextColor.BLUE), NamedTextColor.BLUE, true),
     $500YEN(2, Component.text("[500円皿] ").color(NamedTextColor.AQUA), NamedTextColor.AQUA, true),
     $1000YEN(3, Component.text("[1000円皿] ").color(NamedTextColor.DARK_GREEN), NamedTextColor.DARK_GREEN, true),
@@ -20,7 +20,7 @@ public enum Sara
     NITRO(9, ComponentUtility.getAsGaming("[Nitro] "), NamedTextColor.LIGHT_PURPLE, true),
     MOD(10, Component.text("[MOD] ").color(NamedTextColor.YELLOW), NamedTextColor.YELLOW),
     ADMIN(11, Component.text("[ADMIN] ").color(NamedTextColor.RED), NamedTextColor.RED),
-    SYSTEM(11, Component.text("[SYSTEM] ").color(NamedTextColor.GRAY), NamedTextColor.GRAY);
+    OWNER(12, Component.text("[OWNER] ").color(NamedTextColor.RED), NamedTextColor.GRAY);
 
     public final int level;
     public final Component role;

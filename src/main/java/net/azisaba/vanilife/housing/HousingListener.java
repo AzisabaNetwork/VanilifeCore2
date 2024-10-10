@@ -19,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -191,5 +192,11 @@ public class HousingListener implements Listener
     public void onEntitySpawn(EntitySpawnEvent event)
     {
         event.setCancelled(event.isCancelled() || (event.getLocation().getWorld().equals(Housing.getWorld())) && (event.getEntity() instanceof Mob));
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event)
+    {
+        event.setCancelled(event.isCancelled() || (event.getEntity() instanceof Player player && player.getWorld().equals(Housing.getWorld())));
     }
 }

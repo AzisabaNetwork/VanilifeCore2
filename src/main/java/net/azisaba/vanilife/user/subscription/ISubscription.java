@@ -33,6 +33,8 @@ public interface ISubscription
                         "charge=" + this.getCost(),
                         "shortfall=" + Math.abs(this.getCost() - user.getMola()),
                         "balance=" + user.getMola())));
+
+        user.setTrust(user.getTrust() - 5);
     }
 
     default void onPayment(@NotNull User user)
@@ -42,6 +44,8 @@ public interface ISubscription
                         "subscription=" + ComponentUtility.asString(this.getDisplayName(Language.getInstance(user))),
                         "month=" + (Calendar.getInstance().get(Calendar.MONTH) + 1),
                         "charge=" + this.getCost())));
+
+        user.setTrust(user.getTrust() + 3);
     }
 
     default void checkout(@NotNull User user)

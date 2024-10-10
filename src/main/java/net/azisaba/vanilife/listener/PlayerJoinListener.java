@@ -36,6 +36,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.awt.*;
 import java.util.*;
@@ -56,7 +58,6 @@ public class PlayerJoinListener implements Listener
         }
 
         player.displayName(user.getName());
-        player.playerListName(user.getName());
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -412,6 +413,30 @@ public class PlayerJoinListener implements Listener
     public void loadInstance(PlayerJoinEvent event)
     {
         User.getInstance(event.getPlayer());
+    }
+
+    @EventHandler
+    public void sortPlayerList(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+
+        User user = User.getInstance(player);
+        Sara sara = user.getSara();
+
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team team = scoreboard.getTeam(sara.name());
+
+        scoreboard.getTeams().stream()
+                .filter(t -> t.hasPlayer(player))
+                .forEach(t -> t.removePlayer(player));
+
+        if (team == null)
+        {
+            team = scoreboard.registerNewTeam(sara.name());
+            team.prefix(Component.text(sara.level));
+        }
+
+        team.addPlayer(player);
     }
 
     @EventHandler(priority = EventPriority.LOW)

@@ -4,6 +4,7 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.jail.Jail;
 import net.azisaba.vanilife.ui.ConfirmUI;
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.user.TrustRank;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,6 +31,12 @@ public class JailCommand implements CommandExecutor, TabCompleter
         if (args.length == 0 || 2 < args.length)
         {
             sender.sendMessage(Component.text("Correct syntax: /jail <player> [details]").color(NamedTextColor.RED));
+            return true;
+        }
+
+        if (sender instanceof Player player && User.getInstance(player).getTrustRank().getLevel() < TrustRank.NEW.getLevel())
+        {
+            sender.sendMessage(Language.translate("jail.permission-error", player).color(NamedTextColor.RED));
             return true;
         }
 

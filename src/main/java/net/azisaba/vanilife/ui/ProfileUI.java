@@ -75,6 +75,9 @@ public class ProfileUI extends InventoryUI
             headLore.add(Language.translate("ui.state", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                     .append((profile.isOnline() ? Language.translate("ui.profile.online", this.player) : Language.translate("ui.profile.offline", player)).color(profile.isOnline() ? NamedTextColor.GREEN : NamedTextColor.RED)));
 
+            headLore.add(Component.text("Trust Rank: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                    .append(Component.text(this.profile.getTrustRank().getName()).color(this.profile.getTrustRank().getColor())));
+
             if (! this.profile.isOnline())
             {
                 headLore.add(Language.translate("ui.profile.last-login", this.player).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(Component.text(Vanilife.sdf3.format(profile.getLastLogin())).color(NamedTextColor.GREEN)));

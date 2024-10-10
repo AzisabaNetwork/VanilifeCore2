@@ -361,10 +361,17 @@ public class PlayerListener implements Listener
         {
             players.addAll(Bukkit.getOnlinePlayers());
         }
+
+        if (user.getTrust() < 15 && Vanilife.random.nextDouble() < 0.5)
+        {
+            user.setTrust(user.getTrust() + 1);
+        }
         
         final String builtMessage = message;
 
-        players.forEach(p -> p.sendMessage(Component.text().build().append(user.getName(p))
+        players.forEach(p -> p.sendMessage(Component.text().build()
+                .append(Component.text("[" + user.getTrustRank().getName().charAt(0) + "] ").color(user.getTrustRank().getColor()).hoverEvent(Component.text(user.getTrustRank().getName()).color(user.getTrustRank().getColor())))
+                .append(user.getName(p))
                 .append(Component.text(": ").color(NamedTextColor.GRAY))
                 .append(ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(builtMessage)))));
     }

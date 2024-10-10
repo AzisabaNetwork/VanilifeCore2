@@ -4,6 +4,7 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.ui.HousingUI;
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.user.TrustRank;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.user.request.HousingInvite;
@@ -12,6 +13,7 @@ import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -68,6 +70,13 @@ public class HousingCommand implements CommandExecutor, TabCompleter
 
             if (! user.hasHousing())
             {
+                if (TrustRank.NEW.getLevel() <= user.getTrustRank().getLevel())
+                {
+                    player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
+                    sender.sendMessage(Language.translate("cmd.housing.cant-create", player).color(NamedTextColor.RED));
+                    return true;
+                }
+
                 user.setHousing(new Housing(user));
             }
 

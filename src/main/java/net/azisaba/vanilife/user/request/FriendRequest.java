@@ -49,6 +49,11 @@ public class FriendRequest extends Request
 
         this.getFromUser().friend(this.toUser);
 
+        if (this.toUser.getTrust() < 20)
+        {
+            this.toUser.setTrust(this.toUser.getTrust() + 2);
+        }
+
         this.from.sendMessage(Language.translate("msg.friend.friended", this.from, "name=" + ComponentUtility.asString(this.toUser.getName())));
         this.to.sendMessage(Language.translate("msg.friend.friended", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
     }

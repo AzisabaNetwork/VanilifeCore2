@@ -45,11 +45,6 @@ public class SaraCommand implements CommandExecutor, TabCompleter
 
         user.setSara(sara);
 
-        if (user.isOnline())
-        {
-            Bukkit.getPlayer(user.getId()).playerListName(user.getName());
-        }
-
         sender.sendMessage(Component.text(String.format("%s の皿を %s に変更しました", args[0], args[1])).color(NamedTextColor.GREEN));
         return true;
     }

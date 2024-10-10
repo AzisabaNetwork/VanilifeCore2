@@ -76,7 +76,6 @@ public class NickCommand implements CommandExecutor, TabCompleter
         }
 
         player.displayName(user.getName());
-        player.playerListName(user.getName());
         return true;
     }
 

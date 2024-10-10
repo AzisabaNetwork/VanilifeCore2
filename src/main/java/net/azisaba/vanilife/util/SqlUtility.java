@@ -15,7 +15,7 @@ public class SqlUtility
     {
         Map<String, String> tablemap = new HashMap<>();
 
-        tablemap.put("user", "CREATE TABLE user(id VARCHAR(36) PRIMARY KEY, nick VARCHAR(16), bio VARCHAR(120), birthday VARCHAR(16), youtube VARCHAR(30), twitter VARCHAR(15), discord VARCHAR(19), mola INT UNSIGNED, sara VARCHAR(16), status VARCHAR(16), skin VARCHAR(16), osatou VARCHAR(36), storage TEXT)");
+        tablemap.put("user", "CREATE TABLE user(id VARCHAR(36) PRIMARY KEY, nick VARCHAR(16), bio VARCHAR(120), birthday VARCHAR(16), youtube VARCHAR(30), twitter VARCHAR(15), discord VARCHAR(19), mola INT UNSIGNED, trust INT UNSIGNED, sara VARCHAR(16), status VARCHAR(16), skin VARCHAR(16), osatou VARCHAR(36), storage TEXT);");
         tablemap.put("skin", "CREATE TABLE skin(id VARCHAR(36) PRIMARY KEY, name VARCHAR(8), owner VARCHAR(36), value TEXT, signature TEXT)");
         tablemap.put("login", "CREATE TABLE login(user VARCHAR(36) PRIMARY KEY, login VARCHAR(16), streak INT UNSIGNED)");
         tablemap.put("subscription", "CREATE TABLE subscription(user VARCHAR(36), subscription VARCHAR(16))");

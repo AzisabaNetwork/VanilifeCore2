@@ -328,6 +328,7 @@
     "msg.new-mail": "${unread} 件の新着メールがあります！",
     "msg.not-found.player": "${name} は不明なプレイヤーです",
     "msg.not-found.user": "${name} は不明なユーザーです",
+    "msg.trust-rank-up": "&6が上位の Trust Rank を解放しました！ &r${from} &7-> &r${to}",
 
     "msg.friend.requested": "${name}&e に Friend 申請を送信しました！承認の有効期限は &c${limit}&e 秒です。",
     "msg.friend.received": "${name}&e から Friend 申請が届きました！",
@@ -412,6 +413,7 @@
     "cmd.friendlist.empty": "表示できるものはありません",
 
     "cmd.housing.not-found": "Housing を見つけることができません",
+    "cmd.housing.cant-create": "Housing を作成するには [New] 以上の Trust Rank が必要です",
     "cmd.housing.permission-error": "あなたはこの Housing に参加できません",
 
     "cmd.gomenne.on": "&aチャットの文字変換を &e有効&a にしました！",
@@ -608,6 +610,7 @@
     "jail.cant": "このプレイヤーを Jail することはできません",
     "jail.cant-yourself": "タイプミスですか？自分自身を Jail することはできません",
     "jail.time-over": "${target} への Jail 投票は終了しました",
+    "jail.permission-error": "Jail を行うには [New] 以上の Trust Rank が必要です",
     "jail.already": "あなたは既にこの Jail に投票しています",
     "jail.voted": "投票を行いました",
     "jail.cancelled": "投票をキャンセルしました",

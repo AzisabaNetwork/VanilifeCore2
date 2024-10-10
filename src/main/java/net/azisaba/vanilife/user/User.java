@@ -31,14 +31,15 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class User
 {
@@ -142,6 +143,7 @@ public class User
     private String twitter;
     private net.dv8tion.jda.api.entities.User discord;
     private int mola;
+    private int trust;
     private Sara sara;
     private UserStatus status;
     private Skin skin;
@@ -186,6 +188,7 @@ public class User
             this.twitter = rs.getString("twitter");
             this.discord = rs.getString("discord") == null ? null : Vanilife.jda.retrieveUserById(rs.getString("discord")).complete();
             this.mola = rs.getInt("mola");
+            this.trust = rs.getInt("trust");
             this.sara = Sara.valueOf(rs.getString("sara"));
             this.status = UserStatus.valueOf(rs.getString("status"));
             this.osatou = rs.getString("osatou") == null ? null : User.getInstance(UUID.fromString(rs.getString("osatou")));
@@ -255,7 +258,7 @@ public class User
             {
                 Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
 
-                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, NULL, NULL, NULL, NULL, NULL, 0, ?, ?, NULL, NULL, '{}')");
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, ?, ?, NULL, NULL, '{}')");
                 stmt.setString(1, this.id.toString());
                 stmt.setString(2, this.sara.toString());
                 stmt.setString(3, this.status.toString());
@@ -302,6 +305,12 @@ public class User
     public @NotNull Component getName(@NotNull User user)
     {
         TextComponent.Builder summary = Component.text();
+
+        summary.append(this.getName());
+        summary.appendNewline();
+
+        summary.append(Component.text("Trust Rank: ").color(NamedTextColor.GRAY)
+                .append(Component.text(this.getTrustRank().getName()).color(this.getTrustRank().getColor())));
 
         if (this.settings.BIRTHDAY.isWithinScope(user) && this.birthday != null)
         {
@@ -585,6 +594,11 @@ public class User
     {
         Player player = this.asPlayer();
 
+        if (Vanilife.random.nextDouble() < 0.02)
+        {
+            this.setTrust(this.getTrust() + 1);
+        }
+
         if (player != null)
         {
             if (this.bossBar != null)
@@ -622,6 +636,91 @@ public class User
         this.setMola(mola);
     }
 
+    public int getTrust()
+    {
+        return this.trust;
+    }
+
+    public void setTrust(int trust)
+    {
+        TrustRank oldRank = this.getTrustRank();
+
+        this.trust = Math.min(Math.max(trust, 0), 100);
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET trust = ? WHERE id = ?");
+            stmt.setInt(1, this.trust);
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.sendExceptionReport(e);
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+
+        if (oldRank.getLevel() < this.getTrustRank().getLevel())
+        {
+            List<Player> listeners = Bukkit.getOnlinePlayers().stream().filter(player -> ! User.getInstance(player).isBlock(this)).collect(Collectors.toList());
+
+            listeners.forEach(listener -> listener.sendMessage(Component.text()
+                    .append(this.getName(listener))
+                    .append(Language.translate("msg.trust-rank-up", listener,
+                            "from=" + ComponentUtility.asString(Component.text(oldRank.getName()).color(oldRank.getColor())),
+                            "to=" + ComponentUtility.asString(Component.text(this.getTrustRank().getName()).color(this.getTrustRank().getColor()))))));
+
+            if (TrustRank.KNOWN.getLevel() <= this.getTrustRank().getLevel())
+            {
+                listeners.forEach(listener -> listener.playSound(listener, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1.0f, 1.0f));
+                return;
+            }
+
+            new BukkitRunnable()
+            {
+                private int i = 0;
+
+                @Override
+                public void run()
+                {
+                    if (3 <= this.i)
+                    {
+                        this.cancel();
+                        return;
+                    }
+
+                    listeners.forEach(listener -> listener.playSound(listener, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0f, 1.0f));
+                    this.i ++;
+                }
+            }.runTaskTimer(Vanilife.getPlugin(), 0L, 20L);
+        }
+    }
+
+    public @NotNull TrustRank getTrustRank()
+    {
+        TrustRank rank = null;
+
+        for (TrustRank r : TrustRank.values())
+        {
+            if (this.getTrust() < r.getRequired())
+            {
+                continue;
+            }
+
+            if (rank == null || rank.getRequired() < r.getRequired())
+            {
+                rank = r;
+            }
+        }
+
+        return rank != null ? rank : TrustRank.NUISANCE;
+    }
+
     public @NotNull Sara getSara()
     {
         return (this.sara != null) ? this.sara : Sara.DEFAULT;
@@ -629,7 +728,28 @@ public class User
 
     public void setSara(@NotNull Sara sara)
     {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+
+        scoreboard.getTeams().stream()
+                .filter(team -> team.hasPlayer(this.asOfflinePlayer()))
+                .forEach(team -> team.removePlayer(this.asOfflinePlayer()));
+
         this.sara = sara;
+
+        if (this.isOnline())
+        {
+            final Player player = this.asPlayer();
+
+            Team team = scoreboard.getTeam(this.sara.name());
+
+            if (team == null)
+            {
+                team = scoreboard.registerNewTeam(this.sara.name());
+                team.prefix(Component.text(this.sara.level));
+            }
+
+            team.addPlayer(player);
+        }
 
         try
         {
@@ -932,9 +1052,29 @@ public class User
         return this.friends.contains(user);
     }
 
+    public boolean isFriend(Player player)
+    {
+        if (player == null)
+        {
+            return false;
+        }
+
+        return this.isFriend(User.getInstance(player));
+    }
+
     public boolean isBlock(User user)
     {
         return this.blocks.contains(user);
+    }
+
+    public boolean isBlock(Player player)
+    {
+        if (player == null)
+        {
+            return false;
+        }
+
+        return this.isBlock(User.getInstance(player));
     }
 
     public boolean inHousing()
@@ -980,7 +1120,18 @@ public class User
         }
 
         this.friends.add(user);
+
+        if (this.trust < 15)
+        {
+            this.setTrust(this.trust + 5);
+        }
+
         user.friends.add(this);
+
+        if (user.getTrust() < 15)
+        {
+            user.setTrust(user.getTrust() + 5);
+        }
 
         try
         {
@@ -1009,7 +1160,18 @@ public class User
         }
 
         this.friends.remove(user);
+
+        if (this.getTrust() < 15)
+        {
+            this.setTrust(this.getTrust() - 7);
+        }
+
         user.friends.remove(this);
+
+        if (user.getTrust() < 15)
+        {
+            user.setTrust(user.getTrust() - 7);
+        }
 
         try
         {
@@ -1099,6 +1261,7 @@ public class User
     public void jail()
     {
         this.setStatus(UserStatus.JAILED);
+        this.setTrust(this.getTrust() - 20);
 
         if (! this.isOnline())
         {

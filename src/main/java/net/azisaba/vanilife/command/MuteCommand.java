@@ -63,6 +63,7 @@ public class MuteCommand implements CommandExecutor, TabCompleter
                     return;
                 }
 
+                user.setTrust(user.getTrust() - 10);
                 user.setStatus(UserStatus.MUTED);
                 sender.sendMessage(Component.text(String.format("%s をミュートしました", args[0])).color(NamedTextColor.GREEN));
             }

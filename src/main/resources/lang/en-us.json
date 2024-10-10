@@ -328,6 +328,7 @@
     "msg.new-mail": "There are ${unread} new emails.",
     "msg.not-found.player": "${name} is an unknown player.",
     "msg.not-found.user": "${name} is an unknown user.",
+    "msg.trust-rank-up": "&6 has unlocked a higher Trust Rank! &r${from} &7-> &r${to}",
 
     "msg.friend.requested": "&eYou have sent a friend request to ${name}&e!Approval expires in &c${limit}&e seconds.",
     "msg.friend.received": "${name}&e has sent you a friend request!",
@@ -412,6 +413,7 @@
     "cmd.friendlist.empty": "None available for display.",
 
     "cmd.housing.not-found": "Unable to find housing.",
+    "cmd.housing.cant-create": "A Trust Rank of [New] or higher is required to create Housing.",
     "cmd.housing.permission-error": "You cannot join this housing.",
 
     "cmd.gomenne.on": "&aChat character conversion has been &eenabled&a.",
@@ -608,6 +610,7 @@
     "jail.cant": "You cannot jail this player.",
     "jail.cant-yourself": "Is this a typo? You cannot jail yourself.",
     "jail.time-over": "Voting for jail on ${target} has ended.",
+    "jail.permission-error": "A Trust Rank of [New] or higher is required to perform a Jail.",
     "jail.already": "You have already voted in this jail.",
     "jail.voted": "You have cast your vote.",
     "jail.cancelled": "You have canceled your vote.",

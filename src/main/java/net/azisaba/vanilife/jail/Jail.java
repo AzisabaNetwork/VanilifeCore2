@@ -3,6 +3,7 @@ package net.azisaba.vanilife.jail;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.user.TrustRank;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.UserUtility;
@@ -49,7 +50,7 @@ public class Jail
         Jail.instances.add(this);
 
         this.electors = new ArrayList<>(Bukkit.getOnlinePlayers().stream()
-                .filter(player -> ! Afk.isAfk(player) && ! player.getUniqueId().equals(this.target.getId()))
+                .filter(player -> ! Afk.isAfk(player) && ! player.getUniqueId().equals(this.target.getId()) && TrustRank.NEW.getLevel() <= User.getInstance(player).getTrustRank().getLevel())
                 .collect(Collectors.toMap(
                         player -> Objects.requireNonNull(player.getAddress()).getAddress().getHostAddress(),
                         player -> player,
