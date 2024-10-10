@@ -58,6 +58,7 @@ public class PlayerJoinListener implements Listener
         }
 
         player.displayName(user.getName());
+        player.playerListName(Component.text("@{Azisaba.Vanilife.User." + player.getUniqueId() + "}"));
     }
 
     @EventHandler(priority = EventPriority.LOW)

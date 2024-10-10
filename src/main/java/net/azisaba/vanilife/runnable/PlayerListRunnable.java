@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.runnable;
 
+import net.azisaba.vanilife.user.TrustRank;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.vc.VoiceChat;
 import net.kyori.adventure.text.Component;
@@ -17,11 +18,11 @@ public class PlayerListRunnable extends BukkitRunnable
 
             if (VoiceChat.getInstance(user) == null)
             {
-                player.playerListName(user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(NamedTextColor.GRAY)));
+                player.playerListName(user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(user.getTrustRank() != TrustRank.TRUSTED ? NamedTextColor.GRAY : NamedTextColor.GOLD)));
             }
             else
             {
-                player.playerListName(user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(NamedTextColor.GRAY)).append(Component.text(" 🔊").color(NamedTextColor.WHITE)));
+                player.playerListName(user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(user.getTrustRank() != TrustRank.TRUSTED ? NamedTextColor.GRAY : NamedTextColor.GOLD)).append(Component.text(" 🔊").color(NamedTextColor.WHITE)));
             }
         });
     }

@@ -82,6 +82,13 @@ public class DiscordListener extends ListenerAdapter
         Vanilife.CHANNEL_CONSOLE.sendMessage(":open_file_folder: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " サーバーを開始しました").queue();
 
         Vanilife.publisher = true;
+
+        Vanilife.SERVER_PUBLIC.getAudioManager().openAudioConnection(Vanilife.CHANNEL_VOICE);
+
+        Member bot = Vanilife.SERVER_PUBLIC.getSelfMember();
+
+        bot.mute(true).queue();
+        bot.deafen(true).queue();
     }
 
     @Override

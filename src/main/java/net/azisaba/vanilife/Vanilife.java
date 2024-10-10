@@ -324,6 +324,7 @@ public final class Vanilife extends JavaPlugin
     @Override
     public void onDisable()
     {
+        Vanilife.SERVER_PUBLIC.getAudioManager().closeAudioConnection();
         Vanilife.CHANNEL_CONSOLE.sendMessage(":file_folder: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " サーバーを停止しました").queue();
 
         Bukkit.getOnlinePlayers().forEach(player -> player.kick(Component.text("サーバーを停止しています").color(NamedTextColor.RED)));

@@ -12,12 +12,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 public class VoiceChat
 {
     private static final List<VoiceChat> instances = new ArrayList<>();
+    public static VoiceChat muteChannel;
 
     public static VoiceChat getInstance(VoiceChannel channel)
     {
@@ -41,8 +41,7 @@ public class VoiceChat
         return VoiceChat.instances;
     }
 
-    @NotNull
-    public static VoiceChat search(@NotNull Player player)
+    public static @NotNull VoiceChat search(@NotNull Player player)
     {
         VoiceChat currentVoiceChat = VoiceChat.getInstance(player);
         VoiceChat voiceChat = null;
@@ -50,6 +49,11 @@ public class VoiceChat
 
         for (VoiceChat vc : VoiceChat.getInstances())
         {
+            if (vc == VoiceChat.muteChannel)
+            {
+                continue;
+            }
+
             if (! vc.getLocation().getWorld().equals(player.getWorld()))
             {
                 continue;
@@ -77,8 +81,7 @@ public class VoiceChat
         return voiceChat;
     }
 
-    @NotNull
-    private static String name()
+    private static @NotNull String name()
     {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678";
         StringBuilder sb = new StringBuilder();
@@ -98,8 +101,7 @@ public class VoiceChat
 
     public VoiceChat()
     {
-        this.channel.getManager().putPermissionOverride(Vanilife.SERVER_PUBLIC.getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL)).queue();
-
+        this.channel.upsertPermissionOverride(Vanilife.SERVER_PUBLIC.getPublicRole()).deny(Permission.VIEW_CHANNEL).queue();
         VoiceChat.instances.add(this);
     }
 

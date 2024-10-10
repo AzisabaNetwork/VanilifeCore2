@@ -13,6 +13,13 @@ public class VoiceChatListener extends ListenerAdapter
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event)
     {
+        Member member = event.getMember();
+
+        if (member.getUser().isBot())
+        {
+            return;
+        }
+
         if (event.getOldValue() != null)
         {
             VoiceChannel channel = (VoiceChannel) event.getOldValue();
@@ -31,7 +38,6 @@ public class VoiceChatListener extends ListenerAdapter
             return;
         }
 
-        Member member = event.getMember();
         User user = User.getInstance(member.getUser());
 
         if (user == null)
