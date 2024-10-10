@@ -6,7 +6,6 @@ import net.azisaba.vanilife.ui.HousingUI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
-import net.azisaba.vanilife.user.request.FriendRequest;
 import net.azisaba.vanilife.user.request.HousingInvite;
 import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
@@ -100,13 +99,13 @@ public class HousingCommand implements CommandExecutor, TabCompleter
                 return;
             }
 
-            if (! housing.withInScope(user) && ! UserUtility.isModerator(user) && user.getRequests().stream().noneMatch(r -> r.match(HousingInvite.class, housing.getUser().asPlayer())))
+            if (! housing.canVisit(user) && ! UserUtility.isModerator(user) && user.getRequests().stream().noneMatch(r -> r.match(HousingInvite.class, housing.getUser().asPlayer())))
             {
                 sender.sendMessage(Language.translate("cmd.housing.permission-error", player).color(NamedTextColor.RED));
                 return;
             }
 
-            if (user.getRequests().stream().anyMatch(r -> r.match(FriendRequest.class, housing.getUser().asPlayer())))
+            if (user.getRequests().stream().anyMatch(r -> r.match(HousingInvite.class, housing.getUser().asPlayer())))
             {
                 user.getRequests().stream().filter(r -> r.match(HousingInvite.class, housing.getUser().asPlayer())).toList().getFirst().onAccept();
             }

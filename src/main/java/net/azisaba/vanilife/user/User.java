@@ -917,9 +917,14 @@ public class User
         return Bukkit.getOfflinePlayer(this.id).isOnline();
     }
 
+    public boolean isMuted()
+    {
+        return UserStatus.MUTED.level() <= this.status.level();
+    }
+
     public boolean isJailed()
     {
-        return this.status == UserStatus.JAILED;
+        return UserStatus.JAILED.level() <= this.status.level();
     }
 
     public boolean isFriend(User user)

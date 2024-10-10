@@ -1,7 +1,6 @@
-package net.azisaba.vanilife.listener;
+package net.azisaba.vanilife.housing;
 
 import com.destroystokyo.paper.event.player.PlayerSetSpawnEvent;
-import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.pack.HousingPacks;
 import net.azisaba.vanilife.housing.pack.IHousingPack;
 import net.azisaba.vanilife.ui.Language;
@@ -44,11 +43,17 @@ public class HousingListener implements Listener
 
         if (housing == null)
         {
-            event.setCancelled(event.isCancelled() && ! (player.getGameMode() == GameMode.CREATIVE && UserUtility.isModerator(player)));
+            event.setCancelled(! (player.getGameMode() == GameMode.CREATIVE && UserUtility.isModerator(player)) || event.isCancelled());
             return;
         }
 
-        final boolean can = housing.getPacks().stream().anyMatch(pack -> pack.include(event.getBlock())) || (player.getGameMode() == GameMode.CREATIVE && UserUtility.isModerator(player));
+        if (! housing.canBuild(user))
+        {
+            player.sendMessage(Language.translate("housing.cant-build", player).color(NamedTextColor.RED));
+            return;
+        }
+
+        final boolean can = housing.canUse(event.getBlock()) || (player.getGameMode() == GameMode.CREATIVE && UserUtility.isModerator(player));
 
         if (! can)
         {
@@ -63,30 +68,39 @@ public class HousingListener implements Listener
             }
         }
 
-        event.setCancelled(event.isCancelled() || ! can);
+        event.setCancelled(! can || event.isCancelled());
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
-        User user = User.getInstance(event.getPlayer());
+        Player player = event.getPlayer();
+        User user = User.getInstance(player);
 
         if (! user.inHousing())
         {
             return;
         }
 
-        if (Housing.getInstance(event.getBlock().getLocation()) != null)
+        if (UserUtility.isModerator(player) && player.getGameMode() == GameMode.CREATIVE)
         {
             return;
         }
 
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE)
+        Housing housing = Housing.getInstance(event.getBlock().getLocation());
+
+        if (housing == null)
         {
+            event.setCancelled(true);
             return;
         }
 
-        event.setCancelled(true);
+        if (! housing.canBuild(user))
+        {
+            event.setCancelled(true);
+            player.sendMessage(Language.translate("housing.cant-build", player).color(NamedTextColor.RED));
+            return;
+        }
     }
 
     @EventHandler

@@ -2,6 +2,7 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.gomenne.Gomenne;
@@ -184,16 +185,17 @@ public class PlayerListener implements Listener
     {
         Player player = event.getPlayer();
 
-        if (User.getInstance(player).isJailed() || VanilifeWorldManager.getJail().equals(player.getWorld()))
+        if (User.getInstance(player).isJailed())
         {
             player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
             return;
         }
 
-        if (User.getInstance(player).getStatus() == UserStatus.JAILED && ! VanilifeWorldManager.getJail().equals(event.getPlayer().getWorld()))
+        if (! Housing.getWorld().equals(player))
         {
-            player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
-            return;
+            Housing.getInstances().stream()
+                    .filter(housing -> housing.isGuest(player))
+                    .forEach(housing -> housing.removeGuest(player));
         }
 
         if (! (event.getFrom().getEnvironment() == World.Environment.THE_END && event.getPlayer().getWorld().getEnvironment() == World.Environment.NORMAL))
@@ -332,7 +334,7 @@ public class PlayerListener implements Listener
         boolean gomenne = false;
 
         if (Language.getInstance(user).getId().equals("ja-jp")
-                && message.matches("^[A-Za-z0-9 ]+$")
+                && message.matches("^[A-Za-z0-9 -]+$")
                 && ! message.contains(":") && user.read("settings.ime").getAsBoolean()
                 && ! ((message.contains("!1") || message.contains("!2") || message.contains("!3") || message.contains("!4")) && user.getSettings().METUBOU.isValid()))
         {

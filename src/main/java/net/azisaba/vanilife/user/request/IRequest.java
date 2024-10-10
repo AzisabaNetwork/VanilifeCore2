@@ -19,5 +19,5 @@ public interface IRequest
 
     void onTimeOver();
 
-    boolean match(Class<? extends IRequest> clazz, Player player);
+    boolean match(Class<? extends IRequest> clazz, Player sender);
 }

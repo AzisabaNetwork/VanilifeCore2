@@ -11,6 +11,7 @@ import net.azisaba.vanilife.util.LevelUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -115,6 +116,8 @@ public class Housing
 
     private final List<IHousingPack> packs = new ArrayList<>();
 
+    private final List<User> guests = new ArrayList<>();
+
     protected Housing(@NotNull UUID id)
     {
         this.id = id;
@@ -172,7 +175,8 @@ public class Housing
         user.write("settings.housing.afk", false);
         user.write("settings.housing.time", HousingTime.DAY.toString());
         user.write("settings.housing.activity", true);
-        user.write("settings.housing.scope", HousingScope.PRIVATE.toString());
+        user.write("settings.housing.scope.visit", HousingScope.PRIVATE.toString());
+        user.write("settings.housing.scope.build", HousingScope.PRIVATE.toString());
 
         user.getStorage().add("housing.packs", new JsonArray());
         user.saveStorage();
@@ -334,14 +338,24 @@ public class Housing
         }
     }
 
-    public @NotNull HousingScope getScope()
+    public @NotNull HousingScope getVisitScope()
     {
-        return HousingScope.valueOf(this.user.read("settings.housing.scope").getAsString());
+        return HousingScope.valueOf(this.user.read("settings.housing.scope.visit").getAsString());
     }
 
-    public void setScope(@NotNull HousingScope scope)
+    public void setVisitScope(@NotNull HousingScope scope)
     {
-        this.user.write("settings.housing.scope", scope.toString());
+        this.user.write("settings.housing.scope.visit", scope.toString());
+    }
+
+    public @NotNull HousingScope getBuildScope()
+    {
+        return HousingScope.valueOf(this.user.read("settings.housing.scope.build").getAsString());
+    }
+
+    public void setBuildScope(@NotNull HousingScope scope)
+    {
+        this.user.write("settings.housing.scope.build", scope.toString());
     }
 
     public @NotNull HousingTime getTime()
@@ -394,12 +408,77 @@ public class Housing
         this.user.saveStorage();
     }
 
-    public boolean withInScope(User user)
+    public void addGuest(@NotNull User user)
+    {
+        this.guests.add(user);
+    }
+
+    public void addGuest(@NotNull Player player)
+    {
+        this.addGuest(User.getInstance(player));
+    }
+
+    public void removeGuest(@NotNull User user)
+    {
+        this.guests.remove(user);
+    }
+
+    public void removeGuest(@NotNull Player player)
+    {
+        this.removeGuest(User.getInstance(player));
+    }
+
+    public boolean canVisit(@NotNull User user)
     {
         return this.user == user ||
-                (this.getScope() == HousingScope.PUBLIC) ||
-                (this.getScope() == HousingScope.FRIEND && this.user.isFriend(user)) ||
-                (this.getScope() == HousingScope.OSATOU && this.user.getOsatou() == user);
+                this.isGuest(user) ||
+                (this.getVisitScope() == HousingScope.PUBLIC) ||
+                (this.getVisitScope() == HousingScope.FRIEND && this.user.isFriend(user)) ||
+                (this.getVisitScope() == HousingScope.OSATOU && this.user.getOsatou() == user);
+    }
+
+    public boolean canVisit(@NotNull Player player)
+    {
+        return this.canVisit(User.getInstance(player));
+    }
+
+    public boolean canBuild(@NotNull User user)
+    {
+        return this.user == user ||
+                this.isGuest(user) ||
+                (this.getBuildScope() == HousingScope.PUBLIC) ||
+                (this.getBuildScope() == HousingScope.FRIEND && this.user.isFriend(user)) ||
+                (this.getBuildScope() == HousingScope.OSATOU && this.user.getOsatou() == user);
+    }
+
+    public boolean canBuild(@NotNull Player player)
+    {
+        return this.canBuild(User.getInstance(player));
+    }
+
+    public boolean canUse(@NotNull Material type)
+    {
+        return this.packs.stream().anyMatch(pack -> pack.include(type));
+    }
+
+    public boolean canUse(@NotNull Block block)
+    {
+        return this.canUse(block.getType());
+    }
+
+    public boolean isGuest(User user)
+    {
+        return this.guests.contains(user);
+    }
+
+    public boolean isGuest(Player player)
+    {
+        if (player == null)
+        {
+            return false;
+        }
+
+        return this.isGuest(User.getInstance(player));
     }
 
     public boolean has(IHousingPack pack)

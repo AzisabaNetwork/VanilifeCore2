@@ -35,7 +35,7 @@ public class ReviewRunnable extends BukkitRunnable
             return false;
         }
 
-        if (user.read("review.timestamp") == null || user.read("review.timestamp").getAsInt() <= 0)
+        if (user.read("review.timestamp") == null || user.read("review.score").getAsInt() <= 0)
         {
             return true;
         }

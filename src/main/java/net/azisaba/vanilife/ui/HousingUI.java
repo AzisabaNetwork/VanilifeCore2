@@ -6,7 +6,6 @@ import net.azisaba.vanilife.housing.HousingScope;
 import net.azisaba.vanilife.housing.HousingTime;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.HeadUtility;
-import net.azisaba.vanilife.util.SeasonUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.kyori.adventure.text.Component;
@@ -19,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -131,26 +131,39 @@ public class HousingUI extends InventoryUI
         activityStack.setItemMeta(activityMeta);
         this.inventory.setItem(24, activityStack);
 
-        ItemStack scopeStack = new ItemStack(Material.PAINTING);
-        ItemMeta scopeMeta = scopeStack.getItemMeta();
-        scopeMeta.displayName(Language.translate("ui.housing.scope", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        scopeMeta.lore(List.of(Language.translate("ui.housing.scope.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
+        ItemStack visitScopeStack = new ItemStack(Material.DARK_OAK_DOOR);
+        ItemMeta visitScopeMeta = visitScopeStack.getItemMeta();
+        visitScopeMeta.displayName(Language.translate("ui.housing.scope.visit", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        visitScopeMeta.lore(List.of(Language.translate("ui.housing.scope.visit.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text().build(),
-                Language.translate("ui.housing.scope.public", this.player).color(this.housing.getScope() == HousingScope.PUBLIC ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
-                Language.translate("ui.housing.scope.friend", this.player).color(this.housing.getScope() == HousingScope.FRIEND ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
-                Language.translate("ui.housing.scope.osatou", this.player).color(this.housing.getScope() == HousingScope.OSATOU ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
-                Language.translate("ui.housing.scope.private", this.player).color(this.housing.getScope() == HousingScope.PRIVATE ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
-        scopeStack.setItemMeta(scopeMeta);
-        this.inventory.setItem(29, scopeStack);
+                Language.translate("ui.housing.scope.public", this.player).color(this.housing.getVisitScope() == HousingScope.PUBLIC ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.housing.scope.friend", this.player).color(this.housing.getVisitScope() == HousingScope.FRIEND ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.housing.scope.osatou", this.player).color(this.housing.getVisitScope() == HousingScope.OSATOU ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.housing.scope.private", this.player).color(this.housing.getVisitScope() == HousingScope.PRIVATE ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
+        visitScopeStack.setItemMeta(visitScopeMeta);
+        this.inventory.setItem(30, visitScopeStack);
 
-        ItemStack worldsStack = new ItemStack(SeasonUtility.getSeasonMaterial());
-        ItemMeta worldsMeta = worldsStack.getItemMeta();
-        worldsMeta.displayName(Language.translate("ui.housing.worlds", this.player).color(SeasonUtility.getSeasonColor()).decoration(TextDecoration.ITALIC, false));
+        ItemStack buildScopeStack = new ItemStack(Material.BREWING_STAND);
+        ItemMeta buildScopeMeta = buildScopeStack.getItemMeta();
+        buildScopeMeta.displayName(Language.translate("ui.housing.scope.build", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        buildScopeMeta.lore(List.of(Language.translate("ui.housing.scope.build.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
+                Component.text().build(),
+                Language.translate("ui.housing.scope.public", this.player).color(this.housing.getBuildScope() == HousingScope.PUBLIC ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.housing.scope.friend", this.player).color(this.housing.getBuildScope() == HousingScope.FRIEND ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.housing.scope.osatou", this.player).color(this.housing.getBuildScope() == HousingScope.OSATOU ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
+                Language.translate("ui.housing.scope.private", this.player).color(this.housing.getBuildScope() == HousingScope.PRIVATE ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
+        buildScopeStack.setItemMeta(buildScopeMeta);
+        this.inventory.setItem(31, buildScopeStack);
+
+        ItemStack worldsStack = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta worldsMeta = (SkullMeta) worldsStack.getItemMeta();
+        worldsMeta.displayName(Language.translate("ui.housing.worlds", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         worldsMeta.lore(List.of(Language.translate("ui.housing.worlds.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text().build(),
                 Language.translate("ui.housing.worlds.help", this.player).color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false)));
+        worldsMeta.setPlayerProfile(HeadUtility.getPlayerProfile("http://textures.minecraft.net/texture/f9e986ccac3dc804f1bebe054dfb3e800480b7e08b2e7c6a86c84621c756c142"));
         worldsStack.setItemMeta(worldsMeta);
-        this.registerListener(30, worldsStack, "vanilife:worlds", ExecutionType.CLIENT);
+        this.registerListener(32, worldsStack, "vanilife:worlds", ExecutionType.CLIENT);
     }
 
     @Override
@@ -206,9 +219,9 @@ public class HousingUI extends InventoryUI
             new HousingUI(this.player, this.housing);
         }
 
-        if (event.getSlot() == 29)
+        if (event.getSlot() == 30)
         {
-            this.housing.setScope(switch (this.housing.getScope())
+            this.housing.setVisitScope(switch (this.housing.getVisitScope())
             {
                 case HousingScope.PUBLIC -> HousingScope.FRIEND;
                 case HousingScope.FRIEND -> HousingScope.OSATOU;
@@ -218,7 +231,7 @@ public class HousingUI extends InventoryUI
 
             for (Player player : Bukkit.getOnlinePlayers().stream().filter(p -> Housing.getInstance(p.getLocation()) == this.housing).toList())
             {
-                if (! this.housing.withInScope(User.getInstance(player)))
+                if (! this.housing.canVisit(User.getInstance(player)))
                 {
                     VanilifeWorld world = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
 
@@ -230,6 +243,19 @@ public class HousingUI extends InventoryUI
                     Bukkit.dispatchCommand(player, "world " + world.getName());
                 }
             }
+
+            new HousingUI(this.player, this.housing);
+        }
+
+        if (event.getSlot() == 31)
+        {
+            this.housing.setBuildScope(switch (this.housing.getBuildScope())
+            {
+                case HousingScope.PUBLIC -> HousingScope.FRIEND;
+                case HousingScope.FRIEND -> HousingScope.OSATOU;
+                case HousingScope.OSATOU -> HousingScope.PRIVATE;
+                case HousingScope.PRIVATE -> HousingScope.PUBLIC;
+            });
 
             new HousingUI(this.player, this.housing);
         }

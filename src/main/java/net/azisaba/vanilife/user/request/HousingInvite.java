@@ -46,6 +46,7 @@ public class HousingInvite extends Request
     public void onAccept()
     {
         super.onAccept();
+        this.fromUser.getHousing().addGuest(this.toUser);
         this.from.sendMessage(Language.translate("msg.housing.accept", this.from, "name=" + ComponentUtility.asString(this.toUser.getName())));
     }
 

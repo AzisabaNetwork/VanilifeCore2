@@ -5,6 +5,7 @@ import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.ComponentUtility;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,14 @@ public class Paint implements Listener
     public void onPlayerInteract(PlayerInteractEvent event)
     {
         Player player = event.getPlayer();
+        User user = User.getInstance(player);
+
+        if (user.isMuted())
+        {
+            player.sendMessage(Language.translate("msg.muted", player).color(NamedTextColor.RED));
+            return;
+        }
+
         Location location = player.getLocation().add(player.getLocation().getDirection().multiply(5)).add(0, 1, 0);
 
         if (event.getAction().isLeftClick())
@@ -45,7 +54,6 @@ public class Paint implements Listener
         }
 
         Brush brush = brushes.getFirst();
-        User user = User.getInstance(player);
 
         if (user.getSara().level < brush.level().level)
         {

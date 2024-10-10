@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
+import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -354,7 +355,7 @@ public class PlayerJoinListener implements Listener
 
             for (int i = 1; i <= 5; i ++)
             {
-                stars.append(Component.text(i <= review ? "★" : "☆").color(i <= review ? NamedTextColor.YELLOW : NamedTextColor.DARK_GRAY));
+                stars.append(Component.text("★").color(i <= review ? NamedTextColor.YELLOW : NamedTextColor.DARK_GRAY));
             }
 
             stars.append(Component.text(" " + review));
@@ -369,8 +370,6 @@ public class PlayerJoinListener implements Listener
             player.sendMessage(Component.text("★4: ").color(NamedTextColor.YELLOW).append(Component.text(fourRate + "% (" + four + "件)").color(NamedTextColor.GRAY)));
             player.sendMessage(Component.text("★5: ").color(NamedTextColor.YELLOW).append(Component.text(fiveRate + "% (" + five + "件)").color(NamedTextColor.GRAY)));
             player.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.DARK_GRAY));
-
-            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
         });
     }
 
@@ -419,6 +418,21 @@ public class PlayerJoinListener implements Listener
     public void teleportPlayer(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+        User user = User.getInstance(player);
+
+        Housing housing = Housing.getInstance(player.getLocation());
+
+        if (housing != null && ! housing.canVisit(user))
+        {
+            VanilifeWorld world = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
+
+            if (world != null)
+            {
+                player.teleport(world.getLocation(player));
+                return;
+            }
+        }
+
         VanilifeWorld world = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
 
         if (world == null)
@@ -426,7 +440,7 @@ public class PlayerJoinListener implements Listener
             return;
         }
 
-        if (player.hasPlayedBefore() && (VanilifeWorld.getInstance(player.getWorld()) != null || User.getInstance(player).inHousing()))
+        if (player.hasPlayedBefore() && (VanilifeWorld.getInstance(player.getWorld()) != null || user.inHousing()))
         {
             return;
         }

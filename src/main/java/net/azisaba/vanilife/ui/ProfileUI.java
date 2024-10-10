@@ -266,12 +266,13 @@ public class ProfileUI extends InventoryUI
                     return;
                 }
 
-                if (user == housing.getUser())
+                if (this.profile == housing.getUser())
                 {
                     this.player.sendMessage(Language.translate("msg.housing.cant-yourself", this.player).color(NamedTextColor.RED));
                     return;
                 }
 
+                this.player.closeInventory();
                 new HousingInvite(housing, this.profile.asPlayer());
             }
         }
