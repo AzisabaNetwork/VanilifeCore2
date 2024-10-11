@@ -357,7 +357,7 @@ public class PlayerListener implements Listener
         }
 
         Component body = ComponentUtility.asChat(player, message);
-        Vanilife.filter.onChat(player, ((TextComponent) body).content());
+        Vanilife.filter.onChat(player, message);
 
         listeners.forEach(listener -> listener.sendMessage(Component.text().build()
                 .append(Component.text("[" + user.getTrustRank().getName().charAt(0) + "] ").color(user.getTrustRank().getColor()).hoverEvent(Component.text(user.getTrustRank().getName()).color(user.getTrustRank().getColor())))

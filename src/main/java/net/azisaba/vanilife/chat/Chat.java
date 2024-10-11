@@ -421,7 +421,7 @@ public class Chat
 
         final Component body = ComponentUtility.asChat(sender.asPlayer(), message);
 
-        Vanilife.filter.onChat(sender.asPlayer(), ((TextComponent) body).content());
+        Vanilife.filter.onChat(sender.asPlayer(), message, this);
 
         this.members.stream()
                 .filter(member -> member.isOnline() && ! member.isBlock(sender) && member.read("settings.chat").getAsBoolean())
