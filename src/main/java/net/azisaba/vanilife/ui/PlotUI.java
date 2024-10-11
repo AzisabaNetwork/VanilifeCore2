@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlotUI extends InventoryUI
+public class PlotUI extends ChestUI
 {
     private final Plot plot;
     private final User user;

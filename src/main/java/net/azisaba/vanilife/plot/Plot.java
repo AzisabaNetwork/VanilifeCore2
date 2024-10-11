@@ -117,7 +117,7 @@ public class Plot
             rs.close();
             stmt.close();
 
-            PreparedStatement stmt2 = con.prepareStatement("SELECT * FROM chunk WHERE plot = ?");
+            PreparedStatement stmt2 = con.prepareStatement("SELECT * FROM `plot-chunk` WHERE plot = ?");
             stmt2.setString(1, this.id.toString());
             ResultSet rs2 = stmt2.executeQuery();
 
@@ -131,7 +131,7 @@ public class Plot
             rs2.close();
             stmt2.close();
 
-            PreparedStatement stmt3 = con.prepareStatement("SELECT user FROM member WHERE plot = ?");
+            PreparedStatement stmt3 = con.prepareStatement("SELECT user FROM `plot-member` WHERE plot = ?");
             stmt3.setString(1, this.id.toString());
             ResultSet rs3 = stmt3.executeQuery();
 
@@ -441,7 +441,7 @@ public class Plot
         try
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO member VALUES(?, ?)");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO `plot-member` VALUES(?, ?)");
             stmt.setString(1, user.getId().toString());
             stmt.setString(2, this.id.toString());
 
@@ -453,7 +453,7 @@ public class Plot
         catch (SQLException e)
         {
             Vanilife.sendExceptionReport(e);
-            Vanilife.getPluginLogger().warn(Component.text("Failed to insert member record: " + e.getMessage()).color(NamedTextColor.RED));
+            Vanilife.getPluginLogger().warn(Component.text("Failed to insert `plot-member` record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
 
@@ -469,7 +469,7 @@ public class Plot
         try
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("DELETE FROM member WHERE plot = ?");
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM `plot-member` WHERE plot = ?");
             stmt.setString(1, this.id.toString());
 
             stmt.executeUpdate();
@@ -480,7 +480,7 @@ public class Plot
         catch (SQLException e)
         {
             Vanilife.sendExceptionReport(e);
-            Vanilife.getPluginLogger().warn(Component.text("Failed delete member record: " + e.getMessage()).color(NamedTextColor.RED));
+            Vanilife.getPluginLogger().warn(Component.text("Failed delete `plot-member` record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
 
@@ -499,16 +499,16 @@ public class Plot
         return this.pvp;
     }
 
-    public boolean isMember(User user)
+    public boolean isMember(@NotNull User user)
     {
-        return UserUtility.isModerator(user)
-                || (this.scope == PlotScope.PUBLIC)
-                || (this.scope == PlotScope.FRIEND && (user.isFriend(this.owner) || this.members.contains(user)))
-                || (this.scope == PlotScope.OSATOU) && (this.owner.getOsatou() == user || this.members.contains(user))
-                || (this.scope == PlotScope.PRIVATE && this.members.contains(user));
+        return UserUtility.isModerator(user) ||
+                (this.scope == PlotScope.PUBLIC) ||
+                (this.scope == PlotScope.FRIEND && (user.isFriend(this.owner) || this.members.contains(user))) ||
+                (this.scope == PlotScope.OSATOU) && (user.hasOsatou() && user.getOsatou() == this.owner || this.members.contains(user)) ||
+                (this.scope == PlotScope.PRIVATE && this.members.contains(user));
     }
 
-    public boolean isMember(Player player)
+    public boolean isMember(@NotNull Player player)
     {
         return this.isMember(User.getInstance(player));
     }
@@ -632,7 +632,7 @@ public class Plot
         try
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO chunk VALUES(?, ?, ?)");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO `plot-chunk` VALUES(?, ?, ?)");
             stmt.setString(1, this.id.toString());
             stmt.setInt(2, chunk.getX());
             stmt.setInt(3, chunk.getZ());
@@ -645,7 +645,7 @@ public class Plot
         catch (SQLException e)
         {
             Vanilife.sendExceptionReport(e);
-            Vanilife.getPluginLogger().warn(Component.text("Failed to insert chunk record: " + e.getMessage()).color(NamedTextColor.RED));
+            Vanilife.getPluginLogger().warn(Component.text("Failed to insert `plot-chunk` record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
 
@@ -658,7 +658,7 @@ public class Plot
             try
             {
                 Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_USER);
-                PreparedStatement stmt = con.prepareStatement("DELETE FROM chunk WHERE plot = ?");
+                PreparedStatement stmt = con.prepareStatement("DELETE FROM `plot-chunk` WHERE plot = ?");
                 stmt.setString(1, this.id.toString());
 
                 stmt.executeUpdate();
@@ -669,7 +669,7 @@ public class Plot
             catch (SQLException e)
             {
                 Vanilife.sendExceptionReport(e);
-                Vanilife.getPluginLogger().warn(Component.text("Failed to delete chunk record: " + e.getMessage()).color(NamedTextColor.RED));
+                Vanilife.getPluginLogger().warn(Component.text("Failed to delete `plot-chunk` record: " + e.getMessage()).color(NamedTextColor.RED));
             }
 
             if (this.chunks.isEmpty())
@@ -694,12 +694,12 @@ public class Plot
             stmt.executeUpdate();
             stmt.close();
 
-            PreparedStatement stmt2 = con.prepareStatement("DELETE FROM chunk WHERE plot = ?");
+            PreparedStatement stmt2 = con.prepareStatement("DELETE FROM `plot-chunk` WHERE plot = ?");
             stmt2.setString(1, this.id.toString());
             stmt2.executeUpdate();
             stmt2.close();
 
-            PreparedStatement stmt3 = con.prepareStatement("DELETE FROM member WHERE plot = ?");
+            PreparedStatement stmt3 = con.prepareStatement("DELETE FROM `plot-member` WHERE plot = ?");
             stmt3.setString(1, this.id.toString());
             stmt3.executeUpdate();
             stmt3.close();

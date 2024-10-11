@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.gomenne;
 
-import net.azisaba.vanilife.command.subcommand.ISubcommand;
+import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.ui.ImereqUI;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.util.UserUtility;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GomenneRequestsSubcommand implements ISubcommand
+public class GomenneRequestsSubcommand implements Subcommand
 {
     @Override
     public @NotNull String getName()

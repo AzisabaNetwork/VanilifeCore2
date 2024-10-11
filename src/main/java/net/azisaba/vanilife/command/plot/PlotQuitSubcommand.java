@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.plot;
 
-import net.azisaba.vanilife.command.subcommand.ISubcommand;
+import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlotQuitSubcommand implements ISubcommand
+public class PlotQuitSubcommand implements Subcommand
 {
     @Override
     @NotNull

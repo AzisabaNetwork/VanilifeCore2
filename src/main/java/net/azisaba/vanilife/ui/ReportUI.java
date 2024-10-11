@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ReportUI extends InventoryUI
+public class ReportUI extends ChestUI
 {
     private final ReportDataContainer container;
 

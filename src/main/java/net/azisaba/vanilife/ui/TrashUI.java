@@ -13,12 +13,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrashUI extends InventoryUI
+public class TrashUI extends ChestUI
 {
     public TrashUI(@NotNull Player player)
     {
         super(player, Bukkit.createInventory(null, 54, Language.translate("ui.trash.title", player)));
-        System.out.println("hi!");
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ReportAttachUI extends InventoryUI
+public class ReportAttachUI extends ChestUI
 {
     private final ReportDataContainer container;
     private final Location location;

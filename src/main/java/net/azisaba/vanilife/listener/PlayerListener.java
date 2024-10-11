@@ -2,6 +2,7 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.chat.Chat;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
@@ -331,48 +332,37 @@ public class PlayerListener implements Listener
             return;
         }
 
-        boolean gomenne = false;
+        Chat chat = Chat.getInstance(user);
 
-        if (Language.getInstance(user).getId().equals("ja-jp")
-                && message.matches("^[A-Za-z0-9 -]+$")
-                && ! message.contains(":") && user.read("settings.ime").getAsBoolean()
-                && ! ((message.contains("!1") || message.contains("!2") || message.contains("!3") || message.contains("!4")) && user.getSettings().METUBOU.isValid()))
+        if (chat != null)
         {
-            message = Gomenne.convert(Gomenne.hira(message)) + " §8(" + message + "§r§8)";
-            gomenne = true;
+            chat.chat(user, message);
+            return;
         }
-
-        Vanilife.filter.onChat(player, ! gomenne ? message : Gomenne.convert(Gomenne.hira(((TextComponent) event.message()).content())) + " (" + ((TextComponent) event.message()).content() + ")");
-
-        if (user.hasSubscription(Subscriptions.NEON))
-        {
-            message = ChatColor.translateAlternateColorCodes('&', message);
-        }
-
-        message = LegacyComponentSerializer.legacySection().serialize(ComponentUtility.parseChat(message, user));
         
-        List<Player> players = new ArrayList<>();
+        List<Player> listeners = new ArrayList<>();
 
         if (! UserUtility.isModerator(user))
         {
-            players.addAll(Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user) && User.getInstance(p).read("settings.chat").getAsBoolean()).toList());
+            listeners.addAll(Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user) && User.getInstance(p).read("settings.chat").getAsBoolean()).toList());
         }
         else
         {
-            players.addAll(Bukkit.getOnlinePlayers());
+            listeners.addAll(Bukkit.getOnlinePlayers());
         }
 
-        if (user.getTrust() < 15 && Vanilife.random.nextDouble() < 0.5)
+        if (user.getTrust() < 15 && Vanilife.random.nextDouble() < 0.3)
         {
             user.setTrust(user.getTrust() + 1);
         }
-        
-        final String builtMessage = message;
 
-        players.forEach(p -> p.sendMessage(Component.text().build()
+        Component body = ComponentUtility.asChat(player, message);
+        Vanilife.filter.onChat(player, ((TextComponent) body).content());
+
+        listeners.forEach(listener -> listener.sendMessage(Component.text().build()
                 .append(Component.text("[" + user.getTrustRank().getName().charAt(0) + "] ").color(user.getTrustRank().getColor()).hoverEvent(Component.text(user.getTrustRank().getName()).color(user.getTrustRank().getColor())))
-                .append(user.getName(p))
+                .append(user.getName(listener))
                 .append(Component.text(": ").color(NamedTextColor.GRAY))
-                .append(ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(builtMessage)))));
+                .append(body)));
     }
 }

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vanilife365UI extends InventoryUI
+public class Vanilife365UI extends ChestUI
 {
     private static final List<ISubscription> products = Subscriptions.products();
 

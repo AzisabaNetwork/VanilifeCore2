@@ -2,6 +2,7 @@ package net.azisaba.vanilife.util;
 
 import com.google.gson.JsonArray;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.chat.Chat;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.kyori.adventure.text.Component;
@@ -78,11 +79,11 @@ public class ChatFilter
         return jsonArray;
     }
 
-    public void onChat(@NotNull Player sender, @NotNull String message)
+    public void onChat(@NotNull Player sender, @NotNull String message, Chat chat)
     {
         if (UserUtility.isModerator(sender) || ! Vanilife.filter.filter(message))
         {
-            Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**%s (%s)**: %s", sender.getName(), sender.getUniqueId(), LegacyComponentSerializer.legacySection().deserialize(message).content())).queue();
+            Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**[%s] %s (%s)**: %s", chat != null ? chat.getName() : "全体", sender.getName(), sender.getUniqueId(), LegacyComponentSerializer.legacySection().deserialize(message).content())).queue();
             return;
         };
 
@@ -96,6 +97,11 @@ public class ChatFilter
                         Button.secondary("vanilife:unmute", "または…アンミュート")).queue();
 
         Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_SUPPORT.getAsMention() + " このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします").queue();
+    }
+
+    public void onChat(@NotNull Player player, @NotNull String message)
+    {
+        this.onChat(player, message, null);
     }
 
     private void upload()

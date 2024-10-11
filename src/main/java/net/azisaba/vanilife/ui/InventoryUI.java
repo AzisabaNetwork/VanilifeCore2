@@ -1,108 +1,54 @@
 package net.azisaba.vanilife.ui;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class InventoryUI
+public abstract class InventoryUI implements IInventoryUI
 {
-    protected static final Map<InventoryUI, Inventory> instances = new HashMap<>();
+    private static final List<InventoryUI> instances = new ArrayList<>();
 
-    public static Map<InventoryUI, Inventory> getInstances()
+    public static InventoryUI getInstance(@NotNull Player player)
+    {
+        List<InventoryUI> filteredInstances = InventoryUI.instances.stream().filter(i -> i.getPlayer().equals(player)).toList();
+        return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
+    }
+
+    public static List<InventoryUI> getInstances()
     {
         return InventoryUI.instances;
     }
 
     protected final Player player;
-    protected final Inventory inventory;
-    protected final Map<Integer, String> clientListeners = new HashMap<>();
-    protected final Map<Integer, String> serverListeners = new HashMap<>();
 
-    public InventoryUI(@NotNull Player player, @NotNull Inventory inventory)
+    public InventoryUI(@NotNull Player player)
     {
         this.player = player;
-        this.inventory = inventory;
 
-        Inventory currentInv = this.player.getOpenInventory().getTopInventory();
+        InventoryUI old = InventoryUI.getInstance(this.player);
 
-        if (InventoryUI.getInstances().containsValue(currentInv))
+        if (old != null)
         {
-            InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == currentInv).toList().getFirst().getKey().onClose(new InventoryCloseEvent(player.getOpenInventory()));
+            old.onClose(new InventoryCloseEvent(this.player.getOpenInventory(), InventoryCloseEvent.Reason.PLUGIN));
+            InventoryUI.instances.remove(old);
+            this.player.updateInventory();
         }
 
-        this.player.openInventory(this.inventory);
-        InventoryUI.instances.put(this, this.inventory);
+        InventoryUI.instances.add(this);
     }
 
-    @NotNull
-    public Inventory getInventory()
+    @Override
+    public @NotNull Player getPlayer()
     {
-        return this.inventory;
+        return this.player;
     }
 
-    protected void registerListener(int index, @NotNull ItemStack stack, @NotNull String command, @NotNull ExecutionType type)
-    {
-        if (! command.contains(":"))
-        {
-            command = "vanilife:" + command;
-        }
-
-        switch (type)
-        {
-            case CLIENT -> this.clientListeners.put(index, command);
-            case SERVER -> this.serverListeners.put(index, command);
-        }
-
-        this.inventory.setItem(index, stack);
-    }
-
-    public void onClick(@NotNull InventoryClickEvent event)
-    {
-        event.setCancelled(true);
-    }
-
-    public void onUiClick(@NotNull InventoryClickEvent event)
-    {
-        if (event.getCurrentItem() == null)
-        {
-            return;
-        }
-
-        if (this.serverListeners.containsKey(event.getSlot()))
-        {
-            event.getWhoClicked().closeInventory();
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.serverListeners.get(event.getSlot()));
-        }
-
-        if (this.clientListeners.containsKey(event.getSlot()))
-        {
-            event.getWhoClicked().closeInventory();
-            Bukkit.dispatchCommand(event.getWhoClicked(), this.clientListeners.get(event.getSlot()));
-        }
-    }
-
-    public void onDrag(@NotNull InventoryDragEvent event)
-    {
-        event.setCancelled(true);
-    }
-
+    @Override
     public void onClose(@NotNull InventoryCloseEvent event)
     {
         InventoryUI.instances.remove(this);
-        this.player.updateInventory();
-    }
-
-    enum ExecutionType
-    {
-        CLIENT,
-        SERVER
     }
 }

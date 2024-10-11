@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.service;
 
-import net.azisaba.vanilife.command.subcommand.ISubcommand;
+import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.user.Sara;
 import net.kyori.adventure.text.Component;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceStopSubcommand implements ISubcommand
+public class ServiceStopSubcommand implements Subcommand
 {
     @Override
     @NotNull

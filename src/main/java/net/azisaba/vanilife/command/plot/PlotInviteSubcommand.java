@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.plot;
 
-import net.azisaba.vanilife.command.subcommand.ISubcommand;
+import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlotInviteSubcommand implements ISubcommand
+public class PlotInviteSubcommand implements Subcommand
 {
     @Override
     @NotNull
@@ -111,7 +111,7 @@ public class PlotInviteSubcommand implements ISubcommand
     @NotNull
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
-        ArrayList<String> suggest = new ArrayList<>();
+        List<String> suggest = new ArrayList<>();
 
         if (args.length == 1)
         {

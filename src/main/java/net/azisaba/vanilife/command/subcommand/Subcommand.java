@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface ISubcommand
+public interface Subcommand
 {
     @NotNull String getName();
 

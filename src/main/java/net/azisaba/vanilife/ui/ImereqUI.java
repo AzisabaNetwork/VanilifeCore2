@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ImereqUI extends InventoryUI
+public class ImereqUI extends ChestUI
 {
     private final List<ConvertRequest> requests = new ArrayList<>(ConvertRequest.getInstances());
 

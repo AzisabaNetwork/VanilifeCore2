@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.command.service;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.command.subcommand.ISubcommand;
+import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.util.ResourceUtility;
@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceStartSubcommand implements ISubcommand
+public class ServiceStartSubcommand implements Subcommand
 {
     @Override
     @NotNull

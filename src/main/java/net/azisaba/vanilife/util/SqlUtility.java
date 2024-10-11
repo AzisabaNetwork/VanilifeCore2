@@ -24,12 +24,15 @@ public class SqlUtility
         tablemap.put("friend", "CREATE TABLE friend(user1 VARCHAR(36), user2 VARCHAR(36))");
         tablemap.put("block", "CREATE TABLE block(user1 VARCHAR(36), user2 VARCHAR(36))");
 
+        tablemap.put("chat", "CREATE TABLE chat(id VARCHAR(36) PRIMARY KEY, name VARCHAR(16) UNIQUE, owner VARCHAR(36), scope VARCHAR(16), color INT)");
+        tablemap.put("chat-member", "CREATE TABLE `chat-member`(user VARCHAR(36), chat VARCHAR(36))");
+
         tablemap.put("plot", "CREATE TABLE plot(id VARCHAR(36) PRIMARY KEY, name VARCHAR(16) UNIQUE, owner VARCHAR(36), readme VARCHAR(36), scope VARCHAR(16), edit BOOLEAN, chest BOOLEAN, pvp BOOLEAN, world TEXT, x INT, y INT, z INT)");
-        tablemap.put("member", "CREATE TABLE member(user VARCHAR(36), plot VARCHAR(36))");
-        tablemap.put("chunk", "CREATE TABLE chunk(plot VARCHAR(36), x INT, z INT)");
+        tablemap.put("plot-member", "CREATE TABLE `plot-member`(user VARCHAR(36), plot VARCHAR(36))");
+        tablemap.put("plot-chunk", "CREATE TABLE `plot-chunk`(plot VARCHAR(36), x INT, z INT)");
 
         tablemap.put("mail", "CREATE TABLE mail(id VARCHAR(36) PRIMARY KEY, user_from VARCHAR(36), user_to VARCHAR(36), subject TEXT, date VARCHAR(16), message TEXT, readed BOOLEAN)");
-        tablemap.put("report", "CREATE TABLE report(id VARCHAR(36) PRIMARY KEY, sender VARCHAR(36), details VARCHAR(250), world VARCHAR(16), x INT, y INT, z INT, date VARCHAR(16), controller VARCHAR(19), supported BOOLEAN)");
+        tablemap.put("report", "CREATE TABLE report(id VARCHAR(36) PRIMARY KEY, sender VARCHAR(36), details VARCHAR(250), world VARCHAR(64), x INT, y INT, z INT, date VARCHAR(16), controller VARCHAR(19), supported BOOLEAN)");
         tablemap.put("imereq", "CREATE TABLE imereq(id VARCHAR(36) PRIMARY KEY, sender VARCHAR(36), date VARCHAR(16), yomi VARCHAR(16), kaki VARCHAR(16))");
         tablemap.put("filter", "CREATE TABLE filter(string VARCHAR(16))");
 

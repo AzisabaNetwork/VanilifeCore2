@@ -1,8 +1,10 @@
 package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.chat.Chat;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
+import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.Skin;
 import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.report.Report;
@@ -75,20 +77,27 @@ public class DiscordListener extends ListenerAdapter
 
         User.mount();
         Skin.mount();
+
+        Chat.mount();
+
         Bukkit.getScheduler().runTask(Vanilife.getPlugin(), Housing::mount);
+
         ReportUtility.mount();
         ConvertRequest.mount();
 
+        Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> {
+            Plot.mount();
+            Vanilife.publisher = true;
+        }, 20L);
+
         Vanilife.CHANNEL_CONSOLE.sendMessage(":open_file_folder: " + Vanilife.ROLE_DEVELOPER.getAsMention() + " サーバーを開始しました").queue();
-
-        Vanilife.publisher = true;
-
         Vanilife.SERVER_PUBLIC.getAudioManager().openAudioConnection(Vanilife.CHANNEL_VOICE);
-
         Member bot = Vanilife.SERVER_PUBLIC.getSelfMember();
 
-        bot.mute(true).queue();
-        bot.deafen(true).queue();
+        Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> {
+            bot.mute(true).queue();
+            bot.deafen(true).queue();
+        }, 20L * 10);
     }
 
     @Override
@@ -205,7 +214,7 @@ public class DiscordListener extends ListenerAdapter
         }
 
         new Mail(User.getInstance("azisaba"), report.getSender(), "サポートが発行されました",
-                String.format("お待たせいたしました。お寄せいただいたレポートにサポートが発行されたのでご確認をお願いします。\n\n%s\n\nレポート:\n%s\n\n担当者: %s", reply.getContentRaw(), report.getDetails(), event.getMember().getNickname()));
+                String.format("お待たせいたしました。お寄せいただいたレポートにサポートが発行されたのでご確認をお願いします。\n\n%s\n\nレポート:\n%s\n\n担当者: %s", reply.getContentRaw(), report.getDetails(), event.getMember().getEffectiveName()));
         reply.addReaction(Emoji.fromUnicode("U+2705")).queue();
     }
 }

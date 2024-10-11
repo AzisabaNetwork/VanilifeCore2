@@ -1082,6 +1082,11 @@ public class User
         return this.isOnline() && this.asPlayer().getWorld().equals(Housing.getWorld());
     }
 
+    public boolean hasNick()
+    {
+        return this.nick != null;
+    }
+
     public boolean hasOsatou()
     {
         return this.osatou != null;

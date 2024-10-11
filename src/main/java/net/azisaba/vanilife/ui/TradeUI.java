@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
-public class TradeUI extends InventoryUI
+public class TradeUI extends ChestUI
 {
     private final Trade trade;
     private final Player player;

@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HousingStoreUI extends InventoryUI
+public class HousingStoreUI extends ChestUI
 {
     private static final List<IHousingPack> products = HousingPacks.registry();
 

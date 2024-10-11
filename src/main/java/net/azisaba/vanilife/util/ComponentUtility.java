@@ -1,5 +1,7 @@
 package net.azisaba.vanilife.util;
 
+import net.azisaba.vanilife.gomenne.Gomenne;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
@@ -11,6 +13,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URLDecoder;
@@ -42,6 +45,35 @@ public class ComponentUtility
     public static @NotNull Component asComponent(@NotNull String src)
     {
         return LegacyComponentSerializer.legacySection().deserialize(src.replace('&', '§'));
+    }
+
+    public static @NotNull Component asChat(@NotNull Player sender, @NotNull final String src)
+    {
+        final User user = User.getInstance(sender);
+        String body = src;
+
+        boolean ime = Language.getInstance(sender).getId().equals("ja-jp") &&
+                src.matches("^[A-Za-z0-9 !?.,~-]*$") &&
+                user.read("settings.ime").getAsBoolean() &&
+                ! src.contains(":") &&
+                ! src.contains("!1") &&
+                ! src.contains("!2") &&
+                ! src.contains("!3") &&
+                ! src.contains("!4");
+
+        if (ime)
+        {
+            body = Gomenne.convert(Gomenne.hira(src)) + " §8(" + src + "§r§8)";
+        }
+
+        if (user.hasSubscription(Subscriptions.NEON))
+        {
+            body = ChatColor.translateAlternateColorCodes('&', body);
+        }
+
+        body = LegacyComponentSerializer.legacySection().serialize(ComponentUtility.parseChat(body, user));
+
+        return ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(body));
     }
 
     public static @NotNull Component parseChat(@NotNull String src, @NotNull User user)

@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.gomenne;
 
-import net.azisaba.vanilife.command.subcommand.ISubcommand;
+import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GomenneRequestSubcommand implements ISubcommand
+public class GomenneRequestSubcommand implements Subcommand
 {
     @Override
     public @NotNull String getName()

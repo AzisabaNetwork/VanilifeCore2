@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class HousingBlockUI extends InventoryUI
+public class HousingBlockUI extends ChestUI
 {
     private final int page;
 

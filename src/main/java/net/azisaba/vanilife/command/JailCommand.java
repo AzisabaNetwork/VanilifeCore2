@@ -34,7 +34,7 @@ public class JailCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (sender instanceof Player player && User.getInstance(player).getTrustRank().getLevel() < TrustRank.NEW.getLevel())
+        if (! UserUtility.isModerator(sender) && sender instanceof Player player && User.getInstance(player).getTrustRank().getLevel() < TrustRank.NEW.getLevel())
         {
             sender.sendMessage(Language.translate("jail.permission-error", player).color(NamedTextColor.RED));
             return true;

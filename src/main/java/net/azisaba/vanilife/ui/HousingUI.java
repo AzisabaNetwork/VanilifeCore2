@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HousingUI extends InventoryUI
+public class HousingUI extends ChestUI
 {
     private final Housing housing;
     private final User owner;

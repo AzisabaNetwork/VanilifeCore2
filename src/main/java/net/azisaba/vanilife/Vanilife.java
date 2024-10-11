@@ -199,6 +199,8 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new RichEmoteSubscription(), this);
 
         this.getCommand("block").setExecutor(new BlockCommand());
+        this.getCommand("chat").setExecutor(new net.azisaba.vanilife.command.ChatCommand());
+        this.getCommand("/chat").setExecutor(new net.azisaba.vanilife.command.chat.ChatCommand());
         this.getCommand("checkout").setExecutor(new CheckoutCommand());
         this.getCommand("emote").setExecutor(new EmoteCommand());
         this.getCommand("enderchest").setExecutor(new EnderChestCommand());
@@ -279,12 +281,6 @@ public final class Vanilife extends JavaPlugin
         Vanilife.filter = new ChatFilter();
 
         VanilifeWorldManager.mount();
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            Plot.mount();
-            Vanilife.publisher = true;
-        }, 20L);
-
-        Bukkit.getScheduler().runTaskLater(this, Plot::mount, 20L * 10);
 
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);

@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class VanilifeStoreUI extends InventoryUI
+public class VanilifeStoreUI extends ChestUI
 {
     public VanilifeStoreUI(@NotNull Player player)
     {

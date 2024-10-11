@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ProfileUI extends InventoryUI
+public class ProfileUI extends ChestUI
 {
     private final User profile;
 
@@ -41,7 +41,7 @@ public class ProfileUI extends InventoryUI
         friendMeta.displayName((user.isFriend(this.profile) ? Language.translate("ui.profile.unfriend", player) : Language.translate("ui.profile.friend", player)).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         friendMeta.lore(Collections.singletonList((user.isFriend(profile) ? Language.translate("ui.profile.unfriend.details", player) : Language.translate("ui.profile.friend.details", player)).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         friendStack.setItemMeta(friendMeta);
-        this.registerListener(12, friendStack, (user.isFriend(this.profile) ? "vanilife:unfriend" : "vanilife:friend") + this.profile.getPlaneName(), ExecutionType.CLIENT);
+        this.registerListener(12, friendStack, (user.isFriend(this.profile) ? "vanilife:unfriend " : "vanilife:friend ") + this.profile.getPlaneName(), ExecutionType.CLIENT);
 
         Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
             ItemStack headStack = HeadUtility.getPlayerHead(this.profile.getPlaneName());

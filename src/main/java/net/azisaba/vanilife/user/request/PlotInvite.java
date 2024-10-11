@@ -25,13 +25,13 @@ public class PlotInvite extends Request
         final int limit = (int) this.getTicks() / 20;
 
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.from.sendMessage(Language.translate("msg.plot-invite.invited", this.from, "name=" + ComponentUtility.asString(this.toUser.getName()), "plot=" + plot.getName(), "limit=" + limit));
+        this.from.sendMessage(Language.translate("msg.plot-invite.invited", this.from, "name=" + ComponentUtility.asString(this.toUser.getName()), "plot=" + this.plot.getName(), "limit=" + limit));
         this.from.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
 
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
-        this.to.sendMessage(Language.translate("msg.plot-invite.received", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName()), "plot=" + plot.getName()));
+        this.to.sendMessage(Language.translate("msg.plot-invite.received", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName()), "plot=" + this.plot.getName()));
         this.to.sendMessage(Language.translate("msg.plot-invite.received.details", this.to, "limit=" + limit)
-                .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("//plot join %s", this.plot.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=//plot join " + plot.getName())))));
+                .append(Language.translate("msg.click-to-accept", this.to).color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand(String.format("//plot join %s", this.plot.getName()))).hoverEvent(HoverEvent.showText(Language.translate("msg.click-to-run", this.to, "command=//plot join " + this.plot.getName())))));
         this.to.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));
     }
 

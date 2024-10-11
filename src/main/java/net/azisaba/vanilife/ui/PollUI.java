@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PollUI extends InventoryUI
+public class PollUI extends ChestUI
 {
     private final List<String> options;
 

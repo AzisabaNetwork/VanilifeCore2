@@ -17,7 +17,7 @@ import java.util.Map;
 
 public abstract class ParentCommand implements CommandExecutor, TabCompleter
 {
-    protected final Map<String, ISubcommand> skills = new HashMap<>();
+    protected final Map<String, Subcommand> skills = new HashMap<>();
 
     public ParentCommand()
     {
@@ -29,7 +29,7 @@ public abstract class ParentCommand implements CommandExecutor, TabCompleter
         return null;
     }
 
-    protected void register(@NotNull ISubcommand skill)
+    protected void register(@NotNull Subcommand skill)
     {
         this.skills.put(skill.getName(), skill);
     }
@@ -50,7 +50,7 @@ public abstract class ParentCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        ISubcommand skill = this.skills.get(args[0]);
+        Subcommand skill = this.skills.get(args[0]);
 
         if (! UserUtility.isAdmin(sender) && UserUtility.getSara(sender).level < skill.getRequirement().level)
         {
@@ -71,7 +71,7 @@ public abstract class ParentCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            for (ISubcommand skill : this.skills.values())
+            for (Subcommand skill : this.skills.values())
             {
                 if ((! sender.isOp() && UserUtility.getSara(sender).level < skill.getRequirement().level) || ! skill.getName().startsWith(args[0]))
                 {

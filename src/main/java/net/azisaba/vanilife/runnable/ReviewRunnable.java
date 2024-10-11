@@ -82,7 +82,7 @@ public class ReviewRunnable extends BukkitRunnable
 
         reviewer.sendMessage(Component.text().build());
         reviewer.sendMessage(Language.translate("review.request", reviewer));
-        reviewer.sendMessage(Component.text().append(Component.text("☆").color(NamedTextColor.YELLOW).hoverEvent(HoverEvent.showText(Component.text("☆1"))).clickEvent(ClickEvent.runCommand("/review 1")))
+        reviewer.sendMessage(Component.text().append(Component.text("☆").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).hoverEvent(HoverEvent.showText(Component.text("☆1"))).clickEvent(ClickEvent.runCommand("/review 1")))
                 .append(Component.text("☆").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).hoverEvent(HoverEvent.showText(Component.text("☆2"))).clickEvent(ClickEvent.runCommand("/review 2")))
                 .append(Component.text("☆").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).hoverEvent(HoverEvent.showText(Component.text("☆3"))).clickEvent(ClickEvent.runCommand("/review 3")))
                 .append(Component.text("☆").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).hoverEvent(HoverEvent.showText(Component.text("☆4"))).clickEvent(ClickEvent.runCommand("/review 4")))

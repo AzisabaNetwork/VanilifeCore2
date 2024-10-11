@@ -8,6 +8,15 @@ commands:
   block:
     description: Block any player.
     usage: /block <player>
+  chat:
+    description: Creating chats, switching, messaging, and much more!
+    usage: /chat [chat] [message]
+  /chat:
+    description: Command set for chat.
+    usage: //chat <subcommand> [args…]
+    aliases:
+      - c
+      - ch
   checkout:
     description: Process all subscriptions.
     usage: /checkout

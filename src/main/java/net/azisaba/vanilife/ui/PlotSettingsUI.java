@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlotSettingsUI extends InventoryUI
+public class PlotSettingsUI extends ChestUI
 {
     private final Plot plot;
     private final BukkitRunnable runnable;

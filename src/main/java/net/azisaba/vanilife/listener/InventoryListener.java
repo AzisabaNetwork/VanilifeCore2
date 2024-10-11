@@ -5,52 +5,51 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
-import org.bukkit.inventory.Inventory;
-
-import java.util.Map;
 
 public class InventoryListener implements Listener
 {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event)
     {
-        Player player = (Player) event.getWhoClicked();
-        Inventory inventory = player.getOpenInventory().getTopInventory();
+        InventoryUI ui = InventoryUI.getInstance((Player) event.getWhoClicked());
 
-        if (InventoryUI.getInstances().containsValue(inventory))
+        if (ui == null)
         {
-            Map.Entry<InventoryUI, Inventory> entry = InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == inventory).toList().getFirst();
-            entry.getKey().onClick(event);
+            return;
+        }
 
-            if (InventoryUI.getInstances().containsValue(event.getClickedInventory()))
-            {
-                entry.getKey().onUiClick(event);
-            }
+        ui.onClick(event);
+
+        if (event.getClickedInventory() == ui.getInventory())
+        {
+            ui.onUiClick(event);
         }
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event)
     {
-        Player player = (Player) event.getWhoClicked();
-        Inventory inventory = player.getOpenInventory().getTopInventory();
+        InventoryUI ui = InventoryUI.getInstance((Player) event.getWhoClicked());
 
-        if (InventoryUI.getInstances().containsValue(inventory))
+        if (ui == null)
         {
-            Map.Entry<InventoryUI, Inventory> entry = InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == inventory).toList().getFirst();
-            entry.getKey().onDrag(event);
+            return;
         }
+
+        ui.onDrag(event);
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event)
     {
-        Inventory inventory = event.getInventory();
+        InventoryUI ui = InventoryUI.getInstance((Player) event.getPlayer());
 
-        if (InventoryUI.getInstances().containsValue(inventory))
+        if (ui == null || event.getInventory() != ui.getInventory())
         {
-            Map.Entry<InventoryUI, Inventory> entry = InventoryUI.getInstances().entrySet().stream().filter(i -> i.getValue() == inventory).toList().getFirst();
-            entry.getKey().onClose(event);
+            return;
         }
+
+        ui.onClose(event);
+        ui.getPlayer().updateInventory();
     }
 }

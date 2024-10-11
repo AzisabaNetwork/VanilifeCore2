@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SaraStoreUI extends InventoryUI
+public class SaraStoreUI extends ChestUI
 {
     public SaraStoreUI(@NotNull Player player)
     {

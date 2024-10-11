@@ -54,7 +54,7 @@ public class RealNameCommand implements CommandExecutor, TabCompleter
         
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(player -> suggest.add(User.getInstance(player).getNick()));
+            User.getInstances().stream().filter(User::hasNick).forEach(nicker -> suggest.add(nicker.getNick()));
         }
         
         return suggest;

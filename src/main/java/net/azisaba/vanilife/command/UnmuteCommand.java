@@ -92,7 +92,7 @@ public class UnmuteCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(p -> suggest.add(p.getName()));
+            User.getInstances().stream().filter(User::isMuted).forEach(user -> suggest.add(user.getPlaneName()));
         }
 
         return suggest;

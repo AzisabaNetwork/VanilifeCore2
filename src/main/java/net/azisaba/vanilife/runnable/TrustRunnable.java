@@ -21,7 +21,7 @@ public class TrustRunnable extends BukkitRunnable
 
         targetGroup.forEach(target -> {
             User user = User.getInstance(target);
-            user.setTrust(user.getTrust() + 3);
+            user.setTrust(user.getTrust() + 1);
         });
     }
 }

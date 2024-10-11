@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class OsatouUI extends InventoryUI
+public class OsatouUI extends ChestUI
 {
     private final User user;
 

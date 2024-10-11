@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-public class ConfirmUI extends InventoryUI
+public class ConfirmUI extends ChestUI
 {
     private final Runnable accept;
     private final Runnable reject;

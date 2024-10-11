@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SettingsUI extends InventoryUI
+public class SettingsUI extends ChestUI
 {
     private final HashMap<Integer, ISetting<?>> settingMap = new HashMap<>();
 
