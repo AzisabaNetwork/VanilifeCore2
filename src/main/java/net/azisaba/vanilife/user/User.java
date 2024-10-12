@@ -4,7 +4,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.housing.Housing;
+import net.azisaba.vanilife.objective.Objective;
+import net.azisaba.vanilife.objective.Objectives;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.mail.Mail;
@@ -147,6 +152,7 @@ public class User
     private Sara sara;
     private UserStatus status;
     private Skin skin;
+    private IChat chat;
     private User osatou;
     private JsonObject storage;
 
@@ -161,6 +167,7 @@ public class User
     private final List<User> blocks = new ArrayList<>();
     private final List<Mail> mails;
     private final List<Skin> skins = new ArrayList<>();
+    private final List<Objective> achievements = new ArrayList<>();
     private final List<ISubscription> subscriptions = new ArrayList<>();
     private final List<IRequest> requests = new ArrayList<>();
 
@@ -191,6 +198,7 @@ public class User
             this.trust = rs.getInt("trust");
             this.sara = Sara.valueOf(rs.getString("sara"));
             this.status = UserStatus.valueOf(rs.getString("status"));
+            this.chat = rs.getString("chat") == null ? null : Chat.getInstance(UUID.fromString(rs.getString("chat")));
             this.osatou = rs.getString("osatou") == null ? null : User.getInstance(UUID.fromString(rs.getString("osatou")));
             this.storage = JsonParser.parseString(rs.getString("storage")).getAsJsonObject();
 
@@ -223,6 +231,26 @@ public class User
                 }
             }
 
+            rs3.close();
+            stmt3.close();
+
+            PreparedStatement stmt4 = con.prepareStatement("SELECT objective FROM achievement WHERE user = ?");
+            stmt4.setString(1, this.id.toString());
+            ResultSet rs4 = stmt4.executeQuery();
+
+            while (rs4.next())
+            {
+                Objective objective = Objectives.registry.get(rs4.getString("objective"));
+
+                if (objective != null)
+                {
+                    this.achievements.add(objective);
+                }
+            }
+
+            rs4.close();
+            stmt4.close();
+
             con.close();
         }
         catch (SQLException | ParseException e)
@@ -248,6 +276,7 @@ public class User
         this.mola = 0;
         this.lastLogin = null;
         this.status = UserStatus.DEFAULT;
+        this.chat = null;
         this.storage = new JsonObject();
 
         User.instances.add(this);
@@ -258,7 +287,7 @@ public class User
             {
                 Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
 
-                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, ?, ?, NULL, NULL, '{}')");
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO user VALUES(?, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, ?, ?, NULL, NULL, NULL, '{}')");
                 stmt.setString(1, this.id.toString());
                 stmt.setString(2, this.sara.toString());
                 stmt.setString(3, this.status.toString());
@@ -842,6 +871,36 @@ public class User
         this.skins.add(skin);
     }
 
+    public IChat getChat()
+    {
+        return this.chat;
+    }
+
+    public void setChat(IChat chat)
+    {
+        this.chat = chat;
+
+        if (! (chat instanceof GroupChat)) return;
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("UPDATE user SET chat = ? WHERE id = ?");
+            stmt.setString(1, this.chat == null ? null : this.chat.getId().toString());
+            stmt.setString(2, this.id.toString());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.sendExceptionReport(e);
+            Vanilife.getPluginLogger().warn(Component.text("Failed to update user record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
     public User getOsatou()
     {
         return this.osatou;
@@ -1012,6 +1071,11 @@ public class User
         return this.skins;
     }
 
+    public @NotNull List<Objective> getAchievements()
+    {
+        return this.achievements;
+    }
+
     public @NotNull List<ISubscription> getSubscriptions()
     {
         return this.subscriptions;
@@ -1077,6 +1141,11 @@ public class User
         return this.isBlock(User.getInstance(player));
     }
 
+    public boolean isAchieved(Objective objective)
+    {
+        return this.achievements.contains(objective);
+    }
+
     public boolean inHousing()
     {
         return this.isOnline() && this.asPlayer().getWorld().equals(Housing.getWorld());
@@ -1131,11 +1200,21 @@ public class User
             this.setTrust(this.trust + 5);
         }
 
+        if (! this.isAchieved(Objectives.MAKE_FRIEND))
+        {
+            this.achieve(Objectives.MAKE_FRIEND);
+        }
+
         user.friends.add(this);
 
         if (user.getTrust() < 15)
         {
             user.setTrust(user.getTrust() + 5);
+        }
+
+        if (! this.isAchieved(Objectives.MAKE_FRIEND))
+        {
+            this.achieve(Objectives.MAKE_FRIEND);
         }
 
         try
@@ -1260,6 +1339,80 @@ public class User
         {
             Vanilife.sendExceptionReport(e);
             Vanilife.getPluginLogger().warn(Component.text("Failed to delete block record: " + e.getMessage()).color(NamedTextColor.RED));
+        }
+    }
+
+    public void achieve(@NotNull Objective objective)
+    {
+        if (this.achievements.contains(objective))
+        {
+            System.out.println("rtn1");
+            return;
+        }
+
+        if (Math.abs(Objectives.getLevel(this) - objective.getLevel()) != 1)
+        {
+            System.out.println("rtn2");
+            return;
+        }
+
+        this.achievements.add(objective);
+        this.setMola(this.getMola() + objective.getReward());
+
+        if (this.isOnline())
+        {
+            Player player = this.asPlayer();
+
+            player.sendMessage(Language.translate("objective.achieved", player,
+                    "objective=" + ComponentUtility.asString(objective.getName(Language.getInstance(player))),
+                          "reward=" + objective.getReward()));
+
+            if (this.achievements.size() != Objectives.registry.values().size())
+            {
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 0.1f);
+            }
+            else
+            {
+                player.sendMessage(Component.text().build());
+                player.sendMessage(Language.translate("objective.complete", player).color(NamedTextColor.GOLD));
+                player.sendMessage(Component.text().build());
+
+                new BukkitRunnable()
+                {
+                    private int i = 0;
+
+                    @Override
+                    public void run()
+                    {
+                        if (3 <= this.i)
+                        {
+                            this.cancel();
+                            return;
+                        }
+
+                        player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0f, 1.0f);
+                        this.i ++;
+                    }
+                }.runTaskTimer(Vanilife.getPlugin(), 20L, 20L);
+            }
+        }
+
+        try
+        {
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO achievement VALUES(?, ?)");
+            stmt.setString(1, this.id.toString());
+            stmt.setString(2, objective.getName());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            con.close();
+        }
+        catch (SQLException e)
+        {
+            Vanilife.sendExceptionReport(e);
+            Vanilife.getPluginLogger().warn(Component.text("Failed to insert achievement record: " + e.getMessage()).color(NamedTextColor.RED));
         }
     }
 

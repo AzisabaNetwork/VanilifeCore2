@@ -29,6 +29,7 @@
 
     "ui.chat-color.title": "チャット > テーマ色",
     "ui.chat-color.required": "${sara}&7 で解放！",
+    "ui.chat-color.selected": "選択中！",
     "ui.chat-color.blue": "青色 (デフォルト)",
     "ui.chat-color.red": "赤色",
     "ui.chat-color.lime": "黄緑色",
@@ -441,6 +442,8 @@
     "cmd.chat.unfocused": "全体チャットに移動しました",
     "cmd.chat.not-found": "指定されたチャットは存在しません",
     "cmd.chat.not-focused": "選択中のチャットが見つかりませんでした。/chat <chat> で選択します。",
+    "cmd.chat.already": "既にこのチャットを選択しています",
+    "cmd.chat.already-unfocused": "既に全体チャットを選択しています",
     "cmd.chat.permission-error": "あなたはこのチャットでこれを行う権限がありません",
     "cmd.chat.cant-dm": "このプレイヤーにはダイレクトメッセージを送信することができません",
     "cmd.chat.create.cant": "チャットを作成するには User 以上の Trust Rank が必要です",
@@ -691,6 +694,13 @@
     "jnkn.hand.rock": "グー",
     "jnkn.hand.scissors": "チョキ",
     "jnkn.hand.paper": "パー",
+
+    "objective.achieved": "&a${objective}&6 を達成しました！ &8(${reward} Mola)",
+    "objective.complete": "全ての Objective を完了しました！",
+    "objective.make_friend": "フレンドを作る (/friend)",
+    "objective.send_message": "チャットを送信する",
+    "objective.link_discord": "Discord アカウントをリンクする (/settings)",
+    "objective.start_housing": "Housing を開始する (/housing)",
 
     "paint.permission-error": "&cこの色をペイントするには &r${permission}&r&c以上の皿が必要です。/store または azisaba.buycraft.net から購入！",
 

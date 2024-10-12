@@ -283,6 +283,7 @@ public final class Vanilife extends JavaPlugin
         VanilifeWorldManager.mount();
 
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
+        new ObjectiveRunnable().runTaskTimer(this, 0L, 10L);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
         new PlayerListRunnable().runTaskTimer(this, 0L, 20L * 5);
         new PlayingRewardRunnable().runTask(this);

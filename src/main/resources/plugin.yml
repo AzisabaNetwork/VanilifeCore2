@@ -11,12 +11,15 @@ commands:
   chat:
     description: Creating chats, switching, messaging, and much more!
     usage: /chat [chat] [message]
+    aliases:
+      - c
+      - ch
   /chat:
     description: Command set for chat.
     usage: //chat <subcommand> [args…]
     aliases:
-      - c
-      - ch
+      - /c
+      - /ch
   checkout:
     description: Process all subscriptions.
     usage: /checkout

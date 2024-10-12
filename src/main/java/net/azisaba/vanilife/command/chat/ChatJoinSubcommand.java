@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.chat;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -44,7 +44,7 @@ public class ChatJoinSubcommand implements Subcommand
             return;
         }
 
-        Chat chat = Chat.getInstance(args[0]);
+        GroupChat chat = GroupChat.getInstance(args[0]);
 
         if (chat == null)
         {

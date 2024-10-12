@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.plot.Plot;
@@ -78,7 +78,7 @@ public class DiscordListener extends ListenerAdapter
         User.mount();
         Skin.mount();
 
-        Chat.mount();
+        GroupChat.mount();
 
         Bukkit.getScheduler().runTask(Vanilife.getPlugin(), Housing::mount);
 

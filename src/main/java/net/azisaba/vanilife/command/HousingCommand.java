@@ -2,6 +2,7 @@ package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.housing.Housing;
+import net.azisaba.vanilife.objective.Objectives;
 import net.azisaba.vanilife.ui.HousingUI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.TrustRank;
@@ -70,7 +71,7 @@ public class HousingCommand implements CommandExecutor, TabCompleter
 
             if (! user.hasHousing())
             {
-                if (TrustRank.NEW.getLevel() <= user.getTrustRank().getLevel())
+                if (user.getTrustRank().getLevel() < TrustRank.NEW.getLevel())
                 {
                     player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
                     sender.sendMessage(Language.translate("cmd.housing.cant-create", player).color(NamedTextColor.RED));
@@ -78,6 +79,11 @@ public class HousingCommand implements CommandExecutor, TabCompleter
                 }
 
                 user.setHousing(new Housing(user));
+            }
+
+            if (! user.isAchieved(Objectives.START_HOUSING))
+            {
+                user.achieve(Objectives.START_HOUSING);
             }
 
             Bukkit.dispatchCommand(player, cmd);

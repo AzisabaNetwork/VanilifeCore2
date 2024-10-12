@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command.chat;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -47,15 +48,15 @@ public class ChatInviteSubcommand implements Subcommand
         }
 
         User user = User.getInstance(player);
-        Chat chat = Chat.getInstance(user);
+        IChat chat = user.getChat();
 
-        if (chat == null)
+        if (! (chat instanceof GroupChat group))
         {
             sender.sendMessage(Language.translate("cmd.chat.not-focused", player).color(NamedTextColor.RED));
             return;
         }
 
-        if (chat.getOwner() != user)
+        if (group.getOwner() != user)
         {
             sender.sendMessage(Language.translate("cmd.chat.permission-error", player).color(NamedTextColor.RED));
             return;
@@ -81,7 +82,7 @@ public class ChatInviteSubcommand implements Subcommand
             return;
         }
 
-        new ChatInvite(chat, to);
+        new ChatInvite(group, to);
     }
 
     @Override

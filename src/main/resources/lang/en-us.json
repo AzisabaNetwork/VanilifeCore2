@@ -29,6 +29,7 @@
 
     "ui.chat-color.title": "Chat > Theme Color",
     "ui.chat-color.required": "${sara}&7 required to unlock!",
+    "ui.chat-color.selected": "SELECTED!",
     "ui.chat-color.blue": "Blue (Default)",
     "ui.chat-color.red": "Red",
     "ui.chat-color.lime": "Lime",
@@ -441,6 +442,8 @@
     "cmd.chat.unfocused": "Moved to general chat.",
     "cmd.chat.not-found": "The specified chat does not exist.",
     "cmd.chat.not-focused": "No chat selected. Use /chat <chat> to select one.",
+    "cmd.chat.already": "You are already in this chat.",
+    "cmd.chat.already-unfocused": "You are already in the overall chat.",
     "cmd.chat.permission-error": "You do not have permission to do this in the chat.",
     "cmd.chat.cant-dm": "You cannot send a direct message to this player.",
     "cmd.chat.create.cant": "A Trust Rank of User or higher is needed to create a chat.",
@@ -691,6 +694,13 @@
     "jnkn.hand.rock": "Rock",
     "jnkn.hand.scissors": "Scissors",
     "jnkn.hand.paper": "Paper",
+
+    "objective.achieved": "You have achieved &a${objective}&6! &8(${reward} Mola)",
+    "objective.complete": "You have completed all objectives!!",
+    "objective.make_friend": "Make a friend (/friend)",
+    "objective.send_message": "Send a message in chat",
+    "objective.link_discord": "Link your Discord account (/settings)",
+    "objective.start_housing": "Start Housing (/housing)",
 
     "paint.permission-error": "&cYou need a plate of at least &r${permission}&r&cto paint this color. Purchase from /store or azisaba.buycraft.net!",
 

@@ -1,7 +1,6 @@
 package net.azisaba.vanilife.util;
 
 import net.azisaba.vanilife.gomenne.Gomenne;
-import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
@@ -52,16 +51,7 @@ public class ComponentUtility
         final User user = User.getInstance(sender);
         String body = src;
 
-        boolean ime = Language.getInstance(sender).getId().equals("ja-jp") &&
-                src.matches("^[A-Za-z0-9 !?.,~-]*$") &&
-                user.read("settings.ime").getAsBoolean() &&
-                ! src.contains(":") &&
-                ! src.contains("!1") &&
-                ! src.contains("!2") &&
-                ! src.contains("!3") &&
-                ! src.contains("!4");
-
-        if (ime)
+        if (Gomenne.isValid(user, src))
         {
             body = Gomenne.convert(Gomenne.hira(src)) + " §8(" + src + "§r§8)";
         }

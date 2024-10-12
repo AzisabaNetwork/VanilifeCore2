@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command.chat;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -45,22 +46,22 @@ public class ChatQuitSubcommand implements Subcommand
         }
 
         User user = User.getInstance(player);
-        Chat chat = Chat.getInstance(user);
+        IChat chat = user.getChat();
 
-        if (chat == null)
+        if (! (chat instanceof GroupChat group))
         {
             sender.sendMessage(Language.translate("cmd.chat.not-focused", player).color(NamedTextColor.RED));
             return;
         }
 
-        if (user == chat.getOwner())
+        if (user == group.getOwner())
         {
             sender.sendMessage(Language.translate("cmd.chat.quit.owner-cant", player).color(NamedTextColor.RED));
             return;
         }
 
-        chat.removeMember(user);
-        sender.sendMessage(Language.translate("cmd.chat.quit.quited", player, "chat=" + chat.getName()).color(NamedTextColor.GREEN));
+        group.removeMember(user);
+        sender.sendMessage(Language.translate("cmd.chat.quit.quited", player, "chat=" + group.getName()).color(NamedTextColor.GREEN));
     }
 
     @Override
@@ -73,8 +74,8 @@ public class ChatQuitSubcommand implements Subcommand
 
         List<String> suggest = new ArrayList<>();
 
-        Chat.getInstances().stream()
-                .filter(chat -> ! chat.isDirect() && chat.isMember(player))
+        GroupChat.getInstances().stream()
+                .filter(chat -> chat.isMember(player))
                 .forEach(chat -> suggest.add(chat.getName()));
 
         return suggest;

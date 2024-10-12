@@ -1,8 +1,9 @@
 package net.azisaba.vanilife.command.chat;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.command.subcommand.ParentCommand;
-import net.azisaba.vanilife.ui.ChatSettingsUI;
+import net.azisaba.vanilife.ui.GroupChatSettingsUI;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -28,11 +29,15 @@ public class ChatCommand extends ParentCommand
             return true;
         }
 
-        Chat chat = Chat.getInstance(player);
-
-        if (args.length == 0 && chat != null && chat.getOwner() == User.getInstance(player))
+        if (args.length == 0)
         {
-            new ChatSettingsUI(player, chat);
+            User user = User.getInstance(player);
+            IChat chat = user.getChat();
+
+            if (chat instanceof GroupChat group && group.getOwner() == User.getInstance(player))
+            {
+                new GroupChatSettingsUI(player, group);
+            }
         }
 
         return super.onCommand(sender, command, label, args);

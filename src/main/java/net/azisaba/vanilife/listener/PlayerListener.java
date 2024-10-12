@@ -2,11 +2,10 @@ package net.azisaba.vanilife.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.housing.Housing;
+import net.azisaba.vanilife.objective.Objectives;
 import net.azisaba.vanilife.user.Sara;
-import net.azisaba.vanilife.user.subscription.Subscriptions;
-import net.azisaba.vanilife.gomenne.Gomenne;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.report.ReportDataContainer;
 import net.azisaba.vanilife.ui.Language;
@@ -24,7 +23,6 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.block.Block;
@@ -327,16 +325,21 @@ public class PlayerListener implements Listener
 
         if (typing != null)
         {
-            player.sendMessage(Component.text(" " + message).color(NamedTextColor.GRAY));
+            player.sendMessage(Component.space().append(Component.text(message).color(NamedTextColor.GRAY)));
             typing.onTyped(message);
             return;
         }
 
-        Chat chat = Chat.getInstance(user);
+        if (! user.isAchieved(Objectives.SEND_MESSAGE))
+        {
+            user.achieve(Objectives.SEND_MESSAGE);
+        }
+
+        IChat chat = user.getChat();
 
         if (chat != null)
         {
-            chat.chat(user, message);
+            chat.send(user, message);
             return;
         }
         

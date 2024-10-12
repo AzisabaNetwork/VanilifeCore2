@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command.discord;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.objective.Objectives;
 import net.azisaba.vanilife.user.DiscordLinkManager;
 import net.azisaba.vanilife.user.User;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -74,6 +75,11 @@ public class VanilifeLinkCommand extends DiscordCommand
             Player player = user.asPlayer();
             player.sendMessage(Component.text(event.getUser().getEffectiveName() + " と紐づけしました！").color(NamedTextColor.GREEN));
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+        }
+
+        if (! user.isAchieved(Objectives.LINK_DISCORD))
+        {
+            user.achieve(Objectives.LINK_DISCORD);
         }
 
         event.replyEmbeds(new EmbedBuilder()

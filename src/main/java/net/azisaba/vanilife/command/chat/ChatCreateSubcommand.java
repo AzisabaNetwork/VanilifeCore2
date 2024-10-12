@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.command.chat;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -46,13 +46,13 @@ public class ChatCreateSubcommand implements Subcommand
             return;
         }
 
-        if (Chat.getInstance(args[0]) != null)
+        if (GroupChat.getInstance(args[0]) != null)
         {
             sender.sendMessage(Language.translate("cmd.chat.create.already", player).color(NamedTextColor.RED));
             return;
         }
 
-        if (! Chat.namepattern.matcher(args[0]).matches())
+        if (! GroupChat.namepattern.matcher(args[0]).matches())
         {
             sender.sendMessage(Language.translate("cmd.chat.create.invalid", player).color(NamedTextColor.RED));
             return;
@@ -70,7 +70,7 @@ public class ChatCreateSubcommand implements Subcommand
             return;
         }
 
-        new Chat(args[0], user);
+        new GroupChat(args[0], user);
         sender.sendMessage(Language.translate("cmd.chat.create.created", player).color(NamedTextColor.GREEN));
     }
 

@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.command.chat;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.ui.ConfirmUI;
 import net.azisaba.vanilife.ui.Language;
@@ -45,22 +46,22 @@ public class ChatDeleteSubcommand implements Subcommand
         }
 
         User user = User.getInstance(player);
-        Chat chat = Chat.getInstance(user);
+        IChat chat = user.getChat();
 
-        if (chat == null)
+        if (! (chat instanceof GroupChat group))
         {
             sender.sendMessage(Language.translate("cmd.chat.not-focused", player).color(NamedTextColor.RED));
             return;
         }
 
-        if (chat.getOwner() != user)
+        if (group.getOwner() != user)
         {
             sender.sendMessage(Language.translate("cmd.chat.permission-error", player).color(NamedTextColor.RED));
             return;
         }
 
         new ConfirmUI(player, () -> {
-            chat.delete();
+            group.delete();
             sender.sendMessage(Language.translate("cmd.chat.delete.deleted", player).color(NamedTextColor.GREEN));
         }, () -> sender.sendMessage(Language.translate("cmd.chat.delete.cancelled", player).color(NamedTextColor.RED)));
     }

@@ -1,11 +1,14 @@
 package net.azisaba.vanilife.command;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.DirectChat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,20 +35,23 @@ public class ChatCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 0)
         {
-            Chat chat = Chat.getInstance(user);
+            IChat chat = user.getChat();
 
-            if (chat != null)
+            if (chat == null)
             {
-                chat.unfocus(user);
+                sender.sendMessage(Language.translate("cmd.chat.already-unfocused", player).color(NamedTextColor.RED));
+                return true;
             }
 
+            user.setChat(null);
             sender.sendMessage(Language.translate("cmd.chat.unfocused", player).color(NamedTextColor.GREEN));
+            player.playSound(player, Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
             return true;
         }
 
-        Chat chat = null;
+        IChat chat;
 
-        if (args[0].startsWith("@") && args[0].length() > 1)
+        if (args[0].startsWith("@") && 1 < args[0].length())
         {
             Player mention = Bukkit.getPlayer(args[0].substring(1));
 
@@ -55,22 +61,19 @@ public class ChatCommand implements CommandExecutor, TabCompleter
                 return true;
             }
 
-            if (User.getInstance(mention).isBlock(user))
+            User target = User.getInstance(mention);
+
+            if (target.isBlock(user))
             {
                 sender.sendMessage(Language.translate("cmd.chat.cant-dm", player).color(NamedTextColor.RED));
                 return true;
             }
 
-            chat = Chat.getInstances().stream().filter(dm -> dm.isDirect() && dm.isMember(player) && dm.isMember(mention)).findFirst().orElse(null);
-
-            if (chat == null)
-            {
-                chat = new Chat(user, User.getInstance(mention));
-            }
+            chat = DirectChat.getInstance(user, target);
         }
         else
         {
-            chat = Chat.getInstance(args[0]);
+            chat = GroupChat.getInstance(args[0]);
         }
 
         if (chat == null)
@@ -87,7 +90,13 @@ public class ChatCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            chat.focus(user);
+            if (user.getChat() == chat)
+            {
+                sender.sendMessage(Language.translate("cmd.chat.already", player).color(NamedTextColor.RED));
+                return true;
+            }
+
+            user.setChat(chat);
             sender.sendMessage(Language.translate("cmd.chat.focused", player, "chat=" + args[0]).color(NamedTextColor.GREEN));
             return true;
         }
@@ -104,7 +113,7 @@ public class ChatCommand implements CommandExecutor, TabCompleter
             message.append(args[i]);
         }
 
-        chat.chat(player, message.toString());
+        chat.send(user, message.toString());
         return true;
     }
 
@@ -125,8 +134,8 @@ public class ChatCommand implements CommandExecutor, TabCompleter
 
         User user = User.getInstance(player);
 
-        Chat.getInstances().stream()
-                .filter(chat -> ! chat.isDirect() && chat.isMember(user))
+        GroupChat.getInstances().stream()
+                .filter(chat -> chat.isMember(user))
                 .forEach(chat -> suggest.add(chat.getName()));
 
         Bukkit.getOnlinePlayers().stream()

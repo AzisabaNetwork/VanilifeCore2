@@ -1,7 +1,8 @@
 package net.azisaba.vanilife.command.chat;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -49,9 +50,9 @@ public class ChatKickSubcommand implements Subcommand
         }
 
         User user = User.getInstance(player);
-        Chat chat = Chat.getInstance(user);
+        IChat chat = user.getChat();
 
-        if (chat == null)
+        if (! (chat instanceof GroupChat group))
         {
             sender.sendMessage(Language.translate("cmd.chat.not-focused", player).color(NamedTextColor.RED));
             return;
@@ -74,19 +75,19 @@ public class ChatKickSubcommand implements Subcommand
 
             User target = User.getInstance(args[0]);
 
-            if (chat.getOwner() != user)
+            if (group.getOwner() != user)
             {
                 sender.sendMessage(Language.translate("cmd.chat.permission-error", player).color(NamedTextColor.RED));
                 return;
             }
 
-            if (target == chat.getOwner())
+            if (target == group.getOwner())
             {
                 sender.sendMessage(Language.translate("cmd.chat.kick.owner-cant", player).color(NamedTextColor.RED));
                 return;
             }
 
-            chat.removeMember(target);
+            group.removeMember(target);
             sender.sendMessage(Language.translate("cmd.chat.kick.kicked", player, "name=" + target.getPlaneName()).color(NamedTextColor.GREEN));
         });
     }
@@ -100,9 +101,9 @@ public class ChatKickSubcommand implements Subcommand
         }
 
         User user = User.getInstance(player);
-        Chat chat = Chat.getInstance(user);
+        IChat chat = user.getChat();
 
-        if (chat == null || chat.getOwner() != user)
+        if (! (chat instanceof GroupChat group) || group.getOwner() != user)
         {
             return List.of();
         }

@@ -12,8 +12,11 @@ package net.azisaba.vanilife.gomenne;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.ResourceUtility;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -25,6 +28,23 @@ public class Gomenne
     private static final Map<String, String> registry = new HashMap<>();
 
     private static final Map<String, String> dictionary = new HashMap<>();
+
+    public static boolean isValid(@NotNull User sender, @NotNull String message)
+    {
+        return Language.getInstance(sender).getId().equals("ja-jp") &&
+                message.matches("^[A-Za-z0-9 !?.,~-]*$") &&
+                sender.read("settings.ime").getAsBoolean() &&
+                ! message.contains(":") &&
+                ! message.contains("!1") &&
+                ! message.contains("!2") &&
+                ! message.contains("!3") &&
+                ! message.contains("!4");
+    }
+
+    public static boolean isValid(@NotNull Player sender, @NotNull String message)
+    {
+        return Gomenne.isValid(User.getInstance(sender), message);
+    }
 
     static
     {

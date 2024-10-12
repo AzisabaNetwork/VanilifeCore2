@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.ui;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.chat.ChatScope;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.HeadUtility;
@@ -22,12 +22,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatSettingsUI extends ChestUI
+public class GroupChatSettingsUI extends ChestUI
 {
-    private final Chat chat;
+    private final GroupChat chat;
     private final BukkitRunnable runnable;
 
-    public ChatSettingsUI(@NotNull Player player, @NotNull Chat chat)
+    public GroupChatSettingsUI(@NotNull Player player, @NotNull GroupChat chat)
     {
         super(player, Bukkit.createInventory(null, 45, Component.text(chat.getName()).decorate(TextDecoration.BOLD)));
         this.chat = chat;
@@ -157,13 +157,13 @@ public class ChatSettingsUI extends ChestUI
                 {
                     super.onTyped(string);
 
-                    if (Chat.getInstance(string) != null)
+                    if (GroupChat.getInstance(string) != null)
                     {
                         this.player.sendMessage(Language.translate("cmd.chat.create.already", player).color(NamedTextColor.RED));
                         return;
                     }
 
-                    if (! Chat.namepattern.matcher(string).matches())
+                    if (! GroupChat.namepattern.matcher(string).matches())
                     {
                         this.player.sendMessage(Language.translate("cmd.chat.create.invalid", player).color(NamedTextColor.RED));
                         return;
@@ -196,18 +196,23 @@ public class ChatSettingsUI extends ChestUI
                 default -> ChatScope.PUBLIC;
             });
 
-            new ChatSettingsUI(this.player, chat);
+            new GroupChatSettingsUI(this.player, chat);
         }
 
         if (event.getSlot() == 23)
         {
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 24)
         {
-            chat.focus(this.player);
+            User.getInstance(this.player).setChat(chat);
             Bukkit.dispatchCommand(this.player, "/chat delete");
+        }
+
+        if (event.getSlot() == 40)
+        {
+            this.player.closeInventory();
         }
     }
 

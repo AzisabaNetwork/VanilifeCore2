@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.ui;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
@@ -17,16 +17,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static net.azisaba.vanilife.user.Sara.$100YEN;
 import static net.azisaba.vanilife.user.Sara.$500YEN;
 
-public class ChatColorUI extends ChestUI
+public class GroupChatColorUI extends ChestUI
 {
-    private final Chat chat;
+    private final GroupChat chat;
 
-    public ChatColorUI(@NotNull Player player, @NotNull Chat chat)
+    public GroupChatColorUI(@NotNull Player player, @NotNull GroupChat chat)
     {
         super(player, Bukkit.createInventory(null, 45, Language.translate("ui.chat-color.title", player)));
 
@@ -40,6 +42,10 @@ public class ChatColorUI extends ChestUI
         {
             blueMeta.addEnchant(Enchantment.INFINITY, 1, false);
             blueMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = blueMeta.hasLore() ? blueMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            blueMeta.lore(lore);
         }
 
         blueStack.setItemMeta(blueMeta);
@@ -48,13 +54,16 @@ public class ChatColorUI extends ChestUI
         ItemStack redStack = new ItemStack(Material.RED_DYE);
         ItemMeta redMeta = redStack.getItemMeta();
         redMeta.displayName(Language.translate("ui.chat-color.red", this.player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
-        redMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($100YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        redMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($100YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.RED.value())
         {
             redMeta.addEnchant(Enchantment.INFINITY, 1, false);
             redMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = redMeta.hasLore() ? redMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            redMeta.lore(lore);
         }
 
         redStack.setItemMeta(redMeta);
@@ -63,13 +72,16 @@ public class ChatColorUI extends ChestUI
         ItemStack limeStack = new ItemStack(Material.LIME_DYE);
         ItemMeta limeMeta = limeStack.getItemMeta();
         limeMeta.displayName(Language.translate("ui.chat-color.lime", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        limeMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($100YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        limeMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($100YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.GREEN.value())
         {
             limeMeta.addEnchant(Enchantment.INFINITY, 1, false);
             limeMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = limeMeta.hasLore() ? limeMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            limeMeta.lore(lore);
         }
 
         limeStack.setItemMeta(limeMeta);
@@ -78,13 +90,16 @@ public class ChatColorUI extends ChestUI
         ItemStack yellowStack = new ItemStack(Material.YELLOW_DYE);
         ItemMeta yellowMeta = yellowStack.getItemMeta();
         yellowMeta.displayName(Language.translate("ui.chat-color.yellow", this.player).color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        yellowMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($500YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        yellowMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($500YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.YELLOW.value())
         {
             yellowMeta.addEnchant(Enchantment.INFINITY, 1, false);
             yellowMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = yellowMeta.hasLore() ? yellowMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            yellowMeta.lore(lore);
         }
 
         yellowStack.setItemMeta(yellowMeta);
@@ -93,13 +108,16 @@ public class ChatColorUI extends ChestUI
         ItemStack pinkStack = new ItemStack(Material.PINK_DYE);
         ItemMeta pinkMeta = pinkStack.getItemMeta();
         pinkMeta.displayName(Language.translate("ui.chat-color.pink", this.player).color(NamedTextColor.LIGHT_PURPLE).decoration(TextDecoration.ITALIC, false));
-        pinkMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($500YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        pinkMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString($500YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.LIGHT_PURPLE.value())
         {
             pinkMeta.addEnchant(Enchantment.INFINITY, 1, false);
             pinkMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = pinkMeta.hasLore() ? pinkMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false).decoration(TextDecoration.ITALIC, false)));
+            pinkMeta.lore(lore);
         }
 
         pinkStack.setItemMeta(pinkMeta);
@@ -108,13 +126,16 @@ public class ChatColorUI extends ChestUI
         ItemStack aquaStack = new ItemStack(Material.LIGHT_BLUE_DYE);
         ItemMeta aquaMeta = aquaStack.getItemMeta();
         aquaMeta.displayName(Language.translate("ui.chat-color.aqua", this.player).color(NamedTextColor.AQUA).decoration(TextDecoration.ITALIC, false));
-        aquaMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$1000YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        aquaMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$1000YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.AQUA.value())
         {
             aquaMeta.addEnchant(Enchantment.INFINITY, 1, false);
             aquaMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = aquaMeta.hasLore() ? aquaMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            aquaMeta.lore(lore);
         }
 
         aquaStack.setItemMeta(aquaMeta);
@@ -123,13 +144,16 @@ public class ChatColorUI extends ChestUI
         ItemStack cyanStack = new ItemStack(Material.CYAN_DYE);
         ItemMeta cyanMeta = cyanStack.getItemMeta();
         cyanMeta.displayName(Language.translate("ui.chat-color.cyan", this.player).color(NamedTextColor.DARK_AQUA).decoration(TextDecoration.ITALIC, false));
-        cyanMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$1000YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        cyanMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$1000YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.DARK_AQUA.value())
         {
             cyanMeta.addEnchant(Enchantment.INFINITY, 1, false);
             cyanMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = cyanMeta.hasLore() ? cyanMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            cyanMeta.lore(lore);
         }
 
         cyanStack.setItemMeta(cyanMeta);
@@ -138,13 +162,16 @@ public class ChatColorUI extends ChestUI
         ItemStack greenStack = new ItemStack(Material.GREEN_DYE);
         ItemMeta greenMeta = greenStack.getItemMeta();
         greenMeta.displayName(Language.translate("ui.chat-color.green", this.player).color(NamedTextColor.DARK_GREEN).decoration(TextDecoration.ITALIC, false));
-        greenMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$2000YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        greenMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$2000YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.DARK_GREEN.value())
         {
             greenMeta.addEnchant(Enchantment.INFINITY, 1, false);
             greenMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = greenMeta.hasLore() ? greenMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            greenMeta.lore(lore);
         }
 
         greenStack.setItemMeta(greenMeta);
@@ -153,13 +180,16 @@ public class ChatColorUI extends ChestUI
         ItemStack darkRedStack = new ItemStack(Material.REDSTONE);
         ItemMeta darkRedMeta = darkRedStack.getItemMeta();
         darkRedMeta.displayName(Language.translate("ui.chat-color.dark_red", this.player).color(NamedTextColor.DARK_RED).decoration(TextDecoration.ITALIC, false));
-        darkRedMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$2000YEN.role)).decoration(TextDecoration.ITALIC, false)));
+        darkRedMeta.lore(List.of(Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$2000YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
         if (this.chat.getColor().value() == NamedTextColor.DARK_RED.value())
         {
             darkRedMeta.addEnchant(Enchantment.INFINITY, 1, false);
             darkRedMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = darkRedMeta.hasLore() ? darkRedMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            darkRedMeta.lore(lore);
         }
 
         darkRedStack.setItemMeta(darkRedMeta);
@@ -175,6 +205,10 @@ public class ChatColorUI extends ChestUI
         {
             purpleMeta.addEnchant(Enchantment.INFINITY, 1, false);
             purpleMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = purpleMeta.hasLore() ? purpleMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            purpleMeta.lore(lore);
         }
 
         purpleStack.setItemMeta(purpleMeta);
@@ -190,6 +224,10 @@ public class ChatColorUI extends ChestUI
         {
             goldMeta.addEnchant(Enchantment.INFINITY, 1, false);
             goldMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = goldMeta.hasLore() ? goldMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            goldMeta.lore(lore);
         }
 
         goldStack.setItemMeta(goldMeta);
@@ -205,6 +243,10 @@ public class ChatColorUI extends ChestUI
         {
             grayMeta.addEnchant(Enchantment.INFINITY, 1, false);
             grayMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = grayMeta.hasLore() ? grayMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            grayMeta.lore(lore);
         }
 
         grayStack.setItemMeta(grayMeta);
@@ -220,6 +262,10 @@ public class ChatColorUI extends ChestUI
         {
             whiteMeta.addEnchant(Enchantment.INFINITY, 1, false);
             whiteMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = whiteMeta.hasLore() ? whiteMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            whiteMeta.lore(lore);
         }
 
         whiteStack.setItemMeta(whiteMeta);
@@ -227,7 +273,7 @@ public class ChatColorUI extends ChestUI
 
         ItemStack blackStack = new ItemStack(Material.INK_SAC);
         ItemMeta blackMeta = blackStack.getItemMeta();
-        blackMeta.displayName(Language.translate("ui.chat-color.black", this.player).color(NamedTextColor.BLACK).decoration(TextDecoration.ITALIC, false));
+        blackMeta.displayName(Language.translate("ui.chat-color.black", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
         blackMeta.lore(List.of(Component.text().build(),
                 Language.translate("ui.chat-color.required", this.getPlayer(), "sara=" + ComponentUtility.asString(Sara.$50000YEN.role)).decoration(TextDecoration.ITALIC, false)));
 
@@ -235,6 +281,10 @@ public class ChatColorUI extends ChestUI
         {
             blackMeta.addEnchant(Enchantment.INFINITY, 1, false);
             blackMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+            List<Component> lore = blackMeta.hasLore() ? blackMeta.lore() : new ArrayList<>();
+            lore.addAll(Arrays.asList(Component.text().build(), Language.translate("ui.chat-color.selected", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false)));
+            blackMeta.lore(lore);
         }
 
         blackStack.setItemMeta(blackMeta);
@@ -271,7 +321,7 @@ public class ChatColorUI extends ChestUI
         {
             this.chat.setColor(NamedTextColor.BLUE);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 11)
@@ -284,7 +334,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.RED);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 12)
@@ -297,7 +347,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.GREEN);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 13)
@@ -310,7 +360,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.YELLOW);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 14)
@@ -323,7 +373,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.LIGHT_PURPLE);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 15)
@@ -336,7 +386,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.AQUA);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 16)
@@ -349,7 +399,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.DARK_AQUA);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 19)
@@ -362,7 +412,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.DARK_GREEN);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 20)
@@ -375,7 +425,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.DARK_RED);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 21)
@@ -388,7 +438,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.DARK_PURPLE);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 22)
@@ -401,7 +451,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.GOLD);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 23)
@@ -414,7 +464,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.GRAY);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 24)
@@ -427,7 +477,7 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.WHITE);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 25)
@@ -440,12 +490,12 @@ public class ChatColorUI extends ChestUI
 
             this.chat.setColor(NamedTextColor.BLACK);
             this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
-            new ChatColorUI(this.player, this.chat);
+            new GroupChatColorUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 39)
         {
-            new ChatSettingsUI(this.player, this.chat);
+            new GroupChatSettingsUI(this.player, this.chat);
         }
 
         if (event.getSlot() == 40)

@@ -2,12 +2,14 @@ package net.azisaba.vanilife.util;
 
 import com.google.gson.JsonArray;
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.DirectChat;
+import net.azisaba.vanilife.chat.GroupChat;
+import net.azisaba.vanilife.chat.IChat;
+import net.azisaba.vanilife.gomenne.Gomenne;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -79,18 +81,26 @@ public class ChatFilter
         return jsonArray;
     }
 
-    public void onChat(@NotNull Player sender, @NotNull String message, Chat chat)
+    public void onChat(@NotNull Player sender, @NotNull String message, IChat chat)
     {
+        final String field = chat == null ? "全体" :
+                chat instanceof GroupChat group ? String.format("%s (%s)", group.getName(), group.getId()) :
+                        chat instanceof DirectChat direct ? String.format("DM %s (%s)", direct.getPartner(sender).getPlaneName(), direct.getPartner(sender).getId()) :
+                                "不明";
+
+        final String compiled = ! Gomenne.isValid(sender, message) ? message : String.format("%s (%s)", message, Gomenne.convert(Gomenne.hira(message)));
+
         if (UserUtility.isModerator(sender) || ! Vanilife.filter.filter(message))
         {
-            Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**[%s] %s (%s)**: %s", chat != null ? chat.getName() : "全体", sender.getName(), sender.getUniqueId(), LegacyComponentSerializer.legacySection().deserialize(message).content())).queue();
+            Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**[%s] %s (%s)**: %s", field, sender.getName(), sender.getUniqueId(), compiled)).queue();
+
             return;
-        };
+        }
 
         Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                         .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
                         .setTitle(":shield:チャットフィルタリング")
-                        .setDescription(message)
+                        .setDescription(compiled)
                         .setFooter(sender.getUniqueId().toString())
                         .setColor(new Color(255, 85, 85)).build())
                 .addActionRow(Button.danger("vanilife:mute", String.format("%s をミュートする", sender.getName())),
@@ -99,9 +109,9 @@ public class ChatFilter
         Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_SUPPORT.getAsMention() + " このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします").queue();
     }
 
-    public void onChat(@NotNull Player player, @NotNull String message)
+    public void onChat(@NotNull Player sender, @NotNull String message)
     {
-        this.onChat(player, message, null);
+        this.onChat(sender, message, null);
     }
 
     private void upload()

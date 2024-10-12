@@ -2,6 +2,7 @@ package net.azisaba.vanilife.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,5 +26,10 @@ public class Registry<T>
     {
         this.registry.put(key, value);
         return value;
+    }
+
+    public List<T> values()
+    {
+        return new ArrayList<>(this.registry.values());
     }
 }

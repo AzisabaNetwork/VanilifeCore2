@@ -1,6 +1,6 @@
 package net.azisaba.vanilife.user.request;
 
-import net.azisaba.vanilife.chat.Chat;
+import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.util.ComponentUtility;
@@ -13,9 +13,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChatInvite extends Request
 {
-    private final Chat chat;
+    private final GroupChat chat;
 
-    public ChatInvite(@NotNull Chat from, @NotNull Player to)
+    public ChatInvite(@NotNull GroupChat from, @NotNull Player to)
     {
         super(from.getOwner().asPlayer(), to);
 
