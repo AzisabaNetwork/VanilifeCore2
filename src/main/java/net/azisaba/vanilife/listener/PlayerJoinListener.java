@@ -202,7 +202,7 @@ public class PlayerJoinListener implements Listener
         }
         else
         {
-            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.LIGHT_PURPLE).append(user.getName(p)).appendSpace().append(Language.translate("msg.join-first", p).color(NamedTextColor.GRAY))));
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("+ ").color(NamedTextColor.LIGHT_PURPLE).append(user.getName(p)).appendSpace().append(Language.translate("msg.first-join", p).color(NamedTextColor.GRAY))));
 
             player.sendMessage(Component.text().build());
             player.sendMessage(Component.text("Wiki: ").color(NamedTextColor.GRAY)
