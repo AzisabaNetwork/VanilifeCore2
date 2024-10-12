@@ -358,6 +358,10 @@ public class PlayerListener implements Listener
         {
             user.setTrust(user.getTrust() + 1);
         }
+        else if (Vanilife.random.nextDouble() < 0.02)
+        {
+            user.setTrust(user.getTrust() + 2);
+        }
 
         Component body = ComponentUtility.asChat(player, message);
         Vanilife.filter.onChat(player, message);

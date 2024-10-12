@@ -104,7 +104,9 @@ public class OsatouCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            user.getFriends().forEach(p -> suggest.add(p.getPlaneName()));
+            user.getFriends().stream()
+                    .filter(p -> p.getPlaneName().startsWith(args[0]))
+                    .forEach(p -> suggest.add(p.getPlaneName()));
         }
 
         return suggest;

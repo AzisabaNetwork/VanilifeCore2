@@ -1346,13 +1346,11 @@ public class User
     {
         if (this.achievements.contains(objective))
         {
-            System.out.println("rtn1");
             return;
         }
 
         if (Math.abs(Objectives.getLevel(this) - objective.getLevel()) != 1)
         {
-            System.out.println("rtn2");
             return;
         }
 

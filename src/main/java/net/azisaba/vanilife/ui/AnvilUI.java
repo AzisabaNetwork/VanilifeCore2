@@ -58,7 +58,6 @@ public abstract class AnvilUI extends InventoryUI
     public Inventory getInventory()
     {
         Inventory i = this.player.getOpenInventory().getTopInventory();
-        System.out.println(i.getType());
         return i.getType() == InventoryType.ANVIL ? i : null;
     }
 

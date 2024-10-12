@@ -135,11 +135,11 @@ public class ChatCommand implements CommandExecutor, TabCompleter
         User user = User.getInstance(player);
 
         GroupChat.getInstances().stream()
-                .filter(chat -> chat.isMember(user))
+                .filter(chat -> chat.isMember(user) && chat.getName().startsWith(args[0]))
                 .forEach(chat -> suggest.add(chat.getName()));
 
         Bukkit.getOnlinePlayers().stream()
-                .filter(p -> p != player)
+                .filter(p -> p != player && (("@" + p.getName()).startsWith(args[0]) || p.getName().startsWith(args[0])))
                 .forEach(p -> suggest.add("@" + p.getName()));
 
         return suggest;

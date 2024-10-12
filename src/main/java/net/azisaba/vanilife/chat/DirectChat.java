@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.chat;
 
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -60,9 +61,11 @@ public class DirectChat extends Chat
     @Override
     public @NotNull Component format(@NotNull User sender, @NotNull User listener, @NotNull Component body)
     {
-        return Component.text("DM: ").color(NamedTextColor.BLUE)
-                .append(listener.getName(sender))
-                .append(Component.text(" > "))
-                .append(body);
+        return Component.text()
+                .append(Component.text(sender == listener ? "DM (" + this.getPartner(listener).getPlaneName() + ") > " : "DM > ").color(NamedTextColor.BLUE))
+                .append(sender == listener ? Language.translate("msg.you", listener).color(NamedTextColor.GRAY) : sender.getName(listener))
+                .append(Component.text(": ").color(NamedTextColor.GRAY))
+                .append(body)
+                .build();
     }
 }

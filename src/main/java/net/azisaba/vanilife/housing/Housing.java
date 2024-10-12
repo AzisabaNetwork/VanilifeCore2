@@ -195,7 +195,8 @@ public class Housing
                 }
             }
 
-            if (Housing.getInstance(l) == null){
+            if (Housing.getInstance(l) == null)
+            {
                 break;
             }
         }
@@ -207,7 +208,7 @@ public class Housing
 
             this.pos1 = location.clone().add(-20, -20, -20);
             this.pos2 = location.clone().add(20, 20, 20);
-            this.spawn = new Location(Housing.world, location.getBlockX(), Housing.world.getHighestBlockYAt(location.getBlockX(), location.getBlockZ()) + 1, location.getZ());
+            this.spawn = new Location(Housing.world, location.getBlockX(), Housing.world.getHighestBlockYAt(location.getBlockX(), location.getBlockZ()) + 1, location.getBlockZ());
 
             try
             {
@@ -321,10 +322,11 @@ public class Housing
         try
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
-            PreparedStatement stmt = con.prepareStatement("UPDATE housing SET x = ?, y = ?, z = ?");
+            PreparedStatement stmt = con.prepareStatement("UPDATE housing SET x = ?, y = ?, z = ? WHERE id = ?");
             stmt.setInt(1, spawn.getBlockX());
             stmt.setInt(2, spawn.getBlockY());
             stmt.setInt(3, spawn.getBlockZ());
+            stmt.setString(4, this.id.toString());
 
             stmt.executeUpdate();
 

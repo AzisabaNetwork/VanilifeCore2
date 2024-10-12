@@ -28,7 +28,8 @@ public class CrafterPack implements IHousingPack
     @Override
     public @NotNull List<Material> getMaterials()
     {
-        return List.of(Material.CRAFTING_TABLE,
+        return List.of(Material.CHEST,
+                Material.CRAFTING_TABLE,
                 Material.FURNACE,
                 Material.SMOKER,
                 Material.BLAST_FURNACE,

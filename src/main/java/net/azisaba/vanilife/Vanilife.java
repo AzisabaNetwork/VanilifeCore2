@@ -109,7 +109,7 @@ public final class Vanilife extends JavaPlugin
     public static Role ROLE_MCONSOLE;
     public static Role ROLE_DEVELOPER;
 
-    public static final int MOLA_PLOT_NEW = 100;
+    public static final int MOLA_PLOT_NEW = 80;
     public static final int MOLA_PLOT_CLAIM = 30;
 
     public static String METUBOT_SERVER;
@@ -287,8 +287,8 @@ public final class Vanilife extends JavaPlugin
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
         new PlayerListRunnable().runTaskTimer(this, 0L, 20L * 5);
         new PlayingRewardRunnable().runTask(this);
-        new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 30);
-        new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 15);
+        new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 10);
+        new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 10);
         new VoiceChatRunnable().runTaskTimerAsynchronously(this, 0L, 20L * 2);
 
         Plugin coreprotectPlugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
