@@ -50,6 +50,7 @@ public class HousingListener implements Listener
 
         if (! housing.canBuild(user))
         {
+            event.setCancelled(true);
             player.sendMessage(Language.translate("housing.cant-build", player).color(NamedTextColor.RED));
             return;
         }
