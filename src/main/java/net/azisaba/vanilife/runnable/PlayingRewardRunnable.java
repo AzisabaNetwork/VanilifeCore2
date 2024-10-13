@@ -2,6 +2,7 @@ package net.azisaba.vanilife.runnable;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.Afk;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,8 +24,15 @@ public class PlayingRewardRunnable extends BukkitRunnable
     {
         for (Player player : Bukkit.getOnlinePlayers())
         {
+            int reward = Afk.isAfk(player) ? (Vanilife.random.nextDouble() < 0.5 ? 1 : 0) : 5;
+
+            if (reward == 0)
+            {
+                continue;
+            }
+
             User user = User.getInstance(player);
-            user.setMola(user.getMola() + 5, "reward.category.played-time", NamedTextColor.GREEN);
+            user.setMola(user.getMola() + reward, "reward.category.played-time", NamedTextColor.GREEN);
         }
 
         new PlayingRewardRunnable().runTaskLater(Vanilife.getPlugin());
