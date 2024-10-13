@@ -43,7 +43,7 @@ public class AngryEmoteSubscription implements IEmoteSubscription
     @Override
     public int getCost()
     {
-        return 80;
+        return 60;
     }
 
     @Override

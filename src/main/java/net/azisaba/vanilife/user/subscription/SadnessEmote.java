@@ -32,7 +32,7 @@ public class SadnessEmote implements IEmoteSubscription
     @Override
     public @NotNull Material getIcon()
     {
-        return Material.HEART_OF_THE_SEA;
+        return Material.LAPIS_LAZULI;
     }
 
     @Override

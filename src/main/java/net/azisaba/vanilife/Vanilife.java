@@ -285,7 +285,7 @@ public final class Vanilife extends JavaPlugin
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new ObjectiveRunnable().runTaskTimer(this, 0L, 10L);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
-        new PlayerListRunnable().runTaskTimer(this, 0L, 20L * 5);
+        new PlayerListRunnable().runTaskTimer(this, 0L, 20L * 2);
         new PlayingRewardRunnable().runTask(this);
         new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 10);
         new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 10);

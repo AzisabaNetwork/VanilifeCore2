@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class SaraCommand implements CommandExecutor, TabCompleter
 {
@@ -34,18 +36,33 @@ public class SaraCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (Arrays.stream(Sara.values()).noneMatch(s -> s.toString().equals(args[1])))
+        if (Arrays.stream(Sara.values()).noneMatch(s -> s.toString().equals(args[1].toUpperCase())))
         {
-            sender.sendMessage(Component.text(String.format("%s は未定義の皿です", args[1])).color(NamedTextColor.RED));
+            sender.sendMessage(Component.text(args[1] + " は未定義の皿です").color(NamedTextColor.RED));
             return true;
         }
 
-        User user = User.getInstance(args[0]);
-        Sara sara = Sara.valueOf(args[1]);
+        Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
+            UUID uuid = Bukkit.getPlayerUniqueId(args[0]);
 
-        user.setSara(sara);
+            if (uuid == null)
+            {
+                sender.sendMessage(Component.text(args[0] + " は不明なプレイヤーです").color(NamedTextColor.RED));
+                return;
+            }
 
-        sender.sendMessage(Component.text(String.format("%s の皿を %s に変更しました", args[0], args[1])).color(NamedTextColor.GREEN));
+            if (! UserUtility.exists(uuid))
+            {
+                sender.sendMessage(Component.text(args[0] + " は不明なユーザーです").color(NamedTextColor.RED));
+                return;
+            }
+
+            User target = User.getInstance(args[0]);
+            target.setSara(Sara.valueOf(args[1].toUpperCase()));
+
+            sender.sendMessage(Component.text(String.format("%s の皿を %s に変更しました", args[0], args[1])).color(NamedTextColor.GREEN));
+        });
+
         return true;
     }
 
@@ -61,12 +78,16 @@ public class SaraCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(p -> suggest.add(p.getName()));
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> p.getName().startsWith(args[0]))
+                    .forEach(p -> suggest.add(p.getName()));
         }
 
         if (args.length == 2)
         {
-            Arrays.stream(Sara.values()).filter(s -> s.toString().toLowerCase().startsWith(args[1].toLowerCase())).forEach(s -> suggest.add(s.toString()));
+            Arrays.stream(Sara.values())
+                    .filter(s -> s.toString().toLowerCase().startsWith(args[1].toLowerCase()))
+                    .forEach(s -> suggest.add(s.name().toLowerCase()));
         }
 
         return suggest;

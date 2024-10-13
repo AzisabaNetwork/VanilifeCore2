@@ -36,8 +36,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import java.awt.*;
 import java.util.*;
@@ -58,7 +56,7 @@ public class PlayerJoinListener implements Listener
         }
 
         player.displayName(user.getName());
-        player.playerListName(Component.text("@{Azisaba.Vanilife.User." + player.getUniqueId() + "}"));
+        player.playerListName(user.getName());
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -295,7 +293,7 @@ public class PlayerJoinListener implements Listener
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
-            int review = 0;
+            double review = 0;
             int materials = 0;
 
             int one = 0;
@@ -344,13 +342,13 @@ public class PlayerJoinListener implements Listener
 
             if (0 < materials)
             {
-                review = review / materials;
+                review =  (double) review / materials;
 
-                oneRate = 0 < one ? ((double) materials / one) * 100 : 0;
-                twoRate = 0 < two ? ((double) materials / two) * 100 : 0;
-                threeRate = 0 < three ? ((double) materials / three) * 100 : 0;
-                fourRate = 0 < four ? ((double) materials / four) * 100 : 0;
-                fiveRate = 0 < five ? ((double) materials / five) * 100 : 0;
+                oneRate = 0 < one ? ((double) one / materials) * 100 : 0;
+                twoRate = 0 < two ? ((double) two / materials) * 100 : 0;
+                threeRate = 0 < three ? ((double) three / materials) * 100 : 0;
+                fourRate = 0 < four ? ((double) four / materials) * 100 : 0;
+                fiveRate = 0 < five ? ((double) fiveRate / materials) * 100 : 0;
             }
 
             TextComponent.Builder stars = Component.text();
@@ -423,21 +421,7 @@ public class PlayerJoinListener implements Listener
 
         User user = User.getInstance(player);
         Sara sara = user.getSara();
-
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team team = scoreboard.getTeam(sara.name());
-
-        scoreboard.getTeams().stream()
-                .filter(t -> t.hasPlayer(player))
-                .forEach(t -> t.removePlayer(player));
-
-        if (team == null)
-        {
-            team = scoreboard.registerNewTeam(sara.name());
-            team.prefix(Component.text(sara.level));
-        }
-
-        team.addPlayer(player);
+        user.setSara(sara);
     }
 
     @EventHandler(priority = EventPriority.LOW)

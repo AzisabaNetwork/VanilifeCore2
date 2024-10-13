@@ -143,6 +143,11 @@ public class Plot
             rs3.close();
             stmt3.close();
 
+            if (! this.isMember(this.owner))
+            {
+                this.addMember(this.owner);
+            }
+
             con.close();
         }
         catch (SQLException e)
@@ -502,6 +507,7 @@ public class Plot
     public boolean isMember(@NotNull User user)
     {
         return UserUtility.isModerator(user) ||
+                user == this.owner ||
                 (this.scope == PlotScope.PUBLIC) ||
                 (this.scope == PlotScope.FRIEND && (user.isFriend(this.owner) || this.members.contains(user))) ||
                 (this.scope == PlotScope.OSATOU) && (user.hasOsatou() && user.getOsatou() == this.owner || this.members.contains(user)) ||
@@ -570,7 +576,7 @@ public class Plot
             return;
         }
 
-        if (! Plot.chests.contains(click.getType()))
+        if (! Plot.chests.contains(click.getType()) && ! click.getType().name().toLowerCase().endsWith("_door"))
         {
             return;
         }

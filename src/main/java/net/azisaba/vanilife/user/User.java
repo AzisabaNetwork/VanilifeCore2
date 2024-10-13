@@ -36,8 +36,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
@@ -757,28 +756,35 @@ public class User
 
     public void setSara(@NotNull Sara sara)
     {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-
-        scoreboard.getTeams().stream()
-                .filter(team -> team.hasPlayer(this.asOfflinePlayer()))
-                .forEach(team -> team.removePlayer(this.asOfflinePlayer()));
-
         this.sara = sara;
 
-        if (this.isOnline())
+        final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        final OfflinePlayer player = this.asOfflinePlayer();
+        final Team old = scoreboard.getPlayerTeam(player);
+
+        if (old != null)
         {
-            final Player player = this.asPlayer();
-
-            Team team = scoreboard.getTeam(this.sara.name());
-
-            if (team == null)
-            {
-                team = scoreboard.registerNewTeam(this.sara.name());
-                team.prefix(Component.text(this.sara.level));
-            }
-
-            team.addPlayer(player);
+            old.removePlayer(player);
         }
+
+        List<Integer> scores = new ArrayList<>();
+        int size = Sara.values().length;
+
+        for (int i = 0; i < size; i ++)
+        {
+            scores.add(size - 1 - i);
+        }
+
+        int score = scores.get(List.of(Sara.values()).indexOf(this.sara));
+
+        Team team = scoreboard.getTeam(String.valueOf(score));
+
+        if (team == null)
+        {
+            team = scoreboard.registerNewTeam(String.valueOf(score));
+        }
+
+        team.addPlayer(player);
 
         try
         {

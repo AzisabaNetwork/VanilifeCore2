@@ -29,6 +29,7 @@ public class CrafterPack implements IHousingPack
     public @NotNull List<Material> getMaterials()
     {
         return List.of(Material.CHEST,
+                Material.SHULKER_BOX,
                 Material.CRAFTING_TABLE,
                 Material.FURNACE,
                 Material.SMOKER,

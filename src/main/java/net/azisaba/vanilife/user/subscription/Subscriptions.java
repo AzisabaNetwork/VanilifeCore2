@@ -17,6 +17,8 @@ public class Subscriptions
 
     public static final NeonSubscription NEON = (NeonSubscription) Subscriptions.register(new NeonSubscription());
 
+    public static final RainEmoteSubscription RAIN_EMOTE = (RainEmoteSubscription) Subscriptions.register(new RainEmoteSubscription());
+
     public static final RichEmoteSubscription RICH_EMOTE = (RichEmoteSubscription) Subscriptions.register(new RichEmoteSubscription());
 
     public static final SadnessEmote SADNESS_EMOTE = (SadnessEmote) Subscriptions.register(new SadnessEmote());
