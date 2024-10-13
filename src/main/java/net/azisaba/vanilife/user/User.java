@@ -792,6 +792,7 @@ public class User
             team = scoreboard.registerNewTeam(String.valueOf(score));
         }
 
+        team.setCanSeeFriendlyInvisibles(false);
         team.addPlayer(player);
 
         try
