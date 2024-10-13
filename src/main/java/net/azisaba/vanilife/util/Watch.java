@@ -22,6 +22,7 @@ public class Watch
     public static @NotNull List<Player> getWatchers()
     {
         return Watch.watchers.stream()
+                .filter(watcher -> Bukkit.getPlayer(watcher) != null)
                 .map(Bukkit::getPlayer)
                 .collect(Collectors.toList());
     }

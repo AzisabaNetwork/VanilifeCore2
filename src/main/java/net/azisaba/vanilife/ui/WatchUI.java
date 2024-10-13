@@ -92,7 +92,7 @@ public class WatchUI extends ChestUI
                         Component.text("Client: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                                 .append(Component.text(Optional.ofNullable(p.getClientBrandName()).orElse("不明")).color(NamedTextColor.GREEN)),
                         Component.text("Address: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                                .append(Component.text(Optional.ofNullable(PlayerUtility.getIpAddress(player)).orElse("不明")).color(NamedTextColor.GREEN)),
+                                .append(Component.text(Optional.ofNullable(PlayerUtility.getIpAddress(p)).orElse("不明")).color(NamedTextColor.GREEN)),
                         Component.text("Country: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                                 .append(Component.text(PlayerUtility.getCountry(p)).color(NamedTextColor.GREEN)),
                         Component.text().build(),

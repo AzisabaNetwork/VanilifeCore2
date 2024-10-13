@@ -325,6 +325,14 @@ public class PlayerListener implements Listener
         event.setCancelled(true);
 
         Player player = event.getPlayer();
+
+        if (Watch.isWatcher(player))
+        {
+            player.sendMessage(Component.text("Watch モードではチャットは利用できません").color(NamedTextColor.RED
+            ));
+            return;
+        }
+
         User user = User.getInstance(player);
 
         if (UserStatus.MUTED.level() <= user.getStatus().level())
