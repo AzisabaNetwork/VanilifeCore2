@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.ui;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.HeadUtility;
 import net.azisaba.vanilife.util.PlayerUtility;
@@ -71,32 +72,36 @@ public class WatchUI extends ChestUI
         int i = 0;
         int[] slots = new int[] {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34};
 
-        for (Player p : this.players)
+        for (Player p : this.players.subList(this.page * 21, Math.min((this.page + 1) * 21, this.players.size())))
         {
-            ItemStack stack = HeadUtility.getPlayerHead(p.getName());
-            ItemMeta meta = stack.getItemMeta();
+            final int i2 = i;
 
-            User target = User.getInstance(p);
+            Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
+                ItemStack stack = HeadUtility.getPlayerHead(p.getName());
+                ItemMeta meta = stack.getItemMeta();
 
-            meta.displayName(target.getName().decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+                User target = User.getInstance(p);
 
-            meta.lore(List.of(Component.text("Trust Rank: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                            .append(Component.text(target.getTrustRank().getName()).color(target.getTrustRank().getColor()))
-                            .appendSpace().append(Component.text("(" + target.getTrust() + ")").color(NamedTextColor.DARK_GRAY)),
-                    Component.text("Game Mode: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                            .append(Component.text(p.getGameMode().name().toLowerCase()).color(NamedTextColor.GREEN)),
-                    Component.text("Client: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                            .append(Component.text(Optional.ofNullable(p.getClientBrandName()).orElse("不明")).color(NamedTextColor.GREEN)),
-                    Component.text("Address: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                            .append(Component.text(Optional.ofNullable(PlayerUtility.getIpAddress(player)).orElse("不明")).color(NamedTextColor.GREEN)),
-                    Component.text("Country: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                            .append(Component.text(PlayerUtility.getCountry(p)).color(NamedTextColor.GREEN)),
-                    Component.text().build(),
-                    Component.text("クリックしてテレポートします").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
-            stack.setItemMeta(meta);
-            this.inventory.setItem(slots[i], stack);
+                meta.displayName(target.getName().decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-            this.slots.put(slots[i], p);
+                meta.lore(List.of(Component.text("Trust Rank: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                                .append(Component.text(target.getTrustRank().getName()).color(target.getTrustRank().getColor()))
+                                .appendSpace().append(Component.text("(" + target.getTrust() + ")").color(NamedTextColor.DARK_GRAY)),
+                        Component.text("Game Mode: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                                .append(Component.text(p.getGameMode().name().toLowerCase()).color(NamedTextColor.GREEN)),
+                        Component.text("Client: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                                .append(Component.text(Optional.ofNullable(p.getClientBrandName()).orElse("不明")).color(NamedTextColor.GREEN)),
+                        Component.text("Address: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                                .append(Component.text(Optional.ofNullable(PlayerUtility.getIpAddress(player)).orElse("不明")).color(NamedTextColor.GREEN)),
+                        Component.text("Country: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                                .append(Component.text(PlayerUtility.getCountry(p)).color(NamedTextColor.GREEN)),
+                        Component.text().build(),
+                        Component.text("クリックしてテレポートします").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                stack.setItemMeta(meta);
+                this.inventory.setItem(slots[i2], stack);
+
+                this.slots.put(slots[i2], p);
+            });
 
             i ++;
         }
