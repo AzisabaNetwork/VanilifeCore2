@@ -51,10 +51,10 @@ public class Watch
             return;
         }
 
+        Watch.watchers.remove(player.getUniqueId());
+
         Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(player, Component.text().build()));
         Bukkit.getOnlinePlayers().forEach(p -> p.showPlayer(Vanilife.getPlugin(), player));
-
-        Watch.watchers.remove(player.getUniqueId());
 
         player.setGameMode(GameMode.SURVIVAL);
     }

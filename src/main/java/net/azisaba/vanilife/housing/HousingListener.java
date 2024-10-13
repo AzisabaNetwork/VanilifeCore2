@@ -59,6 +59,8 @@ public class HousingListener implements Listener
 
         if (! can)
         {
+            System.out.println(event.getBlock().getType());
+
             if (housing.getUser() == user && HousingPacks.registry().stream().anyMatch(pack -> pack.include(event.getBlock())))
             {
                 IHousingPack pack = HousingPacks.registry().stream().filter(p -> p.include(event.getBlock())).toList().getFirst();

@@ -768,28 +768,28 @@ public class User
             old.removePlayer(player);
         }
 
-        int score = switch (this.sara)
+        String score = switch (this.sara)
         {
-            case Sara.OWNER -> 0;
-            case Sara.ADMIN -> 1;
-            case Sara.MOD -> 2;
-            case Sara.NITRO -> 3;
-            case Sara.GAMING -> 4;
-            case Sara.$50000YEN -> 5;
-            case Sara.$10000YEN -> 6;
-            case Sara.$5000YEN -> 7;
-            case Sara.$2000YEN -> 8;
-            case Sara.$1000YEN -> 9;
-            case Sara.$500YEN -> 10;
-            case Sara.$100YEN -> 11;
-            case Sara.DEFAULT -> 12;
+            case Sara.OWNER -> "a";
+            case Sara.ADMIN -> "b";
+            case Sara.MOD -> "c";
+            case Sara.NITRO -> "d";
+            case Sara.GAMING -> "e";
+            case Sara.$50000YEN -> "f";
+            case Sara.$10000YEN -> "g";
+            case Sara.$5000YEN -> "h";
+            case Sara.$2000YEN -> "i";
+            case Sara.$1000YEN -> "j";
+            case Sara.$500YEN -> "k";
+            case Sara.$100YEN -> "l";
+            case Sara.DEFAULT -> "m";
         };
 
-        Team team = scoreboard.getTeam(String.valueOf(score));
+        Team team = scoreboard.getTeam(score);
 
         if (team == null)
         {
-            team = scoreboard.registerNewTeam(String.valueOf(score));
+            team = scoreboard.registerNewTeam(score);
         }
 
         team.setCanSeeFriendlyInvisibles(false);
@@ -1209,11 +1209,7 @@ public class User
         }
 
         this.friends.add(user);
-
-        if (this.trust < 15)
-        {
-            this.setTrust(this.trust + 5);
-        }
+        this.setTrust(this.trust + 5);
 
         if (! this.isAchieved(Objectives.MAKE_FRIEND))
         {

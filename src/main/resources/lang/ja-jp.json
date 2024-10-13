@@ -295,7 +295,7 @@
     "ui.sara.50000.4": "&a✓ &713個のグループチャットテーマ (下位 + 黒)",
     "ui.sara.50000.5": "&a✓ &7より良いログインメッセージ",
     "ui.sara.50000.6": "&a✓ &7プロット名の装飾",
-    "ui.sara.500000.6": "&a✓ &7ニックネームの設定",
+    "ui.sara.50000.7": "&a✓ &7ニックネームの設定",
     "ui.sara.gaming": "Gaming",
     "ui.sara.gaming.1": "&a✓ &7プレフィックス",
     "ui.sara.gaming.2": "&a✓ &712個の絵文字",
@@ -410,6 +410,11 @@
     "msg.jnkn.cancelled": "&cジャンケンは中止されました！",
     "msg.jnkn.time-over": "&c${limit}&e 秒が経過したため、&r${name}&e へのジャンケンリクエストは無効になりました",
 
+    "msg.nkip": "夜をスキップしますか？一分間の投票を行います！",
+    "msg.nkip.click-to-vote": "クリックして投票 (または /nkip)",
+    "msg.nkip.cancelled": "夜はスキップされなかった",
+    "msg.nkip.skipped": "夜はスキップされた",
+
     "msg.osatou.requested": "${name}&e にお砂糖申請を送信しました。承認の有効期限は &c${limit}&e 秒です。",
     "msg.osatou.received": "${name}&e からお砂糖申請が届きました",
     "msg.osatou.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
@@ -522,6 +527,10 @@
     "cmd.nick.already-in-use": "このニックネームは既に使用されています",
     "cmd.nick.reset": "ニックネームをリセットしました",
     "cmd.nick.changed": "${nick} &r&aをニックネームに設定しました",
+
+    "cmd.nkip.cant": "現在別のワールドにいるため、投票できません",
+    "cmd.nkip.not-found": "スキップ投票が見つかりませんでした",
+    "cmd.nkip.voted": "スキップ投票に投票しました！",
 
     "cmd.osatou.cant-yourself": "自分自身にお砂糖申請を送信することはできません",
     "cmd.osatou.cant": "お砂糖申請は Friend にのみ送信することができます",
@@ -682,6 +691,10 @@
     "housing.pack.midnight.name": "Midnight",
     "housing.pack.midnight.details.1": "火を囲ってフレンドとマシュマロを焼いたり…",
     "housing.pack.midnight.details.2": "夜を過ごすのに最適です！",
+    "housing.pack.farming.name": "農業",
+    "housing.pack.farming.details.1": "Housing で農業を始めてみませんか？",
+    "housing.pack.gardening.name": "ガーデニング",
+    "housing.pack.gardening.details.1": "庭園を作るのには欠かせません！",
 
     "jail.limit-under": "詳細は8文字以上で入力してください",
     "jail.limit-over": "詳細は30文字以内で入力してください",

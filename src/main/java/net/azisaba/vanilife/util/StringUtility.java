@@ -4,20 +4,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtility
 {
+    private static final Pattern hiragana = Pattern.compile("^[\\p{InHiragana}\\p{InCJKSymbolsAndPunctuation}\\p{InGeneralPunctuation}\\p{InHalfwidthAndFullwidthForms}]+$");
+
     public static boolean isHiragana(@NotNull String src)
     {
-        for (char ch : src.toCharArray())
-        {
-            if (!((ch >= '\u3040' && ch <= '\u309F') || (ch >= '\u3000' && ch <= '\u303F') || (ch >= '\uFF00' && ch <= '\uFFEF')))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        Matcher matcher = StringUtility.hiragana.matcher(src);
+        return matcher.matches();
     }
 
     public static @NotNull Map<String, String> parameters(@NotNull String src)

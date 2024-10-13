@@ -326,13 +326,6 @@ public class PlayerListener implements Listener
 
         Player player = event.getPlayer();
 
-        if (Watch.isWatcher(player))
-        {
-            player.sendMessage(Component.text("Watch モードではチャットは利用できません").color(NamedTextColor.RED
-            ));
-            return;
-        }
-
         User user = User.getInstance(player);
 
         if (UserStatus.MUTED.level() <= user.getStatus().level())
@@ -365,6 +358,12 @@ public class PlayerListener implements Listener
 
         IChat chat = user.getChat();
 
+        if (Watch.isWatcher(player) && chat == null)
+        {
+            player.sendMessage(Component.text("Watch モードでは全体チャットは利用できません").color(NamedTextColor.RED));
+            return;
+        }
+
         if (chat != null)
         {
             chat.send(user, message);
@@ -388,7 +387,7 @@ public class PlayerListener implements Listener
         }
         else if (Vanilife.random.nextDouble() < 0.02)
         {
-            user.setTrust(user.getTrust() + 2);
+            user.setTrust(user.getTrust() + 1);
         }
 
         Component body = ComponentUtility.asChat(player, message);

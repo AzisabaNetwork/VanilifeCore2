@@ -295,7 +295,7 @@
     "ui.sara.50000.4": "&a✓ &13Thirteen Group Chat Themes (Lower + Black)",
     "ui.sara.50000.5": "&a✓ &7Better Login Message",
     "ui.sara.50000.6": "&a✓ &7Decoration for Plot Name",
-    "ui.sara.500000.6": "&a✓ &7Setting Nickname",
+    "ui.sara.50000.7": "&a✓ &7Setting Nickname",
     "ui.sara.gaming": "Gaming",
     "ui.sara.gaming.1": "&a✓ &7Prefix",
     "ui.sara.gaming.2": "&a✓ &12Twelve Emojis",
@@ -410,6 +410,11 @@
     "msg.jnkn.cancelled": "&cRock-paper-scissors has been cancelled.",
     "msg.jnkn.time-over": "&eThe rock-paper-scissors request to &r${name}&e is now invalid because &c${limit}&e seconds have elapsed.",
 
+    "msg.nkip": "Do you want to skip the night? A one-minute vote is starting!",
+    "msg.nkip.click-to-vote": "Click to vote (or /nkip)",
+    "msg.nkip.cancelled": "The night was not skipped",
+    "msg.nkip.skipped": "The night was skipped",
+
     "msg.osatou.requested": "Sent a sugar request to ${name}. The approval deadline is &c${limit}&e seconds.",
     "msg.osatou.received": "You have received a sugar request from ${name}",
     "msg.osatou.received.details": "&eThe approval deadline is &c${limit}&e seconds.",
@@ -522,6 +527,10 @@
     "cmd.nick.already-in-use": "This nickname is already in use.",
     "cmd.nick.reset": "nick reset.",
     "cmd.nick.changed": "${nick} is set to nick.",
+
+    "cmd.nkip.cant": "You cannot vote as you are in another world right now.",
+    "cmd.nkip.not-found": "No skip vote found.",
+    "cmd.nkip.voted": "You have voted for the skip vote!",
 
     "cmd.osatou.cant-yourself": "You cannot send a sugar request to yourself.",
     "cmd.osatou.cant": "Sugar requests can only be sent to friends.",
@@ -682,6 +691,10 @@
     "housing.pack.midnight.name": "Midnight",
     "housing.pack.midnight.details.1": "Gather around the fire with friends to roast marshmallows...",
     "housing.pack.midnight.details.2": "The perfect pack for spending the night!",
+    "housing.pack.farming.name": "Farming",
+    "housing.pack.farming.details.1": "Why not start farming with Housing?",
+    "housing.pack.gardening.name": "Gardening",
+    "housing.pack.gardening.details.1": "Essential for creating a garden!",
 
     "jail.limit-under": "Please enter details that are more than 8 characters.",
     "jail.limit-over": "Please enter details that are within 30 characters.",

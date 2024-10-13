@@ -23,6 +23,7 @@ import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.housing.HousingListener;
 import net.azisaba.vanilife.listener.*;
+import net.azisaba.vanilife.nkip.NightCheckRunnable;
 import net.azisaba.vanilife.runnable.*;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.ui.Language;
@@ -216,6 +217,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("mail").setExecutor(new MailCommand());
         this.getCommand("mute").setExecutor(new MuteCommand());
         this.getCommand("nick").setExecutor(new NickCommand());
+        this.getCommand("nkip").setExecutor(new NkipCommand());
         this.getCommand("osatou").setExecutor(new OsatouCommand());
         this.getCommand("plot").setExecutor(new PlotCommand());
         this.getCommand("/plot").setExecutor(new net.azisaba.vanilife.command.plot.PlotCommand());
@@ -288,6 +290,7 @@ public final class Vanilife extends JavaPlugin
         new CacheClearRunnable().runTaskTimer(this, 0L, 20L * 3600);
         new ObjectiveRunnable().runTaskTimer(this, 0L, 10L);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
+        new NightCheckRunnable().runTaskTimer(this, 0L, 20L);
         new PlayerListRunnable().runTaskTimer(this, 0L, 20L * 2);
         new PlayingRewardRunnable().runTask(this);
         new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 10);

@@ -20,7 +20,7 @@ public enum Sara
     NITRO(9, ComponentUtility.getAsGaming("[Nitro] "), NamedTextColor.LIGHT_PURPLE, true),
     MOD(10, Component.text("[MOD] ").color(NamedTextColor.YELLOW), NamedTextColor.YELLOW),
     ADMIN(11, Component.text("[ADMIN] ").color(NamedTextColor.RED), NamedTextColor.RED),
-    OWNER(12, Component.text("[OWNER] ").color(NamedTextColor.RED), NamedTextColor.GRAY);
+    OWNER(12, Component.text("[OWNER] ").color(NamedTextColor.RED), NamedTextColor.RED);
 
     public final int level;
     public final Component role;

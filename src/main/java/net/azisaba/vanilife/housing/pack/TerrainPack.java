@@ -22,7 +22,7 @@ public class TerrainPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 120;
+        return 80;
     }
 
     @Override
@@ -37,6 +37,8 @@ public class TerrainPack implements IHousingPack
                 Material.ROOTED_DIRT,
                 Material.FARMLAND,
                 Material.MUD,
+                Material.WATER,
+                Material.LAVA,
                 Material.CLAY,
                 Material.GRAVEL,
                 Material.SAND,

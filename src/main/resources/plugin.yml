@@ -86,6 +86,9 @@ commands:
   nick:
     description: Sets the user's nickname.
     usage: /nick [name]
+  nkip:
+    description: Vote for Nkip.
+    usage: /nkip [world]
   osatou:
     description: Send a osatou request
     usage: /osatou <player>

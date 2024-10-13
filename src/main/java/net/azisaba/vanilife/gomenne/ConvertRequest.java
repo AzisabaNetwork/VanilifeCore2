@@ -143,7 +143,8 @@ public class ConvertRequest
     {
         Gomenne.register(this.yomi, this.kaki);
         Vanilife.CHANNEL_ANNOUNCE.sendMessage(String.format(":printer: 変換リクエストから `%s (%s)` が IME 辞書に追加されました！", this.kaki, this.yomi)).queue();
-        this.delete("追加");
+        this.delete("追加 (3 Mola を付与しました)");
+        this.sender.setMola(this.sender.getMola() + 3);
     }
 
     public void reject()

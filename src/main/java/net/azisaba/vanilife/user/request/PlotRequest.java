@@ -55,8 +55,8 @@ public class PlotRequest extends Request
 
         this.plot.addMember(User.getInstance(this.from));
 
-        this.from.sendMessage(Language.translate("msg.plot.joined", this.from, "plot=" + this.plot.getName()));
-        this.to.sendMessage(Language.translate("msg.plot.accept", this.to, "name=" + ComponentUtility.asString(this.toUser.getName()), "plot=" + this.plot.getName()));
+        this.from.sendMessage(Language.translate("msg.plot.accept", this.to, "name=" + this.to.getName(), "plot=" + this.plot.getName()));
+        this.to.sendMessage(Language.translate("msg.plot.joined", this.from, "plot=" + this.plot.getName()));
     }
 
     @Override

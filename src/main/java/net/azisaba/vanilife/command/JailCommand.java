@@ -129,7 +129,7 @@ public class JailCommand implements CommandExecutor, TabCompleter
 
             if (UserUtility.isModerator(sender))
             {
-                Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
+                Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                         .setTitle("Jail 通知")
                         .addField("対象者", String.format("%s (%s)", target.getPlaneName(), target.getId()), false)
                         .addField("実行者", sender instanceof Player player ? String.format("%s (%s)", player.getName(), player.getUniqueId()) : sender.getName(), false)

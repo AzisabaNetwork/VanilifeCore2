@@ -6,12 +6,10 @@ import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.Materials;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.CropState;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -63,12 +61,7 @@ public class BlockListener implements Listener
 
             if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.07)
             {
-                if (! (block.getState() instanceof Ageable ageable))
-                {
-                    return;
-                }
-
-                if (ageable.getAge() < ageable.getMaximumAge())
+                if ((block.getState() instanceof Ageable ageable) && ageable.getAge() < ageable.getMaximumAge())
                 {
                     return;
                 }
