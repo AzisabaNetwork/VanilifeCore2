@@ -393,6 +393,10 @@ public class PlayerListener implements Listener
         Component body = ComponentUtility.asChat(player, message);
         Vanilife.filter.onChat(player, message);
 
+        ComponentUtility.getMentions(message).stream()
+                .filter(mention -> ! mention.isBlock(user) && mention.isOnline())
+                .forEach(mention -> mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f));
+
         listeners.forEach(listener -> listener.sendMessage(Component.text().build()
                 .append(Component.text("[" + user.getTrustRank().getName().charAt(0) + "] ").color(user.getTrustRank().getColor()).hoverEvent(Component.text(user.getTrustRank().getName()).color(user.getTrustRank().getColor())))
                 .append(user.getName(listener))

@@ -4,7 +4,6 @@ import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 
 public enum Sara
 {
@@ -16,8 +15,8 @@ public enum Sara
     $5000YEN(5, Component.text("[5000円皿] ").color(NamedTextColor.DARK_PURPLE), NamedTextColor.DARK_PURPLE, true),
     $10000YEN(6, Component.text("[10000円皿] ").color(NamedTextColor.GOLD), NamedTextColor.GOLD, true),
     $50000YEN(7, Component.text("[50000円皿] ").color(NamedTextColor.DARK_RED), NamedTextColor.GOLD, true),
-    GAMING(8, ComponentUtility.getAsGaming("[Gaming] "), NamedTextColor.AQUA, true),
-    NITRO(9, ComponentUtility.getAsGaming("[Nitro] "), NamedTextColor.LIGHT_PURPLE, true),
+    GAMING(8, ComponentUtility.asGaming("[Gaming] "), NamedTextColor.AQUA, true),
+    NITRO(9, ComponentUtility.asGaming("[Nitro] "), NamedTextColor.LIGHT_PURPLE, true),
     MOD(10, Component.text("[MOD] ").color(NamedTextColor.YELLOW), NamedTextColor.YELLOW),
     ADMIN(11, Component.text("[ADMIN] ").color(NamedTextColor.RED), NamedTextColor.RED),
     OWNER(12, Component.text("[OWNER] ").color(NamedTextColor.RED), NamedTextColor.RED);

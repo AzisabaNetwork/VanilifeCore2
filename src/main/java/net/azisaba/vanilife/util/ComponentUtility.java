@@ -9,6 +9,7 @@ import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
@@ -17,13 +18,39 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ComponentUtility
 {
     private static final Pattern URL_PATTERN = Pattern.compile("(https?://\\S+)");
 
-    public static @NotNull Component getAsGaming(@NotNull String src)
+    private static final Pattern MENTION_PATTERN = Pattern.compile("@[a-zA-Z0-9_]{3,16}");
+
+    public static @NotNull List<User> getMentions(@NotNull String src)
+    {
+        List<User> mentions = new ArrayList<>();
+        Matcher matcher = ComponentUtility.MENTION_PATTERN.matcher(src);
+
+        while (matcher.find())
+        {
+            final String mention = matcher.group();
+            boolean exists = User.getInstances().stream().anyMatch(i -> i.getPlaneName().equals(mention.substring(1)));
+
+            if (! exists)
+            {
+                continue;
+            }
+
+            mentions.add(User.getInstance(mention.substring(1)));
+        }
+
+        return mentions;
+    }
+
+    public static @NotNull Component asGaming(@NotNull String src)
     {
         Component gaming = Component.text("");
         NamedTextColor[] colors = {NamedTextColor.RED, NamedTextColor.YELLOW, NamedTextColor.GREEN, NamedTextColor.AQUA, NamedTextColor.BLUE, NamedTextColor.DARK_PURPLE, NamedTextColor.LIGHT_PURPLE};
@@ -93,6 +120,24 @@ public class ComponentUtility
             component = component.replaceText(builder -> builder.matchLiteral(command.name).replacement(command.component));
         }
 
+        TextReplacementConfig config = TextReplacementConfig.builder()
+                .match(ComponentUtility.MENTION_PATTERN)
+                .replacement((matchResult, builder) -> {
+                    final String mention = matchResult.group();
+                    final String name = mention.substring(1);
+
+                    boolean exists = User.getInstances().stream().anyMatch(i -> i.getPlaneName().equals(name));
+
+                    if (! exists)
+                    {
+                        return builder;
+                    }
+
+                    return Component.text(mention).color(TextColor.color(114, 137, 218)).decorate(TextDecoration.BOLD);
+                }).build();
+
+        component = component.replaceText(config);
+
         return component;
     }
 
@@ -100,7 +145,7 @@ public class ComponentUtility
     {
         TextReplacementConfig config = TextReplacementConfig.builder()
                 .match(ComponentUtility.URL_PATTERN)
-                .replacement(((matchResult, builder) -> {
+                .replacement((matchResult, builder) -> {
                     String url = matchResult.group();
 
                     return Component.text(URLDecoder.decode(url, StandardCharsets.UTF_8))
@@ -112,7 +157,7 @@ public class ComponentUtility
                             .decoration(TextDecoration.OBFUSCATED, false)
                             .hoverEvent(HoverEvent.showText(Component.text("Click to open url")))
                             .clickEvent(ClickEvent.openUrl(url));
-                })).build();
+                }).build();
 
         return src.replaceText(config);
     }

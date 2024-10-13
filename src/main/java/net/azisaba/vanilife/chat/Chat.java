@@ -4,6 +4,7 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,6 +62,10 @@ public abstract class Chat implements IChat
         Vanilife.filter.onChat(sender.asPlayer(), message, this);
 
         final Component body = ComponentUtility.asChat(sender.asPlayer(), message);
+
+        ComponentUtility.getMentions(message).stream()
+                .filter(mention -> this.isMember(mention) && ! mention.isBlock(sender) && mention.isOnline())
+                .forEach(mention -> mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f));
 
         this.getOnline().stream()
                 .filter(online -> ! online.isBlock(sender))

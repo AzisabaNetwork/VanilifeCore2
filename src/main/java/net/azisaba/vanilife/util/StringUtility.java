@@ -4,17 +4,31 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StringUtility
 {
-    private static final Pattern hiragana = Pattern.compile("^[\\p{InHiragana}\\p{InCJKSymbolsAndPunctuation}\\p{InGeneralPunctuation}\\p{InHalfwidthAndFullwidthForms}]+$");
-
     public static boolean isHiragana(@NotNull String src)
     {
-        Matcher matcher = StringUtility.hiragana.matcher(src);
-        return matcher.matches();
+
+        for (char c : src.toCharArray())
+        {
+            if (! StringUtility.isHiragana(c) && ! StringUtility.isFullWidthSymbol(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean isHiragana(char c)
+    {
+        return c >= 'ぁ' && c <= 'ゖ';
+    }
+
+    public static boolean isFullWidthSymbol(char c)
+    {
+        return c >= '！' && c <= '～' || c == 'ー';
     }
 
     public static @NotNull Map<String, String> parameters(@NotNull String src)
