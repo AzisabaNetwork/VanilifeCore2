@@ -74,7 +74,9 @@ public class ProfileCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(p -> suggest.add(p.getName()));
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> p.getName().startsWith(args[0]))
+                    .forEach(p -> suggest.add(p.getName()));
         }
 
         return suggest;

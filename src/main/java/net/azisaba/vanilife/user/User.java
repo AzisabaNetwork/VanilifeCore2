@@ -767,15 +767,22 @@ public class User
             old.removePlayer(player);
         }
 
-        List<Integer> scores = new ArrayList<>();
-        int size = Sara.values().length;
-
-        for (int i = 0; i < size; i ++)
+        int score = switch (this.sara)
         {
-            scores.add(size - 1 - i);
-        }
-
-        int score = scores.get(List.of(Sara.values()).indexOf(this.sara));
+            case Sara.OWNER -> 0;
+            case Sara.ADMIN -> 1;
+            case Sara.MOD -> 2;
+            case Sara.NITRO -> 3;
+            case Sara.GAMING -> 4;
+            case Sara.$50000YEN -> 5;
+            case Sara.$10000YEN -> 6;
+            case Sara.$5000YEN -> 7;
+            case Sara.$2000YEN -> 8;
+            case Sara.$1000YEN -> 9;
+            case Sara.$500YEN -> 10;
+            case Sara.$100YEN -> 11;
+            case Sara.DEFAULT -> 12;
+        };
 
         Team team = scoreboard.getTeam(String.valueOf(score));
 
