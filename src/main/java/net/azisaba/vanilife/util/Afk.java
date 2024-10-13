@@ -1,5 +1,7 @@
 package net.azisaba.vanilife.util;
 
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +35,15 @@ public class Afk implements Listener
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event)
     {
-        Afk.onActivity(event.getPlayer());
+        Player player = event.getPlayer();
+        Block below = player.getLocation().getBlock();
+
+        if (below.isLiquid())
+        {
+            return;
+        }
+
+        Afk.onActivity(player);
     }
 
     @EventHandler
