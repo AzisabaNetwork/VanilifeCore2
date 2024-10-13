@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class PlayerUtility
@@ -25,31 +27,19 @@ public class PlayerUtility
             return null;
         }
 
-        String ip = address.getAddress().getHostAddress();
-
-        if (ip.equals("127.0.0.1"))
-        {
-            Request request = new Request.Builder().url("https://api.ipify.org/").build();
-
-            try (Response response = Vanilife.httpclient.newCall(request).execute())
-            {
-                if (response.isSuccessful())
-                {
-                    return response.body().string();
-                }
-            }
-            catch (IOException e)
-            {
-                Vanilife.sendExceptionReport(e);
-            }
-        }
-
-        return ip;
+        return address.getAddress().getHostAddress();
     }
+
+    private static final Map<String, String> countryCache = new HashMap<>();
 
     public static @NotNull String getCountry(@NotNull String ip)
     {
-        String url = "http://ipinfo.io/" + ip + "/json";
+        if (PlayerUtility.countryCache.containsKey(ip))
+        {
+            return PlayerUtility.countryCache.get(ip);
+        }
+
+        String url = "http://ipinfo.io/" + URLEncoder.encode(ip, StandardCharsets.UTF_8) + "/json";
 
         Request request = new Request.Builder().url(url).build();
 
@@ -58,7 +48,13 @@ public class PlayerUtility
             if (response.isSuccessful() && response.body() != null)
             {
                 JsonObject json = JsonParser.parseString(response.body().string()).getAsJsonObject();
-                return json.get("country").getAsString();
+
+                if (json.has("country"))
+                {
+                    String country = json.get("country").getAsString();
+                    PlayerUtility.countryCache.put(ip, country);
+                    return country;
+                }
             }
         }
         catch (IOException e)

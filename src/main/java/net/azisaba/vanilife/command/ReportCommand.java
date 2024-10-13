@@ -7,6 +7,7 @@ import net.azisaba.vanilife.ui.ReportUI;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.util.Watch;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -90,7 +91,9 @@ public class ReportCommand implements CommandExecutor, TabCompleter
 
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(p -> suggest.add(p.getName()));
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> ! Watch.isWatcher(p))
+                    .forEach(p -> suggest.add(p.getName()));
         }
 
         return suggest;

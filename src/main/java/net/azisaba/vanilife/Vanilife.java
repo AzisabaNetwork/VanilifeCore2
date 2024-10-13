@@ -23,7 +23,6 @@ import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.housing.HousingListener;
 import net.azisaba.vanilife.listener.*;
-import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.runnable.*;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.ui.Language;
@@ -198,6 +197,7 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new Paint(), this);
         this.getServer().getPluginManager().registerEvents(new RichEmoteSubscription(), this);
 
+        this.getCommand("alert").setExecutor(new AlertCommand());
         this.getCommand("block").setExecutor(new BlockCommand());
         this.getCommand("chat").setExecutor(new net.azisaba.vanilife.command.ChatCommand());
         this.getCommand("/chat").setExecutor(new net.azisaba.vanilife.command.chat.ChatCommand());
@@ -242,8 +242,11 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("unjail").setExecutor(new UnjailCommand());
         this.getCommand("unmute").setExecutor(new UnmuteCommand());
         this.getCommand("unsubscribe").setExecutor(new UnsubscribeCommand());
+        this.getCommand("unwatch").setExecutor(new UnwatchCommand());
         this.getCommand("vote").setExecutor(new VoteCommand());
         this.getCommand("wallet").setExecutor(new WalletCommand());
+        this.getCommand("warn").setExecutor(new WarnCommand());
+        this.getCommand("watch").setExecutor(new WatchCommand());
         this.getCommand("world").setExecutor(new WorldCommand());
         this.getCommand("worlds").setExecutor(new WorldsCommand());
 

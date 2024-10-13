@@ -5,6 +5,9 @@ api-version: '1.21'
 depend:
   - CoreProtect
 commands:
+  alert:
+    description: Send an alert.
+    usage: /alert <message>
   block:
     description: Block any player.
     usage: /block <player>
@@ -173,12 +176,21 @@ commands:
   unsubscribe:
     description: Cancel any subscription.
     usage: /unsubscribe <subscription>
+  unwatch:
+    description: Disable Watch mode.
+    usage: /unwatch
   vote:
     description: Vote for any option.
     usage: /vote <poll> <option>
   wallet:
     description: Mola Management and Display.
     usage: /wallet [skill] [args…]
+  warn:
+    description: Send an warn.
+    usage: /warn <player> <message>
+  watch:
+    description: Enable Watch mode.
+    usage: /watch
   world:
     description: Teleport to any world.
     usage: /world <world>

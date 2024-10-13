@@ -357,6 +357,8 @@
     "ui.worlds.fall": "Fall World",
     "ui.worlds.winter": "Winter World",
 
+    "msg.alert": "Alert",
+    "msg.warn": "Warn",
     "msg.muted": "You are currently muted.",
     "msg.empty": "Shhhh... nothing seems to be happening here.",
     "msg.offline": "${name} is currently offline.",

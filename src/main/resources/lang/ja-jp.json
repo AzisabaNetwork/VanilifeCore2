@@ -357,6 +357,8 @@
     "ui.worlds.fall": "秋ワールド",
     "ui.worlds.winter": "冬ワールド",
 
+    "msg.alert": "アラート",
+    "msg.warn": "警告",
     "msg.muted": "あなたは現在ミュートされています",
     "msg.empty": "しーん…ここには何もないようです",
     "msg.offline": "${name} は現在オフラインです",

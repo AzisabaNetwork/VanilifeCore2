@@ -14,6 +14,7 @@ import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.MojangAPI;
 import net.azisaba.vanilife.util.PlayerUtility;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.util.Watch;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -179,7 +180,7 @@ public class PlayerJoinListener implements Listener
 
         event.joinMessage(null);
 
-        if (UserStatus.MUTED.level() <= user.getStatus().level())
+        if (UserStatus.MUTED.level() <= user.getStatus().level() || Watch.isWatcher(player))
         {
             return;
         }
@@ -408,6 +409,20 @@ public class PlayerJoinListener implements Listener
         player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
     }
 
+    @EventHandler(priority = EventPriority.HIGH)
+    public void checkWatcher(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+
+        if (Watch.isWatcher(player))
+        {
+            Bukkit.getOnlinePlayers().forEach(p -> p.hidePlayer(Vanilife.getPlugin(), player));
+            return;
+        }
+
+        Watch.getWatchers().forEach(watcher -> player.hidePlayer(Vanilife.getPlugin(), watcher));
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void loadInstance(PlayerJoinEvent event)
     {
@@ -428,6 +443,12 @@ public class PlayerJoinListener implements Listener
     public void teleportPlayer(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+
+        if (Watch.isWatcher(player))
+        {
+            return;
+        }
+
         User user = User.getInstance(player);
 
         Housing housing = Housing.getInstance(player.getLocation());

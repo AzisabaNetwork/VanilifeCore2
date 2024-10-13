@@ -16,12 +16,14 @@ public class TrustRunnable extends BukkitRunnable
     public void run()
     {
         List<Player> targetGroup = Bukkit.getOnlinePlayers().stream()
-                .filter(player -> ! Afk.isAfk(player) && Math.max(User.getInstance(player).getTrust(), 1) / 100D <= Vanilife.random.nextDouble())
+                .filter(player -> ! Afk.isAfk(player) &&
+                        Math.max(User.getInstance(player).getTrust(), 1) / 100D <= Vanilife.random.nextDouble() &&
+                        Vanilife.random.nextDouble() < 0.5)
                 .collect(Collectors.toList());
 
         targetGroup.forEach(target -> {
             User user = User.getInstance(target);
-            user.setTrust(user.getTrust() + 2);
+            user.setTrust(user.getTrust() + 1);
         });
     }
 }

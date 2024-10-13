@@ -15,6 +15,7 @@ import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.Typing;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.util.Watch;
 import net.azisaba.vanilife.vc.VoiceChat;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
@@ -65,17 +66,19 @@ public class PlayerListener implements Listener
             report.cancel();
         }
 
-        int online = Bukkit.getOnlinePlayers().size() - 1;
+        int online = Bukkit.getOnlinePlayers().stream().filter(p -> ! Watch.isWatcher(p)).toList().size() - 1;
         Vanilife.jda.getPresence().setActivity(Activity.customStatus(0 < online ? online + " 人がばにらいふ！ をプレイ中！" : "azisaba.net をプレイ中！"));
 
         event.quitMessage(null);
 
-        if (UserStatus.MUTED.level() <= user.getStatus().level())
+        if (UserStatus.MUTED.level() <= user.getStatus().level() || Watch.isWatcher(player))
         {
             return;
         }
 
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("- ").color(NamedTextColor.RED).append(user.getName(p)).appendSpace().append(Language.translate("msg.quit", p).color(NamedTextColor.GRAY))));
+        Bukkit.getOnlinePlayers().stream()
+                .filter(p -> ! User.getInstance(p).isBlock(user))
+                .forEach(p -> p.sendMessage(Component.text("- ").color(NamedTextColor.RED).append(user.getName(p)).appendSpace().append(Language.translate("msg.quit", p).color(NamedTextColor.GRAY))));
 
         Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setAuthor(player.getName() + " (" + player.getUniqueId() + ")", null, String.format("https://api.mineatar.io/face/%s", player.getUniqueId().toString().replace("-", "")))
@@ -177,6 +180,23 @@ public class PlayerListener implements Listener
         Location to = event.getTo();
         to.setWorld(level);
         event.setTo(to);
+    }
+
+    @EventHandler
+    public void onPlayerGameModeChange(PlayerGameModeChangeEvent event)
+    {
+        Player player = event.getPlayer();
+
+        if (! UserUtility.isModerator(player))
+        {
+            event.setCancelled(true);
+        }
+
+        if (Watch.isWatcher(player) && event.getNewGameMode() != GameMode.SPECTATOR)
+        {
+            player.sendMessage(Component.text("Watch モードではスペクテイターモードのみが利用可能です").color(NamedTextColor.RED));
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

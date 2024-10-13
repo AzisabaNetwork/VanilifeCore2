@@ -9,6 +9,7 @@ import net.azisaba.vanilife.user.request.PlotInvite;
 import net.azisaba.vanilife.user.request.PlotRequest;
 import net.azisaba.vanilife.user.request.TradeRequest;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.util.Watch;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -115,7 +116,9 @@ public class PlotInviteSubcommand implements Subcommand
 
         if (args.length == 1)
         {
-            Bukkit.getOnlinePlayers().forEach(p -> suggest.add(p.getName()));
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> ! Watch.isWatcher(p))
+                    .forEach(p -> suggest.add(p.getName()));
         }
 
         return suggest;

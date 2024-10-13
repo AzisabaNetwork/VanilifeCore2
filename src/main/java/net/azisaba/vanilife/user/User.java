@@ -21,6 +21,7 @@ import net.azisaba.vanilife.user.subscription.Subscriptions;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.util.Watch;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.kyori.adventure.bossbar.BossBar;
@@ -1111,7 +1112,7 @@ public class User
 
     public boolean isOnline()
     {
-        return Bukkit.getOfflinePlayer(this.id).isOnline();
+        return Bukkit.getOfflinePlayer(this.id).isOnline() && ! Watch.isWatcher(this);
     }
 
     public boolean isMuted()

@@ -5,6 +5,7 @@ import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.chat.IChat;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.Watch;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -45,7 +46,7 @@ public class ChatCommand implements CommandExecutor, TabCompleter
 
             user.setChat(null);
             sender.sendMessage(Language.translate("cmd.chat.unfocused", player).color(NamedTextColor.GREEN));
-            player.playSound(player, Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.2f);
+            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             return true;
         }
 
@@ -139,6 +140,7 @@ public class ChatCommand implements CommandExecutor, TabCompleter
                 .forEach(chat -> suggest.add(chat.getName()));
 
         Bukkit.getOnlinePlayers().stream()
+                .filter(p -> ! Watch.isWatcher(p))
                 .filter(p -> p != player && (("@" + p.getName()).startsWith(args[0]) || p.getName().startsWith(args[0])))
                 .forEach(p -> suggest.add("@" + p.getName()));
 

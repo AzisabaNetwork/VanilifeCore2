@@ -296,6 +296,12 @@ public class Gomenne
         Gomenne.key("wwe", "っうぇ");
         Gomenne.key("wwo", "っを");
 
+        Gomenne.key("zya", "じゃ");
+        Gomenne.key("zyi", "じぃ");
+        Gomenne.key("zyu", "じゅ");
+        Gomenne.key("zye", "じぇ");
+        Gomenne.key("zyo", "じょ");
+
         Gomenne.key("!", "！");
         Gomenne.key("?", "？");
         Gomenne.key("[", "「");

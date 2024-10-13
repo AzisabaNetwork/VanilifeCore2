@@ -4,6 +4,7 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.util.Watch;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -79,6 +80,7 @@ public class SaraCommand implements CommandExecutor, TabCompleter
         if (args.length == 1)
         {
             Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> ! Watch.isWatcher(p))
                     .filter(p -> p.getName().startsWith(args[0]))
                     .forEach(p -> suggest.add(p.getName()));
         }

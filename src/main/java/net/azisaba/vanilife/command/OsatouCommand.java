@@ -5,6 +5,7 @@ import net.azisaba.vanilife.ui.OsatouUI;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.OsatouRequest;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.util.Watch;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -105,6 +106,7 @@ public class OsatouCommand implements CommandExecutor, TabCompleter
         if (args.length == 1)
         {
             user.getFriends().stream()
+                    .filter(p -> ! Watch.isWatcher(p))
                     .filter(p -> p.getPlaneName().startsWith(args[0]))
                     .forEach(p -> suggest.add(p.getPlaneName()));
         }
