@@ -508,10 +508,10 @@ public class Plot
     {
         return UserUtility.isModerator(user) ||
                 user == this.owner ||
+                this.members.contains(user) ||
                 (this.scope == PlotScope.PUBLIC) ||
-                (this.scope == PlotScope.FRIEND && (user.isFriend(this.owner) || this.members.contains(user))) ||
-                (this.scope == PlotScope.OSATOU) && (user.hasOsatou() && user.getOsatou() == this.owner || this.members.contains(user)) ||
-                (this.scope == PlotScope.PRIVATE && this.members.contains(user));
+                (this.scope == PlotScope.FRIEND && user.isFriend(this.owner)) ||
+                (this.scope == PlotScope.OSATOU && user.hasOsatou() && user.getOsatou() == this.owner);
     }
 
     public boolean isMember(@NotNull Player player)
