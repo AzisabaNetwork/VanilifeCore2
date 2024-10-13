@@ -343,13 +343,13 @@ public class PlayerJoinListener implements Listener
 
             if (0 < materials)
             {
-                review =  (double) review / materials;
+                review =  review / materials;
 
                 oneRate = 0 < one ? ((double) one / materials) * 100 : 0;
                 twoRate = 0 < two ? ((double) two / materials) * 100 : 0;
                 threeRate = 0 < three ? ((double) three / materials) * 100 : 0;
                 fourRate = 0 < four ? ((double) four / materials) * 100 : 0;
-                fiveRate = 0 < five ? ((double) fiveRate / materials) * 100 : 0;
+                fiveRate = 0 < five ? ((double) five / materials) * 100 : 0;
             }
 
             TextComponent.Builder stars = Component.text();
