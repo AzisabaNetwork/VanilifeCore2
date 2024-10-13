@@ -321,10 +321,11 @@ public class GroupChat extends Chat
 
     public boolean inScope(@NotNull User user)
     {
-        return (this.scope == ChatScope.PUBLIC) ||
-                (this.scope == ChatScope.FRIEND && (user.isFriend(this.owner) || this.isMember(user))) ||
-                (this.scope == ChatScope.OSATOU && (user.hasOsatou() && user.getOsatou() == this.owner || this.isMember(user))) ||
-                (this.scope == ChatScope.PRIVATE && this.isMember(user));
+        return user == this.owner ||
+                this.isMember(user) ||
+                (this.scope == ChatScope.PUBLIC) ||
+                (this.scope == ChatScope.FRIEND && user.isFriend(this.owner)) ||
+                (this.scope == ChatScope.OSATOU && user.hasOsatou() && user.getOsatou() == this.owner);
     }
 
     public void delete()
