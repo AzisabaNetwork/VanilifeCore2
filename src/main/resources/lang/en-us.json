@@ -695,6 +695,10 @@
     "housing.pack.farming.details.1": "Why not start farming with Housing?",
     "housing.pack.gardening.name": "Gardening",
     "housing.pack.gardening.details.1": "Essential for creating a garden!",
+    "housing.pack.redstone.name": "Redstone",
+    "housing.pack.redstone.details.1": "Blocks related to redstone",
+    "housing.pack.glass.name": "Glass Block",
+    "housing.pack.glass.details.1": "Color your island with beautiful glass!",
 
     "jail.limit-under": "Please enter details that are more than 8 characters.",
     "jail.limit-over": "Please enter details that are within 30 characters.",

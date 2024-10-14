@@ -33,9 +33,11 @@ public class SqlUtility
         tablemap.put("plot-chunk", "CREATE TABLE `plot-chunk`(plot VARCHAR(36), x INT, z INT)");
 
         tablemap.put("mail", "CREATE TABLE mail(id VARCHAR(36) PRIMARY KEY, user_from VARCHAR(36), user_to VARCHAR(36), subject TEXT, date VARCHAR(16), message TEXT, readed BOOLEAN)");
-        tablemap.put("report", "CREATE TABLE report(id VARCHAR(36) PRIMARY KEY, sender VARCHAR(36), details VARCHAR(250), world VARCHAR(64), x INT, y INT, z INT, date VARCHAR(16), controller VARCHAR(19), supported BOOLEAN)");
         tablemap.put("imereq", "CREATE TABLE imereq(id VARCHAR(36) PRIMARY KEY, sender VARCHAR(36), date VARCHAR(16), yomi VARCHAR(16), kaki VARCHAR(16))");
         tablemap.put("filter", "CREATE TABLE filter(string VARCHAR(16))");
+
+        tablemap.put("report", "CREATE TABLE report(id VARCHAR(36) PRIMARY KEY, sender VARCHAR(36), details VARCHAR(250), world VARCHAR(64), x INT, y INT, z INT, date VARCHAR(16), controller VARCHAR(19), supported BOOLEAN)");
+        tablemap.put("warn", "CREATE TABLE warn(id VARCHAR(36) PRIMARY KEY, target VARCHAR(36), reason VARCHAR(256))");
 
         try
         {

@@ -41,6 +41,10 @@ public class HousingPacks
 
     public static final GardeningPack GARDENING = (GardeningPack) HousingPacks.register(new GardeningPack());
 
+    public static final RedstonePack REDSTONE = (RedstonePack) HousingPacks.register(new RedstonePack());
+
+    public static final GlassPack GLASS = (GlassPack) HousingPacks.register(new GlassPack());
+
     public static final ColorPack COLOR = (ColorPack) HousingPacks.register(new ColorPack());
 
     public static final MidnightPack MIDNIGHT = (MidnightPack) HousingPacks.register(new MidnightPack());

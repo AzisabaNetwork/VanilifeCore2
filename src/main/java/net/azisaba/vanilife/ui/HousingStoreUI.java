@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.ui;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.pack.HousingPacks;
 import net.azisaba.vanilife.housing.pack.IHousingPack;
@@ -164,7 +165,11 @@ public class HousingStoreUI extends ChestUI
         this.player.sendMessage(Language.translate("housing.pack.bought", this.player, "pack=" + ComponentUtility.asString(Language.translate("housing.pack." + pack.getName() + ".name", this.player))));
         this.player.playSound(this.player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
 
-        housing.getUser().setTrust(housing.getUser().getTrust() + 5);
+        if (Vanilife.random.nextDouble() < 0.1)
+        {
+            housing.getUser().setTrust(housing.getUser().getTrust() + 2);
+        }
+
         housing.addPack(pack);
         user.setMola(user.getMola() - pack.getCost());
 

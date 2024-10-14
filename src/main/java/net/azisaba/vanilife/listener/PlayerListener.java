@@ -419,7 +419,7 @@ public class PlayerListener implements Listener
         {
             user.setTrust(user.getTrust() + 1);
         }
-        else if (Vanilife.random.nextDouble() < 0.02)
+        else if (Vanilife.random.nextDouble() < 0.01)
         {
             user.setTrust(user.getTrust() + 1);
         }

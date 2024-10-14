@@ -1,7 +1,7 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.jail.Jail;
+import net.azisaba.vanilife.penalty.Jail;
 import net.azisaba.vanilife.ui.ConfirmUI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.TrustRank;
@@ -155,6 +155,7 @@ public class JailCommand implements CommandExecutor, TabCompleter
         {
             Bukkit.getOnlinePlayers().stream()
                     .filter(p -> ! Watch.isWatcher(p))
+                    .filter(p -> p.getName().startsWith(args[0]))
                     .forEach(p -> suggest.add(p.getName()));
         }
 

@@ -194,7 +194,7 @@ public class HousingListener implements Listener
     public void onEntitySpawn(EntitySpawnEvent event)
     {
         event.setCancelled(event.isCancelled() ||
-                (event.getLocation().getWorld().equals(Housing.getWorld())) && event.getEntity() instanceof Monster && event.getEntity() instanceof Phantom);
+                (event.getLocation().getWorld().equals(Housing.getWorld())) && (event.getEntity() instanceof Monster || event.getEntity() instanceof Phantom));
     }
 
     @EventHandler

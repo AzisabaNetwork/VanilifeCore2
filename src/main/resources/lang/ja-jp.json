@@ -695,6 +695,10 @@
     "housing.pack.farming.details.1": "Housing で農業を始めてみませんか？",
     "housing.pack.gardening.name": "ガーデニング",
     "housing.pack.gardening.details.1": "庭園を作るのには欠かせません！",
+    "housing.pack.redstone.name": "レッドストーン",
+    "housing.pack.redstone.details.1": "レッドストーンに関連するブロック",
+    "housing.pack.glass.name": "ガラスブロック",
+    "housing.pack.glass.details.1": "美しいガラスで島を彩ろう！",
 
     "jail.limit-under": "詳細は8文字以上で入力してください",
     "jail.limit-over": "詳細は30文字以内で入力してください",
@@ -733,7 +737,8 @@
     "review.request": "よろしければ、ばにらいふ２！の評価をお聞かせください",
     "review.cant": "ごめんなさい！現在レビューを送信することができません",
     "review.out-of-range": "1～5の範囲内の整数を指定してください",
-    "review.thank-you": "ご協力ありがとうございました！頂いたレビューをもとに今後も改善に努めてまいります。改善点・アイデアをお持ちでしたら、/feedback からお気軽にお寄せください。",
+    "review.why": "ご協力ありがとうございます。最後に、今回の評価に至った理由を送信してください。:",
+    "review.thank-you": "レビューはこれで全部です。貴重なご意見をありがとうございました。頂いたレビューをもとにプレイヤー第一で今後も改善に努めてまいります。",
 
     "trade.hold": "&aTrade が成立しました",
     "trade.cancelled": "&cTrade はキャンセルされました",

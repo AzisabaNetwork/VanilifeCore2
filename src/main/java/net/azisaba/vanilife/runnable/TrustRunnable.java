@@ -18,7 +18,7 @@ public class TrustRunnable extends BukkitRunnable
         List<Player> targetGroup = Bukkit.getOnlinePlayers().stream()
                 .filter(player -> ! Afk.isAfk(player) &&
                         Math.max(User.getInstance(player).getTrust(), 1) / 100D <= Vanilife.random.nextDouble() &&
-                        Vanilife.random.nextDouble() < 0.5)
+                        Vanilife.random.nextDouble() < 0.03)
                 .collect(Collectors.toList());
 
         targetGroup.forEach(target -> {

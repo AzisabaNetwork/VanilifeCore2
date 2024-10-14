@@ -52,6 +52,7 @@ commands:
     usage: /friendlist [page]
     aliases:
       - fl
+      - friends
   housing:
     description: Teleport to Housing.
     usage: /housing

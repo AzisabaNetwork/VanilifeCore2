@@ -1,4 +1,4 @@
-package net.azisaba.vanilife.jail;
+package net.azisaba.vanilife.penalty;
 
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.CLI;

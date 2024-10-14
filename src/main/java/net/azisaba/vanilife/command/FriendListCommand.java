@@ -63,8 +63,8 @@ public class FriendListCommand implements CommandExecutor, TabCompleter
 
         for (User friend : friends.subList((page - 1) * 8, Math.min(page * 8, friends.size())))
         {
-            sender.sendMessage(Component.text("● ").color(friend.isOnline() ? NamedTextColor.GREEN : NamedTextColor.RED)
-                    .append(friend.getName()));
+            sender.sendMessage(Component.text().append(Component.text("● ").color(friend.isOnline() ? NamedTextColor.GREEN : NamedTextColor.RED))
+                    .append(friend.getName(player)));
         }
 
         sender.sendMessage(Component.text(CLI.SEPARATOR).color(NamedTextColor.BLUE));

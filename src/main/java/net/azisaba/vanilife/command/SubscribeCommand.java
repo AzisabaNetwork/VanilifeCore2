@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.command;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.subscription.ISubscription;
@@ -62,7 +63,12 @@ public class SubscribeCommand implements CommandExecutor, TabCompleter
         }
 
         user.setMola(user.getMola() - cost);
-        user.setTrust(user.getTrust() + 5);
+
+        if (Vanilife.random.nextDouble() < 0.1)
+        {
+            user.setTrust(user.getTrust() + 1);
+        }
+
         user.subscribe(subscription);
         sender.sendMessage(subscription.getDisplayName(Language.getInstance(user)).color(NamedTextColor.GOLD).append(Component.text(" を購入しました").color(NamedTextColor.GREEN)).append(Component.text(String.format(" (%s Mola × %s %%)", subscription.getCost(), (int) (rest * 100))).color(NamedTextColor.GRAY)));
         player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);

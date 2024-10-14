@@ -82,9 +82,11 @@ public class NkipVote
         }
 
         this.world.setTime(HousingTime.DAY.getTime());
-        this.world.getPlayers().forEach(p -> {
-            TitleUI.typing(p, (TextComponent) Language.translate("msg.nkip.skipped", p), 5L);
-            p.setStatistic(Statistic.TIME_SINCE_REST, 0);
-        });
+        this.world.getPlayers().stream()
+                .filter(p -> ! Afk.isAfk(p))
+                .forEach(p -> {
+                    TitleUI.typing(p, (TextComponent) Language.translate("msg.nkip.skipped", p), 5L);
+                    p.setStatistic(Statistic.TIME_SINCE_REST, 0);
+                });
     }
 }

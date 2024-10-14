@@ -5,6 +5,7 @@ import com.destroystokyo.paper.profile.ProfileProperty;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
+import net.azisaba.vanilife.penalty.Warn;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
@@ -407,6 +408,12 @@ public class PlayerJoinListener implements Listener
         player.setFoodLevel(20);
         player.setGameMode(GameMode.ADVENTURE);
         player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void checkWarn(PlayerJoinEvent event)
+    {
+        Warn.getInstances(User.getInstance(event.getPlayer())).forEach(Warn::send);
     }
 
     @EventHandler(priority = EventPriority.HIGH)

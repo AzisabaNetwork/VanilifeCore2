@@ -1,15 +1,15 @@
 package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.Vanilife;
-import net.azisaba.vanilife.ui.Language;
+import net.azisaba.vanilife.penalty.Warn;
+
+import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.util.Watch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class WarnCommand implements CommandExecutor, TabCompleter
 {
@@ -39,42 +40,60 @@ public class WarnCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
+        Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
+            UUID uuid = Bukkit.getPlayerUniqueId(args[0]);
 
-        if (target == null)
-        {
-            sender.sendMessage(Component.text(args[0] + " は現在オフラインです").color(NamedTextColor.RED));
-            return true;
-        }
-
-        StringBuilder message = new StringBuilder();
-
-        for (int i = 1; i < args.length; i ++)
-        {
-            if (i < args.length - 1)
+            if (uuid == null)
             {
-                message.append(' ');
+                sender.sendMessage(Component.text(args[0] + " は不明なプレイヤーです").color(NamedTextColor.RED));
+                return;
             }
 
-            message.append(args[i]);
-        }
+            if (! UserUtility.exists(uuid))
+            {
+                sender.sendMessage(Component.text(args[0] + " は不明なユーザーです").color(NamedTextColor.RED));
+                return;
+            }
 
-        target.playSound(target, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 0.1f);
+            User target = User.getInstance(args[0]);
 
-        target.sendMessage(Component.text().build());
-        target.sendMessage(Component.text().append(Component.text("[").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).append(Language.translate("msg.warn", target)).append(Component.text("]"))));
-        target.sendMessage(Component.text(message.toString()));
-        target.sendMessage(Component.text().build());
+            if (sender instanceof Player player && User.getInstance(player) == target)
+            {
+                sender.sendMessage(Component.text("タイプミスですか？自分自身を Warn することはできません").color(NamedTextColor.RED));
+                return;
+            }
 
-        sender.sendMessage(Component.text(args[0] + " に警告を送信しました: ").color(NamedTextColor.RED).append(Component.text(message.toString())));
+            StringBuilder message = new StringBuilder();
 
-        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
-                .setTitle("警告")
-                .setColor(Color.RED)
-                .addField("対象者", String.format("%s (%s)", target.getName(), target.getUniqueId()), false)
-                .addField("送信者", (sender instanceof Player p) ? String.format("%s (%s)", p.getName(), p.getUniqueId()) : sender.getName(), false)
-                .addField("メッセージ", message.toString(), false)
-                .build()).queue();
+            for (int i = 1; i < args.length; i ++)
+            {
+                if (i < args.length - 1)
+                {
+                    message.append(' ');
+                }
+
+                message.append(args[i]);
+            }
+
+            if (255 < message.length())
+            {
+                sender.sendMessage(Component.text("メッセージは255文字以内で入力してください").color(NamedTextColor.RED));
+                return;
+            }
+
+            new Warn(target, message.toString());
+
+            sender.sendMessage(Component.text(args[0] + " に警告を送信しました: ").color(NamedTextColor.RED).append(Component.text(message.toString())));
+
+            Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+                    .setTitle("警告")
+                    .setColor(Color.RED)
+                    .addField("対象者", String.format("%s (%s)", target.getPlaneName(), target.getId()), false)
+                    .addField("送信者", (sender instanceof Player p) ? String.format("%s (%s)", p.getName(), p.getUniqueId()) : sender.getName(), false)
+                    .addField("メッセージ", message.toString(), false)
+                    .build()).queue();
+        });
+
         return true;
     }
 

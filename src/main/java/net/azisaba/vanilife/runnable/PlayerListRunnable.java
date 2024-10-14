@@ -2,6 +2,7 @@ package net.azisaba.vanilife.runnable;
 
 import net.azisaba.vanilife.user.TrustRank;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.vc.VoiceChat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,14 +17,26 @@ public class PlayerListRunnable extends BukkitRunnable
         Bukkit.getOnlinePlayers().forEach(player -> {
             User user = User.getInstance(player);
 
-            if (VoiceChat.getInstance(user) == null)
+            Component name = user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(user.getTrustRank() != TrustRank.TRUSTED ? NamedTextColor.GRAY : NamedTextColor.GOLD));
+
+            Component icon = null;
+
+            if (Afk.isAfk(player))
             {
-                player.playerListName(user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(user.getTrustRank() != TrustRank.TRUSTED ? NamedTextColor.GRAY : NamedTextColor.GOLD)));
+                icon = Component.text("🌙").color(NamedTextColor.GOLD);
             }
-            else
+
+            if (VoiceChat.getInstance(user) != null)
             {
-                player.playerListName(user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(user.getTrustRank() != TrustRank.TRUSTED ? NamedTextColor.GRAY : NamedTextColor.GOLD)).append(Component.text(" 🔊").color(NamedTextColor.WHITE)));
+                icon = Component.text(" 🔊").color(NamedTextColor.WHITE);
             }
+
+            if (icon != null)
+            {
+                name = name.appendSpace().append(icon);
+            }
+
+            player.playerListName(name);
         });
     }
 }

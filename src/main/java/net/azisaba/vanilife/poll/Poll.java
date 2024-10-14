@@ -1,10 +1,13 @@
 package net.azisaba.vanilife.poll;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.command.PollCommand;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ComponentUtility;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -55,7 +58,7 @@ public class Poll
 
         Poll.instances.add(this);
 
-        for (Player player : Bukkit.getOnlinePlayers())
+        for (Player player : Bukkit.getOnlinePlayers().stream().filter(p -> !Afk.isAfk(p)).toList())
         {
             if (User.getInstance(player).isBlock(User.getInstance(this.owner)) || User.getInstance(this.owner).isBlock(User.getInstance(player)))
             {
@@ -87,6 +90,32 @@ public class Poll
                 onEnd();
             }
         }.runTaskLater(Vanilife.getPlugin(), 20L * this.limit);
+
+        if (UserUtility.isModerator(owner))
+        {
+            return;
+        }
+
+        User sender = User.getInstance(owner);
+        PollCommand.cooldowns.put(sender, 60 * 5);
+
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                int remaining = PollCommand.cooldowns.get(sender) - 1;
+
+                if (remaining <= 0)
+                {
+                    PollCommand.cooldowns.remove(sender);
+                    this.cancel();
+                    return;
+                }
+
+                PollCommand.cooldowns.put(sender, remaining);
+            }
+        }.runTaskTimer(Vanilife.getPlugin(), 0L, 20L);
     }
 
     public UUID getId()
@@ -119,7 +148,7 @@ public class Poll
             ranking.add(rate);
         }
 
-        for (Player player : Bukkit.getOnlinePlayers())
+        for (Player player : Bukkit.getOnlinePlayers().stream().filter(p -> ! Afk.isAfk(p)).toList())
         {
             if (User.getInstance(player).isBlock(User.getInstance(this.owner)) || User.getInstance(this.owner).isBlock(User.getInstance(player)))
             {

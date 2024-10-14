@@ -705,7 +705,9 @@ public class User
 
             if (TrustRank.KNOWN.getLevel() <= this.getTrustRank().getLevel())
             {
-                listeners.forEach(listener -> listener.playSound(listener, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1.0f, 1.0f));
+                listeners.stream()
+                        .filter(listener -> ! Afk.isAfk(listener))
+                        .forEach(listener -> listener.playSound(listener, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1.0f, 1.0f));
                 return;
             }
 
@@ -1213,7 +1215,7 @@ public class User
         }
 
         this.friends.add(user);
-        this.setTrust(this.trust + 5);
+        this.setTrust(this.trust + 1);
 
         if (! this.isAchieved(Objectives.MAKE_FRIEND))
         {
@@ -1224,7 +1226,7 @@ public class User
 
         if (user.getTrust() < 15)
         {
-            user.setTrust(user.getTrust() + 5);
+            user.setTrust(user.getTrust() + 2);
         }
 
         if (! this.isAchieved(Objectives.MAKE_FRIEND))
@@ -1432,7 +1434,7 @@ public class User
     public void jail()
     {
         this.setStatus(UserStatus.JAILED);
-        this.setTrust(this.getTrust() - 20);
+        this.setTrust(this.getTrust() - 30);
 
         if (! this.isOnline())
         {

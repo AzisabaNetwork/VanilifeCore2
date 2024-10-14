@@ -4,6 +4,7 @@ import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
+import net.azisaba.vanilife.penalty.Warn;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.Skin;
 import net.azisaba.vanilife.user.mail.Mail;
@@ -77,6 +78,8 @@ public class DiscordListener extends ListenerAdapter
 
         User.mount();
         Skin.mount();
+
+        Warn.mount();
 
         GroupChat.mount();
 
