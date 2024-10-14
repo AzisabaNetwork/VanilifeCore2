@@ -22,7 +22,7 @@ public class CrafterPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 100;
+        return 120;
     }
 
     @Override

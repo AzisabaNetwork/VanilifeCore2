@@ -22,7 +22,7 @@ public class SprucePack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 70;
+        return 80;
     }
 
     @Override

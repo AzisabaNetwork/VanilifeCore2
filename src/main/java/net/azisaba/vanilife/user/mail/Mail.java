@@ -46,7 +46,7 @@ public class Mail
 
         try
         {
-            Connection con = Vanilife.getConnection();
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM mail WHERE id = ?");
             stmt.setString(1, this.id.toString());
 

@@ -22,7 +22,7 @@ public class GardeningPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 60;
+        return 90;
     }
 
     @Override

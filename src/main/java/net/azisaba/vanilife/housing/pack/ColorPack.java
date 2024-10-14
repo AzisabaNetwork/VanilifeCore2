@@ -22,7 +22,7 @@ public class ColorPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 85;
+        return 100;
     }
 
     @Override

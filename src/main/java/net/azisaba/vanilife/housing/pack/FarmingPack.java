@@ -22,7 +22,7 @@ public class FarmingPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 80;
+        return 100;
     }
 
     @Override
@@ -32,8 +32,9 @@ public class FarmingPack implements IHousingPack
                 Material.CARROTS,
                 Material.POTATOES,
                 Material.SWEET_BERRY_BUSH,
-                Material.BEETROOT,
+                Material.BEETROOTS,
                 Material.MELON_STEM,
-                Material.PUMPKIN_STEM);
+                Material.PUMPKIN_STEM,
+                Material.CAVE_VINES);
     }
 }

@@ -40,7 +40,7 @@ public class UserUtility
 
         try
         {
-            Connection con = Vanilife.getConnection();
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("SELECT id FROM mail WHERE user_from = ? OR user_to = ?");
             stmt.setString(1, user.getId().toString());
             stmt.setString(2, user.getId().toString());
@@ -146,7 +146,7 @@ public class UserUtility
     {
         try
         {
-            Connection con = Vanilife.getConnection();
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("SELECT id FROM user WHERE id = ?");
             stmt.setString(1, id.toString());
 

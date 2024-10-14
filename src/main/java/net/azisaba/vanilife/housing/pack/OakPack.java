@@ -22,7 +22,7 @@ public class OakPack implements IHousingPack
     @Override
     public int getCost()
     {
-        return 50;
+        return 60;
     }
 
     @Override

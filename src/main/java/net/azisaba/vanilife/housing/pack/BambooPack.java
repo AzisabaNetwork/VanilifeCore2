@@ -29,6 +29,7 @@ public class BambooPack implements IHousingPack
     public @NotNull List<Material> getMaterials()
     {
         return List.of(Material.BAMBOO_BLOCK,
+                Material.BAMBOO_SAPLING,
                 Material.STRIPPED_BAMBOO_BLOCK,
                 Material.BAMBOO_PLANKS,
                 Material.BAMBOO_MOSAIC,

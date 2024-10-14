@@ -14,7 +14,7 @@ public class ReportUtility
     {
         try
         {
-            Connection con = Vanilife.getConnection();
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("SELECT id FROM report");
 
             ResultSet rs = stmt.executeQuery();

@@ -59,11 +59,10 @@ public class BlockListener implements Listener
                 user.setMola(user.getMola() + 4, "reward.category.seichi", NamedTextColor.YELLOW);
             }
 
-            if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.07)
+            if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.02)
             {
                 if ((block.getBlockData() instanceof Ageable ageable) && ageable.getAge() < ageable.getMaximumAge())
                 {
-                    System.out.println(ageable.getAge() + ", " + ageable.getMaximumAge());
                     return;
                 }
 

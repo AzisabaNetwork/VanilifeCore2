@@ -301,8 +301,6 @@ public class PlayerListener implements Listener
         Player player = event.getPlayer();
         String command = event.getMessage().toLowerCase().split(" ")[0];
 
-        System.out.println(command);
-
         if (command.equalsIgnoreCase("/tell") || command.equalsIgnoreCase("/msg") || command.equalsIgnoreCase("/w"))
         {
             player.sendMessage(Language.translate("mail.dont-tell", player).color(NamedTextColor.RED));
