@@ -8,6 +8,7 @@ import net.azisaba.vanilife.housing.pack.IHousingPack;
 import net.azisaba.vanilife.housing.world.VoidChunkGenerator;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.LevelUtility;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
@@ -385,6 +386,14 @@ public class Housing
         this.packs.add(pack);
         this.user.getStorage().getAsJsonArray("housing.packs").add(pack.getName());
         this.user.saveStorage();
+
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+                .setTitle("Housing Pack")
+                .setColor(Color.ORANGE.asARGB())
+                .addField("Housing", String.format("%s (%s)", this.user.getPlaneName(), this.user.getId()), false)
+                .addField("種別", pack.getName(), false)
+                .addField("金額", pack.getCost() + " Mola", false)
+                .build()).queue();
     }
 
     public void removePack(@NotNull IHousingPack pack)

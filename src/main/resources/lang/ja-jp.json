@@ -842,6 +842,20 @@
 
     "subscription.plot.name": "Plot",
     "subscription.plot.description.1": "Plot を維持するのに必要です",
-    "subscription.plot.details.1": "この Plot は ${chunks} Chunk を含みます:"
+    "subscription.plot.details.1": "この Plot は ${chunks} Chunk を含みます:",
+
+    "wiki.title": "Azipedia",
+    "wiki.details": "クリックしてヘルプの内容を選択してください…",
+    "wiki.click-to-select": "クリックして選択！",
+    "wiki.help": "&eヘルプが必要ですか？&b公式 Discord&e を閲覧してください。",
+    "wiki.help.click-to-join": "クリックして参加！",
+    "wiki.main_page": "メインページ",
+    "wiki.multi": "マルチ全般 (フレンド, お砂糖, VRVoiceChat, その他)",
+    "wiki.survival": "サバイバル全般 (エリトラレシピ, その他の便利機能)",
+    "wiki.chat": "全体チャット/ダイレクトメール/グループチャット",
+    "wiki.plot": "プロットを使用した土地の保護",
+    "wiki.vrvc": "VRVoiceChat (ワールド内で近くのプレイヤーとの通話)",
+    "wiki.housing": "Housing",
+    "wiki.world": "ワールド間の移動とリセット"
   }
 }

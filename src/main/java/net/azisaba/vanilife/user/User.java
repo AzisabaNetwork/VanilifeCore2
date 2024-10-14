@@ -18,12 +18,10 @@ import net.azisaba.vanilife.user.settings.Settings;
 import net.azisaba.vanilife.user.subscription.ISubscription;
 import net.azisaba.vanilife.user.subscription.SingletonSubscription;
 import net.azisaba.vanilife.user.subscription.Subscriptions;
-import net.azisaba.vanilife.util.Afk;
-import net.azisaba.vanilife.util.ComponentUtility;
-import net.azisaba.vanilife.util.UserUtility;
-import net.azisaba.vanilife.util.Watch;
+import net.azisaba.vanilife.util.*;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -40,10 +38,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.*;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class User
@@ -1477,6 +1477,17 @@ public class User
 
         this.subscriptions.add(subscription);
 
+        double rest = 1.0d - SubscriptionUtility.getProgress();
+        int cost = (int) (subscription.getCost() * rest);
+
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+                .setTitle("サブスクリプション: 購入")
+                .setColor(Color.GREEN)
+                .addField("契約者", String.format("%s (%s)", this.getPlaneName(), this.getId()), false)
+                .addField("種別", subscription.getName(), false)
+                .addField("月額", String.format("%s Mola (今月: %s Mola)", subscription.getCost(), cost), false)
+                .build()).queue();
+
         if (! subscription.getClass().isAnnotationPresent(SingletonSubscription.class))
         {
             return;
@@ -1506,6 +1517,13 @@ public class User
     public void unsubscribe(@NotNull ISubscription subscription)
     {
         this.subscriptions.removeIf(s -> s == subscription);
+
+        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+                .setTitle("サブスクリプション: 解約")
+                .setColor(Color.RED)
+                .addField("解約者", String.format("%s (%s)", this.getPlaneName(), this.getPlaneName()), false)
+                .addField("種別", subscription.getName(), false)
+                .build()).queue();
 
         if (! subscription.getClass().isAnnotationPresent(SingletonSubscription.class))
         {

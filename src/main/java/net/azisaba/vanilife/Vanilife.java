@@ -249,6 +249,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("wallet").setExecutor(new WalletCommand());
         this.getCommand("warn").setExecutor(new WarnCommand());
         this.getCommand("watch").setExecutor(new WatchCommand());
+        this.getCommand("wiki").setExecutor(new WikiCommand());
         this.getCommand("world").setExecutor(new WorldCommand());
         this.getCommand("worlds").setExecutor(new WorldsCommand());
 

@@ -64,7 +64,7 @@ public abstract class Chat implements IChat
         final Component body = ComponentUtility.asChat(sender.asPlayer(), message);
 
         ComponentUtility.getMentions(message).stream()
-                .filter(mention -> this.isMember(mention) && ! mention.isBlock(sender) && mention.isOnline())
+                .filter(mention -> this.isMember(mention) && ! mention.isBlock(sender) && mention.isOnline() && mention.read("settings.chat").getAsBoolean())
                 .forEach(mention -> mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f));
 
         this.getOnline().stream()

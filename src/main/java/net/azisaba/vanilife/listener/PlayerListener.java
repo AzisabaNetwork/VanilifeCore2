@@ -299,12 +299,24 @@ public class PlayerListener implements Listener
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
     {
         Player player = event.getPlayer();
-        String message = event.getMessage().toLowerCase().split(" ")[0];
+        String command = event.getMessage().toLowerCase().split(" ")[0];
 
-        if (message.equals("/tell") || message.equals("/msg") || message.equals("/w"))
+        System.out.println(command);
+
+        if (command.equalsIgnoreCase("/tell") || command.equalsIgnoreCase("/msg") || command.equalsIgnoreCase("/w"))
         {
             player.sendMessage(Language.translate("mail.dont-tell", player).color(NamedTextColor.RED));
             event.setCancelled(true);
+        }
+
+        if (command.equalsIgnoreCase("/help"))
+        {
+            if (player.getGameMode() != GameMode.SURVIVAL && UserUtility.isModerator(player))
+            {
+                return;
+            }
+
+            event.setMessage("/vanilife:wiki");
         }
     }
 
@@ -394,7 +406,7 @@ public class PlayerListener implements Listener
         Vanilife.filter.onChat(player, message);
 
         ComponentUtility.getMentions(message).stream()
-                .filter(mention -> ! mention.isBlock(user) && mention.isOnline())
+                .filter(mention -> ! mention.isBlock(user) && mention.isOnline() && mention.read("settings.chat").getAsBoolean())
                 .forEach(mention -> mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f));
 
         listeners.forEach(listener -> listener.sendMessage(Component.text().build()

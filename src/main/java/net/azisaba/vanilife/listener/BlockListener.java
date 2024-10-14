@@ -49,7 +49,7 @@ public class BlockListener implements Listener
                 user.setMola(user.getMola() + (Materials.ORES.contains(block.getType()) ? 2 : 1), "reward.category.mining", NamedTextColor.YELLOW);
             }
 
-            if (Materials.LOGGING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.05)
+            if (Materials.LOGGING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.03)
             {
                 user.setMola(user.getMola() + 3, "reward.category.logging", NamedTextColor.YELLOW);
             }
@@ -61,8 +61,9 @@ public class BlockListener implements Listener
 
             if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.07)
             {
-                if ((block.getState() instanceof Ageable ageable) && ageable.getAge() < ageable.getMaximumAge())
+                if ((block.getBlockData() instanceof Ageable ageable) && ageable.getAge() < ageable.getMaximumAge())
                 {
+                    System.out.println(ageable.getAge() + ", " + ageable.getMaximumAge());
                     return;
                 }
 

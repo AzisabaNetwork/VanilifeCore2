@@ -194,6 +194,9 @@ commands:
   watch:
     description: Enable Watch mode.
     usage: /watch
+  wiki:
+    description: Check the Wiki.
+    usage: /wiki
   world:
     description: Teleport to any world.
     usage: /world <world>

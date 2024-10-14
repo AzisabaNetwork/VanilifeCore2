@@ -842,6 +842,20 @@
 
     "subscription.plot.name": "Plot",
     "subscription.plot.description.1": "Required to maintain Plot.",
-    "subscription.plot.details.1": "This Plot contains ${chunks} Chunk:"
+    "subscription.plot.details.1": "This Plot contains ${chunks} Chunk:",
+
+    "wiki.title": "Azipedia",
+    "wiki.details": "Click to select help content...",
+    "wiki.click-to-select": "Click to select!",
+    "wiki.help": "&eNeed help? Check out the &bofficial Discord&e.",
+    "wiki.help.click-to-join": "Click to join!",
+    "wiki.main_page": "Main Page",
+    "wiki.multi": "General Multi (Friends, Sugar, VRVoiceChat, Others)",
+    "wiki.survival": "General Survival (Elytra Recipes, Other Useful Features)",
+    "wiki.chat": "Global Chat/Direct Messages/Group Chat",
+    "wiki.plot": "Land Protection Using Plots",
+    "wiki.vrvc": "VRVoiceChat (Calling Nearby Players in the World)",
+    "wiki.housing": "Housing",
+    "wiki.world": "World Travel and Reset"
   }
 }

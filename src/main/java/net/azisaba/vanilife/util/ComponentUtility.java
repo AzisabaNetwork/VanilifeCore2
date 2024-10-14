@@ -146,9 +146,9 @@ public class ComponentUtility
         TextReplacementConfig config = TextReplacementConfig.builder()
                 .match(ComponentUtility.URL_PATTERN)
                 .replacement((matchResult, builder) -> {
-                    String url = matchResult.group();
+                    String url = URLDecoder.decode(matchResult.group(), StandardCharsets.UTF_8);
 
-                    return Component.text(URLDecoder.decode(url, StandardCharsets.UTF_8))
+                    return Component.text(url)
                             .color(NamedTextColor.BLUE)
                             .decorate(TextDecoration.UNDERLINED)
                             .decoration(TextDecoration.ITALIC, false)
