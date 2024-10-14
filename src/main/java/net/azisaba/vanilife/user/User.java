@@ -674,7 +674,7 @@ public class User
     {
         TrustRank oldRank = this.getTrustRank();
 
-        this.trust = Math.min(Math.max(trust, 0), 100);
+        this.trust = Math.min(Math.max(trust, 0), 150);
 
         try
         {
@@ -1164,6 +1164,11 @@ public class User
     public boolean inHousing()
     {
         return this.isOnline() && this.asPlayer().getWorld().equals(Housing.getWorld());
+    }
+
+    public boolean inJail()
+    {
+        return this.isOnline() && this.asPlayer().getWorld().equals(VanilifeWorldManager.getJail());
     }
 
     public boolean hasNick()

@@ -451,17 +451,13 @@ public class PlayerJoinListener implements Listener
 
         User user = User.getInstance(player);
 
+        VanilifeWorld latest = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
         Housing housing = Housing.getInstance(player.getLocation());
 
-        if (housing != null && ! housing.canVisit(user))
+        if (housing != null && ! housing.canVisit(user) && latest != null)
         {
-            VanilifeWorld world = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
-
-            if (world != null)
-            {
-                player.teleport(world.getLocation(player));
-                return;
-            }
+            player.teleport(latest.getLocation(player));
+            return;
         }
 
         VanilifeWorld world = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
@@ -471,7 +467,7 @@ public class PlayerJoinListener implements Listener
             return;
         }
 
-        if (player.hasPlayedBefore() && (VanilifeWorld.getInstance(player.getWorld()) != null || user.inHousing()))
+        if (player.hasPlayedBefore() && (VanilifeWorld.getInstance(player.getWorld()) != null || user.inHousing() || user.inJail()))
         {
             return;
         }

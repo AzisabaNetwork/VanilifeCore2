@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 
@@ -163,21 +164,39 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerPortal(PlayerPortalEvent event)
     {
+        Bukkit.getPluginManager().callEvent(new EntityPortalEvent(event.getPlayer(), event.getFrom(), event.getTo(), event.getSearchRadius(), event.getCanCreatePortal(), event.getCreationRadius(), switch (event.getCause())
+        {
+            case PlayerTeleportEvent.TeleportCause.NETHER_PORTAL -> PortalType.NETHER;
+            case PlayerTeleportEvent.TeleportCause.END_PORTAL -> PortalType.ENDER;
+            case PlayerTeleportEvent.TeleportCause.END_GATEWAY -> PortalType.END_GATEWAY;
+            default -> PortalType.CUSTOM;
+        }));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityPortal(EntityPortalEvent event)
+    {
         VanilifeWorld world = VanilifeWorld.getInstance(event.getFrom().getWorld());
 
         if (world == null)
         {
             return;
         }
-        
-        World level = switch (event.getTo().getWorld().getEnvironment())
+
+        Location to = event.getTo();
+
+        if (to == null)
         {
-            case NETHER -> world.getNether();
-            case THE_END -> world.getEnd();
+            return;
+        }
+
+        World level = switch (to.getWorld().getEnvironment())
+        {
+            case World.Environment.NETHER -> world.getNether();
+            case World.Environment.THE_END -> world.getEnd();
             default -> world.getOverworld();
         };
 
-        Location to = event.getTo();
         to.setWorld(level);
         event.setTo(to);
     }
@@ -225,6 +244,11 @@ public class PlayerListener implements Listener
         VanilifeWorld world = VanilifeWorld.getInstance(event.getFrom());
 
         if (world == null)
+        {
+            return;
+        }
+
+        if (player.getWorld().equals(Housing.getWorld()))
         {
             return;
         }

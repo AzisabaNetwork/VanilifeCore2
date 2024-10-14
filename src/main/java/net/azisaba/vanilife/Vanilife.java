@@ -295,7 +295,7 @@ public final class Vanilife extends JavaPlugin
         new PlayerListRunnable().runTaskTimer(this, 0L, 20L * 2);
         new PlayingRewardRunnable().runTask(this);
         new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 10);
-        new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 10);
+        new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 30);
         new VoiceChatRunnable().runTaskTimerAsynchronously(this, 0L, 20L * 2);
 
         Plugin coreprotectPlugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
