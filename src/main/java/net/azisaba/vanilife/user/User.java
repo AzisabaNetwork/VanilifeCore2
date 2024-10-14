@@ -86,7 +86,7 @@ public class User
     {
         try
         {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            Connection con = Vanilife.getConnection();
 
             PreparedStatement stmt = con.prepareStatement("SELECT id FROM user");
             ResultSet rs = stmt.executeQuery();
@@ -181,7 +181,7 @@ public class User
 
         try
         {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
+            Connection con = Vanilife.getConnection();
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM user WHERE id = ?");
             stmt.setString(1, this.id.toString());
 

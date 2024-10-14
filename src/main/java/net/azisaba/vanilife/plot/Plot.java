@@ -663,7 +663,7 @@ public class Plot
 
             try
             {
-                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_USER);
+                Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
                 PreparedStatement stmt = con.prepareStatement("DELETE FROM `plot-chunk` WHERE plot = ?");
                 stmt.setString(1, this.id.toString());
 

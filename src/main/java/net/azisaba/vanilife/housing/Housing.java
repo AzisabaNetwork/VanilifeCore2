@@ -262,7 +262,7 @@ public class Housing
 
         try
         {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_USER);
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("UPDATE housing SET pos1_x = ?, pos1_y = ?, pos1_z = ? WHERE id = ?");
             stmt.setInt(1, this.pos1.getBlockX());
             stmt.setInt(2, this.pos1.getBlockY());
@@ -292,7 +292,7 @@ public class Housing
 
         try
         {
-            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_USER);
+            Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("UPDATE housing SET pos2_x = ?, pos2_y = ?, pos2_z = ? WHERE id = ?");
             stmt.setInt(1, this.pos2.getBlockX());
             stmt.setInt(2, this.pos2.getBlockY());
