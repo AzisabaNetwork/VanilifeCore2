@@ -5,18 +5,18 @@ import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.UserUtility;
+import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.*;
 
 public class EntityListener implements Listener
 {
@@ -79,5 +79,31 @@ public class EntityListener implements Listener
             User user = User.getInstance(player);
             user.setMola(user.getMola() + 3, "reward.category.kill", NamedTextColor.LIGHT_PURPLE);
         }
+    }
+
+    @EventHandler
+    public void onEntityTeleport(EntityTeleportEvent event)
+    {
+        Location from = event.getFrom();
+        Location to = event.getTo();
+
+        if (to == null || event.getFrom().getWorld().equals(event.getTo().getWorld()))
+        {
+            return;
+        }
+
+        if (from.getWorld().getEnvironment() != World.Environment.THE_END || to.getWorld().getEnvironment() != World.Environment.NORMAL)
+        {
+            return;
+        }
+
+        VanilifeWorld world = VanilifeWorld.getInstance(from.getWorld());
+
+        if (world == null)
+        {
+            return;
+        }
+
+        event.setTo(world.getOverworld().getSpawnLocation());
     }
 }

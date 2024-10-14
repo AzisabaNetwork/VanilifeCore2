@@ -48,6 +48,7 @@ public class MidnightPack implements IHousingPack
                 Material.BLUE_BED,
                 Material.PURPLE_BED,
                 Material.MAGENTA_BED,
-                Material.PINK_BED);
+                Material.PINK_BED,
+                Material.WALL_TORCH);
     }
 }

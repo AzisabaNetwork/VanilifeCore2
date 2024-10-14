@@ -77,7 +77,7 @@ public class VanilifeWorld
         this.nether = this.mount(levels.get("nether").getAsString(), World.Environment.NETHER);
         this.end = this.mount(levels.get("end").getAsString(), World.Environment.THE_END);
 
-        this.teleporter = new RandomTeleporter(this.overworld, 1200, Material.LAVA, Material.WATER, Material.FIRE);
+        this.teleporter = new RandomTeleporter(this.overworld, 3200, Material.LAVA, Material.WATER, Material.FIRE);
         VanilifeWorld.instances.add(this);
     }
 

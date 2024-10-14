@@ -90,23 +90,23 @@ public class ChatFilter
 
         final String compiled = ! Gomenne.isValid(sender, message) ? message : String.format("%s (%s)", message, Gomenne.convert(Gomenne.hira(message)));
 
-        if (UserUtility.isModerator(sender) || ! Vanilife.filter.filter(message))
-        {
-            Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**[%s] %s (%s)**: %s", field, sender.getName(), sender.getUniqueId(), compiled)).queue();
+        Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**[%s] %s (%s)**: %s", field, sender.getName(), sender.getUniqueId(), compiled)).queue(msg -> {
+            if (! Vanilife.filter.filter(message) || UserUtility.isModerator(sender))
+            {
+                return;
+            }
 
-            return;
-        }
+            Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+                            .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
+                            .setTitle(":shield:チャットフィルタリング")
+                            .setDescription(compiled)
+                            .setFooter(sender.getUniqueId().toString())
+                            .setColor(new Color(255, 85, 85)).build())
+                    .addActionRow(Button.danger("vanilife:mute", String.format("%s をミュートする", sender.getName())),
+                            Button.secondary("vanilife:unmute", "または…アンミュート")).queue();
 
-        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
-                        .setAuthor(sender.getName(), null, String.format("https://api.mineatar.io/face/%s", sender.getUniqueId().toString().replace("-", "")))
-                        .setTitle(":shield:チャットフィルタリング")
-                        .setDescription(compiled)
-                        .setFooter(sender.getUniqueId().toString())
-                        .setColor(new Color(255, 85, 85)).build())
-                .addActionRow(Button.danger("vanilife:mute", String.format("%s をミュートする", sender.getName())),
-                        Button.secondary("vanilife:unmute", "または…アンミュート")).queue();
-
-        Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_SUPPORT.getAsMention() + " このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします").queue();
+            Vanilife.CHANNEL_CONSOLE.sendMessage(":envelope_with_arrow: " + Vanilife.ROLE_SUPPORT.getAsMention() + " このチャットはチャットフィルタリングによって不適切と判断されました、ご確認をお願いします: " + msg.getJumpUrl()).queue();
+        });
     }
 
     public void onChat(@NotNull Player sender, @NotNull String message)

@@ -387,7 +387,7 @@ public class Housing
         this.user.getStorage().getAsJsonArray("housing.packs").add(pack.getName());
         this.user.saveStorage();
 
-        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("Housing Pack")
                 .setColor(Color.ORANGE.asARGB())
                 .addField("Housing", String.format("%s (%s)", this.user.getPlaneName(), this.user.getId()), false)

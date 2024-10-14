@@ -335,21 +335,20 @@ public class User
     {
         TextComponent.Builder summary = Component.text();
 
-        summary.append(this.getName());
-        summary.appendNewline();
+        summary.append(this.getName()).appendNewline();
 
         summary.append(Component.text("Trust Rank: ").color(NamedTextColor.GRAY)
                 .append(Component.text(this.getTrustRank().getName()).color(this.getTrustRank().getColor())));
 
         if (this.settings.BIRTHDAY.isWithinScope(user) && this.birthday != null)
         {
-            summary.append(Language.translate("ui.profile.birthday", user).color(NamedTextColor.GRAY)
+            summary.appendNewline().append(Language.translate("ui.profile.birthday", user).color(NamedTextColor.GRAY)
                     .append(Component.text(Vanilife.sdf4.format(this.birthday)).color(NamedTextColor.GREEN)));
         }
 
         if (this.hasOsatou() && (UserUtility.isAdmin(user) || (this.read("settings.osatou.open").getAsBoolean() && this.osatou.read("settings.osatou.open").getAsBoolean())))
         {
-            summary.append(Language.translate("ui.profile.osatou", user).color(NamedTextColor.GRAY).append(this.osatou.getName()));
+            summary.appendNewline().append(Language.translate("ui.profile.osatou", user).color(NamedTextColor.GRAY).append(this.osatou.getName()));
         }
 
         if (this.bio != null)
@@ -1485,7 +1484,7 @@ public class User
         double rest = 1.0d - SubscriptionUtility.getProgress();
         int cost = (int) (subscription.getCost() * rest);
 
-        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("サブスクリプション: 購入")
                 .setColor(Color.GREEN)
                 .addField("契約者", String.format("%s (%s)", this.getPlaneName(), this.getId()), false)
@@ -1523,7 +1522,7 @@ public class User
     {
         this.subscriptions.removeIf(s -> s == subscription);
 
-        Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
+        Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("サブスクリプション: 解約")
                 .setColor(Color.RED)
                 .addField("解約者", String.format("%s (%s)", this.getPlaneName(), this.getPlaneName()), false)
