@@ -35,6 +35,8 @@ public class HousingPacks
 
     public static final TerrainPack TERRAIN = (TerrainPack) HousingPacks.register(new TerrainPack());
 
+    public static final BuilderPack BUILDER = (BuilderPack) HousingPacks.register(new BuilderPack());
+
     public static final CrafterPack CRAFTER = (CrafterPack) HousingPacks.register(new CrafterPack());
 
     public static final FarmingPack FARMING = (FarmingPack) HousingPacks.register(new FarmingPack());

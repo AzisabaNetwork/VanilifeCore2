@@ -109,8 +109,8 @@ public final class Vanilife extends JavaPlugin
     public static Role ROLE_MCONSOLE;
     public static Role ROLE_DEVELOPER;
 
-    public static final int MOLA_PLOT_NEW = 80;
-    public static final int MOLA_PLOT_CLAIM = 30;
+    public static final int MOLA_PLOT_NEW = 150;
+    public static final int MOLA_PLOT_CLAIM = 60;
 
     public static String METUBOT_SERVER;
     public static UUID METUBOT_PROVIDER;
@@ -256,6 +256,8 @@ public final class Vanilife extends JavaPlugin
         this.saveDefaultConfig();
         this.saveResource("lang/en-us.json", true);
         this.saveResource("lang/ja-jp.json", true);
+        this.saveResource("tutorial/en-us.json", false);
+        this.saveResource("tutorial/ja-jp.json", false);
         this.saveResource("service/checkout.yml", false);
         this.saveResource("structure/housing.nbt", true);
         this.saveResource("structure/jail.nbt", true);
@@ -276,6 +278,8 @@ public final class Vanilife extends JavaPlugin
         Language.mount();
         Service.mount();
 
+        this.getCommand("tutorial").setExecutor(new TutorialCommand());
+
         Vanilife.jda = JDABuilder.createDefault(this.getConfig().getString("discord.token")).setActivity(Activity.playing("azisaba.net")).build();
         Vanilife.jda.addEventListener(new DiscordListener());
         Vanilife.jda.addEventListener(new VoiceChatListener());
@@ -292,7 +296,7 @@ public final class Vanilife extends JavaPlugin
         new ObjectiveRunnable().runTaskTimer(this, 0L, 10L);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
         new NightCheckRunnable().runTaskTimer(this, 0L, 20L);
-        new PlayerListRunnable().runTaskTimer(this, 0L, 20L * 2);
+        new PlayerListRunnable().runTaskTimer(this, 0L, 8L);
         new PlayingRewardRunnable().runTask(this);
         new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 8);
         new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 20);

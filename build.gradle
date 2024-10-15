@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.azisaba'
-version = '2.0.25'
+version = '2.0.28'
 
 repositories {
     mavenCentral()
@@ -27,6 +27,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot:1.21.1-R0.1-SNAPSHOT"
     compileOnly fileTree(dir: 'jar')
 
+    implementation 'org.json:json:20210307'
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'net.dv8tion:JDA:5.0.1'

@@ -50,6 +50,12 @@ public class NkipCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
+        if (vote.isVoter(player))
+        {
+            sender.sendMessage(Language.translate("cmd.nkip.already", player).color(NamedTextColor.RED));
+            return true;
+        }
+
         vote.vote(player);
         sender.sendMessage(Language.translate("cmd.nkip.voted", player).color(NamedTextColor.GREEN));
         player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);

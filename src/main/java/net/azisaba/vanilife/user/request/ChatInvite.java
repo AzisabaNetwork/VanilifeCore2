@@ -52,6 +52,6 @@ public class ChatInvite extends Request
         super.onAccept();
 
         this.chat.addMember(this.toUser);
-        this.chat.getOnline().forEach(member -> member.asPlayer().sendMessage(Component.text(this.chat.getName() + " > ").color(NamedTextColor.BLUE).append(this.toUser.getName(member)).append(Language.translate("msg.chat.join", member).color(NamedTextColor.GRAY))));
+        this.chat.getOnline().forEach(member -> member.asPlayer().sendMessage(Component.text(this.chat.getName() + " > ").color(this.chat.getColor()).append(this.toUser.getName(member)).append(Language.translate("msg.chat.join", member).color(NamedTextColor.GRAY))));
     }
 }

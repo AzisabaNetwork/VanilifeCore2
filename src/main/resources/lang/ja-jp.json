@@ -339,6 +339,11 @@
     "ui.store.wallet.help.1": "この機能を頻繫に使用しますか？",
     "ui.store.wallet.help.2": "/wallet で簡単に呼び出せます！",
 
+    "ui.tab.title": "&7ようこそ、 &r${name}&r&7 さん！",
+    "ui.tab.online": "&7オンラインプレイヤー: &a${online}&7人",
+    "ui.tab.wallet": "&7所持金: &a${mola}&7 Mola",
+    "ui.tab.location": "現在地: ",
+
     "ui.trade.title": "Trade",
 
     "ui.trash.title": "ゴミ箱",
@@ -363,6 +368,7 @@
     "msg.empty": "しーん…ここには何もないようです",
     "msg.offline": "${name} は現在オフラインです",
     "msg.shortage": "Mola が足りません！あと ${need} Mola 必要です！",
+    "msg.tutorial": "/tutorial でチュートリアルを開く！",
     "msg.you": "あなた",
     "msg.partner": "相手",
     "msg.cooldown": "現在クールダウン中です！${remaining}秒後にもう一度お試しください",
@@ -529,6 +535,7 @@
     "cmd.nick.changed": "${nick} &r&aをニックネームに設定しました",
 
     "cmd.nkip.cant": "現在別のワールドにいるため、投票できません",
+    "cmd.nkip.already": "あなたはすでに投票しています",
     "cmd.nkip.not-found": "スキップ投票が見つかりませんでした",
     "cmd.nkip.voted": "スキップ投票に投票しました！",
 
@@ -694,11 +701,13 @@
     "housing.pack.farming.name": "農業",
     "housing.pack.farming.details.1": "Housing で農業を始めてみませんか？",
     "housing.pack.gardening.name": "ガーデニング",
-    "housing.pack.gardening.details.1": "庭園を作るのには欠かせません！",
+    "housing.pack.gardening.details.1": "庭園作りには欠かせません！",
     "housing.pack.redstone.name": "レッドストーン",
     "housing.pack.redstone.details.1": "レッドストーンに関連するブロック",
     "housing.pack.glass.name": "ガラスブロック",
     "housing.pack.glass.details.1": "美しいガラスで島を彩ろう！",
+    "housing.pack.builder.name": "建築家",
+    "housing.pack.builder.details.1": "建築をするには必須のブロック",
 
     "jail.limit-under": "詳細は8文字以上で入力してください",
     "jail.limit-over": "詳細は30文字以内で入力してください",

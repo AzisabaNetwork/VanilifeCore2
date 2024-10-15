@@ -73,7 +73,7 @@ public class VoiceChat
             }
         }
 
-        if (50 + (Bukkit.getOnlinePlayers().size() * 5) < distance || voiceChat == null)
+        if (55 < distance || voiceChat == null)
         {
             return currentVoiceChat != null && currentVoiceChat.getMembers().size() == 1 ? currentVoiceChat : new VoiceChat();
         }

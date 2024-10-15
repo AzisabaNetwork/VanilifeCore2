@@ -35,16 +35,16 @@ public class BlockListener implements Listener
 
         boolean silktouch = tool.getType() != Material.AIR && 0 < tool.getEnchantmentLevel(Enchantment.SILK_TOUCH);
 
-        if (! event.isCancelled() && player.getGameMode() == GameMode.SURVIVAL && ! silktouch)
+        if (! event.isCancelled() && player.getGameMode() == GameMode.SURVIVAL && ! silktouch && Vanilife.random.nextDouble() < 0.4)
         {
             User user = User.getInstance(player);
 
-            if (Materials.MINING.contains(block.getType()) && Vanilife.random.nextDouble() < (Materials.ORES.contains(block.getType()) ? 0.01 : 0.04))
+            if (Materials.MINING.contains(block.getType()) && Vanilife.random.nextDouble() < (Materials.ORES.contains(block.getType()) ? 0.01 : 0.02))
             {
                 user.setMola(user.getMola() + (Materials.ORES.contains(block.getType()) ? 2 : 1), "reward.category.mining", NamedTextColor.YELLOW);
             }
 
-            if (Materials.LOGGING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.03)
+            if (Materials.LOGGING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.01)
             {
                 user.setMola(user.getMola() + 3, "reward.category.logging", NamedTextColor.YELLOW);
             }
@@ -54,7 +54,7 @@ public class BlockListener implements Listener
                 user.setMola(user.getMola() + 4, "reward.category.seichi", NamedTextColor.YELLOW);
             }
 
-            if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.02)
+            if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.01)
             {
                 if ((block.getBlockData() instanceof Ageable ageable) && ageable.getAge() < ageable.getMaximumAge())
                 {

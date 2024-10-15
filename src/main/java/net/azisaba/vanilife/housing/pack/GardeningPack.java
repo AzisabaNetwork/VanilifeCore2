@@ -10,7 +10,7 @@ public class GardeningPack implements IHousingPack
     @Override
     public @NotNull String getName()
     {
-        return "garden";
+        return "gardening";
     }
 
     @Override

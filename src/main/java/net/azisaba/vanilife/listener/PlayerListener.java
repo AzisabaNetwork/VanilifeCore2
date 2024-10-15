@@ -325,13 +325,18 @@ public class PlayerListener implements Listener
         Player player = event.getPlayer();
         String command = event.getMessage().toLowerCase().split(" ")[0];
 
-        if (command.equalsIgnoreCase("/tell") || command.equalsIgnoreCase("/msg") || command.equalsIgnoreCase("/w"))
+        if (! command.contains(":"))
+        {
+            command = "/minecraft:" + command.substring(1);
+        }
+
+        if (command.equalsIgnoreCase("/minecraft:tell") || command.equalsIgnoreCase("/minecraft:msg") || command.equalsIgnoreCase("/minecraft:w"))
         {
             player.sendMessage(Language.translate("mail.dont-tell", player).color(NamedTextColor.RED));
             event.setCancelled(true);
         }
 
-        if (command.equalsIgnoreCase("/help"))
+        if (command.equalsIgnoreCase("/minecraft:help"))
         {
             if (player.getGameMode() != GameMode.SURVIVAL && UserUtility.isModerator(player))
             {

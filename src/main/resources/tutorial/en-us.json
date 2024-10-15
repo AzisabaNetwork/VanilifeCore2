@@ -1,0 +1,113 @@
+{
+  "title": "Vanilife2!",
+  "author": "Azisaba Network",
+  "content": [
+    [
+      "",
+      "      &6&lVanilife2!",
+      "      &8Azisaba Network",
+      "",
+      "      &d>> Welcome <<",
+      "",
+      "[\"\",{\"text\":\"        \"},{\"text\":\"Wiki: \"},{\"text\":\"Azipedia\",\"underlined\":true,\"color\":\"blue\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://wiki.azisaba.net/wiki/VanillaLife2:MainPage\"}}]",
+      "[\"\",{\"text\":\"    \"},{\"text\":\"Discord: \"},{\"text\":\"Official Discord\",\"underlined\":true,\"color\":\"blue\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://discord.gg/azisaba\"}}]",
+      "[\"\",{\"text\":\"   \"},{\"text\":\"Rule: \"},{\"text\":\"Confirm Rules\",\"underlined\":true,\"color\":\"blue\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.azisaba.net/rules/\"}}]",
+      "",
+      "[\"\",{\"text\":\" \\u0020 \\u0020 \\u0020\"},{\"text\":\"www.azisaba.net\",\"color\":\"blue\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.azisaba.net\"}}]"
+    ],
+    [
+      "&l1. Common Commands (1/3)",
+      "・/ec (/enderchest)",
+      "Open the ender chest",
+      "",
+      "・/trash (/gomi)",
+      "Open the trash can",
+      "",
+      "・/tpr <player>",
+      "Request teleportation",
+      "",
+      "・/rtp",
+      "Teleport to a random location"
+    ],
+    [
+      "&l1. Common Commands (2/3)",
+      "・/friend <player> (/f)",
+      "Send a friend request",
+      "",
+      "・/unfriend <player>",
+      "Remove a friend",
+      "",
+      "・/friendlist (/fl)",
+      "Display your friend list.",
+      "",
+      "・/block <player>",
+      "Block a player"
+    ],
+    [
+      "&l1. Common Commands (3/3)",
+      "・/unblock",
+      "Unblock a player",
+      "",
+      "・/store",
+      "Open the store. Emojis and Housing Blocks can be accessed here.",
+      "",
+      "・/housing [player]",
+      "Move to a player's housing. If no player is specified, it will automatically select yourself."
+    ],
+    [
+      "&l2. Crafting Elytra",
+      "A recipe has been added due to extreme rarity.",
+      "    &7----------",
+      "    &7|&r  PNP  &7|",
+      "    &7|&r  PWP  &7|",
+      "    &7|&r  P P  &7|",
+      "    &7----------",
+      "",
+      "P: &8Phantom Membrane",
+      "N: &8Netherite Ingot",
+      "W: &8Wind Charge"
+    ],
+    [
+      "&l3. Chat (1/2)",
+      "・/chat <chat> [message]",
+      "Send a message in any chat.",
+      "Specify the chat by name for group chats and use '@playername' for DMs.",
+      "If no message is specified, you can switch chats.",
+      "After switching, you can send messages directly from the chat box without using commands.",
+      "/chat for global chat."
+    ],
+    [
+      "&l3. Chat (2/3)",
+      "・//chat",
+      "Open the settings for the currently selected chat",
+      "(Owner only for group chats)",
+      "",
+      "・//chat create <name>",
+      "Create a group chat",
+      "",
+      "・//chat invite <player>",
+      "Invite a player to the currently selected chat"
+    ],
+    [
+      "&l3. Chat (3/3)",
+      "・//chat kick <player>",
+      "Kick a player from the currently selected chat",
+      "・//chat delete",
+      "Delete the currently selected chat",
+      "・//chat join <name>",
+      "Join a chat",
+      "・//chat quit",
+      "Leave the currently selected chat"
+    ],
+    [],
+    [
+      "",
+      "",
+      "",
+      "      &6&lAzisaba Network",
+      "      アジ鯖、楽しい。",
+      "",
+      "        &7©アジ鯖 2024"
+    ]
+  ]
+}

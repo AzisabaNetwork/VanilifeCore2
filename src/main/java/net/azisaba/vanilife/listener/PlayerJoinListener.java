@@ -71,6 +71,8 @@ public class PlayerJoinListener implements Listener
             return;
         }
 
+        Bukkit.dispatchCommand(player, "vanilife:tutorial");
+
         new BukkitRunnable()
         {
             @Override
@@ -210,6 +212,7 @@ public class PlayerJoinListener implements Listener
                             .color(NamedTextColor.BLUE)
                             .hoverEvent(HoverEvent.showText(Component.text("Click to open url")))
                             .clickEvent(ClickEvent.openUrl("https://wiki.azisaba.net/wiki/ばにらいふ２！:メインページ"))));
+            player.sendMessage(Language.translate("msg.tutorial", player).color(NamedTextColor.YELLOW));
             player.sendMessage(Component.text().build());
 
             player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);

@@ -118,6 +118,7 @@ public class PlotInviteSubcommand implements Subcommand
         {
             Bukkit.getOnlinePlayers().stream()
                     .filter(p -> ! Watch.isWatcher(p))
+                    .filter(p -> p.getName().startsWith(args[0]))
                     .forEach(p -> suggest.add(p.getName()));
         }
 

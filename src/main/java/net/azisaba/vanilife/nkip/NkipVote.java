@@ -63,8 +63,18 @@ public class NkipVote
         return this.world;
     }
 
+    public boolean isVoter(Player player)
+    {
+        return this.voters.contains(player);
+    }
+
     public void vote(@NotNull Player player)
     {
+        if (this.voters.contains(player))
+        {
+            return;
+        }
+
         this.voters.add(player);
     }
 

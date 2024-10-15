@@ -16,7 +16,7 @@ public class CrafterPack implements IHousingPack
     @Override
     public @NotNull Material getIcon()
     {
-        return Material.CRAFTING_TABLE;
+        return Material.KNOWLEDGE_BOOK;
     }
 
     @Override

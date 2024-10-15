@@ -57,7 +57,7 @@ public class ColorPack implements IHousingPack
                 Material.CYAN_CARPET,
                 Material.LIGHT_BLUE_CARPET,
                 Material.BLUE_CARPET,
-                Material.PURPLE_CANDLE,
+                Material.PURPLE_CARPET,
                 Material.MAGENTA_CARPET,
                 Material.PINK_CARPET);
     }

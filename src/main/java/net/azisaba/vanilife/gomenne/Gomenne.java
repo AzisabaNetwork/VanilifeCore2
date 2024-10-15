@@ -32,7 +32,7 @@ public class Gomenne
     public static boolean isValid(@NotNull User sender, @NotNull String message)
     {
         return Language.getInstance(sender).getId().equals("ja-jp") &&
-                message.matches("^[A-Za-z0-9 !?.,~()-]*$") &&
+                message.matches("^[A-Za-z0-9 !?.,;~()-]*$") &&
                 sender.read("settings.ime").getAsBoolean() &&
                 ! message.contains(":") &&
                 ! message.contains("!1") &&

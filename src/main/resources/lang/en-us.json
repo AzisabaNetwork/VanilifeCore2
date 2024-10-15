@@ -339,6 +339,11 @@
     "ui.store.wallet.help.1": "Do you use this feature frequently?",
     "ui.store.wallet.help.2": "You can easily access it with /wallet!",
 
+    "ui.tab.title": "&7Welcome, &r${name}&r&7!",
+    "ui.tab.online": "&7Online: &a${online}&7 player(s)",
+    "ui.tab.wallet": "&7Wallet: &a${mola}&7 Mola",
+    "ui.tab.location": "Location: ",
+
     "ui.trade.title": "Trade",
 
     "ui.trash.title": "Trash",
@@ -363,6 +368,7 @@
     "msg.empty": "Shhhh... nothing seems to be happening here.",
     "msg.offline": "${name} is currently offline.",
     "msg.shortage": "Not enough Mola! You need ${need} more Mola!",
+    "msg.tutorial": "/tutorial to open the tutorial!",
     "msg.you": "You",
     "msg.partner": "Partner",
     "msg.cooldown": "Currently cooling down! Please try again in ${remaining} seconds.",
@@ -529,6 +535,7 @@
     "cmd.nick.changed": "${nick} is set to nick.",
 
     "cmd.nkip.cant": "You cannot vote as you are in another world right now.",
+    "cmd.nkip.already": "You have already voted.",
     "cmd.nkip.not-found": "No skip vote found.",
     "cmd.nkip.voted": "You have voted for the skip vote!",
 
@@ -699,6 +706,8 @@
     "housing.pack.redstone.details.1": "Blocks related to redstone",
     "housing.pack.glass.name": "Glass Block",
     "housing.pack.glass.details.1": "Color your island with beautiful glass!",
+    "housing.pack.builder.name": "Builder",
+    "housing.pack.builder.details.1": "Essential blocks for building",
 
     "jail.limit-under": "Please enter details that are more than 8 characters.",
     "jail.limit-over": "Please enter details that are within 30 characters.",
