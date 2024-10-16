@@ -313,10 +313,12 @@ public class GroupChat extends Chat
     @Override
     public @NotNull Component format(@NotNull User sender, @NotNull User listener, @NotNull Component body)
     {
-        return this.getPrefix(Language.getInstance(listener))
-            .append(sender.getName(listener))
-            .append(Component.text(": ").color(NamedTextColor.GRAY))
-            .append(body);
+        return Component.text()
+                .append(this.getPrefix(Language.getInstance(listener)))
+                .append(sender.getName(listener))
+                .append(Component.text(": ").color(NamedTextColor.GRAY))
+                .resetStyle()
+                .append(body).build();
     }
 
     public boolean inScope(@NotNull User user)

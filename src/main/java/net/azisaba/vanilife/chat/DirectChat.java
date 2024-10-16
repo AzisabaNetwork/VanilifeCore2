@@ -65,6 +65,7 @@ public class DirectChat extends Chat
                 .append(Component.text(sender == listener ? "DM (" + this.getPartner(listener).getPlaneName() + ") > " : "DM > ").color(NamedTextColor.BLUE))
                 .append(sender == listener ? Language.translate("msg.you", listener).color(NamedTextColor.GRAY) : sender.getName(listener))
                 .append(Component.text(": ").color(NamedTextColor.GRAY))
+                .resetStyle()
                 .append(body)
                 .build();
     }
