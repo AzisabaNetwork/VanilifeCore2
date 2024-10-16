@@ -44,5 +44,7 @@ public class VoiceChatRunnable extends BukkitRunnable
                 vc2.connect(user);
             }
         }
+
+        VoiceChat.getInstances().stream().filter(vc -> vc.getMembers().isEmpty()).forEach(VoiceChat::delete);
     }
 }

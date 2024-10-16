@@ -55,7 +55,7 @@ public class VoiceChat
                 continue;
             }
 
-            if (! vc.getLocation().getWorld().equals(player.getWorld()))
+            if (! player.getWorld().equals(vc.getLocation().getWorld()))
             {
                 continue;
             }

@@ -113,6 +113,7 @@ public class Plot
             this.spawn = new Location(this.world, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
 
             this.vanilifeWorld.getPlots().add(this);
+            this.owner.getSubscriptions().add(new PlotSubscription(this));
 
             rs.close();
             stmt.close();
