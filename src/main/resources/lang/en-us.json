@@ -369,6 +369,7 @@
     "msg.offline": "${name} is currently offline.",
     "msg.shortage": "Not enough Mola! You need ${need} more Mola!",
     "msg.tutorial": "/tutorial to open the tutorial!",
+    "msg.mentioned": "${name}&r has been mentioned",
     "msg.you": "You",
     "msg.partner": "Partner",
     "msg.cooldown": "Currently cooling down! Please try again in ${remaining} seconds.",
@@ -796,6 +797,7 @@
     "settings.metubou.description.5": "&8!2: (/・ω・)/",
     "settings.metubou.description.6": "&8!3: (^^♪",
     "settings.metubou.description.7": "&8!4: ( 一一)",
+    "settings.metubou.description.8": "&8!o: 082",
 
     "settings.scope.public": "Public",
     "settings.scope.friend": "Friend's Public",

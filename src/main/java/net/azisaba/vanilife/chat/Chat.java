@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.chat;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.ComponentUtility;
 import net.kyori.adventure.text.Component;
@@ -65,7 +66,10 @@ public abstract class Chat implements IChat
 
         ComponentUtility.getMentions(message).stream()
                 .filter(mention -> this.isMember(mention) && ! mention.isBlock(sender) && mention.isOnline() && mention.read("settings.chat").getAsBoolean())
-                .forEach(mention -> mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f));
+                .forEach(mention -> {
+                    mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+                    mention.asPlayer().sendActionBar(Language.translate("msg.mentioned", mention, "name=" + ComponentUtility.asString(sender.getName())));
+                });
 
         this.getOnline().stream()
                 .filter(online -> ! online.isBlock(sender))

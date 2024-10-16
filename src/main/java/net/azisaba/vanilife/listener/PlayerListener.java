@@ -434,7 +434,10 @@ public class PlayerListener implements Listener
 
         ComponentUtility.getMentions(message).stream()
                 .filter(mention -> ! mention.isBlock(user) && mention.isOnline() && mention.read("settings.chat").getAsBoolean())
-                .forEach(mention -> mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f));
+                .forEach(mention -> {
+                    mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+                    mention.asPlayer().sendActionBar(Language.translate("msg.mentioned", player, "name=" + ComponentUtility.asString(user.getName())));
+                });
 
         listeners.forEach(listener -> listener.sendMessage(Component.text().build()
                 .append(Component.text("[" + user.getTrustRank().getName().charAt(0) + "] ").color(user.getTrustRank().getColor()).hoverEvent(Component.text(user.getTrustRank().getName()).color(user.getTrustRank().getColor())))

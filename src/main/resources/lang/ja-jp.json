@@ -369,6 +369,7 @@
     "msg.offline": "${name} は現在オフラインです",
     "msg.shortage": "Mola が足りません！あと ${need} Mola 必要です！",
     "msg.tutorial": "/tutorial でチュートリアルを開く！",
+    "msg.mentioned": "${name}&r にメンションされました",
     "msg.you": "あなた",
     "msg.partner": "相手",
     "msg.cooldown": "現在クールダウン中です！${remaining}秒後にもう一度お試しください",
@@ -797,6 +798,7 @@
     "settings.metubou.description.5": "&8!2: (/・ω・)/",
     "settings.metubou.description.6": "&8!3: (^^♪",
     "settings.metubou.description.7": "&8!4: ( 一一)",
+    "settings.metubou.description.8": "&8!o: 082",
 
     "settings.scope.public": "公開",
     "settings.scope.friend": "Friend に公開",

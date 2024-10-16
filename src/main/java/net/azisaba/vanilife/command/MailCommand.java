@@ -46,14 +46,14 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
                 if (16 <= sb.length())
                 {
-                    builder.append(ComponentUtility.parseChat(sb.toString(), mail.getFrom()));
+                    builder.append(ComponentUtility.asChat(mail.getFrom(), sb.toString()));
                     sb = new StringBuilder();
                 }
             }
 
             if (sb.length() % 16 != 0)
             {
-                builder.append(ComponentUtility.parseChat(sb.toString(), mail.getFrom()));
+                builder.append(ComponentUtility.asChat(mail.getFrom(), sb.toString()));
             }
 
             if (i + 1 != rows.length)
@@ -171,7 +171,7 @@ public class MailCommand implements CommandExecutor, TabCompleter
 
                 if (to.isOnline())
                 {
-                    player.sendMessage(Component.text("✉").color(NamedTextColor.GRAY).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(to.getName().decorate(TextDecoration.BOLD)).append(Component.text(" : ").color(NamedTextColor.GRAY)).append(ComponentUtility.parseChat(message, from))));
+                    player.sendMessage(Component.text("✉").color(NamedTextColor.GRAY).append(Component.text(" ➡ ").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.BOLD, false).append(to.getName().decorate(TextDecoration.BOLD)).append(Component.text(" : ").color(NamedTextColor.GRAY)).append(ComponentUtility.asChat(from, message).color(NamedTextColor.WHITE))));
                 }
                 else
                 {

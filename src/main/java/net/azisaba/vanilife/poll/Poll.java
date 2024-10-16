@@ -74,7 +74,7 @@ public class Poll
 
             for (VoteOption option : this.options)
             {
-                player.sendMessage(Component.text(CLI.getSpaces(2)).append(ComponentUtility.parseChat(option.getName(), User.getInstance(this.owner))).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.runCommand(String.format("/vote %s %s", this.id.toString(), option.getName()))).hoverEvent(HoverEvent.showText(Language.translate("poll.click-to-vote", player, "option=" + option.getName()))));
+                player.sendMessage(Component.text(CLI.getSpaces(2)).append(ComponentUtility.asChat(User.getInstance(this.owner), option.getName())).color(NamedTextColor.YELLOW).clickEvent(ClickEvent.runCommand(String.format("/vote %s %s", this.id.toString(), option.getName()))).hoverEvent(HoverEvent.showText(Language.translate("poll.click-to-vote", player, "option=" + option.getName()))));
             }
 
             player.sendMessage(Component.text());
@@ -163,7 +163,7 @@ public class Poll
             {
                 VoteOption option = ranking.get(i);
 
-                player.sendMessage(Component.text(CLI.getSpaces(2)).append(Language.translate("poll.rank", player, "rank=" + (i + 1))).color((i == 0) ? NamedTextColor.GOLD : NamedTextColor.GRAY).append(ComponentUtility.parseChat(option.getName(), User.getInstance(this.owner)).color(NamedTextColor.WHITE).append(Component.text(CLI.getSpaces(1))).append(Language.translate("poll.vote-tally", player, "vote-tally=" + option.getVoters().size())).color(NamedTextColor.DARK_GRAY)));
+                player.sendMessage(Component.text(CLI.getSpaces(2)).append(Language.translate("poll.rank", player, "rank=" + (i + 1))).color((i == 0) ? NamedTextColor.GOLD : NamedTextColor.GRAY).append(ComponentUtility.asChat(User.getInstance(this.owner), option.getName()).color(NamedTextColor.WHITE).append(Component.text(CLI.getSpaces(1))).append(Language.translate("poll.vote-tally", player, "vote-tally=" + option.getVoters().size())).color(NamedTextColor.DARK_GRAY)));
 
                 if (! this.anonymity)
                 {

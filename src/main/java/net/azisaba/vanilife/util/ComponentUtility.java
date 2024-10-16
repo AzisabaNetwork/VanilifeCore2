@@ -9,7 +9,6 @@ import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
@@ -50,6 +49,33 @@ public class ComponentUtility
         return mentions;
     }
 
+    private static Pattern placeholder;
+
+    public static @NotNull Pattern getPlaceholder()
+    {
+        if (ComponentUtility.placeholder != null)
+        {
+            return ComponentUtility.placeholder;
+        }
+
+        StringBuilder builder = new StringBuilder("(![1-4o]|&[1-9a-g]|" + ComponentUtility.MENTION_PATTERN.pattern() + "|");
+
+        for (int i = 0; i < ChatCommand.values().length; i ++)
+        {
+            if (0 < i)
+            {
+                builder.append('|');
+            }
+
+            builder.append(ChatCommand.values()[i].name);
+        }
+
+        builder.append(')');
+
+        ComponentUtility.placeholder = Pattern.compile(builder.toString());
+        return ComponentUtility.placeholder;
+    }
+
     public static @NotNull Component asGaming(@NotNull String src)
     {
         Component gaming = Component.text("");
@@ -73,72 +99,105 @@ public class ComponentUtility
         return LegacyComponentSerializer.legacySection().deserialize(src.replace('&', '§'));
     }
 
-    public static @NotNull Component asChat(@NotNull Player sender, @NotNull final String src)
+    public static @NotNull Component asChat(@NotNull User sender, @NotNull final String src)
     {
-        final User user = User.getInstance(sender);
-        String body = src;
+        Matcher matcher = ComponentUtility.getPlaceholder().matcher(src);
+        StringBuilder builder = new StringBuilder();
 
-        if (Gomenne.isValid(user, src))
+        int lastMatchEnd = 0;
+        boolean gomenne = false;
+
+        while (matcher.find())
         {
-            body = Gomenne.convert(Gomenne.hira(src)) + " §8(" + src + "§r§8)";
+            String part = src.substring(lastMatchEnd, matcher.start());
+
+            if (Gomenne.isValid(sender, part))
+            {
+                builder.append(Gomenne.convert(Gomenne.hira(part)));
+                gomenne = true;
+            }
+            else
+            {
+                builder.append(part);
+            }
+
+            String placeholder = matcher.group();
+
+            if (placeholder.startsWith("@"))
+            {
+                String name = placeholder.substring(1);
+
+                boolean exists = User.getInstances().stream().anyMatch(i -> i.getPlaneName().equals(name));
+
+                if (! exists)
+                {
+                    builder.append(matcher.group());
+                }
+                else
+                {
+                    builder.append("§9§l").append(placeholder).append("§r");
+                }
+            }
+            else
+            {
+                builder.append(matcher.group());
+            }
+
+            lastMatchEnd = matcher.end();
         }
 
-        if (user.hasSubscription(Subscriptions.NEON))
+        if (lastMatchEnd < src.length())
         {
-            body = ChatColor.translateAlternateColorCodes('&', body);
+            String remaining = src.substring(lastMatchEnd);
+
+            if (Gomenne.isValid(sender, remaining))
+            {
+                builder.append(Gomenne.convert(Gomenne.hira(remaining)));
+                gomenne = true;
+            }
+            else
+            {
+                builder.append(remaining);
+            }
         }
 
-        body = LegacyComponentSerializer.legacySection().serialize(ComponentUtility.parseChat(body, user));
+        String body = builder.toString();
 
-        return ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(body));
-    }
-
-    public static @NotNull Component parseChat(@NotNull String src, @NotNull User user)
-    {
-        if (user.hasSubscription(Subscriptions.NEON))
+        if (sender.getSettings().METUBOU.isValid())
         {
-            src = ChatColor.translateAlternateColorCodes('&', src);
+            body = body.replace("!1", "(*'▽')");
+            body = body.replace("!2", "(/・ω・)/");
+            body = body.replace("!3", "(^^♪");
+            body = body.replace("!4", "( 一一)");
+            body = body.replace("!o", "082");
         }
-
-        if (user.getSettings().METUBOU.isValid())
-        {
-            src = src.replace("!1", "(*'▽')");
-            src = src.replace("!2", "(/・ω・)/");
-            src = src.replace("!3", "(^^♪");
-            src = src.replace("!4", "( 一一)");
-        }
-
-        Component component = Component.text(src).color(NamedTextColor.WHITE);
 
         for (ChatCommand command : ChatCommand.values())
         {
-            if (user.getSara().level < command.level.level)
+            if (sender.getSara().level < command.level.level)
             {
                 continue;
             }
 
-            component = component.replaceText(builder -> builder.matchLiteral(command.name).replacement(command.component));
+            body = body.replace(command.name, ComponentUtility.asString(command.component) + "&r");
         }
 
-        TextReplacementConfig config = TextReplacementConfig.builder()
-                .match(ComponentUtility.MENTION_PATTERN)
-                .replacement((matchResult, builder) -> {
-                    final String mention = matchResult.group();
-                    final String name = mention.substring(1);
+        if (sender.hasSubscription(Subscriptions.NEON))
+        {
+            body = ChatColor.translateAlternateColorCodes('&', body);
+        }
 
-                    boolean exists = User.getInstances().stream().anyMatch(i -> i.getPlaneName().equals(name));
+        if (gomenne)
+        {
+            body += " §8(" + src + "§r§8)";
+        }
 
-                    if (! exists)
-                    {
-                        return builder;
-                    }
+        return ComponentUtility.parseUrl(LegacyComponentSerializer.legacySection().deserialize(body));
+    }
 
-                    return Component.text(mention).color(TextColor.color(114, 137, 218)).decorate(TextDecoration.BOLD);
-                }).build();
-
-        component = component.replaceText(config);
-
-        return component;
+    public static @NotNull Component asChat(@NotNull Player sender, @NotNull final String src)
+    {
+        return ComponentUtility.asChat(User.getInstance(sender), src);
     }
 
     public static @NotNull Component parseUrl(@NotNull Component src)

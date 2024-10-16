@@ -3,6 +3,7 @@ package net.azisaba.vanilife.vc;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.user.User;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -174,10 +175,22 @@ public class VoiceChat
             return;
         }
 
-        this.members.add(user);
+        if (this.members.contains(user))
+        {
+            return;
+        }
 
         Bukkit.getScheduler().runTaskAsynchronously(Vanilife.getPlugin(), () -> {
             Member member = Vanilife.SERVER_PUBLIC.retrieveMemberById(user.getDiscord().getId()).complete();
+
+            GuildVoiceState state = member.getVoiceState();
+
+            if (state == null || state.getChannel() == null || state.getChannel().getIdLong() != Vanilife.CHANNEL_VOICE.getIdLong())
+            {
+                return;
+            }
+
+            this.members.add(user);
             Vanilife.SERVER_PUBLIC.moveVoiceMember(member, this.channel).queue();
         });
     }
