@@ -95,6 +95,11 @@ public class WebPage
         this.export();
     }
 
+    public @NotNull AzireSubscription getSubscription()
+    {
+        return this.subscription;
+    }
+
     public void export()
     {
         YamlConfiguration source = new YamlConfiguration();

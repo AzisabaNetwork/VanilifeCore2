@@ -11,8 +11,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayingRewardRunnable extends BukkitRunnable
 {
-    private static final long minLaterTicks = 20L * 60 * 20;
-    private static final long maxLaterTicks = 20L * 60 * 30;
+    private static final long minLaterTicks = 20L * 60 * 10;
+    private static final long maxLaterTicks = 20L * 60 * 15;
 
     private static long getLaterTicks()
     {
@@ -24,7 +24,7 @@ public class PlayingRewardRunnable extends BukkitRunnable
     {
         for (Player player : Bukkit.getOnlinePlayers())
         {
-            int reward = Afk.isAfk(player) ? (Vanilife.random.nextDouble() < 0.5 ? 1 : 0) : 3;
+            int reward = Afk.isAfk(player) ? (Vanilife.random.nextDouble() < 0.5 ? 1 : 0) : 4;
 
             if (reward == 0)
             {

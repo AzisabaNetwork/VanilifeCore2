@@ -152,6 +152,8 @@ public class Domain
 
     private final File directory;
 
+    private final DomainSubscription subscription;
+
     private final List<Domain> children = new ArrayList<>();
     private final List<WebPage> pages = new ArrayList<>();
 
@@ -162,6 +164,7 @@ public class Domain
 
         this.name = 1 < levels.length ? levels[levels.length - 1] : name;
         this.registry = 1 < levels.length ? Domain.getInstance(String.join(".", Arrays.copyOf(levels, levels.length - 1))) : null;
+        this.subscription = new DomainSubscription(this);
 
         if (this.registry != null)
         {
@@ -196,7 +199,7 @@ public class Domain
 
         if (! this.isTopLevel())
         {
-            this.registrant.getSubscriptions().add(new DomainSubscription(this));
+            this.registrant.getSubscriptions().add(this.subscription);
         }
 
         File[] pages = this.directory.listFiles();
@@ -250,8 +253,12 @@ public class Domain
         }
 
         this.registrant.removeDomain(this);
+        this.registrant.getSubscriptions().remove(this.subscription);
+        this.pages.forEach(page -> this.registrant.getSubscriptions().remove(page.getSubscription()));
         this.registrant = registrant;
         this.registrant.addDomain(this);
+        this.registrant.getSubscriptions().add(this.subscription);
+        this.pages.forEach(page -> this.registrant.getSubscriptions().add(page.getSubscription()));
 
         try
         {

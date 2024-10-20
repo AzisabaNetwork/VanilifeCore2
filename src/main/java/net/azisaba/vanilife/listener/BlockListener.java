@@ -39,7 +39,7 @@ public class BlockListener implements Listener
         {
             User user = User.getInstance(player);
 
-            if (Materials.MINING.contains(block.getType()) && Vanilife.random.nextDouble() < (Materials.ORES.contains(block.getType()) ? 0.01 : 0.03))
+            if (Materials.MINING.contains(block.getType()) && Vanilife.random.nextDouble() < (Materials.ORES.contains(block.getType()) ? 0.01 : 0.2))
             {
                 user.setMola(user.getMola() + (Materials.ORES.contains(block.getType()) ? 2 : 1), "reward.category.mining", NamedTextColor.YELLOW);
             }
@@ -49,7 +49,7 @@ public class BlockListener implements Listener
                 user.setMola(user.getMola() + 3, "reward.category.logging", NamedTextColor.YELLOW);
             }
 
-            if (Materials.SEICHI.contains(block.getType()) && Vanilife.random.nextDouble() < 0.01)
+            if (Materials.SEICHI.contains(block.getType()) && Vanilife.random.nextDouble() < 0.02)
             {
                 user.setMola(user.getMola() + 4, "reward.category.seichi", NamedTextColor.YELLOW);
             }
