@@ -945,14 +945,14 @@
     "subscription.angry_emote.description.2": "Use it with /e angry",
     "subscription.angry_emote.details.1": "Requirements to use the Angry Emote:",
 
-    "subscription.creeper.name": "Creeper Emote",
-    "subscription.creeper.details.1": "Shhh...",
+    "subscription.creeper_emote.name": "Creeper Emote",
+    "subscription.creeper_emote.details.1": "Shhh...",
 
     "subscription.domain.name": "Domain",
     "subscription.domain.details.1": "Required to maintain ${domain}:",
 
-    "subscription.firework.name": "Firework Emote",
-    "subscription.firework.details.1": "Launches fireworks in random colors!!",
+    "subscription.firework_emote.name": "Firework Emote",
+    "subscription.firework_emote.details.1": "Launches fireworks in random colors!!",
 
     "subscription.heart_emote.name": "Heart emote",
     "subscription.heart_emote.description.1": "Hart emote will be available!",

@@ -49,7 +49,7 @@ public class DomainRegisterUI extends AnvilUI
         }
 
         Domain.register(domain, User.getInstance(player));
-        player.sendMessage(Language.translate("ui.domain-register.registered", player, "domain=" + domain).color(NamedTextColor.GREEN));
+        player.sendMessage(Language.translate("ui.domain-register.registered", player, "domain=" + Domain.reverse(domain)).color(NamedTextColor.GREEN));
         player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
 
         if (domain.contains("."))

@@ -257,7 +257,8 @@ public class Domain
         {
             Connection con = DriverManager.getConnection(Vanilife.DB_URL, Vanilife.DB_USER, Vanilife.DB_PASS);
             PreparedStatement stmt = con.prepareStatement("UPDATE domain SET registrant = ? WHERE name = ?");
-            stmt.setString(1, this.getAbsoluteName());
+            stmt.setString(1, this.registrant.getId().toString());
+            stmt.setString(2, this.getAbsoluteName());
 
             stmt.executeUpdate();
 

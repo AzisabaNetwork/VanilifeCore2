@@ -945,14 +945,14 @@
     "subscription.angry_emote.description.2": "/e angry で使用します",
     "subscription.angry_emote.details.1": "怒りのエモートを使うのに必要です:",
 
-    "subscription.creeper.name": "クリーパーのエモート",
-    "subscription.creeper.details.1": "ｼｭｰ…",
+    "subscription.creeper_emote.name": "クリーパーのエモート",
+    "subscription.creeper_emote.details.1": "ｼｭｰ…",
 
     "subscription.domain.name": "ドメイン",
     "subscription.domain.details.1": "${domain} を維持するのに必要です:",
 
-    "subscription.firework.name": "花火のエモート",
-    "subscription.firework.details.1": "ランダムな色の花火を打ち上げます!!",
+    "subscription.firework_emote.name": "花火のエモート",
+    "subscription.firework_emote.details.1": "ランダムな色の花火を打ち上げます!!",
 
     "subscription.heart_emote.name": "ハートのエモート",
     "subscription.heart_emote.description.1": "ハートのエモートが使えるようになります！",

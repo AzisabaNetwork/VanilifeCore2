@@ -55,7 +55,7 @@ public class PlayerJoinListener implements Listener
         User user = User.getInstance(player);
         Sara sara = UserUtility.calculateSara(player, true);
 
-        if (user.getSara().level < sara.level)
+        if (user.getSara().level < sara.level || user.getSara() == Sara.NITRO)
         {
             user.setSara(sara);
         }
