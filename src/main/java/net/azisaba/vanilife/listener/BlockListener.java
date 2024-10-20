@@ -39,12 +39,12 @@ public class BlockListener implements Listener
         {
             User user = User.getInstance(player);
 
-            if (Materials.MINING.contains(block.getType()) && Vanilife.random.nextDouble() < (Materials.ORES.contains(block.getType()) ? 0.01 : 0.02))
+            if (Materials.MINING.contains(block.getType()) && Vanilife.random.nextDouble() < (Materials.ORES.contains(block.getType()) ? 0.01 : 0.03))
             {
                 user.setMola(user.getMola() + (Materials.ORES.contains(block.getType()) ? 2 : 1), "reward.category.mining", NamedTextColor.YELLOW);
             }
 
-            if (Materials.LOGGING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.01)
+            if (Materials.LOGGING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.03)
             {
                 user.setMola(user.getMola() + 3, "reward.category.logging", NamedTextColor.YELLOW);
             }
@@ -54,7 +54,7 @@ public class BlockListener implements Listener
                 user.setMola(user.getMola() + 4, "reward.category.seichi", NamedTextColor.YELLOW);
             }
 
-            if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.01)
+            if (Materials.FARMING.contains(block.getType()) && Vanilife.random.nextDouble() < 0.02)
             {
                 if ((block.getBlockData() instanceof Ageable ageable) && ageable.getAge() < ageable.getMaximumAge())
                 {

@@ -47,7 +47,7 @@ public class PollCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (! UserUtility.isModerator(player) && Poll.getInstance(player) != null)
+        if (! UserUtility.isAdmin(player) && Poll.getInstance(player) != null)
         {
             sender.sendMessage(Language.translate("cmd.poll.already", player).color(NamedTextColor.RED));
             return true;

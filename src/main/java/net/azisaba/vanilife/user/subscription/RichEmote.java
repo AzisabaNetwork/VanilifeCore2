@@ -23,7 +23,7 @@ import java.util.List;
 
 @Product
 @SingletonSubscription
-public class RichEmoteSubscription implements IEmoteSubscription, Listener
+public class RichEmote implements Emote, Listener
 {
     @Override
     public @NotNull String getName()
@@ -52,7 +52,7 @@ public class RichEmoteSubscription implements IEmoteSubscription, Listener
     @Override
     public int getCost()
     {
-        return 120;
+        return 180;
     }
 
     @EventHandler

@@ -251,6 +251,7 @@ public class Gomenne
         Gomenne.key("sse", "っせ");
         Gomenne.key("sso", "っそ");
         Gomenne.key("sya", "しゃ");
+        Gomenne.key("ssya", "っしゃ");
         Gomenne.key("syi", "しぃ");
         Gomenne.key("syu", "しゅ");
         Gomenne.key("sye", "しぇ");

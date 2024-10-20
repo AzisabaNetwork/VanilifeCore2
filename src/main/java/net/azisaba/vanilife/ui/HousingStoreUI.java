@@ -43,10 +43,10 @@ public class HousingStoreUI extends ChestUI
 
         this.page = page;
 
-        if (! User.getInstance(player).hasHousing())
+        if (! User.getInstance(this.player).hasHousing())
         {
-            player.closeInventory();
-            player.sendMessage(Language.translate("ui.housing.do-not-have", player).color(NamedTextColor.RED));
+            this.player.closeInventory();
+            this.player.sendMessage(Language.translate("ui.housing.do-not-have", this.player).color(NamedTextColor.RED));
             return;
         }
 
@@ -55,29 +55,29 @@ public class HousingStoreUI extends ChestUI
 
         ItemStack backStack = new ItemStack(Material.ARROW);
         ItemMeta backMeta = backStack.getItemMeta();
-        backMeta.displayName(Language.translate("ui.back", player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        backMeta.lore(List.of(Language.translate("ui.back.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        backMeta.displayName(Language.translate("ui.back", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        backMeta.lore(List.of(Language.translate("ui.back.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         backStack.setItemMeta(backMeta);
         this.inventory.setItem(45, backStack);
 
         ItemStack nextStack = new ItemStack(Material.ARROW);
         ItemMeta nextMeta = nextStack.getItemMeta();
-        nextMeta.displayName(Language.translate("ui.next", player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        nextMeta.lore(List.of(Language.translate("ui.next.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        nextMeta.displayName(Language.translate("ui.next", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        nextMeta.lore(List.of(Language.translate("ui.next.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         nextStack.setItemMeta(nextMeta);
         this.inventory.setItem(53, nextStack);
 
         ItemStack returnStack = new ItemStack(Material.ARROW);
         ItemMeta returnMeta = returnStack.getItemMeta();
-        returnMeta.displayName(Language.translate("ui.return", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        returnMeta.lore(List.of(Language.translate("ui.return.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        returnMeta.displayName(Language.translate("ui.return", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        returnMeta.lore(List.of(Language.translate("ui.return.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         returnStack.setItemMeta(returnMeta);
         this.registerListener(48, returnStack, "vanilife:store", ExecutionType.CLIENT);
 
         ItemStack closeStack = new ItemStack(Material.ANVIL);
         ItemMeta closeMeta = closeStack.getItemMeta();
-        closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
-        closeMeta.lore(List.of(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        closeMeta.displayName(Language.translate("ui.close", this.player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+        closeMeta.lore(List.of(Language.translate("ui.close.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         closeStack.setItemMeta(closeMeta);
         this.inventory.setItem(49, closeStack);
 
@@ -92,9 +92,9 @@ public class HousingStoreUI extends ChestUI
 
             final String translation = "housing.pack." + pack.getName();
 
-            meta.displayName(Language.translate(translation + ".name", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+            meta.displayName(Language.translate(translation + ".name", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
 
-            List<Component> lore = pack.getDetails(Language.getInstance(player));
+            List<Component> lore = pack.getDetails(Language.getInstance(this.player));
 
             lore.add(Component.text().build());
 
@@ -102,7 +102,7 @@ public class HousingStoreUI extends ChestUI
             {
                 meta.addEnchant(Enchantment.INFINITY, 1, false);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                lore.add(Language.translate("ui.housing-store.already", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+                lore.add(Language.translate("ui.housing-store.already", this.player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
             }
 
             meta.lore(lore);

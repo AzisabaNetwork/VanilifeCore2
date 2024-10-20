@@ -28,7 +28,7 @@ public interface ISubscription
     default void onShortage(@NotNull User user)
     {
         user.unsubscribe(this);
-        user.sendNotice(ComponentUtility.asString(Language.translate("mail.unpaid.subject", user, "subscription=" + ComponentUtility.asString(this.getDisplayName(Language.getInstance(user))))),
+        user.sendNotification(ComponentUtility.asString(Language.translate("mail.unpaid.subject", user, "subscription=" + ComponentUtility.asString(this.getDisplayName(Language.getInstance(user))))),
                 ComponentUtility.asString(Language.translate("mail.unpaid.message", user,
                         "charge=" + this.getCost(),
                         "shortfall=" + Math.abs(this.getCost() - user.getMola()),
@@ -39,7 +39,7 @@ public interface ISubscription
 
     default void onPayment(@NotNull User user)
     {
-        user.sendNotice(ComponentUtility.asString(Language.translate("mail.receipt.subject", user, "subscription=" + ComponentUtility.asString(this.getDisplayName(Language.getInstance(user))))),
+        user.sendNotification(ComponentUtility.asString(Language.translate("mail.receipt.subject", user, "subscription=" + ComponentUtility.asString(this.getDisplayName(Language.getInstance(user))))),
                 ComponentUtility.asString(Language.translate("mail.receipt.message", user,
                         "subscription=" + ComponentUtility.asString(this.getDisplayName(Language.getInstance(user))),
                         "month=" + (Calendar.getInstance().get(Calendar.MONTH) + 1),

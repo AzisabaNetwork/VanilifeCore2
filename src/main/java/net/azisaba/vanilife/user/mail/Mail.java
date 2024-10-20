@@ -120,7 +120,7 @@ public class Mail
         }
 
 
-        if ((Vanilife.filter.filter(this.message) || Vanilife.filter.filter(this.subject)) && ! UserUtility.isModerator(this.from))
+        if ((Vanilife.filter.filter(this.message) || Vanilife.filter.filter(this.subject)) && ! UserUtility.isAdmin(this.from))
         {
             Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                     .setTitle(":shield: メール")

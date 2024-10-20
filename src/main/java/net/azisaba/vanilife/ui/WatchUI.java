@@ -42,7 +42,7 @@ public class WatchUI extends ChestUI
         this.page = page;
         this.players = Bukkit.getOnlinePlayers().stream().filter(p -> p != this.player).collect(Collectors.toList());
 
-        if (! Watch.isWatcher(player))
+        if (! Watch.isWatcher(this.player))
         {
             this.player.closeInventory();
             return;
@@ -50,22 +50,22 @@ public class WatchUI extends ChestUI
 
         ItemStack backStack = new ItemStack(Material.ARROW);
         ItemMeta backMeta = backStack.getItemMeta();
-        backMeta.displayName(Language.translate("ui.back", player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        backMeta.lore(List.of(Language.translate("ui.back.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        backMeta.displayName(Language.translate("ui.back", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        backMeta.lore(List.of(Language.translate("ui.back.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         backStack.setItemMeta(backMeta);
         this.inventory.setItem(45, backStack);
 
         ItemStack nextStack = new ItemStack(Material.ARROW);
         ItemMeta nextMeta = nextStack.getItemMeta();
-        nextMeta.displayName(Language.translate("ui.next", player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        nextMeta.lore(List.of(Language.translate("ui.next.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        nextMeta.displayName(Language.translate("ui.next", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        nextMeta.lore(List.of(Language.translate("ui.next.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         nextStack.setItemMeta(nextMeta);
         this.inventory.setItem(53, nextStack);
 
         ItemStack closeStack = new ItemStack(Material.ANVIL);
         ItemMeta closeMeta = closeStack.getItemMeta();
-        closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
-        closeMeta.lore(List.of(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        closeMeta.displayName(Language.translate("ui.close", this.player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+        closeMeta.lore(List.of(Language.translate("ui.close.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         closeStack.setItemMeta(closeMeta);
         this.inventory.setItem(49, closeStack);
 

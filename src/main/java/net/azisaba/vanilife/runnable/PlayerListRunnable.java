@@ -112,7 +112,7 @@ public class PlayerListRunnable extends BukkitRunnable
             User user = User.getInstance(player);
 
             int ping = player.getPing();
-            double tps = Math.round(Bukkit.getServer().getTPS()[0] * 10.0) / 10.0;
+            double tps = Math.round(Bukkit.getServer().getTPS()[0] * 100.0) / 100.0;
 
             player.sendPlayerListHeader(Language.translate("ui.tab.title", player, "name=" + ComponentUtility.asString(Component.text(user.getPlaneName()).color(user.getSara().getColor()))).appendNewline()
                     .append(Component.text(this.SEPARATOR).color(NamedTextColor.DARK_GRAY)).appendNewline()
@@ -123,7 +123,7 @@ public class PlayerListRunnable extends BukkitRunnable
                         case 19 -> NamedTextColor.AQUA;
                         case 18 -> NamedTextColor.YELLOW;
                         default -> NamedTextColor.RED;
-                    }))).appendNewline()
+                    }))).append(Component.text(" / 20.00").color(NamedTextColor.GRAY)).appendNewline()
                     .append(Language.translate("ui.tab.online", player, "online=" + Bukkit.getOnlinePlayers().stream().filter(p -> ! Watch.isWatcher(p)).toList().size())).appendNewline()
                     .append(Language.translate("ui.tab.wallet", player, "mola=" + user.getMola())).appendNewline()
                     .append(Language.translate("ui.tab.location", player).color(NamedTextColor.GRAY).append(Component.text("vanilife2").color(NamedTextColor.WHITE))).appendNewline()
@@ -133,6 +133,11 @@ public class PlayerListRunnable extends BukkitRunnable
 
             Component name = user.getName().appendSpace().append(Component.text("[" + user.getTrustRank().getName() + "]").color(user.getTrustRank() != TrustRank.TRUSTED ? NamedTextColor.GRAY : NamedTextColor.GOLD));
             Component icon = null;
+
+            if (user.inHousing() && user.read("settings.housing.activity").getAsBoolean())
+            {
+                icon = Component.text("🌏").color(NamedTextColor.AQUA);
+            }
 
             if (Afk.isAfk(player))
             {

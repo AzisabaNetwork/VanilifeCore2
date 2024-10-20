@@ -22,7 +22,7 @@ public class GomenneRemoveSubcommand implements Subcommand
     @Override
     public @NotNull Sara getRequirement()
     {
-        return Sara.MOD;
+        return Sara.ADMIN;
     }
 
     @Override

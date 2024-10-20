@@ -21,7 +21,7 @@ public class NeonSubscription implements ISubscription
     @Override
     public @NotNull Material getIcon()
     {
-        return Material.OAK_HANGING_SIGN;
+        return Material.INK_SAC;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class NeonSubscription implements ISubscription
     @Override
     public int getCost()
     {
-        return 140;
+        return 298;
     }
 }

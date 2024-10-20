@@ -1,18 +1,14 @@
 package net.azisaba.vanilife.listener;
 
-import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.plot.Plot;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
 import net.azisaba.vanilife.util.UserUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -49,7 +45,7 @@ public class EntityListener implements Listener
         {
             plot.onEntityDamageByEntity(event);
         }
-        else if (! UserUtility.isModerator(player))
+        else if (! UserUtility.isAdmin(player))
         {
             event.setCancelled(true);
         }
@@ -60,25 +56,6 @@ public class EntityListener implements Listener
     {
         Plot plot = Plot.getInstance(event.getLocation().getChunk());
         event.setCancelled(plot != null || event.isCancelled());
-    }
-
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent event)
-    {
-        LivingEntity entity = event.getEntity();
-
-        if (! (entity instanceof Monster))
-        {
-            return;
-        }
-
-        Player player = entity.getKiller();
-
-        if (player != null && Vanilife.random.nextDouble() < 0.05)
-        {
-            User user = User.getInstance(player);
-            user.setMola(user.getMola() + 3, "reward.category.kill", NamedTextColor.LIGHT_PURPLE);
-        }
     }
 
     @EventHandler

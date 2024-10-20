@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.util;
 
 import net.azisaba.vanilife.Vanilife;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public abstract class Typing
     public Typing(Player player)
     {
         this.player = player;
-        this.player.closeInventory();
+        Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> this.player.closeInventory());
         this.init();
 
         Typing currentTask = Typing.getInstance(player);

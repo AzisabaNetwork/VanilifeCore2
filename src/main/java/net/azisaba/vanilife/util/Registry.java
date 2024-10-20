@@ -11,8 +11,13 @@ public class Registry<T>
 {
     private final Map<String, T> registry = new HashMap<>();
 
-    public T get(@NotNull String key)
+    public T get(String key)
     {
+        if (key == null)
+        {
+            return null;
+        }
+
         List<Map.Entry<String, T>> filteredRegistry = this.registry.entrySet().stream().filter(e -> e.getKey().equals(key)).toList();
         return filteredRegistry.isEmpty() ? null : filteredRegistry.getFirst().getValue();
     }
@@ -28,8 +33,18 @@ public class Registry<T>
         return value;
     }
 
-    public List<T> values()
+    public @NotNull List<String> keys()
+    {
+        return new ArrayList<>(this.registry.keySet().stream().toList());
+    }
+
+    public @NotNull List<T> values()
     {
         return new ArrayList<>(this.registry.values());
+    }
+
+    public @NotNull Map<String, T> map()
+    {
+        return new HashMap<>(this.registry);
     }
 }

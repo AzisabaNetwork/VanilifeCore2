@@ -43,6 +43,10 @@ public class CrafterPack implements IHousingPack
                 Material.ARMOR_STAND,
                 Material.ITEM_FRAME,
                 Material.GLOW_ITEM_FRAME,
-                Material.PAINTING);
+                Material.PAINTING,
+                Material.CARTOGRAPHY_TABLE,
+                Material.FLETCHING_TABLE,
+                Material.SMITHING_TABLE,
+                Material.LOOM);
     }
 }

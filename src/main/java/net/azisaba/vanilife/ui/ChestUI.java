@@ -1,9 +1,9 @@
 package net.azisaba.vanilife.ui;
 
+import net.azisaba.vanilife.Vanilife;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +24,7 @@ public abstract class ChestUI extends InventoryUI
         super(player);
 
         this.inventory = inventory;
-        this.player.openInventory(this.inventory);
+        Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> this.player.openInventory(this.inventory));
     }
 
     public @NotNull Inventory getInventory()

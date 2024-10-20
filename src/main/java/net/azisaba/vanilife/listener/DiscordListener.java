@@ -1,6 +1,7 @@
 package net.azisaba.vanilife.listener;
 
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.aww.Domain;
 import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.gomenne.ConvertRequest;
 import net.azisaba.vanilife.housing.Housing;
@@ -11,6 +12,7 @@ import net.azisaba.vanilife.user.mail.Mail;
 import net.azisaba.vanilife.report.Report;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.UserStatus;
+import net.azisaba.vanilife.user.referral.Referral;
 import net.azisaba.vanilife.util.ReportUtility;
 import net.azisaba.vanilife.util.StringUtility;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
@@ -73,14 +75,14 @@ public class DiscordListener extends ListenerAdapter
                 VanilifeWorldManager.update();
             }
 
-            VanilifeWorldManager.backup();
+            // VanilifeWorldManager.backup();
         });
 
         User.mount();
         Skin.mount();
-
+        Domain.mount();
+        Referral.mount();
         Warn.mount();
-
         GroupChat.mount();
 
         Bukkit.getScheduler().runTask(Vanilife.getPlugin(), Housing::mount);

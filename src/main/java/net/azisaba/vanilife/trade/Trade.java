@@ -222,7 +222,7 @@ public class Trade
         this.stacks1.forEach(s -> sb1.append(String.format("%s: × %s", s.getType().toString().toLowerCase(), s.getAmount())));
 
         StringBuilder sb2 = new StringBuilder();
-        this.stacks2.forEach(s -> sb2.append(String.format("%s: × %s\n", s.getType().toString().toLowerCase(), s.getAmount())));;
+        this.stacks2.forEach(s -> sb2.append(String.format("%s: × %s\n", s.getType().toString().toLowerCase(), s.getAmount())));
 
         Vanilife.CHANNEL_HISTORY.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("1件の Trade が成立しました")

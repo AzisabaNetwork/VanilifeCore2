@@ -91,7 +91,7 @@ public class ChatFilter
         final String compiled = ! Gomenne.isValid(sender, message) ? message : String.format("%s (%s)", message, Gomenne.convert(Gomenne.hira(message)));
 
         Vanilife.CHANNEL_HISTORY.sendMessage(String.format("**[%s] %s (%s)**: %s", field, sender.getName(), sender.getUniqueId(), compiled)).queue(msg -> {
-            if (! Vanilife.filter.filter(message) || UserUtility.isModerator(sender))
+            if (! Vanilife.filter.filter(message) || UserUtility.isAdmin(sender))
             {
                 return;
             }

@@ -57,7 +57,7 @@ public class VanilifeStoreUI extends ChestUI
         blockStack.setItemMeta(blockMeta);
         this.inventory.setItem(14, blockStack);
 
-        ItemStack walletStack = new ItemStack(Material.BOOK);
+        ItemStack walletStack = new ItemStack(Material.ENCHANTING_TABLE);
         ItemMeta walletMeta = walletStack.getItemMeta();
         walletMeta.displayName(Language.translate("ui.store.wallet", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
         walletMeta.lore(List.of(Language.translate("ui.store.wallet.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
@@ -66,12 +66,10 @@ public class VanilifeStoreUI extends ChestUI
                 Language.translate("ui.store.wallet.help.2", player).color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text().build(),
                 Language.translate("ui.click-to-view", player).color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
-        walletMeta.addEnchant(Enchantment.INFINITY, 1, false);
-        walletMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         walletStack.setItemMeta(walletMeta);
         this.registerListener(16, walletStack, "vanilife:wallet", ExecutionType.CLIENT);
 
-        ItemStack closeStack = new ItemStack(Material.ARROW);
+        ItemStack closeStack = new ItemStack(Material.BARRIER);
         ItemMeta closeMeta = closeStack.getItemMeta();
         closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
         closeMeta.lore(List.of(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));

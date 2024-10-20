@@ -25,7 +25,7 @@ public class UnjailCommand implements CommandExecutor, TabCompleter
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        if (! UserUtility.isModerator(sender))
+        if (! UserUtility.isAdmin(sender))
         {
             sender.sendMessage(Component.text("You do not have sufficient permissions to execute the command.").color(NamedTextColor.RED));
             return true;
@@ -79,7 +79,7 @@ public class UnjailCommand implements CommandExecutor, TabCompleter
     {
         List<String> suggest = new ArrayList<>();
 
-        if (args.length == 1 && UserUtility.isModerator(sender))
+        if (args.length == 1 && UserUtility.isAdmin(sender))
         {
             User.getInstances().stream().filter(User::isJailed).forEach(user -> suggest.add(user.getPlaneName()));
         }

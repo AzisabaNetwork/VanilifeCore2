@@ -26,6 +26,8 @@ public class ComponentUtility
 {
     private static final Pattern URL_PATTERN = Pattern.compile("(https?://\\S+)");
 
+    private static final Pattern AWW_URL_PATTERN = Pattern.compile("aww?://(\\S+)");
+
     private static final Pattern MENTION_PATTERN = Pattern.compile("@[a-zA-Z0-9_]{3,16}");
 
     public static @NotNull List<User> getMentions(@NotNull String src)
@@ -202,7 +204,7 @@ public class ComponentUtility
 
     public static @NotNull Component parseUrl(@NotNull Component src)
     {
-        TextReplacementConfig config = TextReplacementConfig.builder()
+        TextReplacementConfig urlConfig = TextReplacementConfig.builder()
                 .match(ComponentUtility.URL_PATTERN)
                 .replacement((matchResult, builder) -> {
                     String url = URLDecoder.decode(matchResult.group(), StandardCharsets.UTF_8);
@@ -218,7 +220,19 @@ public class ComponentUtility
                             .clickEvent(ClickEvent.openUrl(url));
                 }).build();
 
-        return src.replaceText(config);
+        TextReplacementConfig awwConfig = TextReplacementConfig.builder()
+                .match(ComponentUtility.AWW_URL_PATTERN)
+                .replacement((matchResult, builder) -> Component.text(matchResult.group())
+                        .color(NamedTextColor.BLUE)
+                        .decorate(TextDecoration.UNDERLINED)
+                        .decoration(TextDecoration.ITALIC, false)
+                        .decoration(TextDecoration.BOLD, false)
+                        .decoration(TextDecoration.STRIKETHROUGH, false)
+                        .decoration(TextDecoration.OBFUSCATED, false)
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to open in browser")))
+                        .clickEvent(ClickEvent.runCommand("/vanilife:web " + matchResult.group(1)))).build();
+
+        return src.replaceText(urlConfig).replaceText(awwConfig);
     }
 
     private enum ChatCommand

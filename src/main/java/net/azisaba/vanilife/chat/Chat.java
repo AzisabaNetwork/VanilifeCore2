@@ -67,7 +67,7 @@ public abstract class Chat implements IChat
         ComponentUtility.getMentions(message).stream()
                 .filter(mention -> this.isMember(mention) && ! mention.isBlock(sender) && mention.isOnline() && mention.read("settings.chat").getAsBoolean())
                 .forEach(mention -> {
-                    mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+                    mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                     mention.asPlayer().sendActionBar(Language.translate("msg.mentioned", mention, "name=" + ComponentUtility.asString(sender.getName())));
                 });
 

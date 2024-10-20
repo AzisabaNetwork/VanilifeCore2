@@ -37,9 +37,9 @@ public class EmoteCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        List<ISubscription> filteredSubscriptions = Subscriptions.products().stream().filter(p -> p instanceof IEmoteSubscription).filter(e -> ((IEmoteSubscription) e).getEmoteName().equals(args[0])).toList();
+        List<ISubscription> filteredSubscriptions = Subscriptions.products().stream().filter(p -> p instanceof Emote).filter(e -> ((Emote) e).getEmoteName().equals(args[0])).toList();
 
-        if (filteredSubscriptions.isEmpty() || ! (filteredSubscriptions.getFirst() instanceof IEmoteSubscription emote))
+        if (filteredSubscriptions.isEmpty() || ! (filteredSubscriptions.getFirst() instanceof Emote emote))
         {
             sender.sendMessage(Language.translate("cmd.emote.undefined", player, "emote=" + args[0]).color(NamedTextColor.RED));
             return true;
@@ -82,7 +82,7 @@ public class EmoteCommand implements CommandExecutor, TabCompleter
 
         List<String> suggest = new ArrayList<>();
 
-        User.getInstance(player).getSubscriptions().stream().filter(i -> i instanceof IEmoteSubscription).forEach(emote ->suggest.add(((IEmoteSubscription) emote).getEmoteName()));
+        User.getInstance(player).getSubscriptions().stream().filter(i -> i instanceof Emote).forEach(emote ->suggest.add(((Emote) emote).getEmoteName()));
 
         return suggest;
     }

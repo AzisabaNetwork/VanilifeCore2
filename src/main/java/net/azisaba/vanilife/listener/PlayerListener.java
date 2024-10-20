@@ -206,7 +206,7 @@ public class PlayerListener implements Listener
     {
         Player player = event.getPlayer();
 
-        if (! UserUtility.isModerator(player))
+        if (! UserUtility.isAdmin(player))
         {
             event.setCancelled(true);
         }
@@ -284,6 +284,12 @@ public class PlayerListener implements Listener
 
         Player player = event.getPlayer();
         User user = User.getInstance(player);
+
+        if (Vanilife.random.nextDouble() < 0.5)
+        {
+            user.setTrust(user.getTrust() + 1);
+        }
+
         int bonus = Vanilife.random.nextInt(difficulty) + 1;
 
         user.setMola(user.getMola() + bonus, "reward.category.story", NamedTextColor.GOLD);
@@ -338,7 +344,7 @@ public class PlayerListener implements Listener
 
         if (command.equalsIgnoreCase("/minecraft:help"))
         {
-            if (player.getGameMode() != GameMode.SURVIVAL && UserUtility.isModerator(player))
+            if (player.getGameMode() != GameMode.SURVIVAL && UserUtility.isAdmin(player))
             {
                 return;
             }
@@ -411,7 +417,7 @@ public class PlayerListener implements Listener
         
         List<Player> listeners = new ArrayList<>();
 
-        if (! UserUtility.isModerator(user))
+        if (! UserUtility.isAdmin(user))
         {
             listeners.addAll(Bukkit.getOnlinePlayers().stream().filter(p -> ! User.getInstance(p).isBlock(user) && User.getInstance(p).read("settings.chat").getAsBoolean()).toList());
         }
@@ -424,7 +430,7 @@ public class PlayerListener implements Listener
         {
             user.setTrust(user.getTrust() + 1);
         }
-        else if (Vanilife.random.nextDouble() < 0.01)
+        else if (Vanilife.random.nextDouble() < 0.05)
         {
             user.setTrust(user.getTrust() + 1);
         }
@@ -435,7 +441,7 @@ public class PlayerListener implements Listener
         ComponentUtility.getMentions(message).stream()
                 .filter(mention -> ! mention.isBlock(user) && mention.isOnline() && mention.read("settings.chat").getAsBoolean())
                 .forEach(mention -> {
-                    mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+                    mention.asPlayer().playSound(mention.asPlayer(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                     mention.asPlayer().sendActionBar(Language.translate("msg.mentioned", player, "name=" + ComponentUtility.asString(user.getName())));
                 });
 

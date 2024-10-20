@@ -12,6 +12,7 @@ import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.Skin;
 import net.azisaba.vanilife.user.UserStatus;
+import net.azisaba.vanilife.user.referral.Referral;
 import net.azisaba.vanilife.util.MojangAPI;
 import net.azisaba.vanilife.util.PlayerUtility;
 import net.azisaba.vanilife.util.UserUtility;
@@ -41,6 +42,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class PlayerJoinListener implements Listener
 {
@@ -48,9 +50,10 @@ public class PlayerJoinListener implements Listener
     public void setName(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+        player.setOp(UserUtility.calculateSara(player, false).isPermission());
 
         User user = User.getInstance(player);
-        Sara sara = UserUtility.calculateSara(player);
+        Sara sara = UserUtility.calculateSara(player, true);
 
         if (user.getSara().level < sara.level)
         {
@@ -149,7 +152,7 @@ public class PlayerJoinListener implements Listener
             user.setLoginStreak((now.get(Calendar.DAY_OF_MONTH) == last.get(Calendar.DAY_OF_MONTH) + 1) ? user.getLoginStreak() + 1 : 0);
 
             int streak = user.getLoginStreak() + 1;
-            int bonus = 10 * Math.min(streak, 10);
+            int bonus = Math.min(streak, 10);
 
             user.setMola(user.getMola() + bonus);
 
@@ -270,7 +273,7 @@ public class PlayerJoinListener implements Listener
     {
         Player player = event.getPlayer();
 
-        if (! UserUtility.isModerator(player))
+        if (! UserUtility.isAdmin(player))
         {
             return;
         }
@@ -292,7 +295,7 @@ public class PlayerJoinListener implements Listener
     {
         Player player = event.getPlayer();
 
-        if (! UserUtility.isModerator(player))
+        if (! UserUtility.isAdmin(player))
         {
             return;
         }
@@ -396,7 +399,7 @@ public class PlayerJoinListener implements Listener
         Player player = event.getPlayer();
         User user = User.getInstance(player);
 
-        if (UserUtility.isModerator(user))
+        if (UserUtility.isAdmin(user))
         {
             user.setStatus(UserStatus.DEFAULT);
         }
@@ -411,6 +414,27 @@ public class PlayerJoinListener implements Listener
         player.setFoodLevel(20);
         player.setGameMode(GameMode.ADVENTURE);
         player.teleport(VanilifeWorldManager.getJail().getSpawnLocation());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void checkReferral(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+        List<Referral> referrals = Referral.getInstances(player.getUniqueId());
+
+        if (referrals.isEmpty())
+        {
+            return;
+        }
+
+        player.sendMessage(Component.text().build());
+        player.sendMessage(Language.translate("msg.referred", player).color(NamedTextColor.YELLOW));
+        player.sendMessage(Language.translate("msg.referred.check", player).color(NamedTextColor.GOLD)
+                .hoverEvent(HoverEvent.showText(Language.translate("msg.referred.check.details", player)))
+                .clickEvent(ClickEvent.runCommand("/vanilife:referral")));
+        player.sendMessage(Component.text().build());
+
+        player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

@@ -27,6 +27,33 @@
     "ui.365.wallet": "Money in hand",
     "ui.365.wallet.mola": "Mola: ",
 
+    "ui.azire.title": "Azire",
+    "ui.azire.create": "Create",
+    "ui.azire.create.details.1": "Creating a page.",
+    "ui.azire.create.details.2": "A monthly fee of 150 Mola is required to create/maintain the page.",
+    "ui.azire.create.title": "Azire > New Page",
+    "ui.azire.rename.title": "Azire > Rename",
+    "ui.azire.left": "&7Left Click: &aEdit Page",
+    "ui.azire.right": "&7Right Click: &aEdit Page Name",
+    "ui.azire.right.shift": "&7Shift + Right Click: &aDelete Page",
+
+    "ui.blend.title": "Vanilife Blend",
+    "ui.blend.mode": "Mode",
+    "ui.blend.mode.bind": "Bind",
+    "ui.blend.mode.design": "Design",
+    "ui.blend.studio.title?": "Vanilife Blend",
+    "ui.blend.studio.title": "Title",
+    "ui.blend.studio.title.details": "Set the title of the element",
+    "ui.blend.studio.title.title": "Setting the Title",
+    "ui.blend.studio.lore": "Lore",
+    "ui.blend.studio.lore.details": "Set the lore of the element",
+    "ui.blend.studio.lore.description": "Please send the lore line by line. Type '!' to finish.",
+
+    "ui.browser.address": "Web Address",
+    "ui.browser.address.title": "Enter Web Address",
+    "ui.browser.close": "Close",
+    "ui.browser.close.details": "Exiting the browser",
+
     "ui.chat-color.title": "Chat > Theme Color",
     "ui.chat-color.required": "${sara}&7 required to unlock!",
     "ui.chat-color.selected": "SELECTED!",
@@ -52,6 +79,7 @@
     "ui.chat-settings.owner": "Owner: ",
     "ui.chat-settings.rename": "Rename",
     "ui.chat-settings.rename.details": "Change the display name of the chat group",
+    "ui.chat-settings.rename.changed": "Changed the name of the group chat.",
     "ui.chat-settings.scope": "Scope",
     "ui.chat-settings.scope.details": "The following players can join via //plot join:",
     "ui.chat-settings.scope.public": "All Players",
@@ -66,6 +94,53 @@
     "ui.confirm.title": "Confirmation",
     "ui.confirm.accept": "Accept",
     "ui.confirm.reject": "Reject",
+
+    "ui.domain.transfer": "Transfer",
+    "ui.domain.transfer.details": "Change the administrator of this domain",
+    "ui.domain.server": "Server",
+    "ui.domain.server.details": "Configure and edit website settings",
+    "ui.domain.delete": "Delete",
+    "ui.domain.delete.details": "Delete the domain",
+    "ui.domain.delete.check": "This action cannot be undone. To proceed, please send ${code}:",
+    "ui.domain.delete.cancelled": "Domain deletion has been canceled",
+    "ui.domain.delete.deleted": "Domain has been deleted",
+
+    "ui.domain-register.title": "Domain Registration",
+    "ui.domain-register.placeholder": "Enter the domain name here",
+    "ui.domain-register.invalid": "Invalid domain name. Each level of the domain name must be a string of at least 3 characters and a maximum of 36 characters, consisting of letters and numbers only.",
+    "ui.domain-register.already": "This domain name is already in use",
+    "ui.domain-register.offline": "You cannot submit a registration request because the administrator of the top-level domain is offline.",
+    "ui.domain-register.not-found": "The registry for this domain could not be found",
+    "ui.domain-register.top-level": "You do not have permission to create top-level domains!",
+    "ui.domain-register.registered": "Successfully registered ${domain}!",
+
+    "ui.domain-transfer.title": "Domain > Transfer",
+    "ui.domain-transfer.placeholder": "Enter the username to transfer to",
+    "ui.domain-transfer.not-found": "This user does not exist on Vanilla Life!",
+    "ui.domain-transfer.cancelled": "Domain transfer has been canceled",
+    "ui.domain-transfer.transferred": "Domain has been transferred to ${name}",
+
+    "ui.gimmick.message.title": "Message Gimmick",
+    "ui.gimmick.message.write": "Message",
+    "ui.gimmick.message.write.details": "Set the message that will be displayed",
+    "ui.gimmick.message.write.title": "Message Gimmick > Edit",
+
+    "ui.gimmick.sound.title": "Sound Gimmick",
+    "ui.gimmick.sound.sound.selected": "Selected",
+    "ui.gimmick.sound.sound.break": "Break",
+    "ui.gimmick.sound.sound.click": "Click",
+    "ui.gimmick.sound.sound.welcome": "Welcome",
+    "ui.gimmick.sound.sound.notice": "Notice",
+    "ui.gimmick.sound.sound.info": "Information",
+    "ui.gimmick.sound.sound.warn": "Important",
+
+    "ui.gimmick.title.title": "Title Gimmick",
+    "ui.gimmick.title.subject": "Title",
+    "ui.gimmick.title.subject.details": "Set the title",
+    "ui.gimmick.title.subject.title": "Title Gimmick > Title",
+    "ui.gimmick.title.subtitle": "Subtitle",
+    "ui.gimmick.title.subtitle.details": "Set the subtitle",
+    "ui.gimmick.title.subtitle.title": "Title Gimmick > Subtitle",
 
     "ui.housing.title": "Housing",
     "ui.housing.spawn": "Spawn",
@@ -225,6 +300,11 @@
     "ui.profile.housing.details.2": "&7Right Click: &aInvite to Housing",
     "ui.profile.playing-housing": "Playing Housing!",
 
+    "ui.referral.title": "Using Referral Code",
+    "ui.referral.placeholder": "Enter referral code",
+    "ui.referral.not-found": "Expired or invalid code",
+    "ui.referral.used": "You have received 100 Mola and 64 steaks by using the referral code!",
+
     "ui.report.title": "Create Report",
     "ui.report.reported": "Report has been submitted!",
     "ui.report.cancelled": "Report submission has been cancelled",
@@ -375,12 +455,13 @@
     "msg.cooldown": "Currently cooling down! Please try again in ${remaining} seconds.",
     "msg.click-to-accept": "Click here to approve!",
     "msg.click-to-run": "Click to run ${command}",
+    "msg.click-to-copy": "Click to copy",
     "msg.click-to-open": "Click to open",
     "msg.click-to-open-profile": "Click to open profile!",
     "msg.join": "joined!",
     "msg.first-join": "joined for the first time!",
     "msg.quit": "quit…",
-    "msg.login-bonus": "&aLogin Bonus + ${mola} Mola (10 × ${streak})",
+    "msg.login-bonus": "&aLogin Bonus + ${mola} Mola (1 × ${streak})",
     "msg.new-mail": "There are ${unread} new emails.",
     "msg.not-found.player": "${name} is an unknown player.",
     "msg.not-found.user": "${name} is an unknown user.",
@@ -440,10 +521,19 @@
     "msg.plot-invite.received.details": "&eApproval expires in &${limit}&e seconds.",
     "msg.plot-invite.time-over": "&eThe plot invitation to &r${name}&e is now invalid because &c${limit}&e seconds have elapsed.",
 
+    "msg.referred": "A referral code with benefits has been found!",
+    "msg.referred.check": "Click to use!",
+    "msg.referred.check.details": "Click here to use the code.",
+
+    "msg.subdomain.requested": "A request for the subdomain ${name} has been submitted. The approval expiration time is &c${limit}&e seconds.",
+    "msg.subdomain.received": "A request for the subdomain ${subdomain} has been received from ${name}.",
+    "msg.subdomain.received.details": "The approval expiration time is &c${limit}&e seconds.",
+    "msg.subdomain.accepted": "The request for ${subdomain} by ${name} has been approved.",
+
     "msg.teleport.requested": "&eYou have sent &r${name}&e a teleport request! Approval expires in &c${limit}&e seconds.",
     "msg.teleport.received": "${name}&e has sent you a teleport request!",
     "msg.teleport.received.details": "&eApproval expires in &c${limit}&e seconds.",
-    "msg.teleport.teleported": "&aTeleported to ${name}&a.",
+    "msg.teleport.teleported": "Teleported to ${name}&a consuming ${cose} Mola!",
     "msg.teleport.accept": "${name}&a teleport approved.",
     "msg.teleport.time-over": "&eThe teleport request to &r${name}&e is now invalid because &c${limit}&e seconds have elapsed.",
 
@@ -458,6 +548,9 @@
     "mail.unpaid.message": "We were unable to charge the fee for this month's ${subscription}.\nThis subscription is currently cancelled.\n\nAmount due: ${charge}\nShortfall: ${shortfall}\nBalance at time of charge: ${balance} Mola",
     "mail.unpaid.plot.subject": "[Important] Failed to maintain plot",
     "mail.unpaid.plot.message": "${plot} has been deleted due to failure to charge the maintenance fee.\n\nAmount due: ${charge} Mola\nShortfall: ${shortfall} Mola\nBalance at time of charge: ${balance} Mola",
+
+    "cmd.accept.invalid": "Invalid request identifier.",
+    "cmd.accept.not-found": "The request could not be found. It may have already expired.",
 
     "cmd.block.cant-yourself": "You can't block yourself.",
     "cmd.block.already": "You have already blocked ${name}.",
@@ -476,6 +569,7 @@
     "cmd.chat.create.invalid": "The chat name contains invalid characters.",
     "cmd.chat.create.limit-under": "The chat name must be at least 3 characters long.",
     "cmd.chat.create.limit-over": "The chat name must be within 10 characters.",
+    "cmd.chat.create.rate-limiting": "A user can create a maximum of 5 group chats.",
     "cmd.chat.create.created": "Chat created!.",
     "cmd.chat.delete.deleted": "Chat deleted.",
     "cmd.chat.delete.cancelled": "Chat deletion cancelled.",
@@ -485,6 +579,8 @@
     "cmd.chat.kick.owner-cant": "You cannot kick the chat owner.",
     "cmd.chat.quit.quited": "Exited from ${chat}.",
     "cmd.chat.quit.owner-cant": "The owner cannot quit. Use //chat delete to remove chat.",
+
+    "cmd.domain.access-error": "This domain does not exist or you do not have permission to access it.",
 
     "cmd.emote.undefined": "${emote} is an undefined emote.",
     "cmd.emote.cant": "You must have purchased ${subscription} to use this emote.",
@@ -502,10 +598,6 @@
 
     "cmd.friendlist.empty": "None available for display.",
 
-    "cmd.housing.not-found": "Unable to find housing.",
-    "cmd.housing.cant-create": "A Trust Rank of [New] or higher is required to create Housing.",
-    "cmd.housing.permission-error": "You cannot join this housing.",
-
     "cmd.gomenne.on": "&aChat character conversion has been &eenabled&a.",
     "cmd.gomenne.on.already": "Chat character conversion is already set to enabled.",
     "cmd.gomenne.off": "&aChat character conversion has been &edisabled&a.",
@@ -513,6 +605,10 @@
     "cmd.gomenne.request.cant": "The 'reading' must be specified in hiragana.",
     "cmd.gomenne.request.limit-over": "The 'reading' and 'writing' must be specified within 16 characters.",
     "cmd.gomenne.request.requested": "Conversion request has been sent!",
+
+    "cmd.housing.not-found": "Unable to find housing.",
+    "cmd.housing.cant-create": "A Trust Rank of [New] or higher is required to create Housing.",
+    "cmd.housing.permission-error": "You cannot join this housing.",
 
     "cmd.jnkn.cant": "You cannot send a rock-paper-scissors application to this player.",
     "cmd.jnkn.cant-yourself": "You cannot send a rock-paper-scissors application to yourself.",
@@ -549,7 +645,7 @@
     "cmd.plot.cant-adjacent": "You cannot claim a chunk adjacent to another Plot.",
     "cmd.plot.invalid-world": "This command cannot be executed here.",
     "cmd.plot.permission-error": "You do not have permission to execute this command on the Plot.",
-    "cmd.plot.spawn-protection": "You cannot claim a chunk within 100m of the spawn.",
+    "cmd.plot.spawn-protection": "You cannot claim a chunk within 20m of the spawn.",
     "cmd.plot.already": "This chunk has already been claimed.",
     "cmd.plot.claim.not-found": "Adjacent Plot not found.",
     "cmd.plot.claim.complete": "You have claimed this chunk for ${cost} Mola.",
@@ -580,12 +676,18 @@
     "cmd.profile.cant": "You cannot view this player's profile.",
 
     "cmd.ptp.permission-error": "You cannot use this because you are not a member of this Plot.",
+    "cmd.ptp.teleported": "Teleported to ${plot} consuming ${cost} Mola",
+
+    "cmd.referral.token": "Referral code: ",
+    "cmd.referral.expiration": "Expiration: ",
+    "cmd.referral.issued": "A referral code has been issued for ${referee}!",
+    "cmd.referral.issued.details": "Copy this referral code and give it to ${referee}. When used after logging in, 400 Mola will be granted!",
 
     "cmd.report.limit-over": "Please enter within 250 characters.",
 
     "cmd.rtp.not-found": "World not found.",
     "cmd.rtp.searching": "Searching for possible teleportation locations…",
-    "cmd.rtp.teleported": "Teleported to a random location!",
+    "cmd.rtp.teleported": "Teleported to a random location consuming 4 Mola!",
 
     "cmd.skin.not-found": "Skin not found.",
     "cmd.skin.already": "This skin is already selected.",
@@ -627,6 +729,9 @@
 
     "cmd.world.undefined": "${world} is an undefined world",
     "cmd.world.teleported": "Teleported to ${world}!",
+
+    "gimmick.message.attention": "This is a user-made message\n created using the gimmick block.",
+    "gimmick.title.attention": "User-made title created with the gimmick block",
 
     "plot.cant": "You do not have permission to do this on this Plot.",
     "plot.cant.break": "You do not have permission to break blocks on this Plot.",
@@ -709,6 +814,12 @@
     "housing.pack.glass.details.1": "Color your island with beautiful glass!",
     "housing.pack.builder.name": "Builder",
     "housing.pack.builder.details.1": "Essential blocks for building",
+    "housing.pack.music.name": "Musician",
+    "housing.pack.music.details.1": "Let’s play music on the island",
+    "housing.pack.skull.name": "Skull",
+    "housing.pack.skull.details.1": "Tasteless decoration...",
+    "housing.pack.storage.name": "Storage",
+    "housing.pack.storage.details.1": "Perfect for storing items",
 
     "jail.limit-under": "Please enter details that are more than 8 characters.",
     "jail.limit-over": "Please enter details that are within 30 characters.",
@@ -744,10 +855,11 @@
 
     "paint.permission-error": "&cYou need a plate of at least &r${permission}&r&cto paint this color. Purchase from /store or azisaba.buycraft.net!",
 
-    "review.request": "If you don't mind, please share your rating for Vanilife2!",
-    "review.cant": "I'm sorry! We are currently unable to send reviews.",
+    "review.request": "We would love to hear your feedback on Vanilife2!",
+    "review.cant": "Sorry! You cannot submit a review at this time.",
     "review.out-of-range": "Please specify an integer between 1 and 5.",
-    "review.thank-you": "Thank you for your cooperation! We will continue to improve based on your reviews. If you have any suggestions or ideas, please feel free to share them at /feedback.",
+    "review.why": "Thank you for your cooperation. Lastly, please share the reason for your rating:",
+    "review.thank-you": "That's all for the review. Thank you for your valuable feedback. We will continue to improve with player satisfaction as our priority based on the reviews we receive.",
 
     "trade.hold": "&aTrade has been approved.",
     "trade.cancelled": "&cTrade has been cancelled.",
@@ -783,7 +895,7 @@
     "settings.discord.description.1": "&7Left click: &aSet the visibility",
     "settings.discord.description.2": "&7Right click: &aLink your Discord account.",
     "settings.discord.unlinked": "Discord account has been de-linked.",
-    "settings.discord.pls-run-command": "Please execute the following commands on the Azisaba Discord within 3 minutes:",
+    "settings.discord.pls-run-command": "Please execute the following command in the 'ルマンド' channel of the 'BOTスパム' category on the Azisaba Discord within 3 minutes:",
     "settings.discord.join": "Want to join the Azisaba Discord? Click here!",
 
     "settings.language.name": "Language Setting",
@@ -825,10 +937,22 @@
 
     "subscription.feature": "All subscriptions are automatically debited on the first day of each month:",
 
+    "subscription.azire.name": "Azire",
+    "subscription.azire.details.1": "Required to maintain ${page} hosted on ${domain}:",
+
     "subscription.angry_emote.name": "Angry Emote",
     "subscription.angry_emote.description.1": "You will gain access to the Angry Emote!",
     "subscription.angry_emote.description.2": "Use it with /e angry",
     "subscription.angry_emote.details.1": "Requirements to use the Angry Emote:",
+
+    "subscription.creeper.name": "Creeper Emote",
+    "subscription.creeper.details.1": "Shhh...",
+
+    "subscription.domain.name": "Domain",
+    "subscription.domain.details.1": "Required to maintain ${domain}:",
+
+    "subscription.firework.name": "Firework Emote",
+    "subscription.firework.details.1": "Launches fireworks in random colors!!",
 
     "subscription.heart_emote.name": "Heart emote",
     "subscription.heart_emote.description.1": "Hart emote will be available!",
@@ -858,6 +982,11 @@
     "subscription.plot.name": "Plot",
     "subscription.plot.description.1": "Required to maintain Plot.",
     "subscription.plot.details.1": "This Plot contains ${chunks} Chunk:",
+
+    "subscription.thinking_emote.name": "Thinking Emote",
+    "subscription.thinking_emote.description.1": "Radiate an intellectual aura",
+    "subscription.thinking_emote.description.2": "Use with /e thinking",
+    "subscription.thinking_emote.details.1": "Required to use the Thinking Emote:",
 
     "wiki.title": "Azipedia",
     "wiki.details": "Click to select help content...",

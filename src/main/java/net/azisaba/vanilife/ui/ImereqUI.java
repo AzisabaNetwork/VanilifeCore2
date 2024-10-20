@@ -42,7 +42,7 @@ public class ImereqUI extends ChestUI
 
         User user = User.getInstance(this.player);
 
-        if (! UserUtility.isModerator(user))
+        if (! UserUtility.isAdmin(user))
         {
             this.player.closeInventory();
             return;

@@ -121,7 +121,7 @@ public class Jail
             return;
         }
 
-        if (UserUtility.isModerator(voter))
+        if (UserUtility.isAdmin(voter))
         {
             Jail.instances.remove(this);
             this.jail();
@@ -147,7 +147,7 @@ public class Jail
         StringBuilder voters = new StringBuilder();
         this.voters.forEach(voter -> voters.append(String.format("%s (%s)\n", voter.getName(), voter.getUniqueId())));
 
-        TextChannel channel = this.voters.stream().anyMatch(UserUtility::isModerator) ? Vanilife.CHANNEL_HISTORY : Vanilife.CHANNEL_CONSOLE;
+        TextChannel channel = this.voters.stream().anyMatch(UserUtility::isAdmin) ? Vanilife.CHANNEL_HISTORY : Vanilife.CHANNEL_CONSOLE;
 
         channel.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("Jail 通知")

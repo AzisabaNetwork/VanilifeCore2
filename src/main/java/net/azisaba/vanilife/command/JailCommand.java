@@ -35,7 +35,7 @@ public class JailCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (! UserUtility.isModerator(sender) && sender instanceof Player player && User.getInstance(player).getTrustRank().getLevel() < TrustRank.NEW.getLevel())
+        if (! UserUtility.isAdmin(sender) && sender instanceof Player player && User.getInstance(player).getTrustRank().getLevel() < TrustRank.NEW.getLevel())
         {
             sender.sendMessage(Language.translate("jail.permission-error", player).color(NamedTextColor.RED));
             return true;
@@ -65,7 +65,7 @@ public class JailCommand implements CommandExecutor, TabCompleter
 
             User target = User.getInstance(args[0]);
 
-            if (UserUtility.isModerator(target))
+            if (UserUtility.isAdmin(target))
             {
                 sender.sendMessage(lang.translate("jail.cant").color(NamedTextColor.RED));
                 return;
@@ -127,7 +127,7 @@ public class JailCommand implements CommandExecutor, TabCompleter
                 return;
             }
 
-            if (UserUtility.isModerator(sender))
+            if (UserUtility.isAdmin(sender))
             {
                 Vanilife.CHANNEL_CONSOLE.sendMessageEmbeds(new EmbedBuilder()
                         .setTitle("Jail 通知")

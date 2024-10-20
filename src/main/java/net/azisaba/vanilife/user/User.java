@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.azisaba.vanilife.Vanilife;
+import net.azisaba.vanilife.aww.Domain;
 import net.azisaba.vanilife.chat.Chat;
 import net.azisaba.vanilife.chat.GroupChat;
 import net.azisaba.vanilife.chat.IChat;
@@ -167,6 +168,7 @@ public class User
     private final List<User> blocks = new ArrayList<>();
     private final List<Mail> mails;
     private final List<Skin> skins = new ArrayList<>();
+    private final List<Domain> domains = new ArrayList<>();
     private final List<Objective> achievements = new ArrayList<>();
     private final List<ISubscription> subscriptions = new ArrayList<>();
     private final List<IRequest> requests = new ArrayList<>();
@@ -773,7 +775,6 @@ public class User
         {
             case Sara.OWNER -> "a";
             case Sara.ADMIN -> "b";
-            case Sara.MOD -> "c";
             case Sara.NITRO -> "d";
             case Sara.GAMING -> "e";
             case Sara.$50000YEN -> "f";
@@ -885,6 +886,21 @@ public class User
         }
 
         this.skins.add(skin);
+    }
+
+    public void addDomain(@NotNull Domain domain)
+    {
+        if (this.domains.contains(domain))
+        {
+            return;
+        }
+
+        this.domains.add(domain);
+    }
+
+    public void removeDomain(@NotNull Domain domain)
+    {
+        this.domains.remove(domain);
     }
 
     public IChat getChat()
@@ -1087,6 +1103,11 @@ public class User
         return this.skins;
     }
 
+    public @NotNull List<Domain> getDomains()
+    {
+        return new ArrayList<>(this.domains);
+    }
+
     public @NotNull List<Objective> getAchievements()
     {
         return this.achievements;
@@ -1197,7 +1218,7 @@ public class User
         new Mail(user, this, subject, message);
     }
 
-    public void sendNotice(String subject, String message)
+    public void sendNotification(String subject, String message)
     {
         this.sendMail(User.getInstance("azisaba"), subject, message);
     }

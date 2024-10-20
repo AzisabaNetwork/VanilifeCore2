@@ -27,6 +27,33 @@
     "ui.365.wallet": "所持金",
     "ui.365.wallet.mola": "Mola: ",
 
+    "ui.azire.title": "Azire",
+    "ui.azire.create": "作成",
+    "ui.azire.create.details.1": "ページを作成します",
+    "ui.azire.create.details.2": "ページの作成/維持には月額 150 Molaが必要です",
+    "ui.azire.create.title": "Azire > 新規ページ",
+    "ui.azire.rename.title": "Azire > 名前の編集",
+    "ui.azire.left": "&7左クリック: &aページを編集",
+    "ui.azire.right": "&7右クリック: &aページ名を編集",
+    "ui.azire.right.shift": "&7Shift + 右クリック: &aページを削除",
+
+    "ui.blend.title": "Vanilife Blend",
+    "ui.blend.mode": "モード",
+    "ui.blend.mode.bind": "バインド",
+    "ui.blend.mode.design": "デザイン",
+    "ui.blend.studio.title?": "Vanilife Blend",
+    "ui.blend.studio.title": "タイトル",
+    "ui.blend.studio.title.details": "要素のタイトルを設定します",
+    "ui.blend.studio.title.title": "タイトルの設定",
+    "ui.blend.studio.lore": "ロア",
+    "ui.blend.studio.lore.details": "要素のロアを設定します",
+    "ui.blend.studio.lore.description": "ロールを一行ずつ送信してください。「!」で終了します。",
+
+    "ui.browser.address": "Web アドレス",
+    "ui.browser.address.title": "Web アドレスを入力",
+    "ui.browser.close": "閉じる",
+    "ui.browser.close.details": "ブラウザを終了します",
+
     "ui.chat-color.title": "チャット > テーマ色",
     "ui.chat-color.required": "${sara}&7 で解放！",
     "ui.chat-color.selected": "選択中！",
@@ -52,6 +79,7 @@
     "ui.chat-settings.owner": "オーナー: ",
     "ui.chat-settings.rename": "名前の変更",
     "ui.chat-settings.rename.details": "チャットグループの表示名を変更します",
+    "ui.chat-settings.rename.changed": "グループチャットの名前を変更しました",
     "ui.chat-settings.scope": "公開範囲",
     "ui.chat-settings.scope.details": "次のプレイヤーは //plot join から参加できます:",
     "ui.chat-settings.scope.public": "全てのプレイヤー",
@@ -66,6 +94,53 @@
     "ui.confirm.title": "確認",
     "ui.confirm.accept": "承認",
     "ui.confirm.reject": "拒否",
+
+    "ui.domain.transfer": "移管",
+    "ui.domain.transfer.details": "このドメインの管理者を変更します",
+    "ui.domain.server": "サーバー",
+    "ui.domain.server.details": "Azire を使用した、Web ページのホスト",
+    "ui.domain.delete": "削除",
+    "ui.domain.delete.details": "ドメインを削除します",
+    "ui.domain.delete.check": "この操作は取り消せません。実行する場合は ${code} と送信してください:",
+    "ui.domain.delete.cancelled": "ドメインの削除をキャンセルしました",
+    "ui.domain.delete.deleted": "ドメインを削除しました",
+
+    "ui.domain-register.title": "ドメイン登録",
+    "ui.domain-register.placeholder": "ここにドメイン名を入力",
+    "ui.domain-register.invalid": "無効なドメイン名です。ドメイン名にはアルファベット、英数字のみで構成される各レベル3文字以上かつ最大36文字以上の文字列が使用できます。",
+    "ui.domain-register.already": "このドメイン名は既に使用されています",
+    "ui.domain-register.offline": "上位ドメインの管理者がオフラインのため、登録を申請することができません",
+    "ui.domain-register.not-found": "このドメインのレジストリが見つかりませんでした",
+    "ui.domain-register.top-level": "トップレベルドメインを作成する権限がありません！",
+    "ui.domain-register.registered": "${domain} を取得しました！",
+
+    "ui.domain-transfer.title": "ドメイン > 移管",
+    "ui.domain-transfer.placeholder": "移管先のユーザー名を入力",
+    "ui.domain-transfer.not-found": "このユーザーはばにらいふ！上に存在しません",
+    "ui.domain-transfer.cancelled": "ドメインの移管をキャンセルしました",
+    "ui.domain-transfer.transferred": "ドメインを ${name} に移管しました",
+
+    "ui.gimmick.message.title": "メッセージギミック",
+    "ui.gimmick.message.write": "メッセージ",
+    "ui.gimmick.message.write.details": "表示されるメッセージを設定します",
+    "ui.gimmick.message.write.title": "メッセージギミック > 編集",
+
+    "ui.gimmick.sound.title": "サウンドギミック",
+    "ui.gimmick.sound.selected": "選択中",
+    "ui.gimmick.sound.sound.break": "破壊",
+    "ui.gimmick.sound.sound.click": "クリック",
+    "ui.gimmick.sound.sound.welcome": "ようこそ",
+    "ui.gimmick.sound.sound.notice": "通知",
+    "ui.gimmick.sound.sound.info": "情報",
+    "ui.gimmick.sound.sound.warn": "重要",
+
+    "ui.gimmick.title.title": "タイトルギミック",
+    "ui.gimmick.title.subject": "タイトル",
+    "ui.gimmick.title.subject.details": "タイトルを設定します",
+    "ui.gimmick.title.subject.title": "タイトルギミック > タイトル",
+    "ui.gimmick.title.subtitle": "サブタイトル",
+    "ui.gimmick.title.subtitle.details": "サブタイトルを設定します",
+    "ui.gimmick.title.subtitle.title": "タイトルギミック > サブタイトル",
 
     "ui.housing.title": "Housing",
     "ui.housing.spawn": "Spawn",
@@ -225,6 +300,11 @@
     "ui.profile.housing.details.2": "&7右クリック:&a Housing に招待する",
     "ui.profile.playing-housing": "Housing をプレイ中！",
 
+    "ui.referral.title": "紹介コードの使用",
+    "ui.referral.placeholder": "紹介コードを入力",
+    "ui.referral.not-found": "有効期限切れ、または無効なコードです",
+    "ui.referral.used": "紹介コードを使用して 100 Mola と、ステーキ64個を受け取りました！",
+
     "ui.report.title": "レポートの作成",
     "ui.report.reported": "レポートを送信しました！",
     "ui.report.cancelled": "レポートの送信をキャンセルしました",
@@ -375,12 +455,13 @@
     "msg.cooldown": "現在クールダウン中です！${remaining}秒後にもう一度お試しください",
     "msg.click-to-accept": "こちらをクリックして承認！",
     "msg.click-to-run": "クリックして ${command} を実行",
+    "msg.click-to-copy": "クリックしてコピー",
     "msg.click-to-open": "クリックして開く",
     "msg.click-to-open-profile": "クリックしてプロフィールを開く！",
     "msg.join": "さんが参加しました！",
     "msg.first-join": "さんが初参加しました！",
     "msg.quit": "さんが切断しました…",
-    "msg.login-bonus": "&aログインボーナス + ${mola} Mola (10 × ${streak})",
+    "msg.login-bonus": "&aログインボーナス + ${mola} Mola (1 × ${streak})",
     "msg.new-mail": "${unread} 件の新着メールがあります！",
     "msg.not-found.player": "${name} は不明なプレイヤーです",
     "msg.not-found.user": "${name} は不明なユーザーです",
@@ -440,10 +521,19 @@
     "msg.plot-invite.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
     "msg.plot-invite.time-over": "&c${limit}&e 秒が経過したため、&r${name}&e への Plot 招待は無効になりました",
 
+    "msg.referred": "特典付きの紹介コードが見つかりました！",
+    "msg.referred.check": "クリックして使用！",
+    "msg.referred.check.details": "コードを使用するにはここをクリックしてください",
+
+    "msg.subdomain.requested": "${name}&e にサブドメインの取得申請を送信しました。承認の有効期限は &c${limit}&e 秒です。",
+    "msg.subdomain.received": "${name}&e から ${subdomain} の取得申請が届きました。",
+    "msg.subdomain.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
+    "msg.subdomain.accepted": "${name} による ${subdomain} の取得が承認されました。",
+
     "msg.teleport.requested": "${name}&e にテレポートリクエストを送信しました！承認の有効期限は &c${limit}&e 秒です。",
     "msg.teleport.received": "${name}&e からテレポートリクエストが届きました！",
     "msg.teleport.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
-    "msg.teleport.teleported": "${name}&a にテレポートしました！",
+    "msg.teleport.teleported": "${cose} Mola を消費して ${name}&a にテレポートしました！",
     "msg.teleport.accept": "${name}&a のテレポートを承認しました！",
     "msg.teleport.time-over": "&c${limit}&e 秒が経過したため、&r${name}&e へのテレポートリクエストは無効になりました",
 
@@ -458,6 +548,9 @@
     "mail.unpaid.message": "${subscription} の 今月分の料金を引き落としできませんでした。\n現在このサブスクリプションは解約されています。\n\n請求額: ${charge}\n不足額: ${shortfall}\n引き落とし時残高: ${balance} Mola",
     "mail.unpaid.plot.subject": "[重要] プロットを維持できませんでした",
     "mail.unpaid.plot.message": "${plot} は、維持費の引き落としに失敗したため削除されました。\n\n請求額: ${charge} Mola\n不足額: ${shortfall} Mola\n引き落とし時残高: ${balance} Mola",
+
+    "cmd.accept.invalid": "無効なリクエスト識別子です",
+    "cmd.accept.not-found": "リクエストが見つかりませんでした。既に有効期限が切れている可能性があります。",
 
     "cmd.block.cant-yourself": "自分自身をブロックすることはできません",
     "cmd.block.already": "あなたは既に ${name} をブロックしています",
@@ -476,6 +569,7 @@
     "cmd.chat.create.invalid": "チャット名に使用できない文字が含まれています",
     "cmd.chat.create.limit-under": "チャット名は3文字以上で設定する必要があります",
     "cmd.chat.create.limit-over": "チャット名は10文字以内で設定する必要があります",
+    "cmd.chat.create.rate-limiting": "1 ユーザーが作成できるグループチャットは最大5個までです",
     "cmd.chat.create.created": "チャットを作成しました！",
     "cmd.chat.delete.deleted": "チャットを削除しました",
     "cmd.chat.delete.cancelled": "チャットの削除をキャンセルしました",
@@ -485,6 +579,8 @@
     "cmd.chat.kick.owner-cant": "チャットのオーナーを追放することはできません",
     "cmd.chat.quit.quited": "${chat} から退出しました",
     "cmd.chat.quit.owner-cant": "オーナーが退出することはできません。削除したい場合には //chat delete を使用してください。",
+
+    "cmd.domain.access-error": "このドメインは存在しない、またはアクセス権限がありません",
 
     "cmd.emote.undefined": "${emote} は未定義のエモートです",
     "cmd.emote.cant": "このエモートを使用するには ${subscription} を購入している必要があります",
@@ -502,10 +598,6 @@
 
     "cmd.friendlist.empty": "表示できるものはありません",
 
-    "cmd.housing.not-found": "Housing を見つけることができません",
-    "cmd.housing.cant-create": "Housing を作成するには [New] 以上の Trust Rank が必要です",
-    "cmd.housing.permission-error": "あなたはこの Housing に参加できません",
-
     "cmd.gomenne.on": "&aチャットの文字変換を &e有効&a にしました！",
     "cmd.gomenne.on.already": "チャットの文字変換は既に有効に設定されています",
     "cmd.gomenne.off": "&aチャットの文字変換を &e無効&a にしました！",
@@ -513,6 +605,10 @@
     "cmd.gomenne.request.cant": "「よみ」はひらがなで指定する必要があります",
     "cmd.gomenne.request.limit-over": "「よみ」と「かき」は16文字以内で指定する必要があります",
     "cmd.gomenne.request.requested": "変換リクエストを送信しました！",
+
+    "cmd.housing.not-found": "Housing を見つけることができません",
+    "cmd.housing.cant-create": "Housing を作成するには [New] 以上の Trust Rank が必要です",
+    "cmd.housing.permission-error": "あなたはこの Housing に参加できません",
 
     "cmd.jnkn.cant": "このプレイヤーにジャンケン申請を送ることはできません",
     "cmd.jnkn.cant-yourself": "自分自身にジャンケン申請を送信することはできません",
@@ -549,7 +645,7 @@
     "cmd.plot.cant-adjacent": "他の Plot と隣接するチャンクを取得することはできません",
     "cmd.plot.invalid-world": "ここではこのコマンドを実行できません",
     "cmd.plot.permission-error": "あなたは Plot でこのコマンドを実行する権限がありません",
-    "cmd.plot.spawn-protection": "スポーンから 100m 以内のチャンクを取得することはできません",
+    "cmd.plot.spawn-protection": "スポーンから 20m 以内のチャンクを取得することはできません",
     "cmd.plot.already": "このチャンクは既に取得されています",
     "cmd.plot.claim.not-found": "隣接する Plot が見つかりませんでした",
     "cmd.plot.claim.complete": "${cost} Mola でこのチャンクを取得しました",
@@ -580,12 +676,18 @@
     "cmd.profile.cant": "このプレイヤーのプロフィールを表示することはできません",
 
     "cmd.ptp.permission-error": "この Plot のメンバーではないためこれを使用できません",
+    "cmd.ptp.teleported": "${cost} Mola を消費して ${plot} にテレポートしました",
+
+    "cmd.referral.token": "紹介コード: ",
+    "cmd.referral.expiration": "有効期限: ",
+    "cmd.referral.issued": "${referee} さんの紹介コードを発行しました！",
+    "cmd.referral.issued.details": "この紹介コードをコピーして、${referee} さんにお渡しください。ログイン後、コードが使用されると 400 Mola が付与されます！",
 
     "cmd.report.limit-over": "250文字以内で入力してください",
 
     "cmd.rtp.not-found": "ワールドが見つかりませんでした",
     "cmd.rtp.searching": "テレポート可能な場所を検索中…",
-    "cmd.rtp.teleported": "ランダムな位置にテレポートしました！",
+    "cmd.rtp.teleported": "4 Mola を消費してランダムな位置にテレポートしました！",
 
     "cmd.skin.not-found": "スキンが見つかりませんでした",
     "cmd.skin.already": "既にこのスキンを選択しています",
@@ -627,6 +729,9 @@
 
     "cmd.world.undefined": "${world} は未定義のワールドです",
     "cmd.world.teleported": "${world} にテレポートしました！",
+
+    "gimmick.message.attention": "これはギミックブロックを使用して作成された\nユーザーメイドのメッセージです",
+    "gimmick.title.attention": "ギミックブロックで作成されたユーザーメイドのタイトル",
 
     "plot.cant": "この Plot でこれをする権限がありません",
     "plot.cant.break": "この Plot でブロックを破壊する権限がありません",
@@ -709,6 +814,12 @@
     "housing.pack.glass.details.1": "美しいガラスで島を彩ろう！",
     "housing.pack.builder.name": "建築家",
     "housing.pack.builder.details.1": "建築をするには必須のブロック",
+    "housing.pack.music.name": "音楽家",
+    "housing.pack.music.details.1": "島で音楽を奏でましょう",
+    "housing.pack.skull.name": "頭蓋骨",
+    "housing.pack.skull.details.1": "悪趣味な装飾品…",
+    "housing.pack.storage.name": "ストレージ",
+    "housing.pack.storage.details.1": "アイテムを保管するのには最適です",
 
     "jail.limit-under": "詳細は8文字以上で入力してください",
     "jail.limit-over": "詳細は30文字以内で入力してください",
@@ -784,7 +895,7 @@
     "settings.discord.description.1": "&7左クリック: &a公開範囲を設定",
     "settings.discord.description.2": "&7右クリック: &aDiscord アカウントをリンク",
     "settings.discord.unlinked": "Discord アカウント の紐づけを解除しました",
-    "settings.discord.pls-run-command": "アジ鯖 Discord で次のコマンドを3分以内に実行してください:",
+    "settings.discord.pls-run-command": "アジ鯖 Discord の「BOTスパム」カテゴリ内の「ルマンド」チャンネルで次のコマンドを3分以内に実行してください:",
     "settings.discord.join": "アジ鯖 Discord に参加していませんか？ここをクリック！",
 
     "settings.language.name": "言語設定",
@@ -826,10 +937,22 @@
 
     "subscription.feature": "すべてのサブスクリプションは、毎月1日に自動的に引き落とされます:",
 
+    "subscription.azire.name": "Azire",
+    "subscription.azire.details.1": "${domain} でホスト中の ${page} を維持するのに必要です:",
+
     "subscription.angry_emote.name": "怒りのエモート",
     "subscription.angry_emote.description.1": "怒りのエモートが使えるようになります！",
     "subscription.angry_emote.description.2": "/e angry で使用します",
     "subscription.angry_emote.details.1": "怒りのエモートを使うのに必要です:",
+
+    "subscription.creeper.name": "クリーパーのエモート",
+    "subscription.creeper.details.1": "ｼｭｰ…",
+
+    "subscription.domain.name": "ドメイン",
+    "subscription.domain.details.1": "${domain} を維持するのに必要です:",
+
+    "subscription.firework.name": "花火のエモート",
+    "subscription.firework.details.1": "ランダムな色の花火を打ち上げます!!",
 
     "subscription.heart_emote.name": "ハートのエモート",
     "subscription.heart_emote.description.1": "ハートのエモートが使えるようになります！",
@@ -859,6 +982,11 @@
     "subscription.plot.name": "Plot",
     "subscription.plot.description.1": "Plot を維持するのに必要です",
     "subscription.plot.details.1": "この Plot は ${chunks} Chunk を含みます:",
+
+    "subscription.thinking_emote.name": "思考のエモート",
+    "subscription.thinking_emote.description.1": "知的なオーラを放ちましょう",
+    "subscription.thinking_emote.description.2": "/e thinking で使用します",
+    "subscription.thinking_emote.details.1": "思考のエモートを使うのに必要です:",
 
     "wiki.title": "Azipedia",
     "wiki.details": "クリックしてヘルプの内容を選択してください…",

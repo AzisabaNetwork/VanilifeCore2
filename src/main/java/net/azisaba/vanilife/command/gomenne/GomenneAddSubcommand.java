@@ -4,6 +4,7 @@ import net.azisaba.vanilife.command.subcommand.Subcommand;
 import net.azisaba.vanilife.gomenne.Gomenne;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.util.StringUtility;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -23,7 +24,7 @@ public class GomenneAddSubcommand implements Subcommand
     @Override
     public @NotNull Sara getRequirement()
     {
-        return Sara.MOD;
+        return Sara.ADMIN;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class GomenneAddSubcommand implements Subcommand
             return;
         }
 
-        if (! StringUtility.isHiragana(args[0]))
+        if (! StringUtility.isHiragana(args[0]) && ! UserUtility.isAdmin(sender))
         {
             sender.sendMessage(Component.text("「よみ」はひらがなで指定してください").color(NamedTextColor.RED));
             return;

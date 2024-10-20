@@ -91,7 +91,7 @@ public class Poll
             }
         }.runTaskLater(Vanilife.getPlugin(), 20L * this.limit);
 
-        if (UserUtility.isModerator(owner))
+        if (UserUtility.isAdmin(owner))
         {
             return;
         }

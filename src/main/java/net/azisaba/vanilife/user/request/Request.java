@@ -8,8 +8,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public abstract class Request implements IRequest
 {
+    private static final List<Request> instances = new ArrayList<>();
+
+    public static Request getInstance(@NotNull UUID id)
+    {
+        return Request.instances.stream().filter(i -> i.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    protected final UUID id = UUID.randomUUID();
+
     protected final Player from;
     protected final User fromUser;
 
@@ -50,6 +63,13 @@ public abstract class Request implements IRequest
         };
 
         this.runnable.runTaskLater(Vanilife.getPlugin(), this.getTicks());
+
+        Request.instances.add(this);
+    }
+
+    public @NotNull UUID getId()
+    {
+        return this.id;
     }
 
     @Override
@@ -79,6 +99,7 @@ public abstract class Request implements IRequest
     {
         this.toUser.getRequests().remove(this);
         this.runnable.cancel();
+        Request.instances.remove(this);
     }
 
     @Override
@@ -86,12 +107,14 @@ public abstract class Request implements IRequest
     {
         this.toUser.getRequests().remove(this);
         this.runnable.cancel();
+        Request.instances.remove(this);
     }
 
     @Override
     public void onTimeOver()
     {
         this.toUser.getRequests().remove(this);
+        Request.instances.remove(this);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class GomenneRequestsSubcommand implements Subcommand
     @Override
     public @NotNull Sara getRequirement()
     {
-        return Sara.MOD;
+        return Sara.ADMIN;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class GomenneRequestsSubcommand implements Subcommand
             return;
         }
 
-        if (! UserUtility.isModerator(player))
+        if (! UserUtility.isAdmin(player))
         {
             sender.sendMessage(Component.text("You do not have sufficient permission to execute the command.").color(NamedTextColor.RED));
             return;

@@ -45,6 +45,12 @@ public class HousingPacks
 
     public static final RedstonePack REDSTONE = (RedstonePack) HousingPacks.register(new RedstonePack());
 
+    public static final MusicPack MUSIC = (MusicPack) HousingPacks.register(new MusicPack());
+
+    public static final SkullPack SKULL = (SkullPack) HousingPacks.register(new SkullPack());
+
+    public static final StoragePack STORAGE = (StoragePack) HousingPacks.register(new StoragePack());
+
     public static final GlassPack GLASS = (GlassPack) HousingPacks.register(new GlassPack());
 
     public static final ColorPack COLOR = (ColorPack) HousingPacks.register(new ColorPack());

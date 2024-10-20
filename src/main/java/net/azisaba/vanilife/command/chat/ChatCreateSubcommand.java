@@ -6,8 +6,10 @@ import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.Sara;
 import net.azisaba.vanilife.user.TrustRank;
 import net.azisaba.vanilife.user.User;
+import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -67,6 +69,15 @@ public class ChatCreateSubcommand implements Subcommand
         if (10 < args[0].length())
         {
             sender.sendMessage(Language.translate("cmd.chat.create.limit-over", player).color(NamedTextColor.RED));
+            return;
+        }
+
+        int chats = (int) GroupChat.getInstances().stream().filter(chat -> chat.getOwner() == user).count();
+
+        if (3 < chats && ! UserUtility.isAdmin(user))
+        {
+            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
+            sender.sendMessage(Language.translate("cmd.chat.create.rate-limiting", player).color(NamedTextColor.RED));
             return;
         }
 

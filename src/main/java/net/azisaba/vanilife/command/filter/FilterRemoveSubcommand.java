@@ -24,7 +24,7 @@ public class FilterRemoveSubcommand implements Subcommand
     @NotNull
     public Sara getRequirement()
     {
-        return Sara.MOD;
+        return Sara.ADMIN;
     }
 
     @Override

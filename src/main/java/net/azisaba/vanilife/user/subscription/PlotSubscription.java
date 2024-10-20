@@ -16,7 +16,7 @@ public class PlotSubscription implements ISubscription
 {
     private final Plot plot;
 
-    public PlotSubscription(Plot plot)
+    public PlotSubscription(@NotNull Plot plot)
     {
         this.plot = plot;
     }
@@ -62,7 +62,7 @@ public class PlotSubscription implements ISubscription
     {
         user.unsubscribe(this);
         this.plot.delete();
-        this.plot.getOwner().sendNotice(ComponentUtility.asString(Language.translate("mail.unpaid.plot.subject", user)),
+        this.plot.getOwner().sendNotification(ComponentUtility.asString(Language.translate("mail.unpaid.plot.subject", user)),
                 ComponentUtility.asString(Language.translate("mail.unpaid.plot.message", user,
                         "charge=" + this.getCost(),
                         "shortfall=" + Math.abs(this.getCost() - this.plot.getOwner().getMola()),
@@ -72,6 +72,6 @@ public class PlotSubscription implements ISubscription
     @Override
     public void onPayment(@NotNull User user)
     {
-        this.plot.getOwner().sendNotice(String.format("[領収書] %s 維持費", plot.getName()), String.format("%s の維持費として下記生に領収いたしました。\nPlot 維持費: %s Mola (40 × %s チャンク)", this.plot.getName(), this.getCost(), this.plot.getChunks().size()));
+        this.plot.getOwner().sendNotification(String.format("[領収書] %s 維持費", plot.getName()), String.format("%s の維持費として下記生に領収いたしました。\nPlot 維持費: %s Mola (40 × %s チャンク)", this.plot.getName(), this.getCost(), this.plot.getChunks().size()));
     }
 }

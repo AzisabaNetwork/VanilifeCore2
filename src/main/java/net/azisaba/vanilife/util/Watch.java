@@ -29,7 +29,7 @@ public class Watch
 
     public static void addWatcher(@NotNull Player player)
     {
-        if (! UserUtility.isModerator(player))
+        if (! UserUtility.isAdmin(player))
         {
             return;
         }

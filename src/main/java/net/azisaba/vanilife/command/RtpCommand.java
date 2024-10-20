@@ -49,6 +49,13 @@ public class RtpCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
+        if (user.getMola() < Vanilife.MOLA_RTP)
+        {
+            player.sendMessage(Language.translate("msg.shortage", player, "need=" + (Vanilife.MOLA_RTP - user.getMola())).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
+            return true;
+        }
+
         VanilifeWorld world = VanilifeWorld.getInstance(player.getWorld());
 
         if (world == null)
@@ -57,6 +64,7 @@ public class RtpCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
+        user.setMola(user.getMola() - Vanilife.MOLA_RTP);
         sender.sendMessage(Language.translate("cmd.rtp.searching", player).color(NamedTextColor.GREEN));
         world.getTeleporter().teleport(player);
 

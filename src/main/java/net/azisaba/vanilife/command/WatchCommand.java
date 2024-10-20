@@ -28,7 +28,7 @@ public class WatchCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
-        if (! UserUtility.isModerator(player))
+        if (! UserUtility.isAdmin(player))
         {
             sender.sendMessage(Component.text("You do not have sufficient permissions to execute the command.").color(NamedTextColor.RED));
             return true;

@@ -27,7 +27,7 @@ public class FilterCommand extends ParentCommand
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        if (! UserUtility.isModerator(sender))
+        if (! UserUtility.isAdmin(sender))
         {
             sender.sendMessage(Component.text("You do not have sufficient permission to execute the command.").color(NamedTextColor.RED));
             return true;

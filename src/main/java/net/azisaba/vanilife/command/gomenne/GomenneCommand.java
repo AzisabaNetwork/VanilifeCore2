@@ -31,13 +31,7 @@ public class GomenneCommand extends ParentCommand
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        if (! (sender instanceof Player player))
-        {
-            sender.sendMessage(Component.text("Please run this from within the game.").color(NamedTextColor.RED));
-            return true;
-        }
-
-        if (args.length == 0)
+        if ((sender instanceof Player player) && args.length == 0)
         {
             User user = User.getInstance(player);
             boolean b = user.read("settings.ime").getAsBoolean();

@@ -39,37 +39,37 @@ public class Vanilife365UI extends ChestUI
 
         ItemStack backStack = new ItemStack(Material.ARROW);
         ItemMeta backMeta = backStack.getItemMeta();
-        backMeta.displayName(Language.translate("ui.back", player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        backMeta.lore(List.of(Language.translate("ui.back.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        backMeta.displayName(Language.translate("ui.back", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        backMeta.lore(List.of(Language.translate("ui.back.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         backStack.setItemMeta(backMeta);
         this.inventory.setItem(45, backStack);
 
         ItemStack nextStack = new ItemStack(Material.ARROW);
         ItemMeta nextMeta = nextStack.getItemMeta();
-        nextMeta.displayName(Language.translate("ui.next", player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        nextMeta.lore(List.of(Language.translate("ui.next.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        nextMeta.displayName(Language.translate("ui.next", this.player).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        nextMeta.lore(List.of(Language.translate("ui.next.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         nextStack.setItemMeta(nextMeta);
         this.inventory.setItem(53, nextStack);
 
         ItemStack returnStack = new ItemStack(Material.ARROW);
         ItemMeta returnMeta = returnStack.getItemMeta();
-        returnMeta.displayName(Language.translate("ui.return", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
-        returnMeta.lore(List.of(Language.translate("ui.return.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        returnMeta.displayName(Language.translate("ui.return", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+        returnMeta.lore(List.of(Language.translate("ui.return.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         returnStack.setItemMeta(returnMeta);
         this.registerListener(48, returnStack, "vanilife:store", ExecutionType.CLIENT);
 
         ItemStack closeStack = new ItemStack(Material.ANVIL);
         ItemMeta closeMeta = closeStack.getItemMeta();
-        closeMeta.displayName(Language.translate("ui.close", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
-        closeMeta.lore(List.of(Language.translate("ui.close.details", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        closeMeta.displayName(Language.translate("ui.close", this.player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+        closeMeta.lore(List.of(Language.translate("ui.close.details", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         closeStack.setItemMeta(closeMeta);
         this.inventory.setItem(49, closeStack);
 
         ItemStack walletStack = new ItemStack(Material.EMERALD);
         ItemMeta walletMeta = walletStack.getItemMeta();
-        walletMeta.displayName(Language.translate("ui.365.wallet", player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+        walletMeta.displayName(Language.translate("ui.365.wallet", this.player).color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
         walletMeta.lore(List.of(Component.text().build(),
-                Language.translate("ui.365.wallet.mola", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(user.getMola() + " Mola").color(NamedTextColor.GOLD))));
+                Language.translate("ui.365.wallet.mola", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(user.getMola() + " Mola").color(NamedTextColor.GOLD))));
         walletStack.setItemMeta(walletMeta);
         this.inventory.setItem(50, walletStack);
 
@@ -84,17 +84,17 @@ public class Vanilife365UI extends ChestUI
 
             final String translation = "subscription." + product.getName();
 
-            meta.displayName(Language.translate(translation + ".name", player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
+            meta.displayName(Language.translate(translation + ".name", this.player).color(NamedTextColor.GREEN).decoration(TextDecoration.ITALIC, false));
 
             List<Component> lore = new ArrayList<>();
 
-            if (Language.has(translation + ".description.1", player))
+            if (Language.has(translation + ".description.1", this.player))
             {
                 int j = 1;
 
-                while (Language.has(translation + ".description." + j, player))
+                while (Language.has(translation + ".description." + j, this.player))
                 {
-                    lore.add(Language.translate(translation + ".description." + j, player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+                    lore.add(Language.translate(translation + ".description." + j, this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
 
                     j ++;
                 }
@@ -108,19 +108,19 @@ public class Vanilife365UI extends ChestUI
                 int cost = (int) (product.getCost() * rest);
 
                 lore.add(Component.text().build());
-                lore.add(Language.translate("ui.365.monthly-amount", player).color(NamedTextColor.GRAY).decorate(TextDecoration.STRIKETHROUGH).decoration(TextDecoration.ITALIC, false).append(Component.text(product.getCost() + " Mola").color(NamedTextColor.GREEN)));
-                lore.add(Language.translate("ui.365.discount", player, "rate=" + (int) (SubscriptionUtility.getProgress() * 100), "cost=" + cost).color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+                lore.add(Language.translate("ui.365.monthly-amount", this.player).color(NamedTextColor.GRAY).decorate(TextDecoration.STRIKETHROUGH).decoration(TextDecoration.ITALIC, false).append(Component.text(product.getCost() + " Mola").color(NamedTextColor.GREEN)));
+                lore.add(Language.translate("ui.365.discount", this.player, "rate=" + (int) (SubscriptionUtility.getProgress() * 100), "cost=" + cost).color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
             }
             else
             {
-                lore.add(Language.translate("ui.365.monthly-amount", player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(product.getCost() + " Mola").color(NamedTextColor.GREEN)));
+                lore.add(Language.translate("ui.365.monthly-amount", this.player).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false).append(Component.text(product.getCost() + " Mola").color(NamedTextColor.GREEN)));
             }
 
             if (user.hasSubscription(product))
             {
                 lore.add(Component.text().build());
-                lore.add(Language.translate("ui.365.already-bought", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
-                lore.add(Language.translate("ui.365.unsubscribe", player).color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false));
+                lore.add(Language.translate("ui.365.already-bought", this.player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+                lore.add(Language.translate("ui.365.unsubscribe", this.player).color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false));
             }
 
             meta.lore(lore);

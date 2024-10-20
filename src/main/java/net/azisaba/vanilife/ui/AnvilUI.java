@@ -13,10 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.event.CraftEventFactory;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,13 +21,16 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AnvilUI extends InventoryUI
 {
+    private final int level;
     private final float exp;
 
     public AnvilUI(@NotNull Player player, @NotNull Component title)
     {
         super(player);
 
+        this.level = this.player.getLevel();
         this.exp = this.player.getExp();
+
         this.player.setLevel(1);
 
         this.player.setLevel(1);
@@ -66,10 +66,16 @@ public abstract class AnvilUI extends InventoryUI
     {
         ItemStack dummyStack = new ItemStack(Material.PAPER);
         ItemMeta dummyMeta = dummyStack.getItemMeta();
-        dummyMeta.displayName(Component.text("_"));
+        dummyMeta.displayName(Component.text(this.getPlaceholder()));
         dummyMeta.setHideTooltip(true);
         dummyStack.setItemMeta(dummyMeta);
         return dummyStack;
+    }
+
+    @NotNull
+    public String getPlaceholder()
+    {
+        return "_";
     }
 
     @Override
@@ -98,6 +104,7 @@ public abstract class AnvilUI extends InventoryUI
     {
         super.onClose(event);
 
+        this.player.setLevel(this.level);
         this.player.setExp(this.exp);
 
         ItemStack stack = this.getInventory().getItem(2);

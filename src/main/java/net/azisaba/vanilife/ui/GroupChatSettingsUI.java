@@ -159,29 +159,30 @@ public class GroupChatSettingsUI extends ChestUI
 
                     if (GroupChat.getInstance(string) != null)
                     {
-                        this.player.sendMessage(Language.translate("cmd.chat.create.already", player).color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("cmd.chat.create.already", this.player).color(NamedTextColor.RED));
                         return;
                     }
 
                     if (! GroupChat.namepattern.matcher(string).matches())
                     {
-                        this.player.sendMessage(Language.translate("cmd.chat.create.invalid", player).color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("cmd.chat.create.invalid", this.player).color(NamedTextColor.RED));
                         return;
                     }
 
                     if (string.length() < 3)
                     {
-                        this.player.sendMessage(Language.translate("cmd.chat.create.limit-under", player).color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("cmd.chat.create.limit-under", this.player).color(NamedTextColor.RED));
                         return;
                     }
 
                     if (10 < string.length())
                     {
-                        this.player.sendMessage(Language.translate("cmd.chat.create.limit-over", player).color(NamedTextColor.RED));
+                        this.player.sendMessage(Language.translate("cmd.chat.create.limit-over", this.player).color(NamedTextColor.RED));
                         return;
                     }
 
                     chat.setName(string);
+                    this.player.sendMessage(Language.translate("ui.chat-settings.rename.changed", this.player).color(NamedTextColor.GREEN));
                 }
             };
         }

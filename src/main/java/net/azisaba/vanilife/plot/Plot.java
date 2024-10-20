@@ -507,7 +507,7 @@ public class Plot
 
     public boolean isMember(@NotNull User user)
     {
-        return UserUtility.isModerator(user) ||
+        return UserUtility.isAdmin(user) ||
                 user == this.owner ||
                 this.members.contains(user) ||
                 (this.scope == PlotScope.PUBLIC) ||
@@ -524,7 +524,7 @@ public class Plot
     {
         Player player = event.getPlayer();
 
-        if (UserUtility.isModerator(player))
+        if (UserUtility.isAdmin(player))
         {
             return;
         }
@@ -547,7 +547,7 @@ public class Plot
     {
         Player player = event.getPlayer();
 
-        if (UserUtility.isModerator(player))
+        if (UserUtility.isAdmin(player))
         {
             return;
         }
@@ -584,7 +584,7 @@ public class Plot
 
         Player player = event.getPlayer();
 
-        if (UserUtility.isModerator(player))
+        if (UserUtility.isAdmin(player))
         {
             return;
         }
@@ -608,7 +608,7 @@ public class Plot
         Player damager = (Player) event.getDamager();
         Player player = (Player) event.getEntity();
 
-        if (UserUtility.isModerator(damager))
+        if (UserUtility.isAdmin(damager))
         {
             return;
         }

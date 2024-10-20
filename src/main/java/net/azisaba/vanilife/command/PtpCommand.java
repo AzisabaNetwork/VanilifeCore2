@@ -50,6 +50,13 @@ public class PtpCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
+        if (user.getMola() < Vanilife.MOLA_PTP)
+        {
+            player.sendMessage(Language.translate("msg.shortage", player, "need=" + (Vanilife.MOLA_PTP - user.getMola())).color(NamedTextColor.RED));
+            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 0.1f);
+            return true;
+        }
+
         Plot plot = Plot.getInstance(args[0]);
 
         if (plot == null)
@@ -64,9 +71,12 @@ public class PtpCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
+        user.setMola(user.getMola() - Vanilife.MOLA_PTP);
+
         Location spawn = plot.getSpawn();
         player.teleport(spawn);
         player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.2f);
+        player.sendMessage(Language.translate("cmd.ptp.teleported", player, "cost=" + Vanilife.MOLA_PTP, "plot=" + plot.getName()).color(NamedTextColor.GREEN));
 
         this.cooldowns.put(user, 8);
 

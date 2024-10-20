@@ -94,7 +94,7 @@ public class PlotNewSubcommand implements Subcommand
         int chunkX = chunk.getX() * 16 + 8;
         int chunkZ = chunk.getZ() * 16 + 8;
 
-        if (Math.sqrt(chunkX * chunkX + chunkZ * chunkZ) <= 100)
+        if (Math.sqrt(chunkX * chunkX + chunkZ * chunkZ) <= 20)
         {
             sender.sendMessage(Language.translate("cmd.plot.spawn-protection", player).color(NamedTextColor.RED));
             player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);

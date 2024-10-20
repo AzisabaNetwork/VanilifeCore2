@@ -45,7 +45,7 @@ public class HousingListener implements Listener
 
         if (housing == null)
         {
-            event.setCancelled(! (player.getGameMode() == GameMode.CREATIVE && UserUtility.isModerator(player)) || event.isCancelled());
+            event.setCancelled(! (player.getGameMode() == GameMode.CREATIVE && UserUtility.isAdmin(player)) || event.isCancelled());
             return;
         }
 
@@ -56,7 +56,7 @@ public class HousingListener implements Listener
             return;
         }
 
-        final boolean can = housing.canUse(event.getBlock()) || (player.getGameMode() == GameMode.CREATIVE && UserUtility.isModerator(player));
+        final boolean can = housing.canUse(event.getBlock()) || (player.getGameMode() == GameMode.CREATIVE && UserUtility.isAdmin(player));
 
         if (! can)
         {
@@ -85,7 +85,7 @@ public class HousingListener implements Listener
             return;
         }
 
-        if (UserUtility.isModerator(player) && player.getGameMode() == GameMode.CREATIVE)
+        if (UserUtility.isAdmin(player) && player.getGameMode() == GameMode.CREATIVE)
         {
             return;
         }
@@ -120,7 +120,7 @@ public class HousingListener implements Listener
         Housing from = Housing.getInstance(event.getFrom());
         Housing to = Housing.getInstance(event.getTo());
 
-        if (! (from != null && to == null) || (player.getGameMode() == GameMode.CREATIVE && UserUtility.isModerator(player)))
+        if (! (from != null && to == null) || (player.getGameMode() == GameMode.CREATIVE && UserUtility.isAdmin(player)))
         {
             return;
         }

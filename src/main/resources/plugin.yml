@@ -5,6 +5,9 @@ api-version: '1.21'
 depend:
   - CoreProtect
 commands:
+  accept:
+    description: Accept any request.
+    usage: /accept <request>
   alert:
     description: Send an alert.
     usage: /alert <message>
@@ -26,6 +29,9 @@ commands:
   checkout:
     description: Process all subscriptions.
     usage: /checkout
+  domain:
+    description: Open any domain menu.
+    usage: /domain [domain]
   emote:
     description: Use any emote.
     usage: /emote <emote>
@@ -113,6 +119,9 @@ commands:
   ptp:
     description: Teleport to any plot.
     usage: /ptp <plot>
+  referral:
+    description: Issuance and use of referral codes.
+    usage: /referral [player]
   realname:
     description: Displays the actual MCID of the player using the nickname.
     usage: /realname <nick>
@@ -143,9 +152,15 @@ commands:
   store:
     description: Open the Vanilife store.
     usage: /store
+  su:
+    description: Switch user permission.
+    usage: /su
   subscribe:
     description: Sign up for any subscription.
     usage: /subscribe <subscription>
+  sudo:
+    description: Execute with higher-level user permission.
+    usage: /sudo <command>
   togglechat:
     description: Enable or disable chat.
     usage: /togglechat
@@ -200,6 +215,14 @@ commands:
   watch:
     description: Enable Watch mode.
     usage: /watch
+  web:
+    description: Browse the Web.
+    usage: /web [url]
+    aliases:
+      - edge
+      - chrome
+      - firefox
+      - safari
   wiki:
     description: Check the Wiki.
     usage: /wiki

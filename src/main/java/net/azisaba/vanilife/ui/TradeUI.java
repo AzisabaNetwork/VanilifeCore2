@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -123,7 +124,7 @@ public class TradeUI extends ChestUI
                 || this.trade.getAgree((Player) event.getWhoClicked()) != Trade.Agree.NONE
                 || (! Trade.CONTROL.contains(event.getRawSlot()) && event.getClickedInventory() == this.inventory));
 
-        if (! event.isShiftClick() || event.getClickedInventory() == this.inventory)
+        if (! event.isShiftClick() || event.getClick() == ClickType.DOUBLE_CLICK || event.getClickedInventory() == this.inventory)
         {
             return;
         }

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Product
 @SingletonSubscription
-public class RainEmoteSubscription implements IEmoteSubscription
+public class RainEmote implements Emote
 {
     @Override
     public @NotNull String getName()
@@ -43,7 +43,7 @@ public class RainEmoteSubscription implements IEmoteSubscription
     @Override
     public int getCost()
     {
-        return 70;
+        return 120;
     }
 
     @Override

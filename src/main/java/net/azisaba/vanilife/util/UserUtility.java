@@ -64,64 +64,76 @@ public class UserUtility
         return mails;
     }
 
-    public static Sara calculateSara(Player player)
+    public static Sara calculateSara(@NotNull Player player, boolean rankOnly)
     {
-        if (player.isOp())
+        boolean op = player.isOp();
+
+        if (rankOnly && op)
         {
-            return Sara.ADMIN;
+            player.setOp(false);
+        }
+
+        Sara sara;
+
+        if (player.isOp() && ! rankOnly)
+        {
+            sara = Sara.ADMIN;
         }
         else if (player.hasPermission("group.nitro"))
         {
-            return Sara.NITRO;
+            sara = Sara.NITRO;
         }
         else if (player.hasPermission("group.gamingsara"))
         {
-            return Sara.GAMING;
+            sara = Sara.GAMING;
         }
         else if (player.hasPermission("group.50000yen"))
         {
-            return Sara.$50000YEN;
+            sara = Sara.$50000YEN;
         }
         else if (player.hasPermission("group.10000yen"))
         {
-            return Sara.$10000YEN;
+            sara = Sara.$10000YEN;
         }
         else if (player.hasPermission("group.5000yen"))
         {
-            return Sara.$5000YEN;
+            sara = Sara.$5000YEN;
         }
         else if (player.hasPermission("group.2000yen"))
         {
-            return Sara.$2000YEN;
+            sara = Sara.$2000YEN;
         }
         else if (player.hasPermission("group.1000yen"))
         {
-            return Sara.$1000YEN;
+            sara = Sara.$1000YEN;
         }
         else if (player.hasPermission("group.500yen"))
         {
-            return Sara.$500YEN;
+            sara = Sara.$500YEN;
         }
         else if (player.hasPermission("group.100yen"))
         {
-            return Sara.$100YEN;
+            sara = Sara.$100YEN;
         }
         else
         {
-            return Sara.DEFAULT;
+            sara = Sara.DEFAULT;
         }
+
+        if (rankOnly && op)
+        {
+            player.setOp(true);
+        }
+
+        return sara;
     }
 
-    public static boolean isModerator(User user)
-    {
-        return 10 <= user.getSara().level;
-    }
-
+    @Deprecated(since = "2.1.0", forRemoval = true)
     public static boolean isModerator(CommandSender sender)
     {
         if (sender instanceof Player player)
         {
-            return UserUtility.isModerator(User.getInstance(player));
+            return UserUtility.isAdmin(User.getInstance(player));
         }
 
         return sender.isOp();

@@ -114,7 +114,7 @@ public class HousingCommand implements CommandExecutor, TabCompleter
                 return;
             }
 
-            if (! housing.canVisit(user) && ! UserUtility.isModerator(user) && user.getRequests().stream().noneMatch(r -> r.match(HousingInvite.class, housing.getUser().asPlayer())))
+            if (! housing.canVisit(user) && ! UserUtility.isAdmin(user) && user.getRequests().stream().noneMatch(r -> r.match(HousingInvite.class, housing.getUser().asPlayer())))
             {
                 sender.sendMessage(Language.translate("cmd.housing.permission-error", player).color(NamedTextColor.RED));
                 return;

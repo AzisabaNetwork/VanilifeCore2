@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.user.request;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.CLI;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.util.ComponentUtility;
@@ -48,9 +49,10 @@ public class TeleportRequest extends Request
     {
         super.onAccept();
 
+        this.fromUser.setMola(this.fromUser.getMola() - Vanilife.MOLA_TPR);
         this.from.teleport(this.to.getLocation());
 
-        this.from.sendMessage(Language.translate("msg.teleport.teleported", this.from, "name=" + ComponentUtility.asString(this.toUser.getName())));
+        this.from.sendMessage(Language.translate("msg.teleport.teleported", this.from, "cost=" + Vanilife.MOLA_TPR, "name=" + ComponentUtility.asString(this.toUser.getName())));
         this.to.sendMessage(Language.translate("msg.teleport.accept", this.to, "name=" + ComponentUtility.asString(this.fromUser.getName())));
 
         this.from.playSound(this.from, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.2f);

@@ -11,15 +11,21 @@ public class Subscriptions
 
     private static final List<ISubscription> products = new ArrayList<>();
 
-    public static final AngryEmoteSubscription ANGRY_EMOTE = (AngryEmoteSubscription) Subscriptions.register(new AngryEmoteSubscription());
+    public static final FireworkEmote FIREWORKS_EMOTE = (FireworkEmote) Subscriptions.register(new FireworkEmote());
 
-    public static final HeartEmoteSubscription HEART_EMOTE = (HeartEmoteSubscription) Subscriptions.register(new HeartEmoteSubscription());
+    public static final CreeperEmote CREEPER_EMOTE = (CreeperEmote) Subscriptions.register(new CreeperEmote());
+
+    public static final ThinkingEmote THINKING_EMOTE = (ThinkingEmote) Subscriptions.register(new ThinkingEmote());
+
+    public static final AngryEmote ANGRY_EMOTE = (AngryEmote) Subscriptions.register(new AngryEmote());
+
+    public static final HeartEmote HEART_EMOTE = (HeartEmote) Subscriptions.register(new HeartEmote());
 
     public static final NeonSubscription NEON = (NeonSubscription) Subscriptions.register(new NeonSubscription());
 
-    public static final RainEmoteSubscription RAIN_EMOTE = (RainEmoteSubscription) Subscriptions.register(new RainEmoteSubscription());
+    public static final RainEmote RAIN_EMOTE = (RainEmote) Subscriptions.register(new RainEmote());
 
-    public static final RichEmoteSubscription RICH_EMOTE = (RichEmoteSubscription) Subscriptions.register(new RichEmoteSubscription());
+    public static final RichEmote RICH_EMOTE = (RichEmote) Subscriptions.register(new RichEmote());
 
     public static final SadnessEmote SADNESS_EMOTE = (SadnessEmote) Subscriptions.register(new SadnessEmote());
 

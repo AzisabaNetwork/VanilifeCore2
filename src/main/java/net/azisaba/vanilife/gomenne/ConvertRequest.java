@@ -156,7 +156,7 @@ public class ConvertRequest
     {
         ConvertRequest.instances.remove(this);
 
-        this.sender.sendNotice("[通知] 変換リクエストの審査結果のお知らせ", "平素より格別のお引き立てを賜り厚くお礼申し上げます。" +
+        this.sender.sendNotification("[通知] 変換リクエストの審査結果のお知らせ", "平素より格別のお引き立てを賜り厚くお礼申し上げます。" +
                 "\nさて、先日頂きました変換リクエストについて、審査の結果が出ましたので下記の通りにお知らせいたします。" +
                 "\n\n審査結果: " + result +
                 "\nよみ: " + this.yomi +

@@ -19,6 +19,9 @@ import net.azisaba.vanilife.command.gomenne.GomenneCommand;
 import net.azisaba.vanilife.command.wallet.WalletCommand;
 import net.azisaba.vanilife.command.service.ServiceCommand;
 import net.azisaba.vanilife.entity.VanilifeEntityListener;
+import net.azisaba.vanilife.gimmick.MessageGimmick;
+import net.azisaba.vanilife.gimmick.SoundGimmick;
+import net.azisaba.vanilife.gimmick.TitleGimmick;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.housing.HousingListener;
@@ -27,7 +30,7 @@ import net.azisaba.vanilife.nkip.NightCheckRunnable;
 import net.azisaba.vanilife.runnable.*;
 import net.azisaba.vanilife.service.Service;
 import net.azisaba.vanilife.ui.Language;
-import net.azisaba.vanilife.user.subscription.RichEmoteSubscription;
+import net.azisaba.vanilife.user.subscription.RichEmote;
 import net.azisaba.vanilife.util.Afk;
 import net.azisaba.vanilife.util.ChatFilter;
 import net.azisaba.vanilife.util.SqlUtility;
@@ -83,6 +86,7 @@ public final class Vanilife extends JavaPlugin
     public static final SimpleDateFormat sdf5 = new SimpleDateFormat("yyMMddHHmmss");
 
     public static final Pattern pattern1 = Pattern.compile("^\\d{4}/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])$");
+    public static final Pattern pattern2 = Pattern.compile("^[a-z0-9]{3,32}$");
 
     public static final OkHttpClient httpclient = new OkHttpClient();
 
@@ -111,6 +115,9 @@ public final class Vanilife extends JavaPlugin
 
     public static final int MOLA_PLOT_NEW = 150;
     public static final int MOLA_PLOT_CLAIM = 60;
+    public static final int MOLA_TPR = 2;
+    public static final int MOLA_RTP = 6;
+    public static final int MOLA_PTP = 6;
 
     public static String METUBOT_SERVER;
     public static UUID METUBOT_PROVIDER;
@@ -192,17 +199,20 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        this.getServer().getPluginManager().registerEvents(new RedstoneListener(), this);
         this.getServer().getPluginManager().registerEvents(new VanilifeEntityListener(), this);
 
         this.getServer().getPluginManager().registerEvents(new Afk(), this);
         this.getServer().getPluginManager().registerEvents(new Paint(), this);
-        this.getServer().getPluginManager().registerEvents(new RichEmoteSubscription(), this);
+        this.getServer().getPluginManager().registerEvents(new RichEmote(), this);
 
+        this.getCommand("accept").setExecutor(new AcceptCommand());
         this.getCommand("alert").setExecutor(new AlertCommand());
         this.getCommand("block").setExecutor(new BlockCommand());
         this.getCommand("chat").setExecutor(new net.azisaba.vanilife.command.ChatCommand());
         this.getCommand("/chat").setExecutor(new net.azisaba.vanilife.command.chat.ChatCommand());
         this.getCommand("checkout").setExecutor(new CheckoutCommand());
+        this.getCommand("domain").setExecutor(new DomainCommand());
         this.getCommand("emote").setExecutor(new EmoteCommand());
         this.getCommand("enderchest").setExecutor(new EnderChestCommand());
         this.getCommand("feedback").setExecutor(new FeedbackCommand());
@@ -224,6 +234,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("poll").setExecutor(new PollCommand());
         this.getCommand("profile").setExecutor(new ProfileCommand());
         this.getCommand("ptp").setExecutor(new PtpCommand());
+        this.getCommand("referral").setExecutor(new ReferralCommand());
         this.getCommand("realname").setExecutor(new RealNameCommand());
         this.getCommand("report").setExecutor(new ReportCommand());
         this.getCommand("review").setExecutor(new ReviewCommand());
@@ -233,7 +244,9 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("settings").setExecutor(new SettingsCommand());
         this.getCommand("skin").setExecutor(new SkinCommand());
         this.getCommand("store").setExecutor(new StoreCommand());
+        this.getCommand("su").setExecutor(new SuCommand());
         this.getCommand("subscribe").setExecutor(new SubscribeCommand());
+        this.getCommand("sudo").setExecutor(new SudoCommand());
         this.getCommand("togglechat").setExecutor(new ToggleChatCommand());
         this.getCommand("tpa").setExecutor(new TpaCommand());
         this.getCommand("tpr").setExecutor(new TprCommand());
@@ -249,6 +262,7 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("wallet").setExecutor(new WalletCommand());
         this.getCommand("warn").setExecutor(new WarnCommand());
         this.getCommand("watch").setExecutor(new WatchCommand());
+        this.getCommand("web").setExecutor(new WebCommand());
         this.getCommand("wiki").setExecutor(new WikiCommand());
         this.getCommand("world").setExecutor(new WorldCommand());
         this.getCommand("worlds").setExecutor(new WorldsCommand());
@@ -299,7 +313,7 @@ public final class Vanilife extends JavaPlugin
         new PlayerListRunnable().runTaskTimer(this, 0L, 8L);
         new PlayingRewardRunnable().runTask(this);
         new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 8);
-        new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 20);
+        new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 17);
         new VoiceChatRunnable().runTaskTimerAsynchronously(this, 0L, 20L * 2);
 
         Plugin coreprotectPlugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
@@ -324,9 +338,30 @@ public final class Vanilife extends JavaPlugin
         ShapedRecipe elytraRecipe = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA));
         elytraRecipe.shape("PNP", "PWP", "P P");
         elytraRecipe.setIngredient('P', Material.PHANTOM_MEMBRANE);
-        elytraRecipe.setIngredient('N', Material.NETHERITE_INGOT);
+        elytraRecipe.setIngredient('N', Material.NETHER_STAR);
         elytraRecipe.setIngredient('W', Material.WIND_CHARGE);
         Bukkit.addRecipe(elytraRecipe);
+
+        ShapedRecipe messageRecipe = new ShapedRecipe(new NamespacedKey(this, "gimmick.message"), MessageGimmick.getItemStack());
+        messageRecipe.shape("RBR", "BNB", "RBR");
+        messageRecipe.setIngredient('R', Material.REDSTONE);
+        messageRecipe.setIngredient('N', Material.NETHER_STAR);
+        messageRecipe.setIngredient('B', Material.WRITABLE_BOOK);
+        Bukkit.addRecipe(messageRecipe);
+
+        ShapedRecipe titleRecipe = new ShapedRecipe(new NamespacedKey(this, "gimmick.title"), TitleGimmick.getItemStack());
+        titleRecipe.shape("RPR", "PNP", "RPR");
+        titleRecipe.setIngredient('R', Material.REDSTONE);
+        titleRecipe.setIngredient('N', Material.NETHER_STAR);
+        titleRecipe.setIngredient('P', Material.PAINTING);
+        Bukkit.addRecipe(titleRecipe);
+
+        ShapedRecipe soundRecipe = new ShapedRecipe(new NamespacedKey(this, "gimmick.sound"), SoundGimmick.getItemStack());
+        soundRecipe.shape("RSR", "SNS", "RSR");
+        soundRecipe.setIngredient('R', Material.REDSTONE);
+        soundRecipe.setIngredient('N', Material.NETHER_STAR);
+        soundRecipe.setIngredient('S', Material.NOTE_BLOCK);
+        Bukkit.addRecipe(soundRecipe);
     }
 
     @Override
