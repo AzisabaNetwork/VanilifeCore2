@@ -44,7 +44,7 @@ public class SadnessEmote implements Emote
     @Override
     public int getCost()
     {
-        return 120;
+        return 90;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class CreeperEmote implements Emote
     @Override
     public int getCost()
     {
-        return 140;
+        return 80;
     }
 
     @Override

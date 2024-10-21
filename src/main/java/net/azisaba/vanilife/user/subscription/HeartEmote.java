@@ -42,7 +42,7 @@ public class HeartEmote implements Emote
     @Override
     public int getCost()
     {
-        return 140;
+        return 90;
     }
 
     @Override

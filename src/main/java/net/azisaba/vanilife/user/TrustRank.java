@@ -10,7 +10,7 @@ public enum TrustRank
     NEW(1, "New", TextColor.color(22, 120, 255), 9),
     USER(2, "User", TextColor.color(42, 207, 91), 25),
     KNOWN(3, "Known", TextColor.color(255, 123, 66), 140),
-    TRUSTED(4, "Trusted", TextColor.color(129, 67, 230), 240);
+    TRUSTED(4, "Trusted", TextColor.color(129, 67, 230), 300);
 
     private final int level;
     private final String name;

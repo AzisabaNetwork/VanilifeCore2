@@ -624,7 +624,7 @@ public class User
     {
         Player player = this.asPlayer();
 
-        if (Vanilife.random.nextDouble() < 0.02)
+        if (Vanilife.random.nextDouble() < 0.05)
         {
             this.setTrust(this.getTrust() + 1);
         }
@@ -675,7 +675,7 @@ public class User
     {
         TrustRank oldRank = this.getTrustRank();
 
-        this.trust = Math.min(Math.max(trust, 0), 150);
+        this.trust = Math.min(Math.max(trust, 0), TrustRank.TRUSTED.getRequired() + 10);
 
         try
         {

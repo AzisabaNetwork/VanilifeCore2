@@ -44,7 +44,7 @@ public class ThinkingEmote implements Emote
     @Override
     public int getCost()
     {
-        return 150;
+        return 90;
     }
 
     @Override

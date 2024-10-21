@@ -54,7 +54,7 @@ public class FireworkEmote implements Emote, Listener
     @Override
     public int getCost()
     {
-        return 160;
+        return 100;
     }
 
     private @NotNull Color getColor()

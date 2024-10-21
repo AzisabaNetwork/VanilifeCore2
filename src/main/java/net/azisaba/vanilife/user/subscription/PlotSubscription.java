@@ -49,7 +49,7 @@ public class PlotSubscription implements ISubscription
     @Override
     public int getCost()
     {
-        return this.plot.getChunks().size() * 40;
+        return this.plot.getChunks().size() * 20;
     }
 
     public Plot getPlot()

@@ -33,6 +33,6 @@ public class NeonSubscription implements ISubscription
     @Override
     public int getCost()
     {
-        return 298;
+        return 100;
     }
 }

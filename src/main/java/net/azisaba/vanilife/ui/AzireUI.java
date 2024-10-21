@@ -131,7 +131,7 @@ public class AzireUI extends ChestUI
 
         if (event.getSlot() == 50)
         {
-            if (user.getMola() < 150)
+            if (user.getMola() < Vanilife.MOLA_AZIRE)
             {
                 this.player.sendMessage(Language.translate("msg.shortage", this.player, "need=" + (150 - user.getMola())).color(NamedTextColor.RED));
                 this.player.playSound(this.player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);

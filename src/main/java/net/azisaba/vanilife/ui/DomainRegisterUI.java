@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.ui;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.aww.Domain;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.user.request.SubdomainIssuanceRequest;
@@ -40,7 +41,7 @@ public class DomainRegisterUI extends AnvilUI
             return;
         }
 
-        if (user.getMola() < 400 && domain.contains("."))
+        if (user.getMola() < Vanilife.MOLA_DOMAIN && domain.contains("."))
         {
             player.sendMessage(Language.translate("msg.shortage", player, "need=" + (400 - user.getMola())).color(NamedTextColor.RED));
             player.closeInventory();

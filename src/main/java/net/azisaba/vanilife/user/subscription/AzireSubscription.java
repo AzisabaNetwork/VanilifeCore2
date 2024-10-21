@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.user.subscription;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.aww.WebPage;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
@@ -41,7 +42,7 @@ public class AzireSubscription implements ISubscription
     @Override
     public int getCost()
     {
-        return 100;
+        return Vanilife.MOLA_AZIRE;
     }
 
     @Override

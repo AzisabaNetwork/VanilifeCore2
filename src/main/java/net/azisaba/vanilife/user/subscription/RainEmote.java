@@ -43,7 +43,7 @@ public class RainEmote implements Emote
     @Override
     public int getCost()
     {
-        return 120;
+        return 80;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.azisaba.vanilife.user.subscription;
 
+import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.aww.Domain;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
@@ -41,7 +42,7 @@ public class DomainSubscription implements ISubscription
     @Override
     public int getCost()
     {
-        return 400;
+        return Vanilife.MOLA_DOMAIN;
     }
 
     public @NotNull Domain getDomain()

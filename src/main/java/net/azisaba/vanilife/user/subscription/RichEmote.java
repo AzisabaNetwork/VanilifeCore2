@@ -52,7 +52,7 @@ public class RichEmote implements Emote, Listener
     @Override
     public int getCost()
     {
-        return 180;
+        return 120;
     }
 
     @EventHandler
