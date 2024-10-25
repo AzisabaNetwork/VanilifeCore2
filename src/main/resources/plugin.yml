@@ -180,6 +180,9 @@ commands:
     usage: /trash
     aliases:
       - gomi
+  trickortreat:
+    description: Trick or Treat!
+    usage: /trickortreat
   tutorial:
     description: Start Tutorial.
     usage: /tutorial

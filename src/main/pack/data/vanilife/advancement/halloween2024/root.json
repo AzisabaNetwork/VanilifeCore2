@@ -1,0 +1,19 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:jack_o_lantern"
+    },
+    "title": "ハロウィン！",
+    "description": "アンダーワールドに迷い込む",
+    "background": "minecraft:textures/block/soul_sand.png",
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "enter_underworld": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "vanilife:underworld"
+      }
+    }
+  }
+}

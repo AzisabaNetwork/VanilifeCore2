@@ -3,6 +3,7 @@ package net.azisaba.vanilife.entity;
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import net.azisaba.vanilife.Vanilife;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,11 +31,7 @@ public class VanilifeEntityListener implements Listener
     @EventHandler
     public void onEntityAddToWorld(EntityAddToWorldEvent event) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        if (! (event.getEntity() instanceof LivingEntity entity))
-        {
-            return;
-        }
-
+        Entity entity = event.getEntity();
         NamespacedKey key = new NamespacedKey(Vanilife.getPlugin(), "name");
 
         if (! entity.getPersistentDataContainer().has(key))
@@ -49,6 +46,6 @@ public class VanilifeEntityListener implements Listener
             entity.remove();
         }
 
-        clazz.getConstructor(LivingEntity.class).newInstance(entity);
+        clazz.getConstructor(Entity.class).newInstance(entity);
     }
 }

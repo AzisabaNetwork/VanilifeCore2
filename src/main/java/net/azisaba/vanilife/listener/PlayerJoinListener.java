@@ -488,7 +488,7 @@ public class PlayerJoinListener implements Listener
         VanilifeWorld latest = VanilifeWorld.getInstance(VanilifeWorldManager.getLatestVersion());
         Housing housing = Housing.getInstance(player.getLocation());
 
-        if (housing != null && ! housing.canVisit(user) && latest != null)
+        if (((housing != null && ! housing.canVisit(user)) || player.getWorld().equals(VanilifeWorldManager.getUnderworld())) && latest != null)
         {
             player.teleport(latest.getLocation(player));
             return;

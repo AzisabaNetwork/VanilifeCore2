@@ -52,6 +52,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import okhttp3.OkHttpClient;
 import org.bukkit.Bukkit;
@@ -59,14 +60,19 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -151,6 +157,18 @@ public final class Vanilife extends JavaPlugin
         return Vanilife.coreprotect;
     }
 
+    public static ItemStack getEnchantedRottenFlesh()
+    {
+        ItemStack enchantedRottenFleshStack = new ItemStack(Material.ROTTEN_FLESH);
+        ItemMeta enchantedRottenFleshMeta = enchantedRottenFleshStack.getItemMeta();
+        enchantedRottenFleshMeta.displayName(Component.text("エンチャントされた腐った肉").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        enchantedRottenFleshMeta.lore(List.of(Component.text("魔女の素材").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
+        enchantedRottenFleshMeta.addEnchant(Enchantment.INFINITY, 1, false);
+        enchantedRottenFleshMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        enchantedRottenFleshStack.setItemMeta(enchantedRottenFleshMeta);
+        return enchantedRottenFleshStack;
+    }
+
     public static void sendExceptionReport(@NotNull Exception exception)
     {
         if (Vanilife.CHANNEL_CONSOLE == null)
@@ -195,13 +213,15 @@ public final class Vanilife extends JavaPlugin
         this.getComponentLogger().info(Component.text("   azisaba.net").color(NamedTextColor.DARK_GRAY));
         this.getComponentLogger().info(Component.text("   "));
 
-        this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
         this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
+        this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
+        this.getServer().getPluginManager().registerEvents(new GatewayListener(), this);
         this.getServer().getPluginManager().registerEvents(new HousingListener(), this);
         this.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         this.getServer().getPluginManager().registerEvents(new RedstoneListener(), this);
+        this.getServer().getPluginManager().registerEvents(new UnderworldListener(), this);
         this.getServer().getPluginManager().registerEvents(new VanilifeEntityListener(), this);
 
         this.getServer().getPluginManager().registerEvents(new Afk(), this);
@@ -312,7 +332,7 @@ public final class Vanilife extends JavaPlugin
         new ObjectiveRunnable().runTaskTimer(this, 0L, 10L);
         new HousingAfkRunnable().runTaskTimer(this, 0L, 5L);
         new NightCheckRunnable().runTaskTimer(this, 0L, 20L);
-        new PlayerListRunnable().runTaskTimer(this, 0L, 8L);
+        new PlayerListRunnable().runTaskTimer(this, 0L, 7L);
         new PlayingRewardRunnable().runTask(this);
         new ReviewRunnable().runTaskTimer(this, 0L, 20L * 60 * 8);
         new TrustRunnable().runTaskTimer(this, 0L, 20L * 60 * 17);
@@ -340,7 +360,7 @@ public final class Vanilife extends JavaPlugin
         ShapedRecipe elytraRecipe = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA));
         elytraRecipe.shape("PNP", "PWP", "P P");
         elytraRecipe.setIngredient('P', Material.PHANTOM_MEMBRANE);
-        elytraRecipe.setIngredient('N', Material.NETHER_STAR);
+        elytraRecipe.setIngredient('N', Material.NETHERITE_INGOT);
         elytraRecipe.setIngredient('W', Material.WIND_CHARGE);
         Bukkit.addRecipe(elytraRecipe);
 
@@ -364,6 +384,10 @@ public final class Vanilife extends JavaPlugin
         soundRecipe.setIngredient('N', Material.NETHER_STAR);
         soundRecipe.setIngredient('S', Material.NOTE_BLOCK);
         Bukkit.addRecipe(soundRecipe);
+
+        ShapelessRecipe enchantedRottenFleshRecipe = new ShapelessRecipe(new NamespacedKey(this, "enchanted_rotten_flesh"), Vanilife.getEnchantedRottenFlesh());
+        enchantedRottenFleshRecipe.addIngredient(9, Material.ROTTEN_FLESH);
+        Bukkit.addRecipe(enchantedRottenFleshRecipe);
     }
 
     @Override
@@ -375,6 +399,8 @@ public final class Vanilife extends JavaPlugin
         Bukkit.getOnlinePlayers().forEach(player -> player.kick(Component.text("サーバーを停止しています").color(NamedTextColor.RED)));
         VanilifeWorld.getInstances().forEach(w -> w.getWorlds().forEach(World::save));
         Housing.getWorld().save();
+        VanilifeWorldManager.getJail().save();
+        VanilifeWorldManager.getUnderworld().save();
 
         if (Vanilife.jda != null)
         {

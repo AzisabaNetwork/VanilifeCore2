@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import org.bukkit.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -51,6 +50,11 @@ public class VanilifeWorldManager
     public static @NotNull World getJail()
     {
         return VanilifeWorldManager.jail;
+    }
+
+    public static World getUnderworld()
+    {
+        return Bukkit.getWorld(new NamespacedKey(Vanilife.getPlugin(), "underworld"));
     }
 
     public static boolean hasUpdate()

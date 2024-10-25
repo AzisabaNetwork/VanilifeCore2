@@ -1,0 +1,62 @@
+{
+  "structures": [
+    {
+      "structure": "vanilife:bakery",
+      "weight": 3
+    },
+    {
+      "structure": "vanilife:fountain",
+      "weight": 2
+    },
+    {
+      "structure": "vanilife:graveyard",
+      "weight": 2
+    },
+    {
+      "structure": "vanilife:haunted_house",
+      "weight": 1
+    },
+    {
+      "structure": "vanilife:hut",
+      "weight": 3
+    },
+    {
+      "structure": "vanilife:jack_o_lantern",
+      "weight": 4
+    },
+    {
+      "structure": "vanilife:outpost",
+      "weight": 3
+    },
+    {
+      "structure": "vanilife:pumpkin",
+      "weight": 5
+    },
+    {
+      "structure": "vanilife:pumpkin_carriage",
+      "weight": 3
+    },
+    {
+      "structure": "vanilife:pumpkin_house",
+      "weight": 3
+    },
+    {
+      "structure": "vanilife:tower",
+      "weight": 3
+    },
+    {
+      "structure": "vanilife:tree",
+      "weight": 6
+    },
+    {
+      "structure": "vanilife:witch_house",
+      "weight": 3
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 8,
+    "separation": 5,
+    "salt": 1646207470
+  }
+}

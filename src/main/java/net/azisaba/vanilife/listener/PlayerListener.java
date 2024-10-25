@@ -253,6 +253,11 @@ public class PlayerListener implements Listener
             return;
         }
 
+        if (player.getWorld().equals(VanilifeWorldManager.getUnderworld()))
+        {
+            return;
+        }
+
         Location respawn = player.getRespawnLocation();
 
         if (respawn != null)
