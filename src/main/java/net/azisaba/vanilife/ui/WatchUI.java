@@ -82,7 +82,7 @@ public class WatchUI extends ChestUI
 
                 User target = User.getInstance(p);
 
-                meta.displayName(target.getName().decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+                meta.displayName(Component.text(target.getPlaneName()).decoration(TextDecoration.ITALIC, false));
 
                 meta.lore(List.of(Component.text("Trust Rank: ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                                 .append(Component.text(target.getTrustRank().getName()).color(target.getTrustRank().getColor()))

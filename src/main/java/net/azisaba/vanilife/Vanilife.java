@@ -340,7 +340,7 @@ public final class Vanilife extends JavaPlugin
         ShapedRecipe elytraRecipe = new ShapedRecipe(new NamespacedKey(this, "elytra"), new ItemStack(Material.ELYTRA));
         elytraRecipe.shape("PNP", "PWP", "P P");
         elytraRecipe.setIngredient('P', Material.PHANTOM_MEMBRANE);
-        elytraRecipe.setIngredient('N', Material.NETHER_STAR);
+        elytraRecipe.setIngredient('N', Material.NETHERITE_INGOT);
         elytraRecipe.setIngredient('W', Material.WIND_CHARGE);
         Bukkit.addRecipe(elytraRecipe);
 
