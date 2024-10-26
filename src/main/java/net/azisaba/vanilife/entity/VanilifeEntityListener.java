@@ -43,6 +43,7 @@ public class VanilifeEntityListener implements Listener
         if (clazz == null)
         {
             entity.remove();
+            return;
         }
 
         clazz.getConstructor(entity.getClass()).newInstance(entity);
