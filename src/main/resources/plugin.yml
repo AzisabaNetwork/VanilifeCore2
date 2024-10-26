@@ -203,9 +203,15 @@ commands:
   unwatch:
     description: Disable Watch mode.
     usage: /unwatch
+  vgive:
+    description: Gives any Vanilife item.
+    usage: /vgive <player> <item> [amount]
   vote:
     description: Vote for any option.
     usage: /vote <poll> <option>
+  vsummon:
+    description: Summons any Vanilife entity.
+    usage: /vsummon <entity>
   wallet:
     description: Mola Management and Display.
     usage: /wallet [skill] [args…]

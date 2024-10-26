@@ -3,7 +3,7 @@ package net.azisaba.vanilife.entity;
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import net.azisaba.vanilife.Vanilife;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -16,7 +16,7 @@ public class VanilifeEntityListener implements Listener
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event)
     {
-        VanilifeEntity entity = VanilifeEntity.getInstance(event.getEntity());
+        VanilifeEntity<?> entity = VanilifeEntity.getInstance(event.getEntity());
 
         if (entity == null)
         {
@@ -30,11 +30,7 @@ public class VanilifeEntityListener implements Listener
     @EventHandler
     public void onEntityAddToWorld(EntityAddToWorldEvent event) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        if (! (event.getEntity() instanceof LivingEntity entity))
-        {
-            return;
-        }
-
+        Entity entity = event.getEntity();
         NamespacedKey key = new NamespacedKey(Vanilife.getPlugin(), "name");
 
         if (! entity.getPersistentDataContainer().has(key))
@@ -42,13 +38,13 @@ public class VanilifeEntityListener implements Listener
             return;
         }
 
-        Class<? extends VanilifeEntity> clazz = VanilifeEntities.registry.get(entity.getPersistentDataContainer().get(key, PersistentDataType.STRING));
+        Class<? extends VanilifeEntity<?>> clazz = VanilifeEntities.registry.get(entity.getPersistentDataContainer().get(key, PersistentDataType.STRING));
 
         if (clazz == null)
         {
             entity.remove();
         }
 
-        clazz.getConstructor(LivingEntity.class).newInstance(entity);
+        clazz.getConstructor(entity.getClass()).newInstance(entity);
     }
 }

@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.EntityEquipment;
@@ -18,25 +19,25 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class VanilifeEntity implements IVanilifeEntity
+public abstract class VanilifeEntity<E extends Entity> implements IVanilifeEntity
 {
-    private static final List<VanilifeEntity> instances = new ArrayList<>();
+    protected static final List<VanilifeEntity<?>> instances = new ArrayList<>();
 
-    public static VanilifeEntity getInstance(UUID id)
+    public static VanilifeEntity<?> getInstance(UUID id)
     {
-        List<VanilifeEntity> filteredInstances = VanilifeEntity.instances.stream().filter(i -> i.asEntity().getUniqueId().equals(id)).toList();
+        List<VanilifeEntity<?>> filteredInstances = VanilifeEntity.instances.stream().filter(i -> i.asEntity().getUniqueId().equals(id)).toList();
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    public static VanilifeEntity getInstance(LivingEntity entity)
+    public static VanilifeEntity<?> getInstance(Entity entity)
     {
         return VanilifeEntity.getInstance(entity.getUniqueId());
     }
 
-    protected final LivingEntity entity;
+    protected final E entity;
     protected final Random random = Vanilife.random;
 
-    public VanilifeEntity(@NotNull LivingEntity entity)
+    public VanilifeEntity(@NotNull E entity)
     {
         if (entity.getType() != this.getType())
         {
@@ -50,7 +51,7 @@ public abstract class VanilifeEntity implements IVanilifeEntity
 
     public VanilifeEntity(@NotNull Location location)
     {
-        this.entity = (LivingEntity) location.getWorld().spawnEntity(location, this.getType());
+        this.entity = (E) location.getWorld().spawnEntity(location, this.getType());
 
         PersistentDataContainer container = this.entity.getPersistentDataContainer();
         container.set(new NamespacedKey(Vanilife.getPlugin(), "name"), PersistentDataType.STRING, this.getName());
@@ -61,7 +62,12 @@ public abstract class VanilifeEntity implements IVanilifeEntity
     @Override
     public void setScale(double scale)
     {
-        AttributeInstance attribute = this.entity.getAttribute(Attribute.GENERIC_SCALE);
+        if (! (this.entity instanceof LivingEntity living))
+        {
+            return;
+        }
+
+        AttributeInstance attribute = living.getAttribute(Attribute.GENERIC_SCALE);
 
         if (attribute == null)
         {
@@ -71,11 +77,26 @@ public abstract class VanilifeEntity implements IVanilifeEntity
         attribute.setBaseValue(scale);
     }
 
+    public boolean isLivingEntity()
+    {
+        return this.asLivingEntity() != null;
+    }
+
     protected void onDeath(@NotNull EntityDeathEvent event) {}
 
-    public @NotNull LivingEntity asEntity()
+    public @NotNull E asEntity()
     {
         return this.entity;
+    }
+
+    public LivingEntity asLivingEntity()
+    {
+        if (this.entity instanceof LivingEntity living)
+        {
+            return living;
+        }
+
+        return null;
     }
 
     protected void init()
@@ -83,8 +104,7 @@ public abstract class VanilifeEntity implements IVanilifeEntity
         VanilifeEntity.instances.add(this);
 
         this.entity.customName(this.getDisplayName());
-        this.entity.setCustomNameVisible(true);
-        this.entity.setSilent(true);
+        this.entity.setCustomNameVisible(this.getDisplayName() != null);
 
         this.setScale(this.getScale());
 
@@ -99,7 +119,10 @@ public abstract class VanilifeEntity implements IVanilifeEntity
                     return;
                 }
 
-                VanilifeEntity.this.tick();
+                if (! VanilifeEntity.this.entity.isInvisible())
+                {
+                    VanilifeEntity.this.tick();
+                }
             }
         }.runTaskTimer(Vanilife.getPlugin(), 0L, this.getPeriod());
     }
@@ -107,7 +130,12 @@ public abstract class VanilifeEntity implements IVanilifeEntity
     @Override
     public void tick()
     {
-        EntityEquipment equipment = this.entity.getEquipment();
+        if (! (this.entity instanceof LivingEntity living))
+        {
+            return;
+        }
+
+        EntityEquipment equipment = living.getEquipment();
 
         if (equipment == null)
         {

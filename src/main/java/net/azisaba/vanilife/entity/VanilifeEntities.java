@@ -4,5 +4,5 @@ import net.azisaba.vanilife.util.Registry;
 
 public class VanilifeEntities
 {
-    public static final Registry<Class<? extends VanilifeEntity>> registry = new Registry<>();
+    public static final Registry<Class<? extends VanilifeEntity<?>>> registry = new Registry<>();
 }
