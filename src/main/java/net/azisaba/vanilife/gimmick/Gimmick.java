@@ -9,6 +9,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,46 +55,35 @@ public abstract class Gimmick implements IGimmick
         return this.block.getLocation();
     }
 
-    protected void write(@NotNull String key, @NotNull String value)
+    public void write(@NotNull String key, Serializable value)
     {
-        this.getLocation().getWorld().getPersistentDataContainer()
-                .set(new NamespacedKey(Vanilife.getPlugin(), this.address + key), PersistentDataType.STRING, value);
+        switch (value)
+        {
+            case Byte b -> this.write(key, b, PersistentDataType.BYTE);
+            case Short s -> this.write(key, s, PersistentDataType.SHORT);
+            case Integer i -> this.write(key, i, PersistentDataType.INTEGER);
+            case Long l -> this.write(key, l, PersistentDataType.LONG);
+            case Float f -> this.write(key, f, PersistentDataType.FLOAT);
+            case Double d -> this.write(key, d, PersistentDataType.DOUBLE);
+            case Boolean b -> this.write(key, b, PersistentDataType.BOOLEAN);
+            case String s -> this.write(key, s, PersistentDataType.STRING);
+            case null -> this.write(key, null, PersistentDataType.STRING);
+            default -> throw new RuntimeException(value.getClass().getName() + " is an unsupported data type.");
+        }
     }
 
-    protected void write(@NotNull String key, boolean value)
+    protected <P, C> void write(@NotNull String key, C value, @NotNull PersistentDataType<P, C> type)
     {
-        this.getLocation().getWorld().getPersistentDataContainer()
-                .set(new NamespacedKey(Vanilife.getPlugin(), this.address + key), PersistentDataType.BOOLEAN, value);
-    }
+        PersistentDataContainer container = this.getLocation().getWorld().getPersistentDataContainer();
+        NamespacedKey namespacedKey = new NamespacedKey(Vanilife.getPlugin(), this.address + key);
 
-    protected void write(@NotNull String key, short value)
-    {
-        this.getLocation().getWorld().getPersistentDataContainer()
-                .set(new NamespacedKey(Vanilife.getPlugin(), this.address + key), PersistentDataType.SHORT, value);
-    }
+        if (value == null)
+        {
+            container.remove(namespacedKey);
+            return;
+        }
 
-    protected void write(@NotNull String key, int value)
-    {
-        this.getLocation().getWorld().getPersistentDataContainer()
-                .set(new NamespacedKey(Vanilife.getPlugin(), this.address + key), PersistentDataType.INTEGER, value);
-    }
-
-    protected void write(@NotNull String key, long value)
-    {
-        this.getLocation().getWorld().getPersistentDataContainer()
-                .set(new NamespacedKey(Vanilife.getPlugin(), this.address + key), PersistentDataType.LONG, value);
-    }
-
-    protected void write(@NotNull String key, float value)
-    {
-        this.getLocation().getWorld().getPersistentDataContainer()
-                .set(new NamespacedKey(Vanilife.getPlugin(), this.address + key), PersistentDataType.FLOAT, value);
-    }
-
-    protected void write(@NotNull String key, double value)
-    {
-        this.getLocation().getWorld().getPersistentDataContainer()
-                .set(new NamespacedKey(Vanilife.getPlugin(), this.address + key), PersistentDataType.DOUBLE, value);
+        container.set(namespacedKey, type, value);
     }
 
     protected  <P, C> C read(@NotNull String key, PersistentDataType<P, C> type)
@@ -101,39 +91,44 @@ public abstract class Gimmick implements IGimmick
         return this.getLocation().getWorld().getPersistentDataContainer().get(new NamespacedKey(Vanilife.getPlugin(), this.address + key), type);
     }
 
-    protected String readString(@NotNull String key)
+    protected byte readByte(@NotNull String key)
     {
-        return this.read(key, PersistentDataType.STRING);
+        return this.read(key, PersistentDataType.BYTE);
     }
 
-    protected Boolean readBoolean(@NotNull String key)
-    {
-        return this.read(key, PersistentDataType.BOOLEAN);
-    }
-
-    protected Short readShort(@NotNull String key)
+    protected short readShort(@NotNull String key)
     {
         return this.read(key, PersistentDataType.SHORT);
     }
 
-    protected Integer readInt(@NotNull String key)
+    protected int readInteger(@NotNull String key)
     {
         return this.read(key, PersistentDataType.INTEGER);
     }
 
-    protected Long readLong(@NotNull String key)
+    protected long readLong(@NotNull String key)
     {
         return this.read(key, PersistentDataType.LONG);
     }
 
-    protected Float readFloat(@NotNull String key)
+    protected float readFloat(@NotNull String key)
     {
         return this.read(key, PersistentDataType.FLOAT);
     }
 
-    protected Double readDouble(@NotNull String key)
+    protected double readDouble(@NotNull String key)
     {
         return this.read(key, PersistentDataType.DOUBLE);
+    }
+
+    protected boolean readBoolean(@NotNull String key)
+    {
+        return this.read(key, PersistentDataType.BOOLEAN);
+    }
+
+    protected String readString(@NotNull String key)
+    {
+        return this.read(key, PersistentDataType.STRING);
     }
 
     public void kill()

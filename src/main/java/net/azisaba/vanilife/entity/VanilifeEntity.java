@@ -19,25 +19,25 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class VanilifeEntity implements IVanilifeEntity
+public abstract class VanilifeEntity<E extends Entity> implements IVanilifeEntity
 {
-    protected static final List<VanilifeEntity> instances = new ArrayList<>();
+    protected static final List<VanilifeEntity<?>> instances = new ArrayList<>();
 
-    public static VanilifeEntity getInstance(UUID id)
+    public static VanilifeEntity<?> getInstance(UUID id)
     {
-        List<VanilifeEntity> filteredInstances = VanilifeEntity.instances.stream().filter(i -> i.asEntity().getUniqueId().equals(id)).toList();
+        List<VanilifeEntity<?>> filteredInstances = VanilifeEntity.instances.stream().filter(i -> i.asEntity().getUniqueId().equals(id)).toList();
         return filteredInstances.isEmpty() ? null : filteredInstances.getFirst();
     }
 
-    public static VanilifeEntity getInstance(Entity entity)
+    public static VanilifeEntity<?> getInstance(Entity entity)
     {
         return VanilifeEntity.getInstance(entity.getUniqueId());
     }
 
-    protected final Entity entity;
+    protected final E entity;
     protected final Random random = Vanilife.random;
 
-    public VanilifeEntity(@NotNull Entity entity)
+    public VanilifeEntity(@NotNull E entity)
     {
         if (entity.getType() != this.getType())
         {
@@ -51,7 +51,7 @@ public abstract class VanilifeEntity implements IVanilifeEntity
 
     public VanilifeEntity(@NotNull Location location)
     {
-        this.entity = location.getWorld().spawnEntity(location, this.getType());
+        this.entity = (E) location.getWorld().spawnEntity(location, this.getType());
 
         PersistentDataContainer container = this.entity.getPersistentDataContainer();
         container.set(new NamespacedKey(Vanilife.getPlugin(), "name"), PersistentDataType.STRING, this.getName());
@@ -77,9 +77,14 @@ public abstract class VanilifeEntity implements IVanilifeEntity
         attribute.setBaseValue(scale);
     }
 
+    public boolean isLivingEntity()
+    {
+        return this.asLivingEntity() != null;
+    }
+
     protected void onDeath(@NotNull EntityDeathEvent event) {}
 
-    public @NotNull Entity asEntity()
+    public @NotNull E asEntity()
     {
         return this.entity;
     }
@@ -99,7 +104,7 @@ public abstract class VanilifeEntity implements IVanilifeEntity
         VanilifeEntity.instances.add(this);
 
         this.entity.customName(this.getDisplayName());
-        this.entity.setCustomNameVisible(true);
+        this.entity.setCustomNameVisible(this.getDisplayName() != null);
 
         this.setScale(this.getScale());
 

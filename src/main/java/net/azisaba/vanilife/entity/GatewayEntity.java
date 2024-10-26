@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class GatewayEntity extends VanilifeEntity
+public class GatewayEntity extends VanilifeEntity<ItemDisplay>
 {
-    public GatewayEntity(@NotNull Entity entity)
+    public GatewayEntity(@NotNull ItemDisplay entity)
     {
         super(entity);
 
@@ -34,7 +34,7 @@ public class GatewayEntity extends VanilifeEntity
     {
         super.init();
 
-        ItemDisplay entity = (ItemDisplay) this.entity;
+        ItemDisplay entity = this.entity;
         entity.setCustomNameVisible(false);
         entity.setItemStack(new ItemStack(Material.SLIME_BLOCK));
         entity.setTicksLived(Integer.MAX_VALUE);

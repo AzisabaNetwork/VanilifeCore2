@@ -25,6 +25,7 @@ import net.azisaba.vanilife.gimmick.TitleGimmick;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.housing.HousingListener;
+import net.azisaba.vanilife.item.VanilifeItemListener;
 import net.azisaba.vanilife.listener.*;
 import net.azisaba.vanilife.nkip.NightCheckRunnable;
 import net.azisaba.vanilife.runnable.*;
@@ -209,8 +210,8 @@ public final class Vanilife extends JavaPlugin
         Vanilife.version = this.getDescription().getVersion();
 
         this.getComponentLogger().info(Component.text("   "));
-        this.getComponentLogger().info(Component.text("   (*'▽')/  ばにらいふ！ ").append(Component.text("v" + Vanilife.version).color(NamedTextColor.BLUE)));
-        this.getComponentLogger().info(Component.text("   azisaba.net").color(NamedTextColor.DARK_GRAY));
+        this.getComponentLogger().info(Component.text("   Azisaba Vanilife [Version " + Vanilife.version + "]"));
+        this.getComponentLogger().info(Component.text("   Copyright (C) Azisaba Network. All rights reserved.").color(NamedTextColor.DARK_GRAY));
         this.getComponentLogger().info(Component.text("   "));
 
         this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
@@ -223,6 +224,7 @@ public final class Vanilife extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new RedstoneListener(), this);
         this.getServer().getPluginManager().registerEvents(new UnderworldListener(), this);
         this.getServer().getPluginManager().registerEvents(new VanilifeEntityListener(), this);
+        this.getServer().getPluginManager().registerEvents(new VanilifeItemListener(), this);
 
         this.getServer().getPluginManager().registerEvents(new Afk(), this);
         this.getServer().getPluginManager().registerEvents(new Paint(), this);
@@ -280,7 +282,9 @@ public final class Vanilife extends JavaPlugin
         this.getCommand("unmute").setExecutor(new UnmuteCommand());
         this.getCommand("unsubscribe").setExecutor(new UnsubscribeCommand());
         this.getCommand("unwatch").setExecutor(new UnwatchCommand());
+        this.getCommand("vgive").setExecutor(new VGiveCommand());
         this.getCommand("vote").setExecutor(new VoteCommand());
+        this.getCommand("vsummon").setExecutor(new VSummonCommand());
         this.getCommand("wallet").setExecutor(new WalletCommand());
         this.getCommand("warn").setExecutor(new WarnCommand());
         this.getCommand("watch").setExecutor(new WatchCommand());

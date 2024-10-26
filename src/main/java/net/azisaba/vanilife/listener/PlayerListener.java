@@ -290,6 +290,11 @@ public class PlayerListener implements Listener
         Player player = event.getPlayer();
         User user = User.getInstance(player);
 
+        if (Watch.isWatcher(player))
+        {
+            event.message(null);
+        }
+
         if (Vanilife.random.nextDouble() < 0.5)
         {
             user.setTrust(user.getTrust() + 1);

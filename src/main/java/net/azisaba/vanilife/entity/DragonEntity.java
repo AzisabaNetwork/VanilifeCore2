@@ -4,16 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 
-public class DragonEntity extends VanilifeEntity
+public class DragonEntity extends VanilifeEntity<EnderDragon>
 {
-    public DragonEntity(@NotNull Entity entity)
+    public DragonEntity(@NotNull EnderDragon entity)
     {
         super(entity);
     }
@@ -40,26 +39,24 @@ public class DragonEntity extends VanilifeEntity
     {
         super.tick();
 
-        EnderDragon dragon = (EnderDragon) this.entity;
-
         Player target = Bukkit.getOnlinePlayers().stream()
-                .filter(player -> player.getWorld().equals(dragon.getWorld()) && player.getGameMode() == GameMode.SURVIVAL && player.getLocation().distance(dragon.getLocation()) <= 64)
-                .min(Comparator.comparingDouble((Player p) -> p.getLocation().distance(dragon.getLocation())))
+                .filter(player -> player.getWorld().equals(this.entity.getWorld()) && player.getGameMode() == GameMode.SURVIVAL && player.getLocation().distance(this.entity.getLocation()) <= 64)
+                .min(Comparator.comparingDouble((Player p) -> p.getLocation().distance(this.entity.getLocation())))
                 .orElse(null);
 
         if (target == null)
         {
-            dragon.setPhase(EnderDragon.Phase.SEARCH_FOR_BREATH_ATTACK_TARGET);
+            this.entity.setPhase(EnderDragon.Phase.SEARCH_FOR_BREATH_ATTACK_TARGET);
             return;
         }
 
-        dragon.setTarget(target);
+        this.entity.setTarget(target);
 
-        if (dragon.getTarget() == null)
+        if (this.entity.getTarget() == null)
         {
             return;
         }
 
-        dragon.setPhase(EnderDragon.Phase.STRAFING);
+        this.entity.setPhase(EnderDragon.Phase.STRAFING);
     }
 }
