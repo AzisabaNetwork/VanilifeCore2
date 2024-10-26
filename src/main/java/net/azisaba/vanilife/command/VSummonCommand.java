@@ -2,7 +2,6 @@ package net.azisaba.vanilife.command;
 
 import net.azisaba.vanilife.entity.VanilifeEntities;
 import net.azisaba.vanilife.entity.VanilifeEntity;
-import net.azisaba.vanilife.item.VanilifeItems;
 import net.azisaba.vanilife.util.UserUtility;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -72,7 +71,7 @@ public class VSummonCommand implements CommandExecutor, TabCompleter
         }
 
         List<String> suggest = new ArrayList<>();
-        VanilifeItems.registry.values().forEach(item -> suggest.add(item.getName()));
+        VanilifeEntities.registry.values().forEach(entity -> suggest.add(entity.getName()));
         return suggest;
     }
 }
