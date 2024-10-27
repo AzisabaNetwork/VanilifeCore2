@@ -10,10 +10,14 @@
     },
     {
       "structure": "vanilife:graveyard",
-      "weight": 2
+      "weight": 3
     },
     {
       "structure": "vanilife:haunted_house",
+      "weight": 2
+    },
+    {
+      "structure": "vanilife:haunted_house_milk",
       "weight": 1
     },
     {
@@ -41,8 +45,12 @@
       "weight": 3
     },
     {
+      "structure": "vanilife:pumpkin_house_pumpkin",
+      "weight": 2
+    },
+    {
       "structure": "vanilife:tower",
-      "weight": 3
+      "weight": 1
     },
     {
       "structure": "vanilife:tree",
@@ -51,6 +59,10 @@
     {
       "structure": "vanilife:witch_house",
       "weight": 3
+    },
+    {
+      "structure": "vanilife:witch_house_sugar",
+      "weight": 2
     }
   ],
   "placement": {

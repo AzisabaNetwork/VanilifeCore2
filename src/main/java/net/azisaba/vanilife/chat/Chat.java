@@ -1,6 +1,5 @@
 package net.azisaba.vanilife.chat;
 
-import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.ui.Language;
 import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.util.ComponentUtility;
@@ -59,8 +58,6 @@ public abstract class Chat implements IChat
     public void send(@NotNull User sender, @NotNull String message)
     {
         if (! this.isMember(sender)) return;
-
-        Vanilife.filter.onChat(sender.asPlayer(), message, this);
 
         final Component body = ComponentUtility.asChat(sender.asPlayer(), message);
 

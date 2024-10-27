@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_21_R1.entity.CraftItemDisplay;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -12,9 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class GatewayEntity extends VanilifeEntity<ItemDisplay>
+public class GatewayEntity extends VanilifeEntity<CraftItemDisplay>
 {
-    public GatewayEntity(@NotNull ItemDisplay entity)
+    public GatewayEntity(@NotNull CraftItemDisplay entity)
     {
         super(entity);
 

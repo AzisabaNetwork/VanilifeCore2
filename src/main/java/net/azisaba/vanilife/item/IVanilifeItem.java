@@ -29,6 +29,4 @@ public interface IVanilifeItem
     @NotNull ItemStack asItemStack(int amount);
 
     void use(@NotNull Player player, @NotNull ItemStorage storage);
-
-    void use(@NotNull Player player, @NotNull Block block);
 }

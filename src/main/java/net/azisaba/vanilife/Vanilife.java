@@ -26,6 +26,7 @@ import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.housing.HousingAfkRunnable;
 import net.azisaba.vanilife.housing.HousingListener;
 import net.azisaba.vanilife.item.VanilifeItemListener;
+import net.azisaba.vanilife.item.VanilifeItems;
 import net.azisaba.vanilife.listener.*;
 import net.azisaba.vanilife.nkip.NightCheckRunnable;
 import net.azisaba.vanilife.runnable.*;
@@ -389,9 +390,21 @@ public final class Vanilife extends JavaPlugin
         soundRecipe.setIngredient('S', Material.NOTE_BLOCK);
         Bukkit.addRecipe(soundRecipe);
 
-        ShapelessRecipe enchantedRottenFleshRecipe = new ShapelessRecipe(new NamespacedKey(this, "enchanted_rotten_flesh"), Vanilife.getEnchantedRottenFlesh());
-        enchantedRottenFleshRecipe.addIngredient(9, Material.ROTTEN_FLESH);
-        Bukkit.addRecipe(enchantedRottenFleshRecipe);
+        ShapelessRecipe rottenRecipe = new ShapelessRecipe(new NamespacedKey(this, "enchanted_rotten_flesh"), Vanilife.getEnchantedRottenFlesh());
+        rottenRecipe.addIngredient(9, Material.ROTTEN_FLESH);
+        Bukkit.addRecipe(rottenRecipe);
+
+        ShapelessRecipe pieRecipe = new ShapelessRecipe(new NamespacedKey(this, "hw24.treat"), VanilifeItems.TREAT.asItemStack());
+        pieRecipe.addIngredient(VanilifeItems.MILK.asItemStack());
+        pieRecipe.addIngredient(VanilifeItems.PUMPKIN.asItemStack());
+        pieRecipe.addIngredient(VanilifeItems.SUGAR.asItemStack());
+        Bukkit.addRecipe(pieRecipe);
+
+        ShapedRecipe wandRecipe = new ShapedRecipe(new NamespacedKey(this, "hw24.wand"), VanilifeItems.MAGIC_WAND.asItemStack());
+        wandRecipe.shape(" T ", " S ", " S ");
+        wandRecipe.setIngredient('T', VanilifeItems.TREAT.asItemStack());
+        wandRecipe.setIngredient('S', Material.STICK);
+        Bukkit.addRecipe(wandRecipe);
     }
 
     @Override

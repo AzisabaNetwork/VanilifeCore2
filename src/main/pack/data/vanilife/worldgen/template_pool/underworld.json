@@ -38,6 +38,15 @@
       }
     },
     {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "vanilife:haunted_house_milk",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
       "weight": 3,
       "element": {
         "element_type": "minecraft:single_pool_element",
@@ -56,7 +65,7 @@
       }
     },
     {
-      "weight": 1,
+      "weight": 3,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "projection": "rigid",
@@ -79,6 +88,24 @@
         "element_type": "minecraft:single_pool_element",
         "projection": "rigid",
         "location": "vanilife:pumpkin_carriage",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "vanilife:pumpkin_house",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "vanilife:pumpkin_house_pumpkin",
         "processors": "minecraft:empty"
       }
     },
@@ -106,6 +133,15 @@
         "element_type": "minecraft:single_pool_element",
         "projection": "rigid",
         "location": "vanilife:witch_house",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "vanilife:witch_house_sugar",
         "processors": "minecraft:empty"
       }
     }

@@ -1,22 +1,21 @@
 package net.azisaba.vanilife.item;
 
+import net.azisaba.vanilife.Vanilife;
 import net.kyori.adventure.text.Component;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class VanilifeItem implements IVanilifeItem
 {
-    private final Map<String, Serializable> container = new HashMap<>();
-
     @Override
     public Component getDisplayName()
     {
@@ -53,6 +52,9 @@ public abstract class VanilifeItem implements IVanilifeItem
                 ItemFlag.HIDE_PLACED_ON,
                 ItemFlag.HIDE_UNBREAKABLE);
 
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        container.set(new NamespacedKey(Vanilife.getPlugin(), "name"), PersistentDataType.STRING, this.getName());
+
         if (this.hasEnchantment())
         {
             itemMeta.addEnchant(Enchantment.INFINITY, 1, false);
@@ -60,63 +62,6 @@ public abstract class VanilifeItem implements IVanilifeItem
 
         itemStack.setItemMeta(itemMeta);
         return itemStack;
-    }
-
-    protected void write(@NotNull String key, Serializable value)
-    {
-        if (value == null)
-        {
-            this.container.remove(key);
-            return;
-        }
-
-        this.container.put(key, value);
-    }
-
-    protected Serializable read(@NotNull String key)
-    {
-        return this.container.get(key);
-    }
-
-    protected Serializable read(@NotNull String key, @NotNull Class<? extends Serializable> type)
-    {
-        Serializable value = this.read(key);
-        return value.getClass() == type ? value : null;
-    }
-
-    protected boolean readBoolean(@NotNull String key)
-    {
-        return (Boolean) this.read(key, Boolean.class);
-    }
-
-    protected short readShort(@NotNull String key)
-    {
-        return (Short) this.read(key, Short.class);
-    }
-
-    protected int readInteger(@NotNull String key)
-    {
-        return (Integer) this.read(key, Integer.class);
-    }
-
-    protected long readLong(@NotNull String key)
-    {
-        return (Long) this.read(key, Long.class);
-    }
-
-    protected float readFloat(@NotNull String key)
-    {
-        return (Float) this.read(key, Float.class);
-    }
-
-    protected double readDouble(@NotNull String key)
-    {
-        return (Double) this.read(key, Double.class);
-    }
-
-    protected String readString(@NotNull String key)
-    {
-        return (String) this.read(key, String.class);
     }
 
     @Override

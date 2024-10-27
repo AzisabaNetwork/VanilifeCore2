@@ -6,15 +6,9 @@ import net.azisaba.vanilife.entity.DragonEntity;
 import net.azisaba.vanilife.vwm.VanilifeWorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.loot.LootTable;
 
 public class UnderworldListener implements Listener
 {
@@ -33,34 +27,12 @@ public class UnderworldListener implements Listener
             return;
         }
 
-        if (0.05 < Vanilife.random.nextDouble())
+        if (location.getWorld().getEntities().stream()
+                .anyMatch(entity -> entity.getType() == EntityType.ENDER_DRAGON && entity.getLocation().distance(location) < 500))
         {
             return;
         }
 
         Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> new DragonEntity(location.add(0, 56, 0)), 20L * 4);
-    }
-
-    @EventHandler
-    public void onLootTable(InventoryOpenEvent event)
-    {
-        Inventory inventory = event.getInventory();
-
-        if (inventory.getType() != InventoryType.CHEST)
-        {
-            return;
-        }
-
-        if (! (inventory.getHolder() instanceof Chest chest))
-        {
-            return;
-        }
-
-        LootTable table = chest.getLootTable();
-
-        if (table == null || ! table.getKey().getNamespace().equals(Vanilife.getPlugin().getName()))
-        {
-            return;
-        }
     }
 }
