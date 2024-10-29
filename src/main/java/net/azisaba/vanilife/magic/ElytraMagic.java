@@ -6,17 +6,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class DiamondMagic implements GiveMagic
+public class ElytraMagic implements GiveMagic
 {
     @Override
     public @NotNull ItemStack getItem()
     {
-        return new ItemStack(Material.DIAMOND, 2);
+        return new ItemStack(Material.PHANTOM_MEMBRANE, 3);
     }
 
     @Override
     public @NotNull List<String> getItemKeywords()
     {
-        return List.of("だいや", "ダイヤ", "だいあ", "ダイア", "だいやもんど", "ダイヤモンド", "だいあもんど", "ダイアモンド");
+        return List.of("えりとら", "エリトラ", "ほうき");
     }
 }

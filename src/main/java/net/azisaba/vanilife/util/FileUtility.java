@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.stream.Stream;
 
 public class FileUtility
 {
@@ -27,9 +28,9 @@ public class FileUtility
                 {
                     FileUtility.rmdir(file);
                 }
-                else if (! file.delete())
+                else
                 {
-                    continue;
+                    file.delete();
                 }
             }
         }
@@ -39,9 +40,9 @@ public class FileUtility
 
     public static void cpdir(Path from, Path to)
     {
-        try
+        try (Stream<Path> stream = Files.walk(from))
         {
-            Files.walk(from).forEach(src -> {
+            stream.forEach(src -> {
                 Path target = to.resolve(from.relativize(src));
 
                 try

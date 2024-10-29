@@ -21,8 +21,8 @@ public class MolaMagic implements Magic
     public void perform(@NotNull Player player)
     {
         User user = User.getInstance(player);
-        user.setMola(user.getMola() + 4);
+        user.setMola(user.getMola() + 120);
 
-        player.sendMessage(Component.text("4 Mola を受け取った").color(NamedTextColor.LIGHT_PURPLE));
+        player.sendMessage(Component.text("120 Mola を受け取った").color(NamedTextColor.LIGHT_PURPLE));
     }
 }

@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 
 public class UnderworldListener implements Listener
 {
+    private boolean canSpawn = true;
+
     @EventHandler
     public void onEntitySpawn(EntityAddToWorldEvent event)
     {
@@ -27,12 +29,15 @@ public class UnderworldListener implements Listener
             return;
         }
 
-        if (location.getWorld().getEntities().stream()
-                .anyMatch(entity -> entity.getType() == EntityType.ENDER_DRAGON && entity.getLocation().distance(location) < 500))
+        if (! this.canSpawn || location.getWorld().getEntities().stream()
+                .anyMatch(entity -> entity.getType() == EntityType.ENDER_DRAGON && entity.getLocation().distance(location) < 4000))
         {
             return;
         }
 
+        this.canSpawn = false;
+
         Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> new DragonEntity(location.add(0, 56, 0)), 20L * 4);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Vanilife.getPlugin(), () -> this.canSpawn = true, 20L * 10);
     }
 }

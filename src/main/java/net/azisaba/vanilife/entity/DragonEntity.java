@@ -37,6 +37,12 @@ public class DragonEntity extends VanilifeEntity<EnderDragon>
     }
 
     @Override
+    public long getPeriod()
+    {
+        return 20L * 10;
+    }
+
+    @Override
     protected void init()
     {
         super.init();
@@ -61,6 +67,7 @@ public class DragonEntity extends VanilifeEntity<EnderDragon>
             return;
         }
 
+        this.entity.lookAt(player);
         this.entity.setVelocity(player.getLocation().subtract(this.entity.getLocation()).toVector().normalize().multiply(1.5));
 
         Fireball fireball = (Fireball) this.entity.getWorld().spawnEntity(this.entity.getLocation().add(0, 1, 0), EntityType.FIREBALL);

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.azisaba'
-version = 'halloween 2024'
+version = 'halloween 2024 fix'
 
 repositories {
     mavenCentral()

@@ -11,7 +11,7 @@ public class GoldMagic implements GiveMagic
     @Override
     public @NotNull ItemStack getItem()
     {
-        return new ItemStack(Material.GOLD_INGOT, 10);
+        return new ItemStack(Material.GOLD_INGOT, 20);
     }
 
     @Override
