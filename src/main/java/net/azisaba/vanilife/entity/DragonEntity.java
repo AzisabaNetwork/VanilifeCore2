@@ -39,7 +39,7 @@ public class DragonEntity extends VanilifeEntity<EnderDragon>
     @Override
     public long getPeriod()
     {
-        return 20L * 10;
+        return 20L * 5;
     }
 
     @Override
