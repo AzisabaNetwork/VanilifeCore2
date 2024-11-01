@@ -533,7 +533,7 @@
     "msg.teleport.requested": "&eYou have sent &r${name}&e a teleport request! Approval expires in &c${limit}&e seconds.",
     "msg.teleport.received": "${name}&e has sent you a teleport request!",
     "msg.teleport.received.details": "&eApproval expires in &c${limit}&e seconds.",
-    "msg.teleport.teleported": "Teleported to ${name}&a consuming ${cose} Mola!",
+    "msg.teleport.teleported": "Teleported to ${name}&a consuming ${cost} Mola!",
     "msg.teleport.accept": "${name}&a teleport approved.",
     "msg.teleport.time-over": "&eThe teleport request to &r${name}&e is now invalid because &c${limit}&e seconds have elapsed.",
 
@@ -820,6 +820,9 @@
     "housing.pack.skull.details.1": "Tasteless decoration...",
     "housing.pack.storage.name": "Storage",
     "housing.pack.storage.details.1": "Perfect for storing items",
+    "housing.pack.concrete.name": "Concrete",
+    "housing.pack.end.name": "End",
+    "housing.pack.quartz.name": "Quartz",
 
     "jail.limit-under": "Please enter details that are more than 8 characters.",
     "jail.limit-over": "Please enter details that are within 30 characters.",

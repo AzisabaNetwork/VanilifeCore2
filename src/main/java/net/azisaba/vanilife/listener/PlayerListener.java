@@ -3,6 +3,7 @@ package net.azisaba.vanilife.listener;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.azisaba.vanilife.Vanilife;
 import net.azisaba.vanilife.chat.IChat;
+import net.azisaba.vanilife.command.RtpCommand;
 import net.azisaba.vanilife.housing.Housing;
 import net.azisaba.vanilife.objective.Objectives;
 import net.azisaba.vanilife.user.Sara;
@@ -249,6 +250,11 @@ public class PlayerListener implements Listener
         }
 
         if (player.getWorld().equals(Housing.getWorld()))
+        {
+            return;
+        }
+
+        if (RtpCommand.teleporters.stream().anyMatch(teleporter -> teleporter.getUniqueId().equals(player.getUniqueId())))
         {
             return;
         }

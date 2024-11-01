@@ -36,11 +36,7 @@ public class RandomTeleporter
             {
                 Location location = safeLocation(world);
 
-                Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> {
-                    player.teleport(location);
-                    player.sendMessage(Language.translate("cmd.rtp.teleported", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
-                    player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.0f);
-                });
+                Bukkit.getScheduler().runTask(Vanilife.getPlugin(), () -> player.teleport(location));
             }
         }.runTaskAsynchronously(Vanilife.getPlugin());
     }

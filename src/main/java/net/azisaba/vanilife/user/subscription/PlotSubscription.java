@@ -49,7 +49,12 @@ public class PlotSubscription implements ISubscription
     @Override
     public int getCost()
     {
-        return this.plot.getChunks().size() * 20;
+        return this.plot.getChunks().size() * this.getCostOfPlot();
+    }
+
+    public int getCostOfPlot()
+    {
+        return 20;
     }
 
     public Plot getPlot()
@@ -72,6 +77,6 @@ public class PlotSubscription implements ISubscription
     @Override
     public void onPayment(@NotNull User user)
     {
-        this.plot.getOwner().sendNotification(String.format("[領収書] %s 維持費", plot.getName()), String.format("%s の維持費として下記生に領収いたしました。\nPlot 維持費: %s Mola (40 × %s チャンク)", this.plot.getName(), this.getCost(), this.plot.getChunks().size()));
+        this.plot.getOwner().sendNotification(String.format("[領収書] %s 維持費", plot.getName()), String.format("%s の維持費として下記生に領収いたしました。\nPlot 維持費: %s Mola (%s × %s チャンク)", this.plot.getName(), this.getCost(), this.getCostOfPlot(), this.plot.getChunks().size()));
     }
 }

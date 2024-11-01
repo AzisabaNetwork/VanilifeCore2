@@ -27,13 +27,17 @@ public class HousingPacks
 
     public static final BambooPack BAMBOO = (BambooPack) HousingPacks.register(new BambooPack());
 
+    public static final TerrainPack TERRAIN = (TerrainPack) HousingPacks.register(new TerrainPack());
+
     public static final NetherPack NETHER = (NetherPack) HousingPacks.register(new NetherPack());
+
+    public static final EndPack END = (EndPack) HousingPacks.register(new EndPack());
 
     public static final StonePack1 STONE1 = (StonePack1) HousingPacks.register(new StonePack1());
 
     public static final StonePack2 STONE2 = (StonePack2) HousingPacks.register(new StonePack2());
 
-    public static final TerrainPack TERRAIN = (TerrainPack) HousingPacks.register(new TerrainPack());
+    public static final QuartzPack QUARTZ = (QuartzPack) HousingPacks.register(new QuartzPack());
 
     public static final BuilderPack BUILDER = (BuilderPack) HousingPacks.register(new BuilderPack());
 
@@ -54,6 +58,8 @@ public class HousingPacks
     public static final GlassPack GLASS = (GlassPack) HousingPacks.register(new GlassPack());
 
     public static final ColorPack COLOR = (ColorPack) HousingPacks.register(new ColorPack());
+
+    public static final ConcretePack CONCRETE = (ConcretePack) HousingPacks.register(new ConcretePack());
 
     public static final MidnightPack MIDNIGHT = (MidnightPack) HousingPacks.register(new MidnightPack());
 

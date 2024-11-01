@@ -6,6 +6,7 @@ import net.azisaba.vanilife.user.User;
 import net.azisaba.vanilife.vwm.VanilifeWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -17,12 +18,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RtpCommand implements CommandExecutor, TabCompleter
 {
+    public static final List<Player> teleporters = new ArrayList<>();
+
     private final Map<User, Integer> cooldowns = new HashMap<>();
 
     @Override
@@ -64,9 +68,15 @@ public class RtpCommand implements CommandExecutor, TabCompleter
             return true;
         }
 
+        RtpCommand.teleporters.add(player);
+        Bukkit.getScheduler().runTaskLater(Vanilife.getPlugin(), () -> RtpCommand.teleporters.remove(player), 20L);
+
         user.setMola(user.getMola() - Vanilife.MOLA_RTP);
         sender.sendMessage(Language.translate("cmd.rtp.searching", player).color(NamedTextColor.GREEN));
         world.getTeleporter().teleport(player);
+
+        player.sendMessage(Language.translate("cmd.rtp.teleported", player).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+        player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.0f);
 
         this.cooldowns.put(user, 15);
 

@@ -72,6 +72,7 @@ public class TerrainPack implements IHousingPack
                 Material.MOSS_CARPET,
                 Material.SHORT_GRASS,
                 Material.FERN,
-                Material.DEAD_BUSH);
+                Material.DEAD_BUSH,
+                Material.VINE);
     }
 }

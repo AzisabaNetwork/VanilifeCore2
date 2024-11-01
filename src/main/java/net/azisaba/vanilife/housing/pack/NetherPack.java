@@ -29,6 +29,8 @@ public class NetherPack implements IHousingPack
     public @NotNull List<Material> getMaterials()
     {
         return List.of(Material.NETHERRACK,
+                Material.SOUL_SAND,
+                Material.SOUL_SOIL,
                 Material.CRIMSON_NYLIUM,
                 Material.WARPED_NYLIUM,
                 Material.NETHER_BRICK,

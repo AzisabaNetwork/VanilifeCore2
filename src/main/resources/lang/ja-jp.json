@@ -533,7 +533,7 @@
     "msg.teleport.requested": "${name}&e にテレポートリクエストを送信しました！承認の有効期限は &c${limit}&e 秒です。",
     "msg.teleport.received": "${name}&e からテレポートリクエストが届きました！",
     "msg.teleport.received.details": "&e承認の有効期限は &c${limit}&e 秒です。",
-    "msg.teleport.teleported": "${cose} Mola を消費して ${name}&a にテレポートしました！",
+    "msg.teleport.teleported": "${cost} Mola を消費して ${name}&a にテレポートしました！",
     "msg.teleport.accept": "${name}&a のテレポートを承認しました！",
     "msg.teleport.time-over": "&c${limit}&e 秒が経過したため、&r${name}&e へのテレポートリクエストは無効になりました",
 
@@ -820,6 +820,9 @@
     "housing.pack.skull.details.1": "悪趣味な装飾品…",
     "housing.pack.storage.name": "ストレージ",
     "housing.pack.storage.details.1": "アイテムを保管するのには最適です",
+    "housing.pack.concrete.name": "コンクリート",
+    "housing.pack.end.name": "エンド",
+    "housing.pack.quartz.name": "クォーツ",
 
     "jail.limit-under": "詳細は8文字以上で入力してください",
     "jail.limit-over": "詳細は30文字以内で入力してください",

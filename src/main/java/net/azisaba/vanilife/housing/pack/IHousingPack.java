@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,9 +70,14 @@ public interface IHousingPack
 
     @NotNull List<Material> getMaterials();
 
+    default @NotNull List<Tag<Material>> getTags()
+    {
+        return List.of();
+    }
+
     default boolean include(Material material)
     {
-        return this.getMaterials().contains(material);
+        return this.getMaterials().contains(material) || this.getTags().stream().anyMatch(tag -> tag.isTagged(material));
     }
 
     default boolean include(Block block)
