@@ -823,6 +823,7 @@
     "housing.pack.concrete.name": "コンクリート",
     "housing.pack.end.name": "エンド",
     "housing.pack.quartz.name": "クォーツ",
+    "housing.pack.prismarine.name": "プリズマリン",
 
     "jail.limit-under": "詳細は8文字以上で入力してください",
     "jail.limit-over": "詳細は30文字以内で入力してください",

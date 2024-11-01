@@ -823,6 +823,7 @@
     "housing.pack.concrete.name": "Concrete",
     "housing.pack.end.name": "End",
     "housing.pack.quartz.name": "Quartz",
+    "housing.pack.prismarine.name": "Prismarine",
 
     "jail.limit-under": "Please enter details that are more than 8 characters.",
     "jail.limit-over": "Please enter details that are within 30 characters.",

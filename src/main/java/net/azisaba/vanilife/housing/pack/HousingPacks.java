@@ -39,6 +39,8 @@ public class HousingPacks
 
     public static final QuartzPack QUARTZ = (QuartzPack) HousingPacks.register(new QuartzPack());
 
+    public static final PrismarinePack PRISMARINE = (PrismarinePack) HousingPacks.register(new PrismarinePack());
+
     public static final BuilderPack BUILDER = (BuilderPack) HousingPacks.register(new BuilderPack());
 
     public static final CrafterPack CRAFTER = (CrafterPack) HousingPacks.register(new CrafterPack());
